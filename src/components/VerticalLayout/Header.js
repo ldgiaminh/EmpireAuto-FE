@@ -28,6 +28,8 @@ import slack from "../../assets/images/brands/slack.png";
 import logo from "../../assets/images/logo.svg";
 import logoLightSvg from "../../assets/images/logo-light.svg";
 
+import EmpireLogo from "../../assets/images/Empire_Logo_None_Text.png";
+
 //i18n
 import { withTranslation } from "react-i18next";
 
@@ -95,13 +97,13 @@ class Header extends Component {
               <div className="navbar-brand-box d-lg-none d-md-block">
                 <Link to="/" className="logo logo-dark">
                   <span className="logo-sm">
-                    <img src={logo} alt="" height="22" />
+                    <img src={EmpireLogo} alt="" height="22" />
                   </span>
                 </Link>
 
                 <Link to="/" className="logo logo-light">
                   <span className="logo-sm">
-                    <img src={logoLightSvg} alt="" height="22" />
+                    <img src={EmpireLogo} alt="" height="22" />
                   </span>
                 </Link>
               </div>
@@ -115,7 +117,7 @@ class Header extends Component {
                 <i className="fa fa-fw fa-bars"></i>
               </button>
 
-              <form className="app-search d-none d-lg-block">
+              {/* <form className="app-search d-none d-lg-block">
                 <div className="position-relative">
                   <input
                     type="text"
@@ -124,9 +126,9 @@ class Header extends Component {
                   />
                   <span className="bx bx-search-alt"></span>
                 </div>
-              </form>
+              </form> */}
 
-              <Dropdown
+              {/* <Dropdown
                 className="dropdown-mega d-none d-lg-block ms-2"
                 isOpen={this.state.megaMenuDrp}
                 toggle={() => {
@@ -277,10 +279,10 @@ class Header extends Component {
                     </Col>
                   </Row>
                 </DropdownMenu>
-              </Dropdown>
+              </Dropdown> */}
             </div>
             <div className="d-flex">
-              <div className="dropdown d-inline-block d-lg-none ms-2">
+              {/* <div className="dropdown d-inline-block d-lg-none ms-2">
                 <button
                   onClick={() => {
                     this.setState({ isSearch: !this.state.isSearch });
@@ -317,11 +319,11 @@ class Header extends Component {
                     </div>
                   </form>
                 </div>
-              </div>
+              </div> */}
 
               <LanguageDropdown />
 
-              <Dropdown
+              {/* <Dropdown
                 className="d-none d-lg-inline-block ms-1"
                 isOpen={this.state.socialDrp}
                 toggle={() => {
@@ -379,7 +381,7 @@ class Header extends Component {
                     </Row>
                   </div>
                 </DropdownMenu>
-              </Dropdown>
+              </Dropdown> */}
 
               <div className="dropdown d-none d-lg-inline-block ms-1">
                 <button

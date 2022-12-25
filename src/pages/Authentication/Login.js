@@ -22,8 +22,9 @@ import { apiError, loginUser, socialLogin } from "../../store/actions";
 
 // import images
 import profile from "../../assets/images/profile-img.png";
-import logo from "../../assets/images/logo.svg";
-import lightlogo from "../../assets/images/logo-light.svg";
+//import logo from "../../assets/images/logo.svg";
+//import lightlogo from "../../assets/images/logo-light.svg";
+import logo from "../../assets/images/logo-login.png";
 
 class Login extends Component {
   constructor(props) {
@@ -86,8 +87,8 @@ class Login extends Component {
                     <Row>
                       <Col className="col-7">
                         <div className="text-primary p-4">
-                          <h5 className="text-primary">Welcome Back !</h5>
-                          <p>Sign in to continue to Skote.</p>
+                          <h5 className="text-primary">Chào mừng !</h5>
+                          <p>Vui lòng đăng nhập vào Empire Auto</p>
                         </div>
                       </Col>
                       <Col className="col-5 align-self-end">
@@ -99,19 +100,7 @@ class Login extends Component {
                     <div className="auth-logo">
                       <Link to="/" className="auth-logo-light">
                         <div className="avatar-md profile-user-wid mb-4">
-                          <span className="avatar-title rounded-circle bg-light">
-                            <img
-                              src={lightlogo}
-                              alt=""
-                              className="rounded-circle"
-                              height="34"
-                            />
-                          </span>
-                        </div>
-                      </Link>
-                      <Link to="/" className="auth-logo-dark">
-                        <div className="avatar-md profile-user-wid mb-4">
-                          <span className="avatar-title rounded-circle bg-light">
+                          <span className="avatar-title rounded-circle">
                             <img
                               src={logo}
                               alt=""
@@ -121,11 +110,23 @@ class Login extends Component {
                           </span>
                         </div>
                       </Link>
+                      <Link to="/" className="auth-logo-dark">
+                        <div className="avatar-md profile-user-wid mb-4">
+                          <span className="avatar-title rounded-circle">
+                            <img
+                              src={logo}
+                              alt=""
+                              className="rounded-circle"
+                              height="80"
+                            />
+                          </span>
+                        </div>
+                      </Link>
                     </div>
                     <div className="p-2">
-                    {this.props.error && this.props.error ? (
-                      <Alert color="danger">{this.props.error}</Alert>
-                    ) : null}
+                      {this.props.error && this.props.error ? (
+                        <Alert color="danger">{this.props.error}</Alert>
+                      ) : null}
                       <Formik
                         enableReinitialize={true}
                         initialValues={{
@@ -148,7 +149,6 @@ class Login extends Component {
                         }}
                       >
                         {({ errors, status, touched }) => (
-                          
                           <Form className="form-horizontal">
                             <div className="mb-3">
                               <Label for="email" className="form-label">
@@ -195,12 +195,12 @@ class Login extends Component {
                                 </button>
                               </div>
                               <ErrorMessage
-                              name="password"
-                              component="div"
-                              className="invalid-feedback"
-                            />
+                                name="password"
+                                component="div"
+                                className="invalid-feedback"
+                              />
                             </div>
-                            
+
                             <div className="form-check">
                               <input
                                 type="checkbox"
@@ -225,49 +225,6 @@ class Login extends Component {
                             </div>
 
                             <div className="mt-4 text-center">
-                              <h5 className="font-size-14 mb-3">
-                                Sign in with
-                              </h5>
-
-                              <ul className="list-inline">
-                                <li className="list-inline-item">
-                                  <FacebookLogin
-                                    appId={facebook.APP_ID}
-                                    autoLoad={false}
-                                    callback={this.facebookResponse}
-                                    render={renderProps => (
-                                      <Link
-                                        to={""}
-                                        className="social-list-item bg-primary text-white border-primary"
-                                      >
-                                        <i className="mdi mdi-facebook" />
-                                      </Link>
-                                    )}
-                                  />
-                                </li>
-                                <li className="list-inline-item">
-                                  {google.CLIENT_ID === "" ? (
-                                    ""
-                                  ) : (
-                                    <GoogleLogin
-                                      clientId={google.CLIENT_ID}
-                                      render={renderProps => (
-                                        <Link
-                                          to={""}
-                                          className="social-list-item bg-danger text-white border-danger"
-                                        >
-                                          <i className="mdi mdi-google" />
-                                        </Link>
-                                      )}
-                                      onSuccess={this.googleResponse}
-                                      onFailure={() => {}}
-                                    />
-                                  )}
-                                </li>
-                              </ul>
-                            </div>
-
-                            <div className="mt-4 text-center">
                               <Link
                                 to="/forgot-password"
                                 className="text-muted"
@@ -282,18 +239,6 @@ class Login extends Component {
                     </div>
                   </CardBody>
                 </Card>
-                <div className="mt-5 text-center">
-                  <p>
-                    Don&apos;t have an account ?
-                    <Link to="register" className="fw-medium text-primary">
-                      Signup Now
-                    </Link>
-                  </p>
-                  <p>
-                    © {new Date().getFullYear()} Skote. Crafted with
-                    <i className="mdi mdi-heart text-danger" /> by Themesbrand
-                  </p>
-                </div>
               </Col>
             </Row>
           </Container>
