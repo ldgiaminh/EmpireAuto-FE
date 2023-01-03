@@ -16,11 +16,21 @@ import Dashboard from "../pages/Dashboard/index"
 //Booking
 import Booking from "../pages/Booking/index"
 
+//Order Service
+import OrderService from "../pages/OrderServices/index"
+import OrderServiceDiagnose from "pages/OrderServices/OrderServiceDiagnose"
+import OrderServiceDetail from "pages/OrderServices/OrderServiceDetail"
+
 const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
 
   //booking
   { path: "/booking", component: Booking },
+
+  //order service
+  { path: "/order-service", component: OrderService },
+  { path: "/order-service-diagnose", component: OrderServiceDiagnose },
+  { path: "/order-service-detail", component: OrderServiceDetail },
 
   // //profile
   { path: "/profile", component: UserProfile },

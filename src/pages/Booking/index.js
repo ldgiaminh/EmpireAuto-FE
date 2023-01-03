@@ -99,7 +99,7 @@ function Booking() {
           width: "10%",
           background: "#0000",
         },
-        filterable: true,
+        disableFilters: true,
         Cell: cellProps => {
           return <BookingCode {...cellProps} />
         },
@@ -107,7 +107,7 @@ function Booking() {
       {
         Header: "Tên khách hàng",
         accessor: "fullname",
-        filterable: true,
+        disableFilters: true,
         Cell: cellProps => {
           return <Name {...cellProps} />
         },
@@ -115,7 +115,7 @@ function Booking() {
       {
         Header: "Số điện thoại",
         accessor: "phone",
-        filterable: true,
+        disableFilters: true,
         Cell: cellProps => {
           return <Phone {...cellProps} />
         },
@@ -123,7 +123,7 @@ function Booking() {
       {
         Header: "Modal xe",
         accessor: "car_modal",
-        filterable: true,
+        disableFilters: true,
         Cell: cellProps => {
           return <ModalCar {...cellProps} />
         },
@@ -131,7 +131,7 @@ function Booking() {
       {
         Header: "Biển số xe",
         accessor: "car_license_no",
-        filterable: true,
+        disableFilters: true,
         Cell: cellProps => {
           return <Plate {...cellProps} />
         },

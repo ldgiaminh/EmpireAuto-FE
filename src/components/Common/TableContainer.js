@@ -211,11 +211,11 @@ const TableContainer = ({
               <tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map(column => (
                   <th key={column.id}>
-                    <div className="mb-2" {...column.getSortByToggleProps()}>
+                    <div {...column.getSortByToggleProps()}>
                       {column.render("Header")}
                       {generateSortingIndicator(column)}
                     </div>
-                    <Filter column={column} />
+                    {/* <Filter column={column} /> */}
                   </th>
                 ))}
               </tr>
