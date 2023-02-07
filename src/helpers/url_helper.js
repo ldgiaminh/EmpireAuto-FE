@@ -14,8 +14,8 @@ export const POST_EDIT_JWT_PROFILE = "/post-jwt-profile"
 export const POST_EDIT_PROFILE = "/post-fake-profile"
 
 //BOOKING
-export const GET_BOOKING =
-  "https://empire-api.azurewebsites.net/api/v1/bookings"
+export const GET_BOOKING_LIST = "/bookings"
+export const GET_BOOKING_DETAIL = "/bookings"
 
 //PRODUCTS
 export const GET_PRODUCTS = "/products"

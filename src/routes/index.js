@@ -15,6 +15,7 @@ import Dashboard from "../pages/Dashboard/index"
 
 //Booking
 import Booking from "../pages/Booking/index"
+import BookingDetails from "../pages/Booking/Details/BookingDetails"
 
 //Order Service
 import OrderService from "../pages/OrderServices/index"
@@ -26,6 +27,7 @@ const authProtectedRoutes = [
 
   //booking
   { path: "/booking", component: Booking },
+  { path: "/booking-detail/:id", component: BookingDetails },
 
   //order service
   { path: "/order-service", component: OrderService },

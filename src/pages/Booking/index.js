@@ -1,137 +1,173 @@
-import React, { useEffect, useMemo, useState } from "react"
-import PropTypes from "prop-types"
-import classnames from "classnames"
-import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css"
+import React, { useEffect, useState, useRef, useMemo } from "react"
+import { withRouter, Link } from "react-router-dom"
 import TableContainer from "../../components/Common/TableContainer"
-import * as Yup from "yup"
-
-//Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
-
-import { BookingCode, ModalCar, Name, Phone, Plate } from "./BookingUserListCol"
-
-//redux
-import BookingUserListModal from "./BookingUserListModal"
-
 import {
-  Container,
   Button,
+  Card,
+  CardBody,
   Col,
+  Container,
   Row,
-  UncontrolledTooltip,
   Modal,
   ModalHeader,
   ModalBody,
-  Form,
-  Input,
-  FormFeedback,
   Label,
-  NavItem,
-  NavLink,
-  Card,
-  CardBody,
-  TabContent,
-  TabPane,
+  FormFeedback,
+  UncontrolledTooltip,
+  Input,
+  Form,
 } from "reactstrap"
+import * as Yup from "yup"
+import { useFormik } from "formik"
 
-function Booking() {
+import { BookingCode, ModalCar, Name, Phone, Plate } from "./BookingUserListCol"
+
+//Import Breadcrumb
+import Breadcrumbs from "components/Common/Breadcrumb"
+import DeleteModal from "components/Common/DeleteModal"
+
+import {
+  getBookingLists as onGetBookings,
+  getBookingDetails as onGetBookingDetails,
+} from "store/actions"
+import { isEmpty } from "lodash"
+
+//redux
+import { useSelector, useDispatch } from "react-redux"
+
+const BookingList = props => {
   //meta title
   document.title = "Đặt Lịch | Empire Admin"
 
-  const [activeTab, setActiveTab] = useState("1")
+  const { history } = props
+
+  const dispatch = useDispatch()
+  const [booking, setBooking] = useState()
+  // validation
+  // const validation = useFormik({
+  //   // enableReinitialize : use this flag when initial values needs to be changed
+  //   enableReinitialize: true,
+
+  //   initialValues: {
+  //     name: (contact && contact.name) || "",
+  //     designation: (contact && contact.designation) || "",
+  //     tags: (contact && contact.tags) || "",
+  //     email: (contact && contact.email) || "",
+  //     projects: (contact && contact.projects) || "",
+  //   },
+  //   validationSchema: Yup.object({
+  //     name: Yup.string().required("Please Enter Your Name"),
+  //     designation: Yup.string().required("Please Enter Your Designation"),
+  //     tags: Yup.array().required("Please Enter Tag"),
+  //     email: Yup.string().required("Please Enter Your Email"),
+  //     projects: Yup.number().required("Please Enter Your Project"),
+  //   }),
+  //   onSubmit: values => {
+  //     if (isEdit) {
+  //       const updateUser = {
+  //         id: contact.id,
+  //         name: values.name,
+  //         designation: values.designation,
+  //         tags: values.tags,
+  //         email: values.email,
+  //         projects: values.projects,
+  //       }
+
+  //       // update user
+  //       dispatch(onUpdateUser(updateUser))
+  //       validation.resetForm()
+  //       setIsEdit(false)
+  //     } else {
+  //       const newUser = {
+  //         id: Math.floor(Math.random() * (30 - 20)) + 20,
+  //         name: values["name"],
+  //         designation: values["designation"],
+  //         email: values["email"],
+  //         tags: values["tags"],
+  //         projects: values["projects"],
+  //       }
+  //       // save new user
+  //       dispatch(onAddNewUser(newUser))
+  //       validation.resetForm()
+  //     }
+  //     toggle()
+  //   },
+  // })
+
+  const { bookings } = useSelector(state => ({
+    bookings: state.bookings.bookings,
+  }))
+
+  const [bookingList, setBookingList] = useState([])
   const [modal, setModal] = useState(false)
-  const [modal1, setModal1] = useState(false)
-  const [isCheck, setIsCheck] = useState(false)
+  const [isEdit, setIsEdit] = useState(false)
 
-  const [bookingUserList, setBookingUserList] = useState([])
-  const [bookingUser, setBookingUser] = useState(null)
-
-  const toggleViewModal = () => setModal1(!modal1)
-
-  const toggleTab = tab => {
-    if (activeTab !== tab) {
-      setActiveTab(tab)
+  useEffect(() => {
+    if (bookings && !bookings.length) {
+      dispatch(onGetBookings())
+      setIsEdit(false)
     }
-  }
+  }, [dispatch, bookings])
+
+  useEffect(() => {
+    setBooking(bookings)
+    setIsEdit(false)
+  }, [bookings])
+
+  useEffect(() => {
+    if (!isEmpty(bookings) && !!isEdit) {
+      setBooking(bookings)
+      setIsEdit(false)
+    }
+  }, [bookings])
 
   const toggle = () => {
-    if (modal) {
-      setModal(false)
-      setBookingUser(null)
-    } else {
-      setModal(true)
-    }
+    setModal(!modal)
   }
-
-  const handleBookingUserDetailClick = arg => {
-    const booking = arg
-    setBookingUser({
-      id: booking.id,
-      code: booking.code,
-      date: booking.date,
-      status: booking.status,
-      fullName: booking.fullName,
-      phone: booking.orderdate,
-      email: booking.email,
-      car_modal: booking.car_modal,
-      car_license_no: booking.paymentStatus,
-    })
-
-    setIsCheck(true)
-
-    toggle()
-  }
-
-  const handleAddNewBookingClick = () => {
-    setBookingUserList("")
-    setIsCheck(false)
-    toggle()
-  }
-
   const columns = useMemo(
     () => [
+      // {
+      //   Header: "#",
+      //   Cell: () => {
+      //     return <input type="checkbox" />
+      //   },
+      // },
       {
         Header: "Mã đặt lịch",
         accessor: "code",
-        width: "150px",
-        style: {
-          textAlign: "center",
-          width: "10%",
-          background: "#0000",
-        },
-        disableFilters: true,
+        filterable: true,
         Cell: cellProps => {
           return <BookingCode {...cellProps} />
         },
       },
       {
         Header: "Tên khách hàng",
-        accessor: "fullname",
-        disableFilters: true,
+        accessor: "user.fullname",
+        filterable: true,
         Cell: cellProps => {
           return <Name {...cellProps} />
         },
       },
       {
         Header: "Số điện thoại",
-        accessor: "phone",
-        disableFilters: true,
+        accessor: "user.phone",
+        filterable: true,
         Cell: cellProps => {
           return <Phone {...cellProps} />
         },
       },
       {
         Header: "Modal xe",
-        accessor: "car_modal",
-        disableFilters: true,
+        accessor: "car.carModel",
+        filterable: true,
         Cell: cellProps => {
           return <ModalCar {...cellProps} />
         },
       },
       {
         Header: "Biển số xe",
-        accessor: "car_license_no",
-        disableFilters: true,
+        accessor: "car.carLisenceNo",
+        filterable: true,
         Cell: cellProps => {
           return <Plate {...cellProps} />
         },
@@ -140,17 +176,14 @@ function Booking() {
         Header: "Chi tiết",
         accessor: "view",
         disableFilters: true,
-        Cell: cellProps => {
+        Cell: ({ row }) => {
           return (
             <Button
               type="button"
               color="primary"
               className="btn-sm btn-rounded"
               //onClick={toggleViewModal}
-              onClick={() => {
-                const bookingUserData = cellProps.row.original
-                handleBookingUserDetailClick(bookingUserData)
-              }}
+              onClick={() => history.push(`/booking-detail/${row.original.id}`)}
             >
               Xem chi tiết
             </Button>
@@ -178,424 +211,246 @@ function Booking() {
     []
   )
 
-  const data = [
-    {
-      code: "#BK001",
-      fullname: "Lê Đặng Gia Minh",
-      phone: "0867635674",
-      car_modal: "Tesla",
-      car_license_no: "59D-123.45",
-    },
-    {
-      code: "#BK002",
-      fullname: "Trần Duy Hiếu Trung",
-      phone: "0123456789",
-      car_modal: "Ford",
-      car_license_no: "63F-325.44",
-    },
-    {
-      code: "#BK003",
-      fullname: "Hoàng Trung Thông",
-      phone: "0123456789",
-      car_modal: "Honda",
-      car_license_no: "30B-153.53",
-    },
-    {
-      code: "#BK004",
-      fullname: "Nguyễn Hoàng Hồng Phúc",
-      phone: "0123456789",
-      car_modal: "Porche",
-      car_license_no: "72C-764.45",
-    },
-  ]
+  // const handleUserClick = arg => {
+  //   const user = arg
 
-  const dataArrived = [
-    {
-      code: "#BK001",
-      fullname: "Peter Parker",
-      phone: "0573658193",
-      car_modal: "Mercedes",
-      car_license_no: "59F-325.44",
-    },
-    {
-      code: "#BK002",
-      fullname: "Tony Stark",
-      phone: "0457465712",
-      car_modal: "BMW",
-      car_license_no: "59D-123.45",
-    },
-    {
-      code: "#BK003",
-      fullname: "Bruce Wayne",
-      phone: "0174658272",
-      car_modal: "Roll Royce",
-      car_license_no: "59D-764.45",
-    },
-    {
-      code: "#BK004",
-      fullname: "Clark Kent",
-      phone: "06587291357",
-      car_modal: "McLaren",
-      car_license_no: "59D-153.53",
-    },
-  ]
+  //   setContact({
+  //     id: user.id,
+  //     name: user.name,
+  //     designation: user.designation,
+  //     email: user.email,
+  //     tags: user.tags,
+  //     projects: user.projects,
+  //   })
+  //   setIsEdit(true)
 
-  const dataCancel = [
-    {
-      code: "#BK001",
-      fullname: "Justin Bieber",
-      phone: "0698532179",
-      car_modal: "Lamborghini",
-      car_license_no: "59D-123.45",
-    },
-    {
-      code: "#BK002",
-      fullname: "Charlie Puth",
-      phone: "0985625719",
-      car_modal: "Ferrari",
-      car_license_no: "59D-325.44",
-    },
-    {
-      code: "#BK003",
-      fullname: "Post Malone",
-      phone: "0326985716",
-      car_modal: "Maserati",
-      car_license_no: "59D-153.53",
-    },
-    {
-      code: "#BK004",
-      fullname: "Kendrick Lamar",
-      phone: "0985326178",
-      car_modal: "Aston Martin",
-      car_license_no: "59D-764.45",
-    },
-  ]
+  //   toggle()
+  // }
+
+  // var node = useRef()
+  // const onPaginationPageChange = page => {
+  //   if (
+  //     node &&
+  //     node.current &&
+  //     node.current.props &&
+  //     node.current.props.pagination &&
+  //     node.current.props.pagination.options
+  //   ) {
+  //     node.current.props.pagination.options.onPageChange(page)
+  //   }
+  // }
+
+  // //delete customer
+  // const [deleteModal, setDeleteModal] = useState(false)
+
+  // const onClickDelete = users => {
+  //   setContact(users)
+  //   setDeleteModal(true)
+  // }
+
+  // const handleDeleteUser = () => {
+  //   dispatch(onDeleteUser(contact))
+  //   onPaginationPageChange(1)
+  //   setDeleteModal(false)
+  // }
+
+  // const handleUserClicks = () => {
+  //   setUserList("")
+  //   setIsEdit(false)
+  //   toggle()
+  // }
+
+  const keyField = "id"
 
   return (
     <React.Fragment>
-      <BookingUserListModal isOpen={modal1} toggle={toggleViewModal} />
+      {/* <DeleteModal
+        show={deleteModal}
+        onDeleteClick={handleDeleteUser}
+        onCloseClick={() => setDeleteModal(false)}
+      /> */}
       <div className="page-content">
-        <div className="container-fluid">
+        <Container fluid>
+          {/* Render Breadcrumbs */}
           <Breadcrumbs title="Đặt Lịch" breadcrumbItem="Danh sách đặt lịch" />
           <Row>
-            <Col xs="12">
+            <Col lg="12">
               <Card>
                 <CardBody>
-                  <ul className="nav nav-tabs nav-tabs-custom" role="tablist">
-                    <NavItem>
-                      <NavLink
-                        className={classnames({
-                          active: activeTab === "1",
-                        })}
-                        onClick={() => {
-                          toggleTab("1")
+                  <TableContainer
+                    columns={columns}
+                    data={bookings}
+                    isGlobalFilter={true}
+                    isAddBookingOptions={true}
+                    //handleUserClick={handleUserClicks}
+                    customPageSize={10}
+                    className="custom-header-css"
+                  />
+
+                  {/* <Modal isOpen={modal} toggle={toggle}>
+                    <ModalHeader toggle={toggle} tag="h4">
+                      {!!isEdit ? "Edit User" : "Add User"}
+                    </ModalHeader>
+                    <ModalBody>
+                      <Form
+                        onSubmit={e => {
+                          e.preventDefault()
+                          validation.handleSubmit()
+                          return false
                         }}
                       >
-                        Xe chưa đến
-                      </NavLink>
-                    </NavItem>
-                    <NavItem>
-                      <NavLink
-                        className={classnames({
-                          active: activeTab === "2",
-                        })}
-                        onClick={() => {
-                          toggleTab("2")
-                        }}
-                      >
-                        Xe đã đến
-                      </NavLink>
-                    </NavItem>
-                    <NavItem>
-                      <NavLink
-                        className={classnames({
-                          active: activeTab === "3",
-                        })}
-                        onClick={() => {
-                          toggleTab("3")
-                        }}
-                      >
-                        Hủy
-                      </NavLink>
-                    </NavItem>
-                  </ul>
-                  <TabContent activeTab={activeTab} className="p-3">
-                    <TabPane tabId="1" id="not-yet">
-                      <TableContainer
-                        columns={columns}
-                        data={data}
-                        isGlobalFilter={true}
-                        isAddBookingOptions={true}
-                        handleBookingClick={handleAddNewBookingClick}
-                        customPageSize={10}
-                        className="custom-header-css"
-                      />
-                    </TabPane>
-                    <TabPane tabId="2" id="arrived">
-                      <div>
-                        <TableContainer
-                          columns={columns}
-                          data={dataArrived}
-                          isGlobalFilter={true}
-                          isAddBookingOptions={true}
-                          handleBookingClick={handleAddNewBookingClick}
-                          customPageSize={10}
-                          className="custom-header-css"
-                        />
-                      </div>
-                    </TabPane>
-                    <TabPane tabId="3" id="cancel">
-                      <div>
-                        <TableContainer
-                          columns={columns}
-                          data={dataCancel}
-                          isGlobalFilter={true}
-                          isAddBookingOptions={true}
-                          handleBookingClick={handleAddNewBookingClick}
-                          customPageSize={10}
-                          className="custom-header-css"
-                        />
-                      </div>
-                    </TabPane>
-                  </TabContent>
+                        <Row form>
+                          <Col xs={12}>
+                            <div className="mb-3">
+                              <Label className="form-label">Name</Label>
+                              <Input
+                                name="name"
+                                type="text"
+                                onChange={validation.handleChange}
+                                onBlur={validation.handleBlur}
+                                value={validation.values.name || ""}
+                                invalid={
+                                  validation.touched.name &&
+                                  validation.errors.name
+                                    ? true
+                                    : false
+                                }
+                              />
+                              {validation.touched.name &&
+                              validation.errors.name ? (
+                                <FormFeedback type="invalid">
+                                  {validation.errors.name}
+                                </FormFeedback>
+                              ) : null}
+                            </div>
+                            <div className="mb-3">
+                              <Label className="form-label">Designation</Label>
+                              <Input
+                                name="designation"
+                                label="Designation"
+                                type="text"
+                                onChange={validation.handleChange}
+                                onBlur={validation.handleBlur}
+                                value={validation.values.designation || ""}
+                                invalid={
+                                  validation.touched.designation &&
+                                  validation.errors.designation
+                                    ? true
+                                    : false
+                                }
+                              />
+                              {validation.touched.designation &&
+                              validation.errors.designation ? (
+                                <FormFeedback type="invalid">
+                                  {validation.errors.designation}
+                                </FormFeedback>
+                              ) : null}
+                            </div>
+                            <div className="mb-3">
+                              <Label className="form-label">Email</Label>
+                              <Input
+                                name="email"
+                                label="Email"
+                                type="email"
+                                onChange={validation.handleChange}
+                                onBlur={validation.handleBlur}
+                                value={validation.values.email || ""}
+                                invalid={
+                                  validation.touched.email &&
+                                  validation.errors.email
+                                    ? true
+                                    : false
+                                }
+                              />
+                              {validation.touched.email &&
+                              validation.errors.email ? (
+                                <FormFeedback type="invalid">
+                                  {validation.errors.email}
+                                </FormFeedback>
+                              ) : null}
+                            </div>
+                            <div className="mb-3">
+                              <Label className="form-label">Option</Label>
+                              <Input
+                                type="select"
+                                name="tags"
+                                className="form-select"
+                                multiple={true}
+                                onChange={validation.handleChange}
+                                onBlur={validation.handleBlur}
+                                value={validation.values.tags || []}
+                                invalid={
+                                  validation.touched.tags &&
+                                  validation.errors.tags
+                                    ? true
+                                    : false
+                                }
+                              >
+                                <option>Photoshop</option>
+                                <option>illustrator</option>
+                                <option>Html</option>
+                                <option>Php</option>
+                                <option>Java</option>
+                                <option>Python</option>
+                                <option>UI/UX Designer</option>
+                                <option>Ruby</option>
+                                <option>Css</option>
+                              </Input>
+                              {validation.touched.tags &&
+                              validation.errors.tags ? (
+                                <FormFeedback type="invalid">
+                                  {validation.errors.tags}
+                                </FormFeedback>
+                              ) : null}
+                            </div>
+                            <div className="mb-3">
+                              <Label className="form-label">Projects</Label>
+                              <Input
+                                name="projects"
+                                label="Projects"
+                                type="text"
+                                onChange={validation.handleChange}
+                                onBlur={validation.handleBlur}
+                                value={validation.values.projects || ""}
+                                invalid={
+                                  validation.touched.projects &&
+                                  validation.errors.projects
+                                    ? true
+                                    : false
+                                }
+                              />
+                              {validation.touched.projects &&
+                              validation.errors.projects ? (
+                                <FormFeedback type="invalid">
+                                  {validation.errors.projects}
+                                </FormFeedback>
+                              ) : null}
+                            </div>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col>
+                            <div className="text-end">
+                              <button
+                                type="submit"
+                                className="btn btn-success save-user"
+                              >
+                                Save
+                              </button>
+                            </div>
+                          </Col>
+                        </Row>
+                      </Form>
+                    </ModalBody>
+                  </Modal> */}
                 </CardBody>
               </Card>
             </Col>
           </Row>
-          <Modal isOpen={modal} toggle={toggle}>
-            <ModalHeader toggle={toggle} tag="h4">
-              {!!isCheck ? "Chi tiết đặt lịch" : "Thêm đặt lịch mới"}
-            </ModalHeader>
-            <ModalBody>
-              <Form
-                onSubmit={e => {
-                  e.preventDefault()
-                  //validation.handleSubmit()
-                  return false
-                }}
-              >
-                <Row form>
-                  <Col className="col-12">
-                    <div className="mb-3">
-                      <Label className="form-label">Mã đặt lịch</Label>
-                      <Input
-                        name="orderId"
-                        type="text"
-                        // onChange={validation.handleChange}
-                        // onBlur={validation.handleBlur}
-                        // value={validation.values.orderId || ""}
-                        // invalid={
-                        //   validation.touched.orderId &&
-                        //   validation.errors.orderId
-                        //     ? true
-                        //     : false
-                        // }
-                      />
-                      {/* {validation.touched.orderId &&
-                      validation.errors.orderId ? (
-                        <FormFeedback type="invalid">
-                          {validation.errors.orderId}
-                        </FormFeedback>
-                      ) : null} */}
-                    </div>
-                    <div className="mb-3">
-                      <Label className="form-label">Ngày đặt lịch</Label>
-                      <Input
-                        name="orderdate"
-                        type="date"
-                        // value={orderList.orderdate || ""}
-                        // onChange={validation.handleChange}
-                        // onBlur={validation.handleBlur}
-                        // value={validation.values.orderdate || ""}
-                        // invalid={
-                        //   validation.touched.orderdate &&
-                        //   validation.errors.orderdate
-                        //     ? true
-                        //     : false
-                        // }
-                      />
-                      {/* {validation.touched.orderdate &&
-                      validation.errors.orderdate ? (
-                        <FormFeedback type="invalid">
-                          {validation.errors.orderdate}
-                        </FormFeedback>
-                      ) : null} */}
-                    </div>
-
-                    <div className="mb-3">
-                      <Label className="form-label">Trạng thái</Label>
-                      <Input
-                        name="badgeclass"
-                        type="select"
-                        className="form-select"
-                        // onChange={validation.handleChange}
-                        // onBlur={validation.handleBlur}
-                        // value={validation.values.badgeclass || ""}
-                      >
-                        <option>Đã đến</option>
-                        <option>Quá hạn</option>
-                        <option>Chưa đến</option>
-                      </Input>
-                    </div>
-                    <div className="mb-3">
-                      <Label className="form-label">Họ và Tên</Label>
-                      <Input
-                        name="billingName"
-                        type="text"
-                        validate={{
-                          required: { value: true },
-                        }}
-                        // onChange={validation.handleChange}
-                        // onBlur={validation.handleBlur}
-                        // value={validation.values.billingName || ""}
-                        // invalid={
-                        //   validation.touched.billingName &&
-                        //   validation.errors.billingName
-                        //     ? true
-                        //     : false
-                        // }
-                      />
-                      {/* {validation.touched.billingName &&
-                      validation.errors.billingName ? (
-                        <FormFeedback type="invalid">
-                          {validation.errors.billingName}
-                        </FormFeedback>
-                      ) : null} */}
-                    </div>
-                    <div className="mb-3">
-                      <Label className="form-label">Số điện thoại</Label>
-                      <Input
-                        name="total"
-                        type="text"
-                        // onChange={validation.handleChange}
-                        // onBlur={validation.handleBlur}
-                        // value={validation.values.total || ""}
-                        // invalid={
-                        //   validation.touched.total && validation.errors.total
-                        //     ? true
-                        //     : false
-                        // }
-                      />
-                      {/* {validation.touched.total && validation.errors.total ? (
-                        <FormFeedback type="invalid">
-                          {validation.errors.total}
-                        </FormFeedback>
-                      ) : null} */}
-                    </div>
-                    <div className="mb-3">
-                      <Label className="form-label">Email</Label>
-                      <Input
-                        name="total"
-                        type="text"
-                        // onChange={validation.handleChange}
-                        // onBlur={validation.handleBlur}
-                        // value={validation.values.total || ""}
-                        // invalid={
-                        //   validation.touched.total && validation.errors.total
-                        //     ? true
-                        //     : false
-                        // }
-                      />
-                      {/* {validation.touched.total && validation.errors.total ? (
-                        <FormFeedback type="invalid">
-                          {validation.errors.total}
-                        </FormFeedback>
-                      ) : null} */}
-                    </div>
-                    <div className="mb-3">
-                      <Label className="form-label">Hiệu xe</Label>
-                      <Input
-                        name="total"
-                        type="text"
-                        // onChange={validation.handleChange}
-                        // onBlur={validation.handleBlur}
-                        // value={validation.values.total || ""}
-                        // invalid={
-                        //   validation.touched.total && validation.errors.total
-                        //     ? true
-                        //     : false
-                        // }
-                      />
-                      {/* {validation.touched.total && validation.errors.total ? (
-                        <FormFeedback type="invalid">
-                          {validation.errors.total}
-                        </FormFeedback>
-                      ) : null} */}
-                    </div>
-                    <div className="mb-3">
-                      <Label className="form-label">Dòng xe</Label>
-                      <Input
-                        name="total"
-                        type="text"
-                        // onChange={validation.handleChange}
-                        // onBlur={validation.handleBlur}
-                        // value={validation.values.total || ""}
-                        // invalid={
-                        //   validation.touched.total && validation.errors.total
-                        //     ? true
-                        //     : false
-                        // }
-                      />
-                      {/* {validation.touched.total && validation.errors.total ? (
-                        <FormFeedback type="invalid">
-                          {validation.errors.total}
-                        </FormFeedback>
-                      ) : null} */}
-                    </div>
-                    <div className="mb-3">
-                      <Label className="form-label">Biển số xe</Label>
-                      <Input
-                        name="total"
-                        type="text"
-                        // onChange={validation.handleChange}
-                        // onBlur={validation.handleBlur}
-                        // value={validation.values.total || ""}
-                        // invalid={
-                        //   validation.touched.total && validation.errors.total
-                        //     ? true
-                        //     : false
-                        // }
-                      />
-                      {/* {validation.touched.total && validation.errors.total ? (
-                        <FormFeedback type="invalid">
-                          {validation.errors.total}
-                        </FormFeedback>
-                      ) : null} */}
-                    </div>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <div className="text-end">
-                      {!!isCheck ? (
-                        <button
-                          type="submit"
-                          className="btn btn-success save-user"
-                        >
-                          Check-in
-                        </button>
-                      ) : (
-                        <button
-                          type="submit"
-                          className="btn btn-success save-user"
-                        >
-                          Lưu
-                        </button>
-                      )}
-                    </div>
-                  </Col>
-                </Row>
-              </Form>
-            </ModalBody>
-          </Modal>
-        </div>
+        </Container>
       </div>
     </React.Fragment>
   )
 }
 
-Booking.propTypes = {
-  preGlobalFilteredRows: PropTypes.any,
-}
-
-export default Booking
+export default withRouter(BookingList)

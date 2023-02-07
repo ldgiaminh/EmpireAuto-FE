@@ -9,6 +9,9 @@ import Account from "./auth/register/reducer"
 import ForgetPassword from "./auth/forgetpwd/reducer"
 import Profile from "./auth/profile/reducer"
 
+//booking
+import bookings from "./bookings/reducer"
+
 //E-commerce
 import ecommerce from "./e-commerce/reducer"
 
@@ -34,13 +37,13 @@ import tasks from "./tasks/reducer"
 import contacts from "./contacts/reducer"
 
 //mails
-import mails from "./mails/reducer";
+import mails from "./mails/reducer"
 
-//Dashboard 
-import Dashboard from "./dashboard/reducer";
+//Dashboard
+import Dashboard from "./dashboard/reducer"
 
 //Dasboard saas
-import DashboardSaas from "./dashboard-saas/reducer";
+import DashboardSaas from "./dashboard-saas/reducer"
 
 const rootReducer = combineReducers({
   // public
@@ -59,7 +62,8 @@ const rootReducer = combineReducers({
   tasks,
   contacts,
   Dashboard,
-  DashboardSaas
+  DashboardSaas,
+  bookings,
 })
 
 export default rootReducer

@@ -4,6 +4,7 @@ import { all, fork } from "redux-saga/effects"
 import AccountSaga from "./auth/register/saga"
 import AuthSaga from "./auth/login/saga"
 import ForgetSaga from "./auth/forgetpwd/saga"
+import bookingsSaga from "./bookings/saga"
 import ProfileSaga from "./auth/profile/saga"
 import LayoutSaga from "./layout/saga"
 import ecommerceSaga from "./e-commerce/saga"
@@ -14,9 +15,9 @@ import invoiceSaga from "./invoices/saga"
 import projectsSaga from "./projects/saga"
 import tasksSaga from "./tasks/saga"
 import mailsSaga from "./mails/saga"
-import contactsSaga from "./contacts/saga";
-import dashboardSaga from "./dashboard/saga";
-import dashboardSaasSaga from "./dashboard-saas/saga";
+import contactsSaga from "./contacts/saga"
+import dashboardSaga from "./dashboard/saga"
+import dashboardSaasSaga from "./dashboard-saas/saga"
 
 export default function* rootSaga() {
   yield all([
@@ -36,6 +37,7 @@ export default function* rootSaga() {
     fork(tasksSaga),
     fork(contactsSaga),
     fork(dashboardSaga),
-    fork(dashboardSaasSaga)
+    fork(dashboardSaasSaga),
+    fork(bookingsSaga),
   ])
 }
