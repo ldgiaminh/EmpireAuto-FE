@@ -9,6 +9,9 @@ export * from "./auth/profile/actions"
 //Booking
 export * from "./bookings/actions"
 
+//Symptom
+export * from "./symptoms/actions"
+
 //Ecommerce
 export * from "./e-commerce/actions"
 
@@ -30,8 +33,8 @@ export * from "./projects/actions"
 // tasks
 export * from "./tasks/actions"
 
-// contacts
-export * from "./contacts/actions"
+// users
+export * from "./users/actions"
 
 // contacts
 export * from "./mails/actions"

@@ -115,6 +115,70 @@ export const getBookingsDetails = id =>
 
 /*
 ================================================
+USER
+================================================
+*/
+
+// get contacts
+export const getUsers = () => get(url.GET_USERS)
+
+// add user
+export const addNewUser = user => post(url.ADD_NEW_USER, user)
+
+// update user
+export const updateUser = user => put(url.UPDATE_USER, user)
+
+// delete user
+export const deleteUser = user => del(url.DELETE_USER, { headers: { user } })
+
+/*
+================================================
+SYMPTOMS
+================================================
+*/
+
+// get car brand
+export const getSymptoms = () => get(url.GET_SYMPTOMS_LIST)
+
+// get detail car brand
+
+export const getSymptomsDetails = () => get(url.GET_SYMPTOMS_DETAIL)
+
+// add car brand
+export const addNewSymptoms = symptom => post(url.ADD_NEW_SYMPTOMS, symptom)
+
+// update car brand
+export const updateSymptoms = symptom => put(url.UPDATE_SYMPTOMS, symptom)
+
+// delete car brand
+export const deleteSymptoms = carBrand =>
+  del(url.DELETE_SYMPTOMS, { headers: { symptom } })
+
+/*
+================================================
+CAR BRAND
+================================================
+*/
+
+// get car brand
+export const getCarsBrand = () => get(url.GET_CARS_BRAND)
+
+// get detail car brand
+
+export const getCarsBrandDetails = () => get(url.GET_CARS_BRAND_DETAIL)
+
+// add car brand
+export const addNewCarsBrand = carBrand => post(url.ADD_NEW_CAR_BRAND, carBrand)
+
+// update car brand
+export const updateCarsBrand = carBrand => put(url.UPDATE_CAR_BRAND, carBrand)
+
+// delete car brand
+export const deleteCarsBrand = carBrand =>
+  del(url.DELETE_CAR_BRAND, { headers: { carBrand } })
+
+/*
+================================================
 ===================================================================================
 O R T H E R
 ===================================================================================
@@ -220,18 +284,6 @@ export const getProjectsDetails = id =>
 
 // get tasks
 export const getTasks = () => get(url.GET_TASKS)
-
-// get contacts
-export const getUsers = () => get(url.GET_USERS)
-
-// add user
-export const addNewUser = user => post(url.ADD_NEW_USER, user)
-
-// update user
-export const updateUser = user => put(url.UPDATE_USER, user)
-
-// delete user
-export const deleteUser = user => del(url.DELETE_USER, { headers: { user } })
 
 /** PROJECT */
 // add user

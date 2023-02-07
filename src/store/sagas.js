@@ -5,6 +5,7 @@ import AccountSaga from "./auth/register/saga"
 import AuthSaga from "./auth/login/saga"
 import ForgetSaga from "./auth/forgetpwd/saga"
 import bookingsSaga from "./bookings/saga"
+import symptomsSaga from "./symptoms/saga"
 import ProfileSaga from "./auth/profile/saga"
 import LayoutSaga from "./layout/saga"
 import ecommerceSaga from "./e-commerce/saga"
@@ -15,7 +16,7 @@ import invoiceSaga from "./invoices/saga"
 import projectsSaga from "./projects/saga"
 import tasksSaga from "./tasks/saga"
 import mailsSaga from "./mails/saga"
-import contactsSaga from "./contacts/saga"
+import usersSaga from "./users/saga"
 import dashboardSaga from "./dashboard/saga"
 import dashboardSaasSaga from "./dashboard-saas/saga"
 
@@ -35,9 +36,10 @@ export default function* rootSaga() {
     fork(invoiceSaga),
     fork(projectsSaga),
     fork(tasksSaga),
-    fork(contactsSaga),
+    fork(usersSaga),
     fork(dashboardSaga),
     fork(dashboardSaasSaga),
     fork(bookingsSaga),
+    fork(symptomsSaga),
   ])
 }

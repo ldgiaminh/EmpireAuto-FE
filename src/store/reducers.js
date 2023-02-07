@@ -12,6 +12,9 @@ import Profile from "./auth/profile/reducer"
 //booking
 import bookings from "./bookings/reducer"
 
+//symptom
+import symptomsLists from "./symptoms/reducer"
+
 //E-commerce
 import ecommerce from "./e-commerce/reducer"
 
@@ -33,8 +36,8 @@ import projects from "./projects/reducer"
 //tasks
 import tasks from "./tasks/reducer"
 
-//contacts
-import contacts from "./contacts/reducer"
+//users
+import userLists from "./users/reducer"
 
 //mails
 import mails from "./mails/reducer"
@@ -60,10 +63,11 @@ const rootReducer = combineReducers({
   invoices,
   projects,
   tasks,
-  contacts,
+  userLists,
   Dashboard,
   DashboardSaas,
   bookings,
+  symptomsLists,
 })
 
 export default rootReducer

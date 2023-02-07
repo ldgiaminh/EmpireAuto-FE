@@ -1,7 +1,13 @@
 import { call, put, takeEvery } from "redux-saga/effects"
 
-// Crypto Redux States
-import { GET_USERS, GET_USER_PROFILE , ADD_NEW_USER , DELETE_USER, UPDATE_USER } from "./actionTypes"
+// User Redux States
+import {
+  GET_USERS,
+  GET_USER_PROFILE,
+  ADD_NEW_USER,
+  DELETE_USER,
+  UPDATE_USER,
+} from "./actionTypes"
 
 import {
   getUsersSuccess,
@@ -17,7 +23,13 @@ import {
 } from "./actions"
 
 //Include Both Helper File with needed methods
-import { getUsers, getUserProfile , addNewUser, updateUser ,deleteUser } from "../../helpers/fakebackend_helper"
+import {
+  getUsers,
+  getUserProfile,
+  addNewUser,
+  updateUser,
+  deleteUser,
+} from "../../helpers/fakebackend_helper"
 
 function* fetchUsers() {
   try {
@@ -56,18 +68,16 @@ function* onDeleteUser({ payload: user }) {
 }
 
 function* onAddNewUser({ payload: user }) {
-
   try {
     const response = yield call(addNewUser, user)
 
     yield put(addUserSuccess(response))
   } catch (error) {
-
     yield put(addUserFail(error))
   }
 }
 
-function* contactsSaga() {
+function* usersSaga() {
   yield takeEvery(GET_USERS, fetchUsers)
   yield takeEvery(GET_USER_PROFILE, fetchUserProfile)
   yield takeEvery(ADD_NEW_USER, onAddNewUser)
@@ -75,4 +85,4 @@ function* contactsSaga() {
   yield takeEvery(DELETE_USER, onDeleteUser)
 }
 
-export default contactsSaga;
+export default usersSaga

@@ -13,10 +13,53 @@ export const SOCIAL_LOGIN = "/social-login"
 export const POST_EDIT_JWT_PROFILE = "/post-jwt-profile"
 export const POST_EDIT_PROFILE = "/post-fake-profile"
 
-//BOOKING
+/*
+================================================ 
+BOOKING
+================================================
+*/
 export const GET_BOOKING_LIST = "/bookings"
 export const GET_BOOKING_DETAIL = "/bookings"
 
+/*
+================================================ 
+USERS
+================================================
+*/
+export const GET_USERS = "/users"
+export const GET_USER_PROFILE = "/user"
+export const ADD_NEW_USER = "/add/user"
+export const UPDATE_USER = "/update/user"
+export const DELETE_USER = "/delete/user"
+
+/*
+================================================ 
+CAR BRAND
+================================================
+*/
+
+export const GET_CARS_BRAND = "/Brands"
+export const GET_CARS_BRAND_DETAIL = "/Brands"
+export const ADD_NEW_CAR_BRAND = "/Brands"
+export const UPDATE_CAR_BRAND = "/Brands"
+export const DELETE_CAR_BRAND = "/Brands"
+
+/*
+================================================ 
+SYMPTOM
+================================================
+*/
+
+export const GET_SYMPTOMS_LIST = "/symptoms"
+export const GET_SYMPTOMS_DETAIL = "/symptoms"
+export const ADD_NEW_SYMPTOMS = "/symptoms"
+export const UPDATE_SYMPTOMS = "/symptoms"
+export const DELETE_SYMPTOMS = "/symptoms"
+
+/*
+==========================================================================
+========================================================================== 
+*/
 //PRODUCTS
 export const GET_PRODUCTS = "/products"
 export const GET_PRODUCTS_DETAIL = "/product"
@@ -90,13 +133,6 @@ export const DELETE_PROJECT = "/delete/project"
 
 //TASKS
 export const GET_TASKS = "/tasks"
-
-//CONTACTS
-export const GET_USERS = "/users"
-export const GET_USER_PROFILE = "/user"
-export const ADD_NEW_USER = "/add/user"
-export const UPDATE_USER = "/update/user"
-export const DELETE_USER = "/delete/user"
 
 //dashboard charts data
 export const GET_WEEKLY_DATA = "/weekly-data"
