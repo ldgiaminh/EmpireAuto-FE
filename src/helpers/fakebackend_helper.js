@@ -109,6 +109,9 @@ export const getBookingsLists = () => get(url.GET_BOOKING_LIST)
 export const getBookingsDetails = id =>
   get(`${url.GET_BOOKING_DETAIL}/${id}`, { params: { id } })
 
+//Check-in Booking
+export const checkinBooking = id => put(`${url.CHECKIN_BOOKING}/${id}`, id)
+
 //Add New Booking
 //Update  Booking
 //Delete Booking

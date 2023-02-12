@@ -14,6 +14,9 @@ import {
   UPDATE_BOOKING,
   UPDATE_BOOKING_FAIL,
   UPDATE_BOOKING_SUCCESS,
+  CHECKIN_BOOKING,
+  CHECKIN_BOOKING_FAIL,
+  CHECKIN_BOOKING_SUCCESS,
 } from "./actionTypes"
 
 /*
@@ -54,6 +57,27 @@ export const getBookingDetailsSuccess = bookingDetails => ({
 export const getBookingDetailsFail = error => ({
   type: GET_BOOKING_DETAIL_FAIL,
   payload: error,
+})
+
+/*
+================================================
+CHECK-IN BOOKING
+================================================
+*/
+
+export const checkinBooking = bookingId => ({
+  type: CHECKIN_BOOKING,
+  bookingId,
+})
+
+export const checkinBookingSuccess = bookingDetails => ({
+  type: CHECKIN_BOOKING_SUCCESS,
+  bookingDetails,
+})
+
+export const checkinBookingFail = error => ({
+  type: CHECKIN_BOOKING_FAIL,
+  error,
 })
 
 /*

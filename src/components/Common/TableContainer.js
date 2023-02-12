@@ -10,7 +10,7 @@ import {
   usePagination,
 } from "react-table"
 import { Table, Row, Col, Button, Input } from "reactstrap"
-import { Filter, DefaultColumnFilter } from "./filters"
+import { Filter, DefaultColumnFilter, SelectColumnFilter } from "./filters"
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -66,6 +66,7 @@ const TableContainer = ({
   customPageSize,
   className,
   customPageSizeOptions,
+  filterStatus,
 }) => {
   const {
     getTableProps,
@@ -91,6 +92,7 @@ const TableContainer = ({
       data,
       defaultColumn: { Filter: DefaultColumnFilter },
       initialState: {
+        // filters: filterStatus,
         pageIndex: 0,
         pageSize: customPageSize,
         sortBy: [

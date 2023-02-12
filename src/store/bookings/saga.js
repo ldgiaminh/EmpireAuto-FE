@@ -4,6 +4,7 @@ import { call, put, takeEvery } from "redux-saga/effects"
 import {
   GET_BOOKING_LIST,
   GET_BOOKING_DETAIL,
+  CHECKIN_BOOKING,
   ADD_NEW_BOOKING,
   UPDATE_BOOKING,
   DELETE_BOOKING,
@@ -14,6 +15,8 @@ import {
   getBookingListsSuccess,
   getBookingDetailsFail,
   getBookingDetailsSuccess,
+  checkinBookingFail,
+  checkinBookingSuccess,
   addNewBookingFail,
   addNewBookingSuccess,
   deleteBookingError,
@@ -25,6 +28,7 @@ import {
 import {
   getBookingsLists,
   getBookingsDetails,
+  checkinBooking,
 } from "../../helpers/fakebackend_helper"
 
 function* fetchBookingsLists() {
@@ -41,6 +45,15 @@ function* fetchBookingsDetails({ bookingId }) {
     const response = yield call(getBookingsDetails, bookingId)
     yield put(getBookingDetailsSuccess(response))
   } catch (error) {
+    yield put(checkinBookingFail(error))
+  }
+}
+
+function* checkInBookings({ bookingId }) {
+  try {
+    const response = yield call(checkinBooking, bookingId)
+    yield put(checkinBookingSuccess(response))
+  } catch (error) {
     yield put(getBookingDetailsFail(error))
   }
 }
@@ -48,6 +61,7 @@ function* fetchBookingsDetails({ bookingId }) {
 function* bookingsSaga() {
   yield takeEvery(GET_BOOKING_LIST, fetchBookingsLists)
   yield takeEvery(GET_BOOKING_DETAIL, fetchBookingsDetails)
+  yield takeEvery(CHECKIN_BOOKING, checkInBookings)
 }
 
 export default bookingsSaga

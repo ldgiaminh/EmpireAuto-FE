@@ -133,7 +133,13 @@ const BookingDetails = props => {
                                 >
                                   Trạng thái :
                                 </th>
-                                <td>{bookingDetail.status}</td>
+                                <td>
+                                  {bookingDetail.status === 0
+                                    ? "Chưa đến"
+                                    : bookingDetail.status === 1
+                                    ? "Đã đến"
+                                    : "Quá hạn"}
+                                </td>
                               </tr>
                             </tbody>
                           </Table>

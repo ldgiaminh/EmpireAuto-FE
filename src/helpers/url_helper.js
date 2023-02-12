@@ -20,6 +20,7 @@ BOOKING
 */
 export const GET_BOOKING_LIST = "/bookings"
 export const GET_BOOKING_DETAIL = "/bookings"
+export const CHECKIN_BOOKING = "/bookings/checkin"
 
 /*
 ================================================ 

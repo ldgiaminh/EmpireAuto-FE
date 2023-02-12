@@ -9,6 +9,8 @@ import {
   DELETE_BOOKING_SUCCESS,
   UPDATE_BOOKING_FAIL,
   UPDATE_BOOKING_SUCCESS,
+  CHECKIN_BOOKING_FAIL,
+  CHECKIN_BOOKING_SUCCESS,
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -37,10 +39,28 @@ const bookings = (state = INIT_STATE, action) => {
         bookingDetail: action.payload,
       }
 
+    case CHECKIN_BOOKING_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      }
+
+    case CHECKIN_BOOKING_SUCCESS:
+      return {
+        ...state,
+        bookingDetail: action.payload,
+      }
+
     case GET_BOOKING_DETAIL_FAIL:
       return {
         ...state,
         error: action.payload,
+      }
+
+    case GET_BOOKING_DETAIL_SUCCESS:
+      return {
+        ...state,
+        bookingDetail: action.payload,
       }
 
     case ADD_BOOKING_SUCCESS:
