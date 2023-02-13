@@ -115,6 +115,7 @@ const BookingList = props => {
       setCheckInModal(false)
       toastr.success("Check-in thành công", "Thành công")
       setBookingList(bookings)
+      dispatch(onGetBookings())
     }
   }
 
