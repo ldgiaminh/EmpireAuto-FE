@@ -934,61 +934,61 @@ const fakeBackend = () => {
   //   })
   // })
 
-  mock.onPost(new RegExp(`${url.ON_LIKNE_COMMENT}/*`)).reply(config => {
-    return new Promise((resolve, reject) => {
-      const { data } = config
-      const { params } = JSON.parse(data)
+  // mock.onPost(new RegExp(`${url.ON_LIKNE_COMMENT}/*`)).reply(config => {
+  //   return new Promise((resolve, reject) => {
+  //     const { data } = config
+  //     const { params } = JSON.parse(data)
 
-      setTimeout(() => {
-        if (productComments) {
-          var modifiedProductComments = [...productComments]
-          const commentIdx = (modifiedProductComments || []).findIndex(
-            comment =>
-              comment.commentId.toString() === params.commentId.toString()
-          )
-          if (commentIdx > -1) {
-            if (
-              params.replyId &&
-              modifiedProductComments[commentIdx]["replies"]
-            ) {
-              const replyIdx = (
-                modifiedProductComments[commentIdx]["replies"] || []
-              ).findIndex(
-                reply => reply.replyId.toString() === params.replyId.toString()
-              )
+  //     setTimeout(() => {
+  //       if (productComments) {
+  //         var modifiedProductComments = [...productComments]
+  //         const commentIdx = (modifiedProductComments || []).findIndex(
+  //           comment =>
+  //             comment.commentId.toString() === params.commentId.toString()
+  //         )
+  //         if (commentIdx > -1) {
+  //           if (
+  //             params.replyId &&
+  //             modifiedProductComments[commentIdx]["replies"]
+  //           ) {
+  //             const replyIdx = (
+  //               modifiedProductComments[commentIdx]["replies"] || []
+  //             ).findIndex(
+  //               reply => reply.replyId.toString() === params.replyId.toString()
+  //             )
 
-              if (replyIdx > -1) {
-                if (
-                  modifiedProductComments[commentIdx]["replies"][replyIdx][
-                    "hasLiked"
-                  ]
-                ) {
-                  modifiedProductComments[commentIdx]["replies"][replyIdx][
-                    "hasLiked"
-                  ] = false
-                } else {
-                  modifiedProductComments[commentIdx]["replies"][replyIdx][
-                    "hasLiked"
-                  ] = true
-                }
-              }
-            } else {
-              if (modifiedProductComments[commentIdx]["hasLiked"]) {
-                modifiedProductComments[commentIdx]["hasLiked"] = false
-              } else {
-                modifiedProductComments[commentIdx]["hasLiked"] = true
-              }
-            }
-          }
+  //             if (replyIdx > -1) {
+  //               if (
+  //                 modifiedProductComments[commentIdx]["replies"][replyIdx][
+  //                   "hasLiked"
+  //                 ]
+  //               ) {
+  //                 modifiedProductComments[commentIdx]["replies"][replyIdx][
+  //                   "hasLiked"
+  //                 ] = false
+  //               } else {
+  //                 modifiedProductComments[commentIdx]["replies"][replyIdx][
+  //                   "hasLiked"
+  //                 ] = true
+  //               }
+  //             }
+  //           } else {
+  //             if (modifiedProductComments[commentIdx]["hasLiked"]) {
+  //               modifiedProductComments[commentIdx]["hasLiked"] = false
+  //             } else {
+  //               modifiedProductComments[commentIdx]["hasLiked"] = true
+  //             }
+  //           }
+  //         }
 
-          // Passing fake JSON data as response
-          resolve([200, modifiedProductComments])
-        } else {
-          reject([400, "Cannot add comment"])
-        }
-      })
-    })
-  })
+  //         // Passing fake JSON data as response
+  //         resolve([200, modifiedProductComments])
+  //       } else {
+  //         reject([400, "Cannot add comment"])
+  //       }
+  //     })
+  //   })
+  // })
 
   mock.onPost(new RegExp(`${url.ON_ADD_REPLY}/*`)).reply(config => {
     return new Promise((resolve, reject) => {
