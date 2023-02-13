@@ -921,18 +921,18 @@ const fakeBackend = () => {
     })
   })
 
-  mock.onGet(url.GET_PRODUCT_COMMENTS).reply(() => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (productComments) {
-          // Passing fake JSON data as response
-          resolve([200, productComments])
-        } else {
-          reject([400, "Cannot get comment data"])
-        }
-      })
-    })
-  })
+  // mock.onGet(url.GET_PRODUCT_COMMENTS).reply(() => {
+  //   return new Promise((resolve, reject) => {
+  //     setTimeout(() => {
+  //       if (productComments) {
+  //         // Passing fake JSON data as response
+  //         resolve([200, productComments])
+  //       } else {
+  //         reject([400, "Cannot get comment data"])
+  //       }
+  //     })
+  //   })
+  // })
 
   mock.onPost(new RegExp(`${url.ON_LIKNE_COMMENT}/*`)).reply(config => {
     return new Promise((resolve, reject) => {
