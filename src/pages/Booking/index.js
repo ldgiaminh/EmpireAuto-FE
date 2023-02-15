@@ -54,6 +54,22 @@ const BookingList = props => {
     bookings: state.bookings.bookings,
   }))
 
+  useEffect(() => {
+    if (bookings && !bookings.length) {
+      dispatch(onGetBookings())
+    }
+  }, [dispatch, bookings])
+
+  useEffect(() => {
+    setBookingList(bookings)
+  }, [bookings])
+
+  useEffect(() => {
+    if (!isEmpty(bookings)) {
+      setBookingList(bookings)
+    }
+  }, [bookings])
+
   //Notification
   toastr.options = {
     closeButton: false,
@@ -77,24 +93,9 @@ const BookingList = props => {
   const toggleTab = tab => {
     if (activeTab !== tab) {
       setActiveTab(tab)
-    }
-  }
-
-  useEffect(() => {
-    if (bookings && !bookings.length) {
       dispatch(onGetBookings())
     }
-  }, [dispatch, bookings])
-
-  useEffect(() => {
-    setBookingList(bookings)
-  }, [bookings])
-
-  useEffect(() => {
-    if (!isEmpty(bookings)) {
-      setBookingList(bookings)
-    }
-  }, [bookings])
+  }
 
   const pendingBooking = bookings.filter(booking => booking.status === 0)
   const arrivedBooking = bookings.filter(booking => booking.status === 1)
