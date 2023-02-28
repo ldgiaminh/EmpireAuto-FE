@@ -19,8 +19,16 @@ BOOKING
 ================================================
 */
 export const GET_BOOKING_LIST = "/bookings"
+export const GET_BOOKING_LIST_BY_DATE = "/bookings/bookings-by-date"
 export const GET_BOOKING_DETAIL = "/bookings"
 export const CHECKIN_BOOKING = "/bookings/checkin"
+
+/*
+================================================ 
+ORDER SERVICE
+================================================
+*/
+export const GET_ORDER_SERVICE_LIST = "/order-services"
 
 /*
 ================================================ 

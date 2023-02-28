@@ -105,6 +105,10 @@ BOOKING
 //Booking List
 export const getBookingsLists = () => get(url.GET_BOOKING_LIST)
 
+//Booking List By Date
+export const getBookingListsByDate = date =>
+  get(`${url.GET_BOOKING_LIST_BY_DATE}?date=${date}`, date)
+
 //Booking Detail
 export const getBookingsDetails = id =>
   get(`${url.GET_BOOKING_DETAIL}/${id}`, { params: { id } })
@@ -115,6 +119,15 @@ export const checkinBooking = id => put(`${url.CHECKIN_BOOKING}/${id}`, id)
 //Add New Booking
 //Update  Booking
 //Delete Booking
+
+/*
+================================================
+ORDER SERVICE
+================================================
+*/
+
+//Booking List
+export const getOrderServicesLists = () => get(url.GET_ORDER_SERVICE_LIST)
 
 /*
 ================================================

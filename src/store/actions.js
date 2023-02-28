@@ -9,6 +9,9 @@ export * from "./auth/profile/actions"
 //Booking
 export * from "./bookings/actions"
 
+//Order Services
+export * from "./order-services/actions"
+
 //Symptom
 export * from "./symptoms/actions"
 

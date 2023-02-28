@@ -17,6 +17,9 @@ import {
   CHECKIN_BOOKING,
   CHECKIN_BOOKING_FAIL,
   CHECKIN_BOOKING_SUCCESS,
+  GET_BOOKING_LIST_BY_DATE,
+  GET_BOOKING_LIST_BY_DATE_FAIL,
+  GET_BOOKING_LIST_BY_DATE_SUCCESS,
 } from "./actionTypes"
 
 /*
@@ -35,6 +38,25 @@ export const getBookingListsSuccess = bookings => ({
 
 export const getBookingListsFail = error => ({
   type: GET_BOOKING_LIST_FAIL,
+  payload: error,
+})
+
+/*
+================================================ 
+GET BOOKING LIST BY DATE
+================================================
+*/
+export const getBookingListsByDate = () => ({
+  type: GET_BOOKING_LIST_BY_DATE,
+})
+
+export const getBookingListsByDateSuccess = date => ({
+  type: GET_BOOKING_LIST_BY_DATE_SUCCESS,
+  payload: date,
+})
+
+export const getBookingListsByDateFail = error => ({
+  type: GET_BOOKING_LIST_BY_DATE_FAIL,
   payload: error,
 })
 

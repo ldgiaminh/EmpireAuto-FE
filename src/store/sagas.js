@@ -5,6 +5,7 @@ import AccountSaga from "./auth/register/saga"
 import AuthSaga from "./auth/login/saga"
 import ForgetSaga from "./auth/forgetpwd/saga"
 import bookingsSaga from "./bookings/saga"
+import orderServicesSaga from "./order-services/saga"
 import symptomsSaga from "./symptoms/saga"
 import ProfileSaga from "./auth/profile/saga"
 import LayoutSaga from "./layout/saga"
@@ -41,5 +42,6 @@ export default function* rootSaga() {
     fork(dashboardSaasSaga),
     fork(bookingsSaga),
     fork(symptomsSaga),
+    fork(orderServicesSaga),
   ])
 }

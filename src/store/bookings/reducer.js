@@ -11,6 +11,8 @@ import {
   UPDATE_BOOKING_SUCCESS,
   CHECKIN_BOOKING_FAIL,
   CHECKIN_BOOKING_SUCCESS,
+  GET_BOOKING_LIST_BY_DATE_SUCCESS,
+  GET_BOOKING_LIST_BY_DATE_FAIL,
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -28,6 +30,18 @@ const bookings = (state = INIT_STATE, action) => {
       }
 
     case GET_BOOKING_LIST_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      }
+
+    case GET_BOOKING_LIST_BY_DATE_SUCCESS:
+      return {
+        ...state,
+        bookings: action.payload,
+      }
+
+    case GET_BOOKING_LIST_BY_DATE_FAIL:
       return {
         ...state,
         error: action.payload,
