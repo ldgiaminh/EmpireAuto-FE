@@ -128,6 +128,8 @@ ORDER SERVICE
 
 //Booking List
 export const getOrderServicesLists = () => get(url.GET_ORDER_SERVICE_LIST)
+export const getOrderServicesDetails = id =>
+  get(`${url.GET_ORDER_SERVICE_DETAIL}/${id}`, { params: { id } })
 
 /*
 ================================================

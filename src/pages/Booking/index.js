@@ -5,7 +5,9 @@ import { isEmpty } from "lodash"
 import "toastr/build/toastr.min.css"
 import TableContainer from "../../components/Common/TableContainer"
 import classnames from "classnames"
-import QrScanner from './QrScanner';
+import moment from "moment"
+import "moment/locale/vi"
+
 import {
   Button,
   Card,
@@ -17,6 +19,7 @@ import {
   NavLink,
   TabContent,
   TabPane,
+  Nav,
 } from "reactstrap"
 
 import {
@@ -44,11 +47,45 @@ const BookingList = props => {
   //meta title
   document.title = "Đặt Lịch | Empire Admin"
 
-  const { history } = props
+  const today = moment().locale("vi")
+  const monday = today.clone().startOf("isoWeek")
+  const sunday = today.clone().endOf("isoWeek")
 
-  const [activeTab, setActiveTab] = useState("1")
+  const weekDays = []
+  let currentDate = monday.clone()
+  while (currentDate.isSameOrBefore(sunday, "day")) {
+    const date = currentDate.format("DD/MM")
+    const day =
+      currentDate.format("dddd").charAt(0).toUpperCase() +
+      currentDate.format("dddd").slice(1)
+    weekDays.push({ day, date })
+    currentDate.add(1, "day")
+  }
+
+  const [activeTab, setActiveTab] = useState(
+    weekDays.findIndex(
+      day =>
+        day.day ===
+        today.format("dddd").charAt(0).toUpperCase() +
+          today.format("dddd").slice(1)
+    )
+  )
+  const [subActiveTab, setSubActiveTab] = useState(0)
+
   const [bookingList, setBookingList] = useState([])
   const [booking, setBooking] = useState()
+
+  const { history } = props
+
+  //Change Tabs
+  const toggleTab = index => {
+    setActiveTab(index)
+    setSubActiveTab(0)
+  }
+
+  const toggleSubTab = index => {
+    setSubActiveTab(index)
+  }
 
   const dispatch = useDispatch()
   const { bookings } = useSelector(state => ({
@@ -61,15 +98,19 @@ const BookingList = props => {
     }
   }, [dispatch, bookings])
 
-  useEffect(() => {
-    setBookingList(bookings)
-  }, [bookings])
+  // useEffect(() => {
+  //   setBookingList(bookings)
+  // }, [bookings])
 
-  useEffect(() => {
-    if (!isEmpty(bookings)) {
-      setBookingList(bookings)
-    }
-  }, [bookings])
+  // useEffect(() => {
+  //   if (!isEmpty(bookings)) {
+  //     setBookingList(bookings)
+  //   }
+  // }, [bookings])
+
+  const pendingBooking = bookings.filter(booking => !booking.isArrived)
+  const arrivedBooking = bookings.filter(booking => booking.isArrived)
+  const cancelBooking = bookings.filter(booking => booking.status === 2)
 
   //Notification
   toastr.options = {
@@ -90,18 +131,6 @@ const BookingList = props => {
     hideMethod: "fadeOut",
   }
 
-  //Change Tabs
-  const toggleTab = tab => {
-    if (activeTab !== tab) {
-      setActiveTab(tab)
-      dispatch(onGetBookings())
-    }
-  }
-
-  const pendingBooking = bookings.filter(booking => booking.status === 0)
-  const arrivedBooking = bookings.filter(booking => booking.status === 1)
-  const cancelBooking = bookings.filter(booking => booking.status === 2)
-
   //Check-in Booking
   const [checkinModal, setCheckInModal] = useState(false)
 
@@ -113,22 +142,16 @@ const BookingList = props => {
   const handleCheckin = () => {
     if (booking.id) {
       dispatch(checkInBooking(booking.id))
-      //window.location.reload()
       setCheckInModal(false)
       toastr.success("Check-in thành công", "Thành công")
-      setBookingList(bookings)
       dispatch(onGetBookings())
+      const updatedBookings = dispatch(onGetBookings())
+      setBookingList(updatedBookings)
     }
   }
 
   const columnsNotYet = useMemo(
     () => [
-      // {
-      //   Header: "#",
-      //   Cell: () => {
-      //     return <input type="checkbox" />
-      //   },
-      // },
       {
         Header: "Mã đặt lịch",
         accessor: "code",
@@ -172,6 +195,14 @@ const BookingList = props => {
       {
         Header: "Biển số xe",
         accessor: "car.carLisenceNo",
+        filterable: true,
+        Cell: cellProps => {
+          return <Plate {...cellProps} />
+        },
+      },
+      {
+        Header: "Date",
+        accessor: "date",
         filterable: true,
         Cell: cellProps => {
           return <Plate {...cellProps} />
@@ -222,12 +253,6 @@ const BookingList = props => {
 
   const columnsArrived = useMemo(
     () => [
-      // {
-      //   Header: "#",
-      //   Cell: () => {
-      //     return <input type="checkbox" />
-      //   },
-      // },
       {
         Header: "Mã đặt lịch",
         accessor: "code",
@@ -298,12 +323,6 @@ const BookingList = props => {
 
   const columnsCancel = useMemo(
     () => [
-      // {
-      //   Header: "#",
-      //   Cell: () => {
-      //     return <input type="checkbox" />
-      //   },
-      // },
       {
         Header: "Mã đặt lịch",
         accessor: "code",
@@ -372,10 +391,6 @@ const BookingList = props => {
     []
   )
 
-  const handleButtonClick = () => {
-    history.push('/scanner');
-  }
-
   return (
     <React.Fragment>
       <CheckinModal
@@ -391,82 +406,120 @@ const BookingList = props => {
             <Col lg="12">
               <Card>
                 <CardBody>
-                  <ul className="nav nav-tabs nav-tabs-custom" role="tablist">
-                    <NavItem>
-                      <NavLink
-                        className={classnames({
-                          active: activeTab === "1",
-                        })}
-                        onClick={() => {
-                          toggleTab("1")
-                        }}
-                      >
-                        Chưa đến
-                      </NavLink>
-                    </NavItem>
-                    <NavItem>
-                      <NavLink
-                        className={classnames({
-                          active: activeTab === "2",
-                        })}
-                        onClick={() => {
-                          toggleTab("2")
-                        }}
-                      >
-                        Đã đến
-                      </NavLink>
-                    </NavItem>
-                    <NavItem>
-                      <NavLink
-                        className={classnames({
-                          active: activeTab === "3",
-                        })}
-                        onClick={() => {
-                          toggleTab("3")
-                        }}
-                      >
-                        Đã hủy
-                      </NavLink>
-                    </NavItem>
-                    <NavItem>
-                      <button onClick={handleButtonClick}>Go to scanner</button>
-                    </NavItem>
-                  </ul>
-                  <TabContent activeTab={activeTab} className="p-3">
-                    <TabPane tabId="1" id="not-yet">
-                      <TableContainer
-                        columns={columnsNotYet}
-                        data={pendingBooking}
-                        isGlobalFilter={true}
-                        isAddBookingOptions={false}
-                        //handleUserClick={handleUserClicks}
-                        customPageSize={10}
-                        className="custom-header-css"
-                      />
-                    </TabPane>
-                    <TabPane tabId="2" id="arrived">
-                      <TableContainer
-                        columns={columnsArrived}
-                        data={arrivedBooking}
-                        isGlobalFilter={true}
-                        isAddBookingOptions={false}
-                        //handleUserClick={handleUserClicks}
-                        customPageSize={10}
-                        className="custom-header-css"
-                      />
-                    </TabPane>
-                    <TabPane tabId="3" id="cancel">
-                      <TableContainer
-                        columns={columnsCancel}
-                        data={cancelBooking}
-                        isGlobalFilter={true}
-                        isAddBookingOptions={false}
-                        //handleUserClick={handleUserClicks}
-                        customPageSize={10}
-                        className="custom-header-css"
-                      />
-                    </TabPane>
-                  </TabContent>
+                  <Nav
+                    pills
+                    className="nav bg-light rounded nav-justified"
+                    role="tablist"
+                  >
+                    {weekDays.map((day, index) => (
+                      <NavItem key={index}>
+                        <NavLink
+                          style={{ cursor: "pointer" }}
+                          className={classnames({
+                            active: activeTab === index,
+                          })}
+                          onClick={() => {
+                            toggleTab(index)
+                          }}
+                        >
+                          {day.day} ({day.date})
+                        </NavLink>
+                      </NavItem>
+                    ))}
+                  </Nav>
+
+                  <div className="mt-4">
+                    {weekDays.map((day, index) => (
+                      <div key={index}>
+                        {activeTab === index && (
+                          <>
+                            <ul
+                              className="nav nav-tabs nav-tabs-custom"
+                              role="tablist"
+                            >
+                              <NavItem>
+                                <NavLink
+                                  className={classnames({
+                                    active: subActiveTab === 0,
+                                  })}
+                                  onClick={() => {
+                                    toggleSubTab(0)
+                                  }}
+                                >
+                                  Chưa đến
+                                </NavLink>
+                              </NavItem>
+                              <NavItem>
+                                <NavLink
+                                  className={classnames({
+                                    active: subActiveTab === 1,
+                                  })}
+                                  onClick={() => {
+                                    toggleSubTab(1)
+                                  }}
+                                >
+                                  Đã đến
+                                </NavLink>
+                              </NavItem>
+                              <NavItem>
+                                <NavLink
+                                  className={classnames({
+                                    active: subActiveTab === 2,
+                                  })}
+                                  onClick={() => {
+                                    toggleSubTab(2)
+                                  }}
+                                >
+                                  Hủy
+                                </NavLink>
+                              </NavItem>
+                            </ul>
+                            <TabContent className="p-3 mt-4">
+                              {subActiveTab === 0 && (
+                                <TabPane id="not-yet">
+                                  <TableContainer
+                                    columns={columnsNotYet}
+                                    data={pendingBooking}
+                                    isGlobalFilter={true}
+                                    isAddBookingOptions={false}
+                                    //handleUserClick={handleUserClicks}
+                                    customPageSize={10}
+                                    className="custom-header-css"
+                                  />
+                                </TabPane>
+                              )}
+                              {subActiveTab === 1 && (
+                                <TabPane id="not-yet">
+                                  <TableContainer
+                                    columns={columnsArrived}
+                                    data={arrivedBooking}
+                                    isGlobalFilter={true}
+                                    isAddBookingOptions={false}
+                                    //handleUserClick={handleUserClicks}
+                                    customPageSize={10}
+                                    className="custom-header-css"
+                                  />
+                                </TabPane>
+                              )}
+                              {subActiveTab === 2 && (
+                                <TabPane id="not-yet">
+                                  <TableContainer
+                                    columns={columnsCancel}
+                                    data={cancelBooking}
+                                    isGlobalFilter={true}
+                                    isAddBookingOptions={false}
+                                    //handleUserClick={handleUserClicks}
+                                    customPageSize={10}
+                                    className="custom-header-css"
+                                  />
+                                </TabPane>
+                              )}
+                            </TabContent>
+                          </>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </CardBody>
               </Card>
             </Col>

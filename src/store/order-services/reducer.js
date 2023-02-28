@@ -1,11 +1,13 @@
 import {
   GET_ORDER_SERVICE_LIST_FAIL,
   GET_ORDER_SERVICE_LIST_SUCCESS,
+  GET_ORDER_SERVICE_DETAIL_FAIL,
+  GET_ORDER_SERVICE_DETAIL_SUCCESS,
 } from "./actionTypes"
 
 const INIT_STATE = {
   orderServicess: [],
-  orderServicesDetail: {},
+  orderServicesDetails: {},
   error: {},
 }
 
@@ -21,6 +23,12 @@ const orderServices = (state = INIT_STATE, action) => {
       return {
         ...state,
         error: action.payload,
+      }
+
+    case GET_ORDER_SERVICE_DETAIL_SUCCESS:
+      return {
+        ...state,
+        orderServicesDetails: action.payload,
       }
 
     default:

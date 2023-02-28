@@ -20,8 +20,7 @@ import QrScanner from "pages/Booking/QrScanner"
 
 //Order Service
 import OrderService from "../pages/OrderServices/index"
-import OrderServiceDiagnose from "pages/OrderServices/OrderServiceDiagnose"
-import OrderServiceDetail from "pages/OrderServices/OrderServiceDetail"
+import OrderServiceDetail from "pages/OrderServices/Details/OrderServiceDetail"
 
 //Transaction
 import Transaction from "../pages/Transaction/index"
@@ -44,12 +43,11 @@ const authProtectedRoutes = [
   //booking
   { path: "/booking", component: Booking },
   { path: "/booking-detail/:id", component: BookingDetails },
-  { path: "/scanner", component: QrScanner},
+  { path: "/scanner", component: QrScanner },
 
   //order service
   { path: "/order-service", component: OrderService },
-  { path: "/order-service-diagnose", component: OrderServiceDiagnose },
-  { path: "/order-service-detail", component: OrderServiceDetail },
+  { path: "/order-service-detail/:id", component: OrderServiceDetail },
 
   //transaction
   { path: "/transactions", component: Transaction },

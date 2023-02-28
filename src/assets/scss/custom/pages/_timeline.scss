@@ -1,83 +1,134 @@
-// 
+//
 // timeline.scss
 //
 
-/************** Horizontal timeline **************/ 
-
-
-.hori-timeline{
-    .events{
-        .event-list{
-            text-align: center;
-            display: block;
-
-            .event-down-icon{
-                position: relative;
-                &::before{
-                    content: "";
-                    position: absolute;
-                    width: 100%;
-                    top: 16px;
-                    left: 0;
-                    right: 0;
-                    border-bottom: 3px dashed $gray-300;
-                }
-                .down-arrow-icon{
-                    position: relative;
-                    background-color: $card-bg;
-                    padding: 4px;
-                }
-            }
-
-            &:hover{
-                .down-arrow-icon{
-                    animation: fade-down 1.5s infinite linear;
-                }
-            }
-
-            &.active{
-                .down-arrow-icon{
-                    animation: fade-down 1.5s infinite linear;
-                    &:before {
-                        content: "\ec4c";
-                    }
-                }
-            }
-        }
+/************** Horizontal timeline **************/
+.hori-timeline {
+  .events {
+    display: flex;
+    flex-wrap: nowrap; /* Prevent wrapping of items to new lines */
+    overflow-x: auto; /* Allow horizontal scrolling on small screens */
+    .owl-item {
+      width: 25%; /* Set the initial width to 25% */
+      display: inline-block;
     }
+    @media screen and (max-width: 768px) {
+      .owl-item {
+        width: 50%; /* Change the width to 50% for screens smaller than 768px */
+      }
+    }
+    .event-list {
+      text-align: center;
+      flex: 0 0 auto; /* Don't shrink or grow the items */
+
+      .event-down-icon {
+        position: relative;
+        &::before {
+          content: "";
+          position: absolute;
+          width: 100%;
+          top: 16px;
+          left: 0;
+          right: 0;
+          border-bottom: 3px dashed $gray-300;
+        }
+        .down-arrow-icon {
+          position: relative;
+          background-color: $card-bg;
+          padding: 4px;
+        }
+      }
+
+      &:hover {
+        .down-arrow-icon {
+          animation: fade-down 1.5s infinite linear;
+        }
+      }
+
+      &.active {
+        .down-arrow-icon {
+          animation: fade-down 1.5s infinite linear;
+          &:before {
+            content: "\ec4c";
+          }
+        }
+      }
+    }
+  }
 }
 
+// .hori-timeline{
+//     .events{
+//         .event-list{
+//             text-align: center;
+//             display: block;
 
-/************** vertical timeline **************/ 
+//             .event-down-icon{
+//                 position: relative;
+//                 &::before{
+//                     content: "";
+//                     position: absolute;
+//                     width: 100%;
+//                     top: 16px;
+//                     left: 0;
+//                     right: 0;
+//                     border-bottom: 3px dashed $gray-300;
+//                 }
+//                 .down-arrow-icon{
+//                     position: relative;
+//                     background-color: $card-bg;
+//                     padding: 4px;
+//                 }
+//             }
 
-.verti-timeline{
-    border-left: 3px dashed $gray-300;
-    margin: 0 10px;
-    .event-list{
-        position: relative;
-        padding: 0px 0px 40px 30px;
+//             &:hover{
+//                 .down-arrow-icon{
+//                     animation: fade-down 1.5s infinite linear;
+//                 }
+//             }
 
-        .event-timeline-dot{
-            position: absolute;
-            left: -9px;
-            top: 0px;
-            z-index: 1;
-            font-size: 16px;
-        }
-        .event-content{
-            position: relative;
-            border: 2px solid $border-color;
-            border-radius: 7px;
-        }
+//             &.active{
+//                 .down-arrow-icon{
+//                     animation: fade-down 1.5s infinite linear;
+//                     &:before {
+//                         content: "\ec4c";
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }
 
-        &.active{
-            .event-timeline-dot{
-                color: $primary;
-            }
-        }
+/************** vertical timeline **************/
 
-        &:last-child{
-            padding-bottom: 0px;
-        }
+.verti-timeline {
+  border-left: 3px dashed $gray-300;
+  margin: 0 10px;
+  .event-list {
+    position: relative;
+    padding: 0px 0px 40px 30px;
+
+    .event-timeline-dot {
+      position: absolute;
+      left: -9px;
+      top: 0px;
+      z-index: 1;
+      font-size: 16px;
     }
+    .event-content {
+      position: relative;
+      border: 2px solid $border-color;
+      border-radius: 7px;
+    }
+
+    &.active {
+      .event-timeline-dot {
+        color: $primary;
+      }
+    }
+
+    &:last-child {
+      padding-bottom: 0px;
+    }
+  }
 }

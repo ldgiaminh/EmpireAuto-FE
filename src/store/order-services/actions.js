@@ -2,6 +2,9 @@ import {
   GET_ORDER_SERVICE_LIST,
   GET_ORDER_SERVICE_LIST_FAIL,
   GET_ORDER_SERVICE_LIST_SUCCESS,
+  GET_ORDER_SERVICE_DETAIL,
+  GET_ORDER_SERVICE_DETAIL_FAIL,
+  GET_ORDER_SERVICE_DETAIL_SUCCESS,
 } from "./actionTypes"
 
 /*
@@ -20,5 +23,25 @@ export const getOrderServicesListsSuccess = orderServicess => ({
 
 export const getOrderServicesListsFail = error => ({
   type: GET_ORDER_SERVICE_LIST_FAIL,
+  payload: error,
+})
+
+/*
+================================================ 
+GET OrderServices Detail 
+================================================
+*/
+export const getOrderServicesDetails = orderServiceId => ({
+  type: GET_ORDER_SERVICE_DETAIL,
+  orderServiceId,
+})
+
+export const getOrderServicesDetailsSuccess = orderServicesDetails => ({
+  type: GET_ORDER_SERVICE_DETAIL_SUCCESS,
+  payload: orderServicesDetails,
+})
+
+export const getOrderServicesDetailsFail = error => ({
+  type: GGET_ORDER_SERVICE_DETAIL_FAIL,
   payload: error,
 })

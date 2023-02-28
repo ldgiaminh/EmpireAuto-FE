@@ -29,6 +29,7 @@ ORDER SERVICE
 ================================================
 */
 export const GET_ORDER_SERVICE_LIST = "/order-services"
+export const GET_ORDER_SERVICE_DETAIL = "/order-services"
 
 /*
 ================================================ 
