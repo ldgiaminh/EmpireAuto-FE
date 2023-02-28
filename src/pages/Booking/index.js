@@ -5,6 +5,7 @@ import { isEmpty } from "lodash"
 import "toastr/build/toastr.min.css"
 import TableContainer from "../../components/Common/TableContainer"
 import classnames from "classnames"
+import QrScanner from './QrScanner';
 import {
   Button,
   Card,
@@ -371,6 +372,10 @@ const BookingList = props => {
     []
   )
 
+  const handleButtonClick = () => {
+    history.push('/scanner');
+  }
+
   return (
     <React.Fragment>
       <CheckinModal
@@ -422,6 +427,9 @@ const BookingList = props => {
                       >
                         Đã hủy
                       </NavLink>
+                    </NavItem>
+                    <NavItem>
+                      <button onClick={handleButtonClick}>Go to scanner</button>
                     </NavItem>
                   </ul>
                   <TabContent activeTab={activeTab} className="p-3">

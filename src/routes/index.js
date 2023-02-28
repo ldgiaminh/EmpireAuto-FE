@@ -16,6 +16,7 @@ import Dashboard from "../pages/Dashboard/index"
 //Booking
 import Booking from "../pages/Booking/index"
 import BookingDetails from "../pages/Booking/Details/BookingDetails"
+import QrScanner from "pages/Booking/QrScanner"
 
 //Order Service
 import OrderService from "../pages/OrderServices/index"
@@ -43,6 +44,7 @@ const authProtectedRoutes = [
   //booking
   { path: "/booking", component: Booking },
   { path: "/booking-detail/:id", component: BookingDetails },
+  { path: "/scanner", component: QrScanner},
 
   //order service
   { path: "/order-service", component: OrderService },
