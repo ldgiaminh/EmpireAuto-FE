@@ -38,6 +38,18 @@ const OrderServiceDetail = props => {
   const [selectedMulti3, setselectedMulti3] = useState(null)
   const animatedComponents = makeAnimated()
 
+  const inpRow = [{ name: "", file: "" }]
+  const [inputFields, setinputFields] = useState(inpRow)
+  // Function for Create Input Fields
+  function handleAddFields() {
+    const item1 = { name: "", file: "", quantity: "" }
+    setinputFields([...inputFields, item1])
+  }
+  // Function for Remove Input Fields
+  function handleRemoveFields(idx) {
+    document.getElementById("nested" + idx).style.display = "none"
+  }
+
   function handleMulti3(selectedMulti3) {
     setselectedMulti3(selectedMulti3)
   }
@@ -344,6 +356,85 @@ const OrderServiceDetail = props => {
                         </div>
                       </Col>
                     </Row>
+                    <FormGroup className="mb-4" row>
+                      <Label className="col-form-label col-lg-2">
+                        Hồ sơ sức khỏe
+                      </Label>
+                      <Col lg="10">
+                        <div className="mb-3">
+                          <Input
+                            type="textarea"
+                            className="form-control"
+                            id="formrow-firstname-Input"
+                            placeholder="Ghi chú tình trạng xe"
+                          />
+                        </div>
+                      </Col>
+                    </FormGroup>
+                    <div className="inner-repeater mb-4">
+                      <div className="inner form-group mb-0 row">
+                        <Label className="col-form-label col-lg-2">
+                          Add Team Member
+                        </Label>
+                        <div
+                          className="inner col-lg-10 ml-md-auto"
+                          id="repeater"
+                        >
+                          {inputFields.map((field, key) => (
+                            <div
+                              key={key}
+                              id={"nested" + key}
+                              className="mb-3 row align-items-center"
+                            >
+                              <Col md="6">
+                                <input
+                                  type="text"
+                                  className="inner form-control"
+                                  defaultValue={field.name}
+                                  placeholder="Enter Name..."
+                                />
+                              </Col>
+                              <Col md="4">
+                                <div className="mt-4 mt-md-0">
+                                  <Input
+                                    type="file"
+                                    className="form-control"
+                                    defaultValue={field.file}
+                                  />
+                                </div>
+                              </Col>
+                              <Col md="2">
+                                <div className="mt-2 mt-md-0 d-grid">
+                                  <Button
+                                    color="primary"
+                                    className="inner"
+                                    onClick={() => {
+                                      handleRemoveFields(key)
+                                    }}
+                                    block
+                                  >
+                                    Delete
+                                  </Button>
+                                </div>
+                              </Col>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <Row className="justify-content-end">
+                        <Col lg="10">
+                          <Button
+                            color="success"
+                            className="inner"
+                            onClick={() => {
+                              handleAddFields()
+                            }}
+                          >
+                            Add Number
+                          </Button>
+                        </Col>
+                      </Row>
+                    </div>
                   </form>
                   <div>
                     <button

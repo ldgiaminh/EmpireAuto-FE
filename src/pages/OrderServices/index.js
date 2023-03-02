@@ -139,7 +139,7 @@ const OrderSerives = props => {
   const pendingList = orderServicess.filter(service => service.status === 1)
   const doneList = orderServicess.filter(service => service.status === 2)
   const checkoutList = orderServicess.filter(service => service.status === 3)
-  const cancelList = orderServicess.filter(service => service.status === 4)
+  const cancelList = orderServicess.filter(service => service.status === -1)
 
   return (
     <React.Fragment>

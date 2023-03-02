@@ -46,7 +46,7 @@ const BookingDetails = props => {
     if (params && params.id) {
       dispatch(onGetBookingDetail(params.id))
     }
-  }, [params, onGetBookingDetail])
+  }, [params, onGetBookingDetail, dispatch])
 
   return (
     <React.Fragment>
@@ -94,7 +94,7 @@ const BookingDetails = props => {
                                 <td>
                                   {new Date(
                                     bookingDetail.date
-                                  ).toLocaleString()}
+                                  ).toLocaleDateString()}
                                 </td>
                               </tr>
                               <tr>
@@ -134,11 +134,9 @@ const BookingDetails = props => {
                                   Trạng thái :
                                 </th>
                                 <td>
-                                  {bookingDetail.status === 0
-                                    ? "Chưa đến"
-                                    : bookingDetail.status === 1
+                                  {bookingDetail.isArrived
                                     ? "Đã đến"
-                                    : "Quá hạn"}
+                                    : "Chưa đến"}
                                 </td>
                               </tr>
                             </tbody>

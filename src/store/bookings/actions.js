@@ -46,13 +46,14 @@ export const getBookingListsFail = error => ({
 GET BOOKING LIST BY DATE
 ================================================
 */
-export const getBookingListsByDate = () => ({
+export const getBookingListsByDate = date => ({
   type: GET_BOOKING_LIST_BY_DATE,
+  date,
 })
 
-export const getBookingListsByDateSuccess = date => ({
+export const getBookingListsByDateSuccess = bookings => ({
   type: GET_BOOKING_LIST_BY_DATE_SUCCESS,
-  payload: date,
+  payload: bookings,
 })
 
 export const getBookingListsByDateFail = error => ({

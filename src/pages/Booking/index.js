@@ -7,7 +7,6 @@ import TableContainer from "../../components/Common/TableContainer"
 import classnames from "classnames"
 import moment from "moment"
 import "moment/locale/vi"
-
 import {
   Button,
   Card,
@@ -33,7 +32,6 @@ import {
 
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb"
-import CheckinModal from "components/Common/CheckinModal"
 
 import {
   getBookingLists as onGetBookings,
@@ -42,26 +40,41 @@ import {
 
 //redux
 import { useSelector, useDispatch } from "react-redux"
+import CheckInModal from "./CheckInModal"
 
 const BookingList = props => {
   //meta title
   document.title = "Đặt Lịch | Empire Admin"
 
+  const { history } = props
+  const dispatch = useDispatch()
+
+  /*
+  ==================================================
+  Render Day,Date in Father Tabs
+  ==================================================
+  */
   const today = moment().locale("vi")
   const monday = today.clone().startOf("isoWeek")
-  const sunday = today.clone().endOf("isoWeek")
+  const sunday = monday.clone().add(6, "days")
 
   const weekDays = []
   let currentDate = monday.clone()
   while (currentDate.isSameOrBefore(sunday, "day")) {
-    const date = currentDate.format("DD/MM")
+    const date = currentDate.utc().startOf("day").format("YYYY-MM-DDTHH:mm:ssZ")
+    const dateFormat = currentDate.format("DD/MM")
     const day =
       currentDate.format("dddd").charAt(0).toUpperCase() +
       currentDate.format("dddd").slice(1)
-    weekDays.push({ day, date })
+    weekDays.push({ day, date, dateFormat })
     currentDate.add(1, "day")
   }
 
+  /*
+  ==================================================
+  useState
+  ==================================================
+  */
   const [activeTab, setActiveTab] = useState(
     weekDays.findIndex(
       day =>
@@ -70,24 +83,35 @@ const BookingList = props => {
           today.format("dddd").slice(1)
     )
   )
+
+  const [booking, setBooking] = useState()
+  const [bookingList, setBookingList] = useState([])
   const [subActiveTab, setSubActiveTab] = useState(0)
 
-  const [bookingList, setBookingList] = useState([])
-  const [booking, setBooking] = useState()
+  /*
+  ==================================================
+  Changes Tabs
+  ==================================================
+  */
 
-  const { history } = props
-
-  //Change Tabs
+  //Father Tabs
   const toggleTab = index => {
     setActiveTab(index)
     setSubActiveTab(0)
   }
 
+  //Nested Tabs
   const toggleSubTab = index => {
     setSubActiveTab(index)
   }
 
-  const dispatch = useDispatch()
+  /*
+  ==================================================
+  Call api and useEffect
+  ==================================================
+  */
+
+  //Get State from Redux
   const { bookings } = useSelector(state => ({
     bookings: state.bookings.bookings,
   }))
@@ -98,19 +122,43 @@ const BookingList = props => {
     }
   }, [dispatch, bookings])
 
-  // useEffect(() => {
-  //   setBookingList(bookings)
-  // }, [bookings])
+  useEffect(() => {
+    setBookingList(bookings)
+  }, [bookings])
 
-  // useEffect(() => {
-  //   if (!isEmpty(bookings)) {
-  //     setBookingList(bookings)
-  //   }
-  // }, [bookings])
+  useEffect(() => {
+    if (!isEmpty(bookings)) {
+      setBookingList(bookings)
+    }
+  }, [bookings])
 
-  const pendingBooking = bookings.filter(booking => !booking.isArrived)
-  const arrivedBooking = bookings.filter(booking => booking.isArrived)
-  const cancelBooking = bookings.filter(booking => booking.status === 2)
+  /*
+  ==================================================
+  Filter with Status
+  ==================================================
+  */
+  const tableBookings = index => {
+    const filteredBookings = bookings.filter(booking => {
+      if (index === 0) {
+        return !booking.isArrived && booking.isActived
+      } else if (index === 1) {
+        return booking.isArrived && booking.isActived
+      } else if (index === 2) {
+        return !booking.isArrived && !booking.isActived
+      }
+    })
+    return filteredBookings
+  }
+
+  const pendingBooking = tableBookings(subActiveTab)
+  const arrivedBooking = tableBookings(subActiveTab)
+  const cancelBooking = tableBookings(subActiveTab)
+
+  /*
+  ==================================================
+  Check-in 
+  ==================================================
+  */
 
   //Notification
   toastr.options = {
@@ -131,8 +179,8 @@ const BookingList = props => {
     hideMethod: "fadeOut",
   }
 
-  //Check-in Booking
   const [checkinModal, setCheckInModal] = useState(false)
+  const toggleViewModal = () => setCheckInModal(!checkinModal)
 
   const onClickCheckin = booking => {
     setBooking(booking)
@@ -150,6 +198,11 @@ const BookingList = props => {
     }
   }
 
+  /*
+  ==================================================
+  Column for each Table with Status
+  =================================================
+  */
   const columnsNotYet = useMemo(
     () => [
       {
@@ -200,14 +253,7 @@ const BookingList = props => {
           return <Plate {...cellProps} />
         },
       },
-      {
-        Header: "Date",
-        accessor: "date",
-        filterable: true,
-        Cell: cellProps => {
-          return <Plate {...cellProps} />
-        },
-      },
+
       {
         Header: "Chi tiết",
         accessor: "view",
@@ -237,10 +283,9 @@ const BookingList = props => {
               color="success"
               // className="btn-sm btn-rounded"
               //onClick={() => checkinBooking(row.original.id)}
-              onClick={() => {
-                const checkIn = cellProps.row.original
-                onClickCheckin(checkIn)
-              }}
+              // onClick={() => {
+              //   const checkIn = cellProps.row.original
+              onClick={toggleViewModal}
             >
               Check-in
             </Button>
@@ -251,77 +296,7 @@ const BookingList = props => {
     []
   )
 
-  const columnsArrived = useMemo(
-    () => [
-      {
-        Header: "Mã đặt lịch",
-        accessor: "code",
-        filterable: true,
-        Cell: cellProps => {
-          return <BookingCode {...cellProps} />
-        },
-      },
-      {
-        Header: "Tên khách hàng",
-        accessor: "user.fullname",
-        filterable: true,
-        Cell: cellProps => {
-          return <Name {...cellProps} />
-        },
-      },
-      {
-        Header: "Số điện thoại",
-        accessor: "user.phone",
-        filterable: true,
-        Cell: cellProps => {
-          return <Phone {...cellProps} />
-        },
-      },
-      {
-        Header: "Thương hiệu",
-        accessor: "car.carBrand",
-        filterable: true,
-        Cell: cellProps => {
-          return <ModalCar {...cellProps} />
-        },
-      },
-      {
-        Header: "Dòng xe",
-        accessor: "car.carModel",
-        filterable: true,
-        Cell: cellProps => {
-          return <ModalCar {...cellProps} />
-        },
-      },
-      {
-        Header: "Biển số xe",
-        accessor: "car.carLisenceNo",
-        filterable: true,
-        Cell: cellProps => {
-          return <Plate {...cellProps} />
-        },
-      },
-      {
-        Header: "Chi tiết",
-        accessor: "view",
-        disableFilters: true,
-        Cell: ({ row }) => {
-          return (
-            <Button
-              type="button"
-              color="primary"
-              onClick={() => history.push(`/booking-detail/${row.original.id}`)}
-            >
-              Xem chi tiết
-            </Button>
-          )
-        },
-      },
-    ],
-    []
-  )
-
-  const columnsCancel = useMemo(
+  const columnsArrivedCancel = useMemo(
     () => [
       {
         Header: "Mã đặt lịch",
@@ -393,11 +368,7 @@ const BookingList = props => {
 
   return (
     <React.Fragment>
-      <CheckinModal
-        show={checkinModal}
-        onCheckinClick={handleCheckin}
-        onCloseClick={() => setCheckInModal(false)}
-      />
+      <CheckInModal isOpen={checkinModal} toggle={toggleViewModal} />
       <div className="page-content">
         <Container fluid>
           {/* Render Breadcrumbs */}
@@ -422,7 +393,7 @@ const BookingList = props => {
                             toggleTab(index)
                           }}
                         >
-                          {day.day} ({day.date})
+                          {day.day} ({day.dateFormat})
                         </NavLink>
                       </NavItem>
                     ))}
@@ -479,7 +450,11 @@ const BookingList = props => {
                                 <TabPane id="not-yet">
                                   <TableContainer
                                     columns={columnsNotYet}
-                                    data={pendingBooking}
+                                    data={pendingBooking.filter(booking => {
+                                      const dayBooking =
+                                        booking.date === day.date
+                                      return dayBooking
+                                    })}
                                     isGlobalFilter={true}
                                     isAddBookingOptions={false}
                                     //handleUserClick={handleUserClicks}
@@ -491,8 +466,12 @@ const BookingList = props => {
                               {subActiveTab === 1 && (
                                 <TabPane id="not-yet">
                                   <TableContainer
-                                    columns={columnsArrived}
-                                    data={arrivedBooking}
+                                    columns={columnsArrivedCancel}
+                                    data={arrivedBooking.filter(booking => {
+                                      const dayBooking =
+                                        booking.date === day.date
+                                      return dayBooking
+                                    })}
                                     isGlobalFilter={true}
                                     isAddBookingOptions={false}
                                     //handleUserClick={handleUserClicks}
@@ -504,8 +483,12 @@ const BookingList = props => {
                               {subActiveTab === 2 && (
                                 <TabPane id="not-yet">
                                   <TableContainer
-                                    columns={columnsCancel}
-                                    data={cancelBooking}
+                                    columns={columnsArrivedCancel}
+                                    data={cancelBooking.filter(booking => {
+                                      const dayBooking =
+                                        booking.date === day.date
+                                      return dayBooking
+                                    })}
                                     isGlobalFilter={true}
                                     isAddBookingOptions={false}
                                     //handleUserClick={handleUserClicks}

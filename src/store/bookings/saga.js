@@ -5,6 +5,7 @@ import {
   GET_BOOKING_LIST,
   GET_BOOKING_DETAIL,
   CHECKIN_BOOKING,
+  GET_BOOKING_LIST_BY_DATE,
   ADD_NEW_BOOKING,
   UPDATE_BOOKING,
   DELETE_BOOKING,
@@ -13,6 +14,8 @@ import {
 import {
   getBookingListsFail,
   getBookingListsSuccess,
+  getBookingListsByDateFail,
+  getBookingListsByDateSuccess,
   getBookingDetailsFail,
   getBookingDetailsSuccess,
   checkinBookingFail,
@@ -27,6 +30,7 @@ import {
 
 import {
   getBookingsLists,
+  getBookingListsByDate,
   getBookingsDetails,
   checkinBooking,
 } from "../../helpers/fakebackend_helper"
@@ -37,6 +41,15 @@ function* fetchBookingsLists() {
     yield put(getBookingListsSuccess(response))
   } catch (error) {
     yield put(getBookingListsFail(error))
+  }
+}
+
+function* fetchBookingsListByDate({ date }) {
+  try {
+    const response = yield call(getBookingListsByDate)
+    yield put(getBookingListsByDateSuccess(response), date)
+  } catch (error) {
+    yield put(getBookingListsByDateFail(error))
   }
 }
 
@@ -60,6 +73,7 @@ function* checkInBookings({ bookingId }) {
 
 function* bookingsSaga() {
   yield takeEvery(GET_BOOKING_LIST, fetchBookingsLists)
+  yield takeEvery(GET_BOOKING_LIST_BY_DATE, fetchBookingsListByDate)
   yield takeEvery(GET_BOOKING_DETAIL, fetchBookingsDetails)
   yield takeEvery(CHECKIN_BOOKING, checkInBookings)
 }
