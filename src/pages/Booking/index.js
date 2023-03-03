@@ -202,6 +202,10 @@ const BookingList = props => {
     history.push("/scanner")
   }
 
+  const handleButtonClick = () => {
+    history.push("/scanner")
+  }
+
   /*
   ==================================================
   Column for each Table with Status
@@ -462,6 +466,11 @@ const BookingList = props => {
                                 </NavLink>
                               </NavItem>
                             </ul>
+                            <NavItem>
+                              <button onClick={handleButtonClick}>
+                                Go to scanner
+                              </button>
+                            </NavItem>
                             <TabContent className="p-3 mt-4">
                               {subActiveTab === 0 && (
                                 <TabPane id="not-yet">
@@ -475,8 +484,8 @@ const BookingList = props => {
                                     isGlobalFilter={true}
                                     isAddBookingOptions={false}
                                     //handleUserClick={handleUserClicks}
-                                    isCheckin={true}
-                                    handleCheckInClick={handleCheckInClick}
+                                    // isCheckin={true}
+                                    // handleCheckInClick={handleCheckInClick}
                                     customPageSize={10}
                                     className="custom-header-css"
                                   />
