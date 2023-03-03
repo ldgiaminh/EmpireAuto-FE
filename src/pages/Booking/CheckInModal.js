@@ -13,8 +13,6 @@ import {
 const CheckInModal = props => {
   const { isOpen, toggle, data, handleCheckIn } = props
 
-  console.log(data)
-
   return (
     <>
       <Modal
@@ -28,31 +26,15 @@ const CheckInModal = props => {
         key={data.id}
       >
         <div className="modal-content">
-          <ModalHeader toggle={toggle}>
-            Thông tin chi tiết: <strong> #{data.code}</strong>
-          </ModalHeader>
+          <ModalHeader toggle={toggle}>Order Details</ModalHeader>
           <ModalBody>
+            <p className="mb-2">
+              Mã code: <span className="text-primary">#{data.code}</span>
+            </p>
             <p className="mb-4">
               Ngày đặt:{" "}
-              <strong className="text-primary">
+              <span className="text-primary">
                 {new Date(data.date).toLocaleDateString()}
-              </strong>
-            </p>
-            <p className="mb-4">
-              Họ và tên: <span>{data.user ? data.user.fullname : ""}</span>
-            </p>
-            <p className="mb-4">
-              Số điện thoại: <span>{data.user ? data.user.phone : ""}</span>
-            </p>
-            <h5 className="fw-medium">Phương tiện</h5>
-            <p className="mb-4 mt-4">
-              Biển số xe:{" "}
-              <strong>{data.car ? data.car.carLisenceNo : ""}</strong>
-            </p>
-            <p>
-              Dòng xe:{" "}
-              <span>
-                {data.car ? data.car.carBrand + " - " + data.car.carModel : ""}
               </span>
             </p>
           </ModalBody>
@@ -65,7 +47,7 @@ const CheckInModal = props => {
               Check-in
             </Button>
             <Button type="button" color="secondary" onClick={toggle}>
-              Hủy
+              Close
             </Button>
           </ModalFooter>
         </div>
