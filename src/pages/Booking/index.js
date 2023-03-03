@@ -7,13 +7,14 @@ import TableContainer from "../../components/Common/TableContainer"
 import classnames from "classnames"
 import moment from "moment"
 import "moment/locale/vi"
+import QrScanner from "./QrScanner"
 import {
   Button,
+  Col,
   Card,
   CardBody,
-  Col,
-  Container,
   Row,
+  Container,
   NavItem,
   NavLink,
   TabContent,
@@ -84,7 +85,7 @@ const BookingList = props => {
     )
   )
 
-  const [booking, setBooking] = useState()
+  const [booking, setBooking] = useState([])
   const [bookingList, setBookingList] = useState([])
   const [subActiveTab, setSubActiveTab] = useState(0)
 
@@ -180,14 +181,13 @@ const BookingList = props => {
   }
 
   const [checkinModal, setCheckInModal] = useState(false)
-  const toggleViewModal = () => setCheckInModal(!checkinModal)
 
-  const onClickCheckin = booking => {
-    setBooking(booking)
-    setCheckInModal(true)
+  const toggleViewModal = bookingData => {
+    setBooking(bookingData)
+    setCheckInModal(!checkinModal)
   }
 
-  const handleCheckin = () => {
+  const handleCheckIn = id => {
     if (booking.id) {
       dispatch(checkInBooking(booking.id))
       setCheckInModal(false)
@@ -196,6 +196,10 @@ const BookingList = props => {
       const updatedBookings = dispatch(onGetBookings())
       setBookingList(updatedBookings)
     }
+  }
+
+  const handleCheckInClick = () => {
+    history.push("/scanner")
   }
 
   /*
@@ -208,6 +212,12 @@ const BookingList = props => {
       {
         Header: "Mã đặt lịch",
         accessor: "code",
+        width: "150px",
+        style: {
+          textAlign: "center",
+          width: "10%",
+          background: "#0000",
+        },
         filterable: true,
         Cell: cellProps => {
           return <BookingCode {...cellProps} />
@@ -285,7 +295,9 @@ const BookingList = props => {
               //onClick={() => checkinBooking(row.original.id)}
               // onClick={() => {
               //   const checkIn = cellProps.row.original
-              onClick={toggleViewModal}
+              onClick={() => {
+                toggleViewModal(cellProps.row.original)
+              }}
             >
               Check-in
             </Button>
@@ -368,7 +380,12 @@ const BookingList = props => {
 
   return (
     <React.Fragment>
-      <CheckInModal isOpen={checkinModal} toggle={toggleViewModal} />
+      <CheckInModal
+        isOpen={checkinModal}
+        toggle={toggleViewModal}
+        data={booking}
+        handleCheckIn={handleCheckIn}
+      />
       <div className="page-content">
         <Container fluid>
           {/* Render Breadcrumbs */}
@@ -458,6 +475,8 @@ const BookingList = props => {
                                     isGlobalFilter={true}
                                     isAddBookingOptions={false}
                                     //handleUserClick={handleUserClicks}
+                                    isCheckin={true}
+                                    handleCheckInClick={handleCheckInClick}
                                     customPageSize={10}
                                     className="custom-header-css"
                                   />

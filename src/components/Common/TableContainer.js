@@ -58,10 +58,12 @@ const TableContainer = ({
   isAddOptions,
   isAddUserList,
   isAddBookingOptions,
+  isCheckin,
   handleBookingClick,
   handleOrderClicks,
   handleUserClick,
   handleCustomerClick,
+  handleCheckInClick,
   isAddCustList,
   customPageSize,
   className,
@@ -189,7 +191,7 @@ const TableContainer = ({
             </div>
           </Col>
         )}
-        {/* {isAddBookingOptions && (
+        {isAddBookingOptions && (
           <Col sm="7">
             <div className="text-sm-end">
               <Button
@@ -203,7 +205,21 @@ const TableContainer = ({
               </Button>
             </div>
           </Col>
-        )} */}
+        )}
+        {isCheckin && (
+          <Col sm="7">
+            <div className="text-sm-end">
+              <Button
+                type="button"
+                color="success"
+                onClick={handleCheckInClick}
+              >
+                <i className="mdi mdi-plus me-1" />
+                Quét mã Check-in
+              </Button>
+            </div>
+          </Col>
+        )}
         {isAddBookingOptions && (
           <Col sm="7">
             <div className="text-sm-end">

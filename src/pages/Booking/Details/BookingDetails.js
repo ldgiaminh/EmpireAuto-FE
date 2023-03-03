@@ -121,7 +121,7 @@ const BookingDetails = props => {
                                 </th>
                                 <td>
                                   {new Date(
-                                    bookingDetail.updatedAt
+                                    bookingDetail.arrivedDateTime
                                   ).toLocaleString()}
                                 </td>
                               </tr>
