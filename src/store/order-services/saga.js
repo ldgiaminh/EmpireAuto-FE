@@ -1,17 +1,24 @@
 import { call, put, takeEvery } from "redux-saga/effects"
 
 //OrderService Redux States
-import { GET_ORDER_SERVICE_LIST, GET_ORDER_SERVICE_DETAIL } from "./actionTypes"
+import {
+  GET_ORDER_SERVICE_LIST,
+  GET_ORDER_SERVICE_LIST_BY_STATUS,
+  GET_ORDER_SERVICE_DETAIL,
+} from "./actionTypes"
 
 import {
   getOrderServicesListsSuccess,
   getOrderServicesListsFail,
   getOrderServicesDetailsFail,
   getOrderServicesDetailsSuccess,
+  getOrderServicesListByStatusSuccess,
+  getOrderServicesListByStatusFail,
 } from "./actions"
 
 import {
   getOrderServicesLists,
+  getOrderServicesListByStatus,
   getOrderServicesDetails,
 } from "../../helpers/fakebackend_helper"
 
@@ -21,6 +28,15 @@ function* fetchOrderServicessLists() {
     yield put(getOrderServicesListsSuccess(response))
   } catch (error) {
     yield put(getOrderServicesListsFail(error))
+  }
+}
+
+function* fetchOrderServiceListByStatus({ status }) {
+  try {
+    const response = yield call(getOrderServicesListByStatus, status)
+    yield put(getOrderServicesListByStatusSuccess(response))
+  } catch (error) {
+    yield put(getOrderServicesListByStatusFail(error))
   }
 }
 
@@ -35,6 +51,10 @@ function* fetchOrderServicesDetails({ orderServiceId }) {
 
 function* orderServicesSaga() {
   yield takeEvery(GET_ORDER_SERVICE_LIST, fetchOrderServicessLists)
+  // yield takeEvery(
+  //   GET_ORDER_SERVICE_LIST_BY_STATUS,
+  //   fetchOrderServiceListByStatus
+  // )
   yield takeEvery(GET_ORDER_SERVICE_DETAIL, fetchOrderServicesDetails)
 }
 

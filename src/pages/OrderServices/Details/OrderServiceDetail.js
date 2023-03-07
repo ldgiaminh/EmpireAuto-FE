@@ -26,6 +26,7 @@ import makeAnimated from "react-select/animated"
 import Breadcrumbs from "../../../components/Common/Breadcrumb"
 
 import { getOrderServicesDetails as onGetOrderServiceDetail } from "store/order-services/actions"
+import { getItemLists as onGetItemList } from "store/actions"
 
 //redux
 import { useSelector, useDispatch } from "react-redux"
@@ -35,14 +36,14 @@ const OrderServiceDetail = props => {
   document.title = "Theo dõi tiến trình | Empire Admin"
 
   const [step1, setStep1] = useState(true)
-  const [selectedMulti3, setselectedMulti3] = useState(null)
-  const animatedComponents = makeAnimated()
+  const [selectedGroup, setselectedGroup] = useState(null)
 
-  const inpRow = [{ name: "", file: "" }]
+  const inpRow = [{ name: "", price: "", quantity: "" }]
   const [inputFields, setinputFields] = useState(inpRow)
+
   // Function for Create Input Fields
   function handleAddFields() {
-    const item1 = { name: "", file: "", quantity: "" }
+    const item1 = { name: "", price: "", quantity: "" }
     setinputFields([...inputFields, item1])
   }
   // Function for Remove Input Fields
@@ -50,8 +51,8 @@ const OrderServiceDetail = props => {
     document.getElementById("nested" + idx).style.display = "none"
   }
 
-  function handleMulti3(selectedMulti3) {
-    setselectedMulti3(selectedMulti3)
+  function handleSelectGroup(selectedGroup) {
+    setselectedGroup(selectedGroup)
   }
 
   const { history } = props
@@ -59,6 +60,10 @@ const OrderServiceDetail = props => {
 
   const { orderServicesDetails } = useSelector(state => ({
     orderServicesDetails: state.orderServices.orderServicesDetails,
+  }))
+
+  const { items } = useSelector(state => ({
+    items: state.items.items,
   }))
 
   const {
@@ -71,7 +76,9 @@ const OrderServiceDetail = props => {
     }
   }, [params, onGetOrderServiceDetail])
 
-  const optionGroup2 = [
+  console.log(orderServicesDetails)
+
+  const optionGroup = [
     {
       label: "Vệ sinh xe",
       options: [
@@ -327,20 +334,17 @@ const OrderServiceDetail = props => {
                     Vui lòng chọn những dịch vụ phù hợp sau khi kiểm tra xe
                   </p>
                   <form>
-                    <Row>
+                    {/* <Row>
                       <Col lg="12">
                         <div className="mb-3 templating-select select2-container">
                           <label className="control-label">Dịch vụ</label>
                           <Select
-                            value={selectedMulti3}
-                            isMulti={true}
+                            value={selectedGroup}
                             onChange={() => {
-                              handleMulti3()
+                              handleSelectGroup()
                             }}
-                            options={optionGroup2}
+                            options={optionGroup}
                             classNamePrefix="select2-selection"
-                            closeMenuOnSelect={false}
-                            components={animatedComponents}
                           />
                         </div>
                         <div className="mb-3">
@@ -355,7 +359,7 @@ const OrderServiceDetail = props => {
                           />
                         </div>
                       </Col>
-                    </Row>
+                    </Row> */}
                     <FormGroup className="mb-4" row>
                       <Label className="col-form-label col-lg-2">
                         Hồ sơ sức khỏe
@@ -374,7 +378,7 @@ const OrderServiceDetail = props => {
                     <div className="inner-repeater mb-4">
                       <div className="inner form-group mb-0 row">
                         <Label className="col-form-label col-lg-2">
-                          Add Team Member
+                          Thêm dịch vụ
                         </Label>
                         <div
                           className="inner col-lg-10 ml-md-auto"
@@ -387,22 +391,25 @@ const OrderServiceDetail = props => {
                               className="mb-3 row align-items-center"
                             >
                               <Col md="6">
-                                <input
-                                  type="text"
-                                  className="inner form-control"
-                                  defaultValue={field.name}
-                                  placeholder="Enter Name..."
+                                <Select
+                                  value={selectedGroup}
+                                  onChange={() => {
+                                    handleSelectGroup()
+                                  }}
+                                  options={optionGroup}
+                                  classNamePrefix="select2-selection"
+                                  placeholder="Chọn dịch vụ"
                                 />
                               </Col>
                               <Col md="4">
-                                <div className="mt-4 mt-md-0">
-                                  <Input
-                                    type="file"
-                                    className="form-control"
-                                    defaultValue={field.file}
-                                  />
-                                </div>
+                                <input
+                                  type="text"
+                                  className="inner form-control"
+                                  defaultValue={field.price}
+                                  placeholder="Giá tiền"
+                                />
                               </Col>
+
                               <Col md="2">
                                 <div className="mt-2 mt-md-0 d-grid">
                                   <Button
@@ -413,7 +420,7 @@ const OrderServiceDetail = props => {
                                     }}
                                     block
                                   >
-                                    Delete
+                                    Xóa
                                   </Button>
                                 </div>
                               </Col>
@@ -430,7 +437,7 @@ const OrderServiceDetail = props => {
                               handleAddFields()
                             }}
                           >
-                            Add Number
+                            Thêm
                           </Button>
                         </Col>
                       </Row>

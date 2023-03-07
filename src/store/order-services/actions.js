@@ -28,6 +28,26 @@ export const getOrderServicesListsFail = error => ({
 
 /*
 ================================================ 
+GET OrderServices list by date
+================================================
+*/
+export const getOrderServicesListByStatus = status => ({
+  type: GET_ORDER_SERVICE_LIST,
+  status,
+})
+
+export const getOrderServicesListByStatusSuccess = orderServicess => ({
+  type: GET_ORDER_SERVICE_LIST_SUCCESS,
+  payload: orderServicess,
+})
+
+export const getOrderServicesListByStatusFail = error => ({
+  type: GET_ORDER_SERVICE_LIST_FAIL,
+  payload: error,
+})
+
+/*
+================================================ 
 GET OrderServices Detail 
 ================================================
 */

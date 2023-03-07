@@ -30,7 +30,10 @@ import { OrderId, Name, DateCell, ModalCar, Plate } from "./OrderServiceCol"
 import Breadcrumbs from "components/Common/Breadcrumb"
 import DeleteModal from "components/Common/DeleteModal"
 
-import { getOrderServicesLists as onGetOrderServices } from "store/order-services/actions"
+import {
+  getOrderServicesLists as onGetOrderServices,
+  getOrderServicesListByStatus as onGetOrderServicesListByStatus,
+} from "store/order-services/actions"
 import { isEmpty } from "lodash"
 
 //redux
@@ -66,7 +69,7 @@ const OrderSerives = props => {
     }
   }
 
-  const columns = useMemo(
+  const columnsDiagnose = useMemo(
     () => [
       {
         Header: "Tên khách hàng",
@@ -125,6 +128,65 @@ const OrderSerives = props => {
     []
   )
 
+  const columns = useMemo(
+    () => [
+      {
+        Header: "Tên khách hàng",
+        accessor: "order.user.fullname",
+        disableFilters: true,
+        Cell: cellProps => {
+          return <Name {...cellProps} />
+        },
+      },
+      {
+        Header: "Ngày đến",
+        accessor: "order.updatedAt",
+        disableFilters: true,
+        Cell: cellProps => {
+          return <DateCell {...cellProps} />
+        },
+      },
+      {
+        Header: "Modal xe",
+        accessor: "car.carBrand",
+        disableFilters: true,
+        Cell: cellProps => {
+          return <ModalCar {...cellProps} />
+        },
+      },
+      {
+        Header: "Biển số xe",
+        accessor: "car.carLisenceNo",
+        disableFilters: true,
+        Cell: cellProps => {
+          return <Plate {...cellProps} />
+        },
+      },
+      {
+        Header: "Chẩn đoán",
+        accessor: "action",
+        disableFilters: true,
+        Cell: cellProps => {
+          return (
+            <Button
+              type="button"
+              color="primary"
+              className="btn-sm btn-rounded"
+              onClick={() =>
+                history.push(
+                  `/order-service-detail/${cellProps.row.original.id}`
+                )
+              }
+            >
+              Xem chi tiết
+            </Button>
+          )
+        },
+      },
+    ],
+    []
+  )
+
   useEffect(() => {
     if (orderServicess && !orderServicess.length) {
       dispatch(onGetOrderServices())
@@ -170,7 +232,7 @@ const OrderSerives = props => {
                   <TabContent activeTab={activeTab} className="p-3">
                     <TabPane tabId="0" id="diagnosing">
                       <TableContainer
-                        columns={columns}
+                        columns={columnsDiagnose}
                         data={diagnosingList}
                         isGlobalFilter={true}
                         // isAddUserList={true}

@@ -56,8 +56,11 @@ const BookingList = props => {
   ==================================================
   */
   const today = moment().locale("vi")
-  const monday = today.clone().startOf("isoWeek")
-  const sunday = monday.clone().add(6, "days")
+  // const monday = today.clone().startOf("isoWeek")
+  // const sunday = monday.clone().add(6, "days")
+  moment.localeData().firstDayOfWeek(1) // set the first day of the week to Monday
+  const monday = today.clone().startOf("week")
+  const sunday = today.clone().endOf("week")
 
   const weekDays = []
   let currentDate = monday.clone()

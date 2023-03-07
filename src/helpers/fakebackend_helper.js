@@ -126,10 +126,25 @@ ORDER SERVICE
 ================================================
 */
 
-//Booking List
+//Order Service List
 export const getOrderServicesLists = () => get(url.GET_ORDER_SERVICE_LIST)
+
+//Order Service List by status
+export const getOrderServicesListByStatus = status =>
+  get(`${url.GET_ORDER_SERVICE_LIST_BY_STATUS}?status=${status}`, status)
+
+//Order Service Detail
 export const getOrderServicesDetails = id =>
   get(`${url.GET_ORDER_SERVICE_DETAIL}/${id}`, { params: { id } })
+
+/*
+================================================
+ITEM
+================================================
+*/
+
+//Item List
+export const getItemLists = () => get(url.GET_ITEM_LIST)
 
 /*
 ================================================
