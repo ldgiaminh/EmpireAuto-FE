@@ -25,8 +25,11 @@ import makeAnimated from "react-select/animated"
 //Import Breadcrumb
 import Breadcrumbs from "../../../components/Common/Breadcrumb"
 
-import { getOrderServicesDetails as onGetOrderServiceDetail } from "store/order-services/actions"
-import { getItemLists as onGetItemList } from "store/actions"
+import {
+  getOrderServicesDetails as onGetOrderServiceDetail,
+  putOrderServices as onRecommendService,
+} from "store/order-services/actions"
+import { getGroupService as onGetGroupService } from "store/actions"
 
 //redux
 import { useSelector, useDispatch } from "react-redux"
@@ -36,23 +39,38 @@ const OrderServiceDetail = props => {
   document.title = "Theo dõi tiến trình | Empire Admin"
 
   const [step1, setStep1] = useState(true)
+
+  const [symptom, setSymptom] = useState("")
   const [selectedGroup, setselectedGroup] = useState(null)
 
-  const inpRow = [{ name: "", price: "", quantity: "" }]
+  const inpRow = [{ itemId: "", price: "" }]
   const [inputFields, setinputFields] = useState(inpRow)
 
   // Function for Create Input Fields
   function handleAddFields() {
-    const item1 = { name: "", price: "", quantity: "" }
+    const item1 = { itemId: "", price: "" }
     setinputFields([...inputFields, item1])
-  }
-  // Function for Remove Input Fields
-  function handleRemoveFields(idx) {
-    document.getElementById("nested" + idx).style.display = "none"
+    setselectedGroup(null)
   }
 
-  function handleSelectGroup(selectedGroup) {
-    setselectedGroup(selectedGroup)
+  // Function for Remove Input Fields
+  function handleRemoveFields(index) {
+    const updatedFields = [...inputFields]
+    updatedFields.splice(index, 1)
+    setinputFields(updatedFields)
+  }
+
+  const handleSelectGroup = (selectedOption, index) => {
+    // set the selected option
+    setselectedGroup(selectedOption)
+
+    // update the price field in the input
+    const updatedFields = [...inputFields]
+    updatedFields[index] = {
+      itemId: selectedOption.itemId,
+      price: selectedOption.price,
+    }
+    setinputFields(updatedFields)
   }
 
   const { history } = props
@@ -62,8 +80,8 @@ const OrderServiceDetail = props => {
     orderServicesDetails: state.orderServices.orderServicesDetails,
   }))
 
-  const { items } = useSelector(state => ({
-    items: state.items.items,
+  const { groupService } = useSelector(state => ({
+    groupService: state.groupServices.groupService,
   }))
 
   const {
@@ -76,142 +94,55 @@ const OrderServiceDetail = props => {
     }
   }, [params, onGetOrderServiceDetail])
 
-  console.log(orderServicesDetails)
+  useEffect(() => {
+    dispatch(onGetGroupService())
+  }, [onGetGroupService])
 
-  const optionGroup = [
-    {
-      label: "Vệ sinh xe",
-      options: [
-        { label: "Vệ Sinh Nội Thất", value: "Vệ Sinh Nội Thất" },
-        { label: "Vệ Sinh Khoang Máy", value: "Vệ Sinh Khoang Máy" },
-        { label: "Rửa Xe Sạch, An Toàn", value: "Rửa Xe Sạch, An Toàn" },
-      ],
-    },
-    {
-      label: "Chăm sóc, làm đẹp",
-      options: [
-        { label: "Phủ nano", value: "Phủ nano" },
-        { label: "Phủ Ceramic", value: "Phủ Ceramic" },
-        { label: "Thông xúc kim phun", value: "Thông xúc kim phun" },
-      ],
-    },
-  ]
+  // const optionGroup = groupService.map(group => ({
+  //   label: group.name,
+  //   options: group.items.map(option => ({
+  //     label: option.name,
+  //     //value: option.id,
+  //     itemId: option.id,
+  //     price: option.presentPrice.price,
+  //   })),
+  // }))
+
+  const optionGroup = groupService.map(group => {
+    const selectedOptionIds = inputFields.map(field => field.itemId) // get the ids of all selected options
+    const options = group.items
+      .filter(option => !selectedOptionIds.includes(option.id)) // filter out options that have already been selected
+      .map(option => ({
+        label: option.name,
+        value: option.id,
+        itemId: option.id,
+        price: option.presentPrice.price,
+      }))
+    return {
+      label: group.name,
+      options: options,
+    }
+  })
+
+  const handleSubmit = e => {
+    e.preventDefault()
+    const services = {
+      healthCarRecord: {
+        symptom,
+      },
+      orderServiceDetails: inputFields,
+    }
+    //dispatch(onRecommendService(params.id, services))
+    console.log(services)
+    console.log(params)
+  }
 
   return (
     <>
       <div className="page-content">
         <Container fluid={true}>
           <Breadcrumbs title="Dịch vụ" breadcrumbItem="Theo dõi tiến trình" />
-          {/* <Row>
-            <Col lg="12">
-              <Card>
-                <CardBody>
-                  <div className="hori-timeline">
-                    <div
-                      className="owl-carousel owl-theme  navs-carousel events"
-                      id="timeline-carousel"
-                    >
-                      {step1 ? (
-                        <>
-                          <div
-                            className="item event-list active"
-                            style={{ display: "inline-table" }}
-                          >
-                            <div>
-                              <div className="event-date">
-                                <div className="text-primary mb-1">
-                                  12 September
-                                </div>
-                                <h5 className="mb-4">First event</h5>
-                              </div>
-                              <div className="event-down-icon">
-                                <i className="bx bx-down-arrow-circle h1 text-primary down-arrow-icon" />
-                              </div>
 
-                              <div className="mt-3 px-3">
-                                <p className="text-muted">
-                                  Đang tiến hành kiểm tra và chuẩn đoán
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div
-                            className="item event-list"
-                            style={{ display: "inline-table" }}
-                          >
-                            <div>
-                              <div className="event-date">
-                                <div className="text-primary mb-1">
-                                  06 October
-                                </div>
-                                <h5 className="mb-4">Second event</h5>
-                              </div>
-                              <div className="event-down-icon">
-                                <i className="bx bx-down-arrow-circle h1 text-primary down-arrow-icon" />
-                              </div>
-
-                              <div className="mt-3 px-3">
-                                <p className="text-muted">
-                                  Đang chờ khách hàng xác nhận và thanh toán
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div
-                            className="item event-list"
-                            style={{ display: "inline-table" }}
-                          >
-                            <div>
-                              <div className="event-date">
-                                <div className="text-primary mb-1">
-                                  25 October
-                                </div>
-                                <h5 className="mb-4">Third event</h5>
-                              </div>
-                              <div className="event-down-icon">
-                                <i className="bx bx-down-arrow-circle h1 text-primary down-arrow-icon" />
-                              </div>
-
-                              <div className="mt-3 px-3">
-                                <p className="text-muted">
-                                  Đã sửa chữa xong và đang chờ khách đến lấy
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div
-                            className="item event-list"
-                            style={{ display: "inline-table" }}
-                          >
-                            <div>
-                              <div className="event-date">
-                                <div className="text-primary mb-1">
-                                  25 October
-                                </div>
-                                <h5 className="mb-4">Third event</h5>
-                              </div>
-                              <div className="event-down-icon">
-                                <i className="bx bx-down-arrow-circle h1 text-primary down-arrow-icon" />
-                              </div>
-
-                              <div className="mt-3 px-3">
-                                <p className="text-muted">
-                                  Phương tiện đã được khách lấy khỏi ga-ra
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </>
-                      ) : null}
-                    </div>
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row> */}
           <Row>
             <Col lg="12">
               <Card>
@@ -333,36 +264,10 @@ const OrderServiceDetail = props => {
                   <p className="card-title-desc">
                     Vui lòng chọn những dịch vụ phù hợp sau khi kiểm tra xe
                   </p>
-                  <form>
-                    {/* <Row>
-                      <Col lg="12">
-                        <div className="mb-3 templating-select select2-container">
-                          <label className="control-label">Dịch vụ</label>
-                          <Select
-                            value={selectedGroup}
-                            onChange={() => {
-                              handleSelectGroup()
-                            }}
-                            options={optionGroup}
-                            classNamePrefix="select2-selection"
-                          />
-                        </div>
-                        <div className="mb-3">
-                          <label className="control-label">
-                            Hồ sơ sức khỏe
-                          </label>
-                          <Input
-                            type="textarea"
-                            className="form-control"
-                            id="formrow-firstname-Input"
-                            placeholder="Ghi chú tình trạng xe"
-                          />
-                        </div>
-                      </Col>
-                    </Row> */}
+                  <form onSubmit={handleSubmit}>
                     <FormGroup className="mb-4" row>
                       <Label className="col-form-label col-lg-2">
-                        Hồ sơ sức khỏe
+                        Hồ sơ ghi chú
                       </Label>
                       <Col lg="10">
                         <div className="mb-3">
@@ -371,6 +276,8 @@ const OrderServiceDetail = props => {
                             className="form-control"
                             id="formrow-firstname-Input"
                             placeholder="Ghi chú tình trạng xe"
+                            value={symptom}
+                            onChange={e => setSymptom(e.target.value)}
                           />
                         </div>
                       </Col>
@@ -378,7 +285,7 @@ const OrderServiceDetail = props => {
                     <div className="inner-repeater mb-4">
                       <div className="inner form-group mb-0 row">
                         <Label className="col-form-label col-lg-2">
-                          Thêm dịch vụ
+                          Gợi ý dịch vụ
                         </Label>
                         <div
                           className="inner col-lg-10 ml-md-auto"
@@ -392,9 +299,9 @@ const OrderServiceDetail = props => {
                             >
                               <Col md="6">
                                 <Select
-                                  value={selectedGroup}
-                                  onChange={() => {
-                                    handleSelectGroup()
+                                  defaultValue={selectedGroup}
+                                  onChange={selectedOption => {
+                                    handleSelectGroup(selectedOption, key)
                                   }}
                                   options={optionGroup}
                                   classNamePrefix="select2-selection"
@@ -404,12 +311,12 @@ const OrderServiceDetail = props => {
                               <Col md="4">
                                 <input
                                   type="text"
-                                  className="inner form-control"
+                                  className="inner form-control text-right"
                                   defaultValue={field.price}
-                                  placeholder="Giá tiền"
+                                  placeholder="Giá"
+                                  disabled
                                 />
                               </Col>
-
                               <Col md="2">
                                 <div className="mt-2 mt-md-0 d-grid">
                                   <Button
@@ -437,21 +344,15 @@ const OrderServiceDetail = props => {
                               handleAddFields()
                             }}
                           >
-                            Thêm
+                            Thêm dịch vụ
                           </Button>
                         </Col>
                       </Row>
                     </div>
-                  </form>
-                  <div>
-                    <button
-                      type="submit"
-                      className="btn btn-primary w-md"
-                      onClick={() => history.push(`/order-service-detail`)}
-                    >
+                    <button type="submit" className="btn btn-primary w-md mt-5">
                       Gữi gợi ý
                     </button>
-                  </div>
+                  </form>
                 </CardBody>
               </Card>
             </Col>

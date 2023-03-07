@@ -5,6 +5,7 @@ import {
   GET_ORDER_SERVICE_LIST,
   GET_ORDER_SERVICE_LIST_BY_STATUS,
   GET_ORDER_SERVICE_DETAIL,
+  PUT_ORDER_SERVICE,
 } from "./actionTypes"
 
 import {
@@ -14,13 +15,17 @@ import {
   getOrderServicesDetailsSuccess,
   getOrderServicesListByStatusSuccess,
   getOrderServicesListByStatusFail,
+  putOrderServicesFail,
+  putOrderServicesSuccess,
 } from "./actions"
 
 import {
   getOrderServicesLists,
   getOrderServicesListByStatus,
   getOrderServicesDetails,
+  putOrderServices,
 } from "../../helpers/fakebackend_helper"
+import { take } from "lodash"
 
 function* fetchOrderServicessLists() {
   try {
@@ -49,6 +54,15 @@ function* fetchOrderServicesDetails({ orderServiceId }) {
   }
 }
 
+function* onRecommendService({ payload: { orderServiceId, services } }) {
+  try {
+    const response = yield call(putOrderServices, orderServiceId, services)
+    yield put(putOrderServicesSuccess(response))
+  } catch (error) {
+    yield put(putOrderServicesFail(error))
+  }
+}
+
 function* orderServicesSaga() {
   yield takeEvery(GET_ORDER_SERVICE_LIST, fetchOrderServicessLists)
   // yield takeEvery(
@@ -56,6 +70,7 @@ function* orderServicesSaga() {
   //   fetchOrderServiceListByStatus
   // )
   yield takeEvery(GET_ORDER_SERVICE_DETAIL, fetchOrderServicesDetails)
+  yield takeEvery(PUT_ORDER_SERVICE, onRecommendService)
 }
 
 export default orderServicesSaga

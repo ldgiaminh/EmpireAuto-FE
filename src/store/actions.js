@@ -12,6 +12,9 @@ export * from "./bookings/actions"
 //Order Services
 export * from "./order-services/actions"
 
+//Group Services
+export * from "./group-services/actions"
+
 //Item
 export * from "./items/actions"
 

@@ -15,6 +15,9 @@ import bookings from "./bookings/reducer"
 //order services
 import orderServices from "./order-services/reducer"
 
+//group services
+import groupServices from "./group-services/reducer"
+
 //item
 import items from "./items/reducer"
 
@@ -75,6 +78,7 @@ const rootReducer = combineReducers({
   bookings,
   symptomsLists,
   orderServices,
+  groupServices,
   items,
 })
 

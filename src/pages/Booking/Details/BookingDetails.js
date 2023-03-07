@@ -1,8 +1,10 @@
 import React, { useEffect } from "react"
 import PropTypes from "prop-types"
-import { withRouter } from "react-router-dom"
+import { Link, withRouter } from "react-router-dom"
 import { connect } from "react-redux"
 import { isEmpty, map } from "lodash"
+import toastr from "toastr"
+import "toastr/build/toastr.min.css"
 import {
   Button,
   Card,
@@ -23,7 +25,10 @@ import Dropzone from "react-dropzone"
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb"
 
-import { getBookingDetails as onGetBookingDetail } from "store/bookings/actions"
+import {
+  getBookingDetails as onGetBookingDetail,
+  checkinBooking as checkInBooking,
+} from "store/bookings/actions"
 
 //redux
 import { useSelector, useDispatch } from "react-redux"
@@ -33,6 +38,7 @@ const BookingDetails = props => {
   document.title = "Chi Tiết Đặt Lịch | Empire Admin"
 
   const dispatch = useDispatch()
+  const { history } = props
 
   const { bookingDetail } = useSelector(state => ({
     bookingDetail: state.bookings.bookingDetail,
@@ -47,6 +53,32 @@ const BookingDetails = props => {
       dispatch(onGetBookingDetail(params.id))
     }
   }, [params, onGetBookingDetail, dispatch])
+
+  toastr.options = {
+    closeButton: false,
+    debug: false,
+    newestOnTop: true,
+    progressBar: false,
+    positionClass: "toast-top-right",
+    preventDuplicates: false,
+    onclick: null,
+    showDuration: "300",
+    hideDuration: "1000",
+    timeOut: "5000",
+    extendedTimeOut: "1000",
+    showEasing: "swing",
+    hideEasing: "linear",
+    showMethod: "fadeIn",
+    hideMethod: "fadeOut",
+  }
+
+  const handleCheckIn = id => {
+    if (params.id) {
+      dispatch(checkInBooking(id))
+      toastr.success("Check-in thành công", "Thành công")
+      history.push("/booking")
+    }
+  }
 
   return (
     <React.Fragment>
@@ -257,6 +289,28 @@ const BookingDetails = props => {
                     </Row>
                   </CardBody>
                 </Card>
+                <Row className="mt-4">
+                  <Col sm="6">
+                    <Link
+                      to="/booking"
+                      className="btn text-muted d-none d-sm-inline-block btn-link"
+                    >
+                      <i className="mdi mdi-arrow-left me-1" /> Trở về trang
+                      danh sách đặt lịch{" "}
+                    </Link>
+                  </Col>
+                  <Col sm="6">
+                    <div className="text-sm-end">
+                      <Button
+                        type="button"
+                        color="success"
+                        onClick={() => handleCheckIn(bookingDetail.id)}
+                      >
+                        Check-in
+                      </Button>
+                    </div>
+                  </Col>
+                </Row>
               </Col>
             </Row>
           )}

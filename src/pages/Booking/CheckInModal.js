@@ -13,8 +13,6 @@ import {
 const CheckInModal = props => {
   const { isOpen, toggle, data, handleCheckIn } = props
 
-  console.log(data)
-
   return (
     <>
       <Modal

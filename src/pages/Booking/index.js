@@ -59,8 +59,8 @@ const BookingList = props => {
   // const monday = today.clone().startOf("isoWeek")
   // const sunday = monday.clone().add(6, "days")
   moment.localeData().firstDayOfWeek(1) // set the first day of the week to Monday
-  const monday = today.clone().startOf("week")
-  const sunday = today.clone().endOf("week")
+  const monday = today.clone().startOf("isoWeek")
+  const sunday = monday.clone().add(6, "days")
 
   const weekDays = []
   let currentDate = monday.clone()
@@ -127,12 +127,12 @@ const BookingList = props => {
   }, [dispatch, bookings])
 
   useEffect(() => {
-    setBookingList(bookings)
+    setBooking(bookings)
   }, [bookings])
 
   useEffect(() => {
     if (!isEmpty(bookings)) {
-      setBookingList(bookings)
+      setBooking(bookings)
     }
   }, [bookings])
 
@@ -190,7 +190,7 @@ const BookingList = props => {
     setCheckInModal(!checkinModal)
   }
 
-  const handleCheckIn = id => {
+  const handleCheckIn = () => {
     if (booking.id) {
       dispatch(checkInBooking(booking.id))
       setCheckInModal(false)

@@ -105,12 +105,10 @@ const SidebarContent = props => {
                 <span>{props.t("Đặt Lịch")}</span>
               </Link>
             </li>
-
-            <li className="menu-title">{props.t("Chuẩn đoán và sửa chữa")}</li>
             <li>
               <Link to="/order-service">
                 <i className="bx bxs-detail"></i>
-                <span>{props.t("Sửa chữa")}</span>
+                <span>{props.t("Theo dõi tiến trình")}</span>
               </Link>
             </li>
 

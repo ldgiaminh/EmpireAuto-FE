@@ -5,6 +5,8 @@ import {
   GET_ORDER_SERVICE_DETAIL_SUCCESS,
   GET_ORDER_SERVICE_LIST_BY_STATUS_FAIL,
   GET_ORDER_SERVICE_LIST_BY_STATUS_SUCCESS,
+  PUT_ORDER_SERVICE_FAIL,
+  PUT_ORDER_SERVICE_SUCCESS,
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -46,6 +48,28 @@ const orderServices = (state = INIT_STATE, action) => {
       }
 
     case GET_ORDER_SERVICE_DETAIL_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      }
+
+    // case PUT_ORDER_SERVICE_SUCCESS:
+    //   return {
+    //     ...state,
+    //     orderServicess: state.orderServicess.map(service =>
+    //       service.id.toString() === action.payload.id.toString()
+    //         ? { ...action.payload, service }
+    //         : service
+    //     ),
+    //   }
+
+    case PUT_ORDER_SERVICE_SUCCESS:
+      return {
+        ...state,
+        orderServicesDetails: action.payload,
+      }
+
+    case PUT_ORDER_SERVICE_FAIL:
       return {
         ...state,
         error: action.payload,

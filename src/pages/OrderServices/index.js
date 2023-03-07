@@ -44,18 +44,19 @@ const OrderSerives = props => {
   document.title = "Dịch Vụ | Empire Admin"
 
   const statusServices = [
-    { id: "0", title: "Chẩn đoán" },
-    { id: "1", title: "Chờ xác nhận" },
-    { id: "2", title: "Hoàn thành" },
-    { id: "3", title: "Đã lấy xe" },
-    { id: "4", title: "Hủy" },
+    { id: "1", title: "Chẩn đoán" },
+    { id: "0", title: "Chờ xác nhận" },
+    { id: "2", title: "Đã xác nhận và thanh toán" },
+    { id: "3", title: "Hoàn tất dịch vụ" },
+    { id: "4", title: "Đã lấy xe" },
+    { id: "-1", title: "Hủy" },
   ]
 
   const { history } = props
 
   const dispatch = useDispatch()
 
-  const [activeTab, setActiveTab] = useState("0")
+  const [activeTab, setActiveTab] = useState("1")
   const [orderService, setOrderService] = useState()
 
   const { orderServicess } = useSelector(state => ({
@@ -199,8 +200,9 @@ const OrderSerives = props => {
 
   const diagnosingList = orderServicess.filter(service => service.status === 0)
   const pendingList = orderServicess.filter(service => service.status === 1)
-  const doneList = orderServicess.filter(service => service.status === 2)
-  const checkoutList = orderServicess.filter(service => service.status === 3)
+  const confirmList = orderServicess.filter(service => service.status === 2)
+  const doneList = orderServicess.filter(service => service.status === 3)
+  const checkoutList = orderServicess.filter(service => service.status === 4)
   const cancelList = orderServicess.filter(service => service.status === -1)
 
   return (
@@ -230,7 +232,7 @@ const OrderSerives = props => {
                     ))}
                   </ul>
                   <TabContent activeTab={activeTab} className="p-3">
-                    <TabPane tabId="0" id="diagnosing">
+                    <TabPane tabId="1" id="diagnosing">
                       <TableContainer
                         columns={columnsDiagnose}
                         data={diagnosingList}
@@ -241,9 +243,9 @@ const OrderSerives = props => {
                         className="custom-header-css"
                       />
                     </TabPane>
-                    <TabPane tabId="1" id="pending">
+                    <TabPane tabId="0" id="diagnosing">
                       <TableContainer
-                        columns={columns}
+                        columns={columnsDiagnose}
                         data={pendingList}
                         isGlobalFilter={true}
                         // isAddUserList={true}
@@ -252,7 +254,18 @@ const OrderSerives = props => {
                         className="custom-header-css"
                       />
                     </TabPane>
-                    <TabPane tabId="2" id="done">
+                    <TabPane tabId="2" id="pending">
+                      <TableContainer
+                        columns={columns}
+                        data={confirmList}
+                        isGlobalFilter={true}
+                        // isAddUserList={true}
+                        // handleUserClick={handleUserClicks}
+                        customPageSize={10}
+                        className="custom-header-css"
+                      />
+                    </TabPane>
+                    <TabPane tabId="3" id="done">
                       <TableContainer
                         columns={columns}
                         data={doneList}
@@ -263,7 +276,7 @@ const OrderSerives = props => {
                         className="custom-header-css"
                       />
                     </TabPane>
-                    <TabPane tabId="3" id="checkout">
+                    <TabPane tabId="4" id="checkout">
                       <TableContainer
                         columns={columns}
                         data={checkoutList}
@@ -274,7 +287,7 @@ const OrderSerives = props => {
                         className="custom-header-css"
                       />
                     </TabPane>
-                    <TabPane tabId="4" id="cancel">
+                    <TabPane tabId="-1" id="cancel">
                       <TableContainer
                         columns={columns}
                         data={cancelList}

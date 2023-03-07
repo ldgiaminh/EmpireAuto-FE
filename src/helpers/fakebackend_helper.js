@@ -137,6 +137,18 @@ export const getOrderServicesListByStatus = status =>
 export const getOrderServicesDetails = id =>
   get(`${url.GET_ORDER_SERVICE_DETAIL}/${id}`, { params: { id } })
 
+//Put Order Service
+export const putOrderServices = (id, services) =>
+  put(`${url.PUT_ORDER_SERVICE}/${id}/diagnosed-result`, services)
+
+/*
+================================================
+GROUP SERVICE
+================================================
+*/
+
+export const getGroupService = () => get(url.GET_GROUP_SERVICE)
+
 /*
 ================================================
 ITEM

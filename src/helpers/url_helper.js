@@ -31,6 +31,14 @@ ORDER SERVICE
 export const GET_ORDER_SERVICE_LIST = "/order-services"
 export const GET_ORDER_SERVICE_LIST_BY_STATUS = "/order-services-status"
 export const GET_ORDER_SERVICE_DETAIL = "/order-services"
+export const PUT_ORDER_SERVICE = "/order-services"
+
+/*
+================================================ 
+GROUP SERVICE
+================================================
+*/
+export const GET_GROUP_SERVICE = "/group-services/item-list?isService=true"
 
 /*
 ================================================ 
