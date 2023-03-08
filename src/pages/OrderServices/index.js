@@ -44,8 +44,8 @@ const OrderSerives = props => {
   document.title = "Dịch Vụ | Empire Admin"
 
   const statusServices = [
-    { id: "1", title: "Chẩn đoán" },
-    { id: "0", title: "Chờ xác nhận" },
+    { id: "0", title: "Chẩn đoán" },
+    { id: "1", title: "Chờ xác nhận" },
     { id: "2", title: "Đã xác nhận và thanh toán" },
     { id: "3", title: "Hoàn tất dịch vụ" },
     { id: "4", title: "Đã lấy xe" },
@@ -232,7 +232,7 @@ const OrderSerives = props => {
                     ))}
                   </ul>
                   <TabContent activeTab={activeTab} className="p-3">
-                    <TabPane tabId="1" id="diagnosing">
+                    <TabPane tabId="0" id="diagnosing">
                       <TableContainer
                         columns={columnsDiagnose}
                         data={diagnosingList}
@@ -243,7 +243,7 @@ const OrderSerives = props => {
                         className="custom-header-css"
                       />
                     </TabPane>
-                    <TabPane tabId="0" id="diagnosing">
+                    <TabPane tabId="1" id="diagnosing">
                       <TableContainer
                         columns={columns}
                         data={pendingList}
