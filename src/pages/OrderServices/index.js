@@ -245,7 +245,7 @@ const OrderSerives = props => {
                     </TabPane>
                     <TabPane tabId="0" id="diagnosing">
                       <TableContainer
-                        columns={columnsDiagnose}
+                        columns={columns}
                         data={pendingList}
                         isGlobalFilter={true}
                         // isAddUserList={true}
