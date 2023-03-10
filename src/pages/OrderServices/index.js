@@ -24,7 +24,7 @@ import {
   TabPane,
 } from "reactstrap"
 
-import { OrderId, Name, DateCell, ModalCar, Plate } from "./OrderServiceCol"
+import { OrderCode, Name, DateCell, ModalCar, Plate } from "./OrderServiceCol"
 
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb"
@@ -44,9 +44,9 @@ const OrderSerives = props => {
   document.title = "Dịch Vụ | Empire Admin"
 
   const statusServices = [
-    { id: "0", title: "Chẩn đoán" },
-    { id: "1", title: "Chờ xác nhận" },
-    { id: "2", title: "Đã xác nhận và thanh toán" },
+    { id: "0", title: "Phân công" },
+    { id: "1", title: "Chờ chuẩn đoán" },
+    { id: "2", title: "Xác nhận và thanh toán" },
     { id: "3", title: "Hoàn tất dịch vụ" },
     { id: "4", title: "Đã lấy xe" },
     { id: "-1", title: "Hủy" },
@@ -56,7 +56,7 @@ const OrderSerives = props => {
 
   const dispatch = useDispatch()
 
-  const [activeTab, setActiveTab] = useState("1")
+  const [activeTab, setActiveTab] = useState("0")
   const [orderService, setOrderService] = useState()
 
   const { orderServicess } = useSelector(state => ({
@@ -70,8 +70,22 @@ const OrderSerives = props => {
     }
   }
 
-  const columnsDiagnose = useMemo(
+  const columnsAssign = useMemo(
     () => [
+      {
+        Header: "Mã đơn hàng",
+        accessor: "code",
+        width: "150px",
+        style: {
+          textAlign: "center",
+          width: "10%",
+          background: "#0000",
+        },
+        filterable: true,
+        Cell: cellProps => {
+          return <OrderCode {...cellProps} />
+        },
+      },
       {
         Header: "Tên khách hàng",
         accessor: "order.user.fullname",
@@ -81,7 +95,7 @@ const OrderSerives = props => {
         },
       },
       {
-        Header: "Ngày đến",
+        Header: "Thời gian check-in",
         accessor: "order.updatedAt",
         disableFilters: true,
         Cell: cellProps => {
@@ -120,7 +134,7 @@ const OrderSerives = props => {
                 )
               }
             >
-              Chẩn đoán
+              Phân công
             </Button>
           )
         },
@@ -131,6 +145,20 @@ const OrderSerives = props => {
 
   const columns = useMemo(
     () => [
+      {
+        Header: "Mã đơn hàng",
+        accessor: "code",
+        width: "150px",
+        style: {
+          textAlign: "center",
+          width: "10%",
+          background: "#0000",
+        },
+        filterable: true,
+        Cell: cellProps => {
+          return <OrderCode {...cellProps} />
+        },
+      },
       {
         Header: "Tên khách hàng",
         accessor: "order.user.fullname",
@@ -234,7 +262,7 @@ const OrderSerives = props => {
                   <TabContent activeTab={activeTab} className="p-3">
                     <TabPane tabId="0" id="diagnosing">
                       <TableContainer
-                        columns={columnsDiagnose}
+                        columns={columnsAssign}
                         data={diagnosingList}
                         isGlobalFilter={true}
                         // isAddUserList={true}

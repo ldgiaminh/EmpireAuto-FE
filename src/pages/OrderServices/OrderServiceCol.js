@@ -4,11 +4,14 @@ import moment from "moment"
 
 const formatDate = (date, format) => {
   const dateFormat = format ? format : "DD MMM Y"
-  const date1 = moment(new Date(date)).format(dateFormat)
-  return date1
+  const timeFormat = format && format.includes("H") ? "HH:mm:ss" : ""
+  const formattedDate = moment(new Date(date))
+    .format(`${dateFormat} - ${timeFormat}`)
+    .trim()
+  return formattedDate
 }
 
-const OrderId = cell => {
+const OrderCode = cell => {
   return (
     <Link to="#" className="text-body fw-bold">
       {cell.value ? cell.value : ""}
@@ -21,7 +24,16 @@ const Name = cell => {
 }
 
 const DateCell = cell => {
-  return cell.value ? formatDate(cell.value, "DD/MM/YYYY") : "" // format the date value using the formatDate function
+  if (!cell.value) {
+    return ""
+  }
+  const formattedDateTime = formatDate(cell.value, "DD/MM/YYYY H:mm:ss")
+  const formattedTime = formattedDateTime.split(" ")[1] // get the formatted time from the formatted date and time
+  return `${formattedDateTime.split(" ")[0]} ${formattedTime}` // return the formatted date and time in the desired format
+}
+
+const TimeCell = cell => {
+  return cell.value ? cell.value : "" // format the date value using the formatDate function
 }
 
 const ModalCar = cell => {
@@ -32,4 +44,4 @@ const Plate = cell => {
   return cell.value ? cell.value : ""
 }
 
-export { OrderId, Name, DateCell, ModalCar, Plate }
+export { OrderCode, Name, DateCell, ModalCar, Plate }

@@ -7,11 +7,16 @@ import {
   GET_ORDER_SERVICE_LIST_BY_STATUS_SUCCESS,
   PUT_ORDER_SERVICE_FAIL,
   PUT_ORDER_SERVICE_SUCCESS,
+  PUT_ASSIGN_EXPERT_FAIL,
+  PUT_ASSIGN_EXPERT_SUCCESS,
+  GET_STATUS_LOG_SUCCESS,
+  GET_STATUS_LOG_FAIL,
 } from "./actionTypes"
 
 const INIT_STATE = {
   orderServicess: [],
   orderServicesDetails: {},
+  orderServiceLog: [],
   error: {},
 }
 
@@ -70,6 +75,30 @@ const orderServices = (state = INIT_STATE, action) => {
       }
 
     case PUT_ORDER_SERVICE_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      }
+
+    case PUT_ASSIGN_EXPERT_SUCCESS:
+      return {
+        ...state,
+        orderServicesDetails: action.payload,
+      }
+
+    case PUT_ASSIGN_EXPERT_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      }
+
+    case GET_STATUS_LOG_SUCCESS:
+      return {
+        ...state,
+        orderServiceLog: action.payload,
+      }
+
+    case GET_STATUS_LOG_FAIL:
       return {
         ...state,
         error: action.payload,

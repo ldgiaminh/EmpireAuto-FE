@@ -126,20 +126,32 @@ ORDER SERVICE
 ================================================
 */
 
-//Order Service List
+/* GET ORDER SERVICE LIST */
+
 export const getOrderServicesLists = () => get(url.GET_ORDER_SERVICE_LIST)
 
-//Order Service List by status
+/* GET ORDER SERVICE BY STATUS*/
+
 export const getOrderServicesListByStatus = status =>
-  get(`${url.GET_ORDER_SERVICE_LIST_BY_STATUS}?status=${status}`, status)
+  get(`${url.GET_ORDER_SERVICE_LIST_BY_STATUS}?status=${status}`)
 
-//Order Service Detail
+/* GET OR DER SERVICE DETAIL */
+
 export const getOrderServicesDetails = id =>
-  get(`${url.GET_ORDER_SERVICE_DETAIL}/${id}`, { params: { id } })
+  get(`${url.GET_ORDER_SERVICE_DETAIL}/${id}`)
 
-//Put Order Service
+/* PUT ORDER SERVICE */
+
 export const putOrderServices = (id, services) =>
   put(`${url.PUT_ORDER_SERVICE}/${id}/diagnosed-result`, services)
+
+/* PUT ASSIGN EXPERT */
+
+export const putAssignExperts = (id, exId) =>
+  put(`${url.PUT_ASSIGN_EXPERT}/${id}/assign-expert/${exId}`)
+
+/* GET STATUS LOG */
+export const getStatusLog = id => get(`${url.GET_STATUS_LOG}/${id}`)
 
 /*
 ================================================
@@ -175,6 +187,9 @@ export const updateUser = user => put(url.UPDATE_USER, user)
 
 // delete user
 export const deleteUser = user => del(url.DELETE_USER, { headers: { user } })
+
+//get experts
+export const getExperts = () => get(url.GET_EXPERTS)
 
 /*
 ================================================

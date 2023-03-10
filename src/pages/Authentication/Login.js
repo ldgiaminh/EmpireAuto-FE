@@ -49,7 +49,7 @@ const Login = props => {
     enableReinitialize: true,
 
     initialValues: {
-      email: "admin@empireauto.com" || "",
+      email: "admin@gmail.com" || "",
       password: "123456" || "",
     },
     validationSchema: Yup.object({
@@ -58,6 +58,7 @@ const Login = props => {
     }),
     onSubmit: values => {
       dispatch(loginUser(values, props.history))
+      console.log(values)
     },
   })
 

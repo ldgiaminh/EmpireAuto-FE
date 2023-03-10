@@ -1,5 +1,8 @@
 import React, { useState } from "react"
 import QrReader from "react-qr-reader"
+import toastr from "toastr"
+import "toastr/build/toastr.min.css"
+import { checkinBooking as checkInBooking } from "store/actions"
 
 const QrScanner = props => {
   const { history } = props
@@ -53,7 +56,27 @@ const QrScanner = props => {
     setShowScanner(!showScanner)
   }
 
+  toastr.options = {
+    closeButton: false,
+    debug: false,
+    newestOnTop: true,
+    progressBar: false,
+    positionClass: "toast-top-right",
+    preventDuplicates: false,
+    onclick: null,
+    showDuration: "300",
+    hideDuration: "1000",
+    timeOut: "5000",
+    extendedTimeOut: "1000",
+    showEasing: "swing",
+    hideEasing: "linear",
+    showMethod: "fadeIn",
+    hideMethod: "fadeOut",
+  }
+
   const goToCheckin = id => {
+    dispatch(checkInBooking(id))
+    toastr.success("Check-in thành công", "Thành công")
     history.push(`/booking-detail/${id}`)
   }
 

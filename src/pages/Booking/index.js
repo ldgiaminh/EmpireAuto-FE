@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useRef, useMemo } from "react"
 import { withRouter, Link } from "react-router-dom"
+import Loader from "components/Loader"
+import PropTypes from "prop-types"
 import toastr from "toastr"
 import { isEmpty } from "lodash"
 import "toastr/build/toastr.min.css"
@@ -37,6 +39,7 @@ import Breadcrumbs from "components/Common/Breadcrumb"
 import {
   getBookingLists as onGetBookings,
   checkinBooking as checkInBooking,
+  changePreloader as onLoading,
 } from "store/actions"
 
 //redux
@@ -56,21 +59,20 @@ const BookingList = props => {
   ==================================================
   */
   const today = moment().locale("vi")
-  // const monday = today.clone().startOf("isoWeek")
-  // const sunday = monday.clone().add(6, "days")
-  moment.localeData().firstDayOfWeek(1) // set the first day of the week to Monday
   const monday = today.clone().startOf("isoWeek")
-  const sunday = monday.clone().add(6, "days")
+  const sunday = today.clone().endOf("isoWeek")
 
   const weekDays = []
   let currentDate = monday.clone()
   while (currentDate.isSameOrBefore(sunday, "day")) {
-    const date = currentDate.utc().startOf("day").format("YYYY-MM-DDTHH:mm:ssZ")
-    const dateFormat = currentDate.format("DD/MM")
-    const day =
-      currentDate.format("dddd").charAt(0).toUpperCase() +
-      currentDate.format("dddd").slice(1)
+    const date = currentDate.clone().format("YYYY-MM-DD") + "T00:00:00+00:00"
+    const dateFormat = currentDate.clone().format("DD/MM")
+    const dayArray = currentDate.format("dddd").split(" ")
+    dayArray[0] = dayArray[0].charAt(0).toUpperCase() + dayArray[0].slice(1)
+    dayArray[1] = dayArray[1].charAt(0).toUpperCase() + dayArray[1].slice(1)
+    const day = dayArray.join(" ")
     weekDays.push({ day, date, dateFormat })
+
     currentDate.add(1, "day")
   }
 
@@ -80,17 +82,14 @@ const BookingList = props => {
   ==================================================
   */
   const [activeTab, setActiveTab] = useState(
-    weekDays.findIndex(
-      day =>
-        day.day ===
-        today.format("dddd").charAt(0).toUpperCase() +
-          today.format("dddd").slice(1)
-    )
+    weekDays.findIndex(day => day.dateFormat === today.format("DD/MM"))
   )
+  const [subActiveTab, setSubActiveTab] = useState(0)
 
   const [booking, setBooking] = useState([])
   const [bookingList, setBookingList] = useState([])
-  const [subActiveTab, setSubActiveTab] = useState(0)
+
+  const [loading, setLoading] = useState(true)
 
   /*
   ==================================================
@@ -116,12 +115,14 @@ const BookingList = props => {
   */
 
   //Get State from Redux
-  const { bookings } = useSelector(state => ({
+  const { bookings, isPreloader } = useSelector(state => ({
     bookings: state.bookings.bookings,
+    isPreloader: state.Layout.isPreloader,
   }))
 
   useEffect(() => {
     if (bookings && !bookings.length) {
+      // dispatch(onLoading(true))
       dispatch(onGetBookings())
     }
   }, [dispatch, bookings])
@@ -383,156 +384,165 @@ const BookingList = props => {
 
   return (
     <React.Fragment>
+      {isPreloader && <Loader />}
+
       <CheckInModal
         isOpen={checkinModal}
         toggle={toggleViewModal}
         data={booking}
         handleCheckIn={handleCheckIn}
       />
-      <div className="page-content">
-        <Container fluid>
-          {/* Render Breadcrumbs */}
-          <Breadcrumbs title="Đặt Lịch" breadcrumbItem="Danh sách đặt lịch" />
-          <Row>
-            <Col lg="12">
-              <Card>
-                <CardBody>
-                  <Nav
-                    pills
-                    className="nav bg-light rounded nav-justified"
-                    role="tablist"
-                  >
-                    {weekDays.map((day, index) => (
-                      <NavItem key={index}>
-                        <NavLink
-                          style={{ cursor: "pointer" }}
-                          className={classnames({
-                            active: activeTab === index,
-                          })}
-                          onClick={() => {
-                            toggleTab(index)
-                          }}
-                        >
-                          {day.day} ({day.dateFormat})
-                        </NavLink>
-                      </NavItem>
-                    ))}
-                  </Nav>
 
-                  <div className="mt-4">
-                    {weekDays.map((day, index) => (
-                      <div key={index}>
-                        {activeTab === index && (
-                          <>
-                            <ul
-                              className="nav nav-tabs nav-tabs-custom"
-                              role="tablist"
-                            >
-                              <NavItem>
-                                <NavLink
-                                  className={classnames({
-                                    active: subActiveTab === 0,
-                                  })}
-                                  onClick={() => {
-                                    toggleSubTab(0)
-                                  }}
-                                >
-                                  Chưa đến
-                                </NavLink>
-                              </NavItem>
-                              <NavItem>
-                                <NavLink
-                                  className={classnames({
-                                    active: subActiveTab === 1,
-                                  })}
-                                  onClick={() => {
-                                    toggleSubTab(1)
-                                  }}
-                                >
-                                  Đã đến
-                                </NavLink>
-                              </NavItem>
-                              <NavItem>
-                                <NavLink
-                                  className={classnames({
-                                    active: subActiveTab === 2,
-                                  })}
-                                  onClick={() => {
-                                    toggleSubTab(2)
-                                  }}
-                                >
-                                  Hủy
-                                </NavLink>
-                              </NavItem>
-                            </ul>
-                            <TabContent className="p-3 mt-4">
-                              {subActiveTab === 0 && (
-                                <TabPane id="not-yet">
-                                  <TableContainer
-                                    columns={columnsNotYet}
-                                    data={pendingBooking.filter(booking => {
-                                      const dayBooking =
-                                        booking.date === day.date
-                                      return dayBooking
+      {!isPreloader && (
+        <div className="page-content">
+          <Container fluid>
+            {/* Render Breadcrumbs */}
+            <Breadcrumbs title="Đặt Lịch" breadcrumbItem="Danh sách đặt lịch" />
+            <Row>
+              <Col lg="12">
+                <Card>
+                  <CardBody>
+                    <Nav
+                      pills
+                      className="nav bg-light rounded nav-justified"
+                      role="tablist"
+                    >
+                      {weekDays.map((day, index) => (
+                        <NavItem key={index}>
+                          <NavLink
+                            style={{ cursor: "pointer" }}
+                            className={classnames({
+                              active: activeTab === index,
+                            })}
+                            onClick={() => {
+                              toggleTab(index)
+                            }}
+                          >
+                            {day.day} ({day.dateFormat})
+                          </NavLink>
+                        </NavItem>
+                      ))}
+                    </Nav>
+
+                    <div className="mt-4">
+                      {weekDays.map((day, index) => (
+                        <div key={index}>
+                          {activeTab === index && (
+                            <>
+                              <ul
+                                className="nav nav-tabs nav-tabs-custom"
+                                role="tablist"
+                              >
+                                <NavItem>
+                                  <NavLink
+                                    className={classnames({
+                                      active: subActiveTab === 0,
                                     })}
-                                    isGlobalFilter={true}
-                                    isAddBookingOptions={false}
-                                    //handleUserClick={handleUserClicks}
-                                    isCheckin={true}
-                                    handleCheckInClick={handleCheckInClick}
-                                    customPageSize={10}
-                                    className="custom-header-css"
-                                  />
-                                </TabPane>
-                              )}
-                              {subActiveTab === 1 && (
-                                <TabPane id="not-yet">
-                                  <TableContainer
-                                    columns={columnsArrivedCancel}
-                                    data={arrivedBooking.filter(booking => {
-                                      const dayBooking =
-                                        booking.date === day.date
-                                      return dayBooking
+                                    onClick={() => {
+                                      toggleSubTab(0)
+                                    }}
+                                  >
+                                    Chưa đến
+                                  </NavLink>
+                                </NavItem>
+                                <NavItem>
+                                  <NavLink
+                                    className={classnames({
+                                      active: subActiveTab === 1,
                                     })}
-                                    isGlobalFilter={true}
-                                    isAddBookingOptions={false}
-                                    //handleUserClick={handleUserClicks}
-                                    customPageSize={10}
-                                    className="custom-header-css"
-                                  />
-                                </TabPane>
-                              )}
-                              {subActiveTab === 2 && (
-                                <TabPane id="not-yet">
-                                  <TableContainer
-                                    columns={columnsArrivedCancel}
-                                    data={cancelBooking.filter(booking => {
-                                      const dayBooking =
-                                        booking.date === day.date
-                                      return dayBooking
+                                    onClick={() => {
+                                      toggleSubTab(1)
+                                    }}
+                                  >
+                                    Đã đến
+                                  </NavLink>
+                                </NavItem>
+                                <NavItem>
+                                  <NavLink
+                                    className={classnames({
+                                      active: subActiveTab === 2,
                                     })}
-                                    isGlobalFilter={true}
-                                    isAddBookingOptions={false}
-                                    //handleUserClick={handleUserClicks}
-                                    customPageSize={10}
-                                    className="custom-header-css"
-                                  />
-                                </TabPane>
-                              )}
-                            </TabContent>
-                          </>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-      </div>
+                                    onClick={() => {
+                                      toggleSubTab(2)
+                                    }}
+                                  >
+                                    Hủy
+                                  </NavLink>
+                                </NavItem>
+                              </ul>
+                              <TabContent className="p-3 mt-4">
+                                {subActiveTab === 0 && (
+                                  <TabPane id="not-yet">
+                                    <TableContainer
+                                      columns={columnsNotYet}
+                                      data={pendingBooking.filter(booking => {
+                                        const dayBooking =
+                                          booking.date === day.date
+                                        return dayBooking
+                                      })}
+                                      isGlobalFilter={true}
+                                      isAddBookingOptions={false}
+                                      //handleUserClick={handleUserClicks}
+                                      isCheckin={true}
+                                      handleCheckInClick={handleCheckInClick}
+                                      customPageSize={10}
+                                      className="custom-header-css"
+                                    />
+                                  </TabPane>
+                                )}
+                                {subActiveTab === 1 && (
+                                  <TabPane id="not-yet">
+                                    <TableContainer
+                                      columns={columnsArrivedCancel}
+                                      data={arrivedBooking.filter(booking => {
+                                        const dayBooking =
+                                          booking.date === day.date
+                                        return dayBooking
+                                      })}
+                                      isGlobalFilter={true}
+                                      isAddBookingOptions={false}
+                                      //handleUserClick={handleUserClicks}
+                                      customPageSize={10}
+                                      className="custom-header-css"
+                                    />
+                                  </TabPane>
+                                )}
+                                {subActiveTab === 2 && (
+                                  <TabPane id="not-yet">
+                                    <TableContainer
+                                      columns={columnsArrivedCancel}
+                                      data={cancelBooking.filter(booking => {
+                                        const dayBooking =
+                                          booking.date === day.date
+                                        return dayBooking
+                                      })}
+                                      isGlobalFilter={true}
+                                      isAddBookingOptions={false}
+                                      //handleUserClick={handleUserClicks}
+                                      customPageSize={10}
+                                      className="custom-header-css"
+                                    />
+                                  </TabPane>
+                                )}
+                              </TabContent>
+                            </>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+      )}
     </React.Fragment>
   )
+}
+
+BookingList.propTypes = {
+  isPreloader: PropTypes.bool,
 }
 
 export default withRouter(BookingList)

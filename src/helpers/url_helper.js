@@ -4,7 +4,9 @@ export const POST_FAKE_REGISTER = "/post-fake-register"
 //LOGIN
 export const POST_FAKE_LOGIN = "/post-fake-login"
 //export const POST_FAKE_LOGIN = "/authentications/email-method/login"
-export const POST_FAKE_JWT_LOGIN = "/post-jwt-login"
+//export const POST_FAKE_JWT_LOGIN = "/post-jwt-login"
+export const POST_FAKE_JWT_LOGIN = "/authentications/email-method/login"
+
 export const POST_FAKE_PASSWORD_FORGET = "/fake-forget-pwd"
 export const POST_FAKE_JWT_PASSWORD_FORGET = "/jwt-forget-pwd"
 export const SOCIAL_LOGIN = "/social-login"
@@ -33,6 +35,12 @@ export const GET_ORDER_SERVICE_LIST_BY_STATUS = "/order-services-status"
 export const GET_ORDER_SERVICE_DETAIL = "/order-services"
 export const PUT_ORDER_SERVICE = "/order-services"
 
+//Assign Expert
+export const PUT_ASSIGN_EXPERT = "/order-services"
+
+//Status Log
+export const GET_STATUS_LOG = "/order-service-status-logs/order-service"
+
 /*
 ================================================ 
 GROUP SERVICE
@@ -57,6 +65,9 @@ export const GET_USER_PROFILE = "/user"
 export const ADD_NEW_USER = "/add/user"
 export const UPDATE_USER = "/update/user"
 export const DELETE_USER = "/delete/user"
+
+//Experts
+export const GET_EXPERTS = "/users/experts"
 
 /*
 ================================================ 

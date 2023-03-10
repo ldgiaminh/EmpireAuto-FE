@@ -9,6 +9,8 @@ import {
   DELETE_USER_FAIL,
   GET_USER_PROFILE_SUCCESS,
   GET_USER_PROFILE_FAIL,
+  GET_EXPERTS_FAIL,
+  GET_EXPERTS_SUCCESS,
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -26,6 +28,18 @@ const userLists = (state = INIT_STATE, action) => {
       }
 
     case GET_USERS_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      }
+
+    case GET_EXPERTS_SUCCESS:
+      return {
+        ...state,
+        users: action.payload,
+      }
+
+    case GET_EXPERTS_FAIL:
       return {
         ...state,
         error: action.payload,

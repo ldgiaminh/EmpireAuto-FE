@@ -8,6 +8,12 @@ import {
   PUT_ORDER_SERVICE,
   PUT_ORDER_SERVICE_FAIL,
   PUT_ORDER_SERVICE_SUCCESS,
+  PUT_ASSIGN_EXPERT,
+  PUT_ASSIGN_EXPERT_FAIL,
+  PUT_ASSIGN_EXPERT_SUCCESS,
+  GET_STATUS_LOG,
+  GET_STATUS_LOG_SUCCESS,
+  GET_STATUS_LOG_FAIL,
 } from "./actionTypes"
 
 /*
@@ -86,5 +92,45 @@ export const putOrderServicesSuccess = orderServicesDetails => ({
 
 export const putOrderServicesFail = error => ({
   type: PUT_ORDER_SERVICE_FAIL,
+  payload: error,
+})
+
+/*
+================================================ 
+PUT OrderServices Assign 
+================================================
+*/
+export const putAssignExperts = (orderServiceId, exId) => ({
+  type: PUT_ASSIGN_EXPERT,
+  payload: { orderServiceId, exId },
+})
+
+export const putAssginExpertsSuccess = orderServicesDetails => ({
+  type: PUT_ASSIGN_EXPERT_SUCCESS,
+  payload: orderServicesDetails,
+})
+
+export const putAssginExpertsFail = error => ({
+  type: PUT_ASSIGN_EXPERT_FAIL,
+  payload: error,
+})
+
+/*
+================================================ 
+GET Status Log
+================================================
+*/
+export const getStatusLog = orderServiceId => ({
+  type: GET_STATUS_LOG,
+  orderServiceId,
+})
+
+export const getStatusLogSuccess = orderServiceLog => ({
+  type: GET_STATUS_LOG_SUCCESS,
+  payload: orderServiceLog,
+})
+
+export const getStatusLogFail = error => ({
+  type: GET_STATUS_LOG_FAIL,
   payload: error,
 })

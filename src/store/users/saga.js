@@ -7,6 +7,7 @@ import {
   ADD_NEW_USER,
   DELETE_USER,
   UPDATE_USER,
+  GET_EXPERTS,
 } from "./actionTypes"
 
 import {
@@ -20,6 +21,8 @@ import {
   updateUserFail,
   deleteUserSuccess,
   deleteUserFail,
+  getExpertsFail,
+  getExpertsSuccess,
 } from "./actions"
 
 //Include Both Helper File with needed methods
@@ -29,6 +32,7 @@ import {
   addNewUser,
   updateUser,
   deleteUser,
+  getExperts,
 } from "../../helpers/fakebackend_helper"
 
 function* fetchUsers() {
@@ -37,6 +41,15 @@ function* fetchUsers() {
     yield put(getUsersSuccess(response))
   } catch (error) {
     yield put(getUsersFail(error))
+  }
+}
+
+function* fetchExperts() {
+  try {
+    const response = yield call(getExperts)
+    yield put(getExpertsSuccess(response))
+  } catch (error) {
+    yield put(getExpertsFail(error))
   }
 }
 
@@ -79,6 +92,7 @@ function* onAddNewUser({ payload: user }) {
 
 function* usersSaga() {
   yield takeEvery(GET_USERS, fetchUsers)
+  yield takeEvery(GET_EXPERTS, fetchExperts)
   yield takeEvery(GET_USER_PROFILE, fetchUserProfile)
   yield takeEvery(ADD_NEW_USER, onAddNewUser)
   yield takeEvery(UPDATE_USER, onUpdateUser)

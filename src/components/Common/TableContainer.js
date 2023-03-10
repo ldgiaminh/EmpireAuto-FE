@@ -68,7 +68,6 @@ const TableContainer = ({
   customPageSize,
   className,
   customPageSizeOptions,
-  filterStatus,
 }) => {
   const {
     getTableProps,
@@ -94,7 +93,6 @@ const TableContainer = ({
       data,
       defaultColumn: { Filter: DefaultColumnFilter },
       initialState: {
-        // filters: filterStatus,
         pageIndex: 0,
         pageSize: customPageSize,
         sortBy: [
