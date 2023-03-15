@@ -7,6 +7,7 @@ import {
   GET_ORDER_SERVICE_DETAIL,
   PUT_ORDER_SERVICE,
   PUT_ASSIGN_EXPERT,
+  PUT_CONFIRM_SERVICES,
   GET_STATUS_LOG,
 } from "./actionTypes"
 
@@ -21,6 +22,8 @@ import {
   putOrderServicesSuccess,
   putAssginExpertsFail,
   putAssginExpertsSuccess,
+  putConfirmServicesFail,
+  putConfirmServicesSuccess,
   getStatusLogFail,
   getStatusLogSuccess,
 } from "./actions"
@@ -31,6 +34,7 @@ import {
   getOrderServicesDetails,
   putOrderServices,
   putAssignExperts,
+  putConfirmServices,
   getStatusLog,
 } from "../../helpers/fakebackend_helper"
 import { take } from "lodash"
@@ -80,6 +84,15 @@ function* onAssignExpert({ payload: { orderServiceId, exId } }) {
   }
 }
 
+function* onConfirmServices({ payload: { orderServiceId, services } }) {
+  try {
+    const response = yield call(putConfirmServices, orderServiceId, services)
+    yield put(putConfirmServicesSuccess(response))
+  } catch (error) {
+    yield put(putConfirmServicesFail(error))
+  }
+}
+
 function* fetchStatusLog({ orderServiceId }) {
   try {
     const response = yield call(getStatusLog, orderServiceId)
@@ -90,14 +103,15 @@ function* fetchStatusLog({ orderServiceId }) {
 }
 
 function* orderServicesSaga() {
-  yield takeEvery(GET_ORDER_SERVICE_LIST, fetchOrderServicessLists)
-  // yield takeEvery(
-  //   GET_ORDER_SERVICE_LIST_BY_STATUS,
-  //   fetchOrderServiceListByStatus
-  // )
+  //yield takeEvery(GET_ORDER_SERVICE_LIST, fetchOrderServicessLists)
+  yield takeEvery(
+    GET_ORDER_SERVICE_LIST_BY_STATUS,
+    fetchOrderServiceListByStatus
+  )
   yield takeEvery(GET_ORDER_SERVICE_DETAIL, fetchOrderServicesDetails)
   yield takeEvery(PUT_ORDER_SERVICE, onRecommendService)
   yield takeEvery(PUT_ASSIGN_EXPERT, onAssignExpert)
+  yield takeEvery(PUT_CONFIRM_SERVICES, onConfirmServices)
   yield takeEvery(GET_STATUS_LOG, fetchStatusLog)
 }
 

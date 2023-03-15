@@ -165,6 +165,19 @@ const BookingList = props => {
   ==================================================
   */
 
+  var node = useRef()
+  const onPaginationPageChange = page => {
+    if (
+      node &&
+      node.current &&
+      node.current.props &&
+      node.current.props.pagination &&
+      node.current.props.pagination.options
+    ) {
+      node.current.props.pagination.options.onPageChange(page)
+    }
+  }
+
   //Notification
   toastr.options = {
     closeButton: false,
@@ -194,11 +207,11 @@ const BookingList = props => {
   const handleCheckIn = () => {
     if (booking.id) {
       dispatch(checkInBooking(booking.id))
+      onPaginationPageChange(1)
       setCheckInModal(false)
       toastr.success("Check-in thành công", "Thành công")
       dispatch(onGetBookings())
-      const updatedBookings = dispatch(onGetBookings())
-      setBookingList(updatedBookings)
+      //history.push(`/booking-detail/${booking.id}`)
     }
   }
 
@@ -295,10 +308,6 @@ const BookingList = props => {
             <Button
               type="button"
               color="success"
-              // className="btn-sm btn-rounded"
-              //onClick={() => checkinBooking(row.original.id)}
-              // onClick={() => {
-              //   const checkIn = cellProps.row.original
               onClick={() => {
                 toggleViewModal(cellProps.row.original)
               }}

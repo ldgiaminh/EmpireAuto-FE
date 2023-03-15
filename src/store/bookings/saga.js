@@ -46,8 +46,8 @@ function* fetchBookingsLists() {
 
 function* fetchBookingsListByDate({ date }) {
   try {
-    const response = yield call(getBookingListsByDate)
-    yield put(getBookingListsByDateSuccess(response), date)
+    const response = yield call(getBookingListsByDate, date)
+    yield put(getBookingListsByDateSuccess(response))
   } catch (error) {
     yield put(getBookingListsByDateFail(error))
   }

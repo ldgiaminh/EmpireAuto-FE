@@ -93,9 +93,9 @@ export const checkinBooking = bookingId => ({
   bookingId,
 })
 
-export const checkinBookingSuccess = bookingDetails => ({
+export const checkinBookingSuccess = bookingDetail => ({
   type: CHECKIN_BOOKING_SUCCESS,
-  bookingDetails,
+  payload: bookingDetail,
 })
 
 export const checkinBookingFail = error => ({

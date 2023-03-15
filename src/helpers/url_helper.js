@@ -31,7 +31,8 @@ ORDER SERVICE
 ================================================
 */
 export const GET_ORDER_SERVICE_LIST = "/order-services"
-export const GET_ORDER_SERVICE_LIST_BY_STATUS = "/order-services-status"
+export const GET_ORDER_SERVICE_LIST_BY_STATUS =
+  "/order-services/order-services-status"
 export const GET_ORDER_SERVICE_DETAIL = "/order-services"
 export const PUT_ORDER_SERVICE = "/order-services"
 
@@ -40,6 +41,9 @@ export const PUT_ASSIGN_EXPERT = "/order-services"
 
 //Status Log
 export const GET_STATUS_LOG = "/order-service-status-logs/order-service"
+
+//Confirm Service
+export const PUT_CONFIRM_SERVICES = "/order-services"
 
 /*
 ================================================ 

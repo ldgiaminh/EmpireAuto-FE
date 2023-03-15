@@ -6,7 +6,7 @@ const token = accessToken
 
 //apply base url for axios
 //const API_URL = ""
-const API_URL = "https://empire-api.azurewebsites.net/api/v1"
+const API_URL = "https://dev-empire-api.azurewebsites.net/api/v1"
 
 const axiosApi = axios.create({
   baseURL: API_URL,

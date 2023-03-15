@@ -2,101 +2,101 @@
 // timeline.scss
 //
 
-/************** Horizontal timeline **************/
+// /************** Horizontal timeline **************/
 .hori-timeline {
-  .events {
-    display: flex;
-    flex-wrap: nowrap; /* Prevent wrapping of items to new lines */
-    overflow-x: auto; /* Allow horizontal scrolling on small screens */
-    .owl-item {
-      width: 25%; /* Set the initial width to 25% */
-      display: inline-block;
-    }
-    @media screen and (max-width: 768px) {
-      .owl-item {
-        width: 50%; /* Change the width to 50% for screens smaller than 768px */
-      }
-    }
-    .event-list {
-      text-align: center;
-      flex: 0 0 auto; /* Don't shrink or grow the items */
+  display: flex;
+  justify-content: center;
+}
 
-      .event-down-icon {
+.events {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  .event-list {
+    flex: 0 0 auto;
+    text-align: center;
+    margin: 0 15px;
+
+    @media (max-width: 768px) {
+      margin: 0 5px;
+    }
+
+    .event-down-icon {
+      position: relative;
+      &::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        top: 16px;
+        left: 0;
+        right: 0;
+        border-bottom: 3px dashed $gray-300;
+      }
+      .down-arrow-icon {
         position: relative;
-        &::before {
-          content: "";
-          position: absolute;
-          width: 100%;
-          top: 16px;
-          left: 0;
-          right: 0;
-          border-bottom: 3px dashed $gray-300;
-        }
-        .down-arrow-icon {
-          position: relative;
-          background-color: $card-bg;
-          padding: 4px;
-        }
+        background-color: $card-bg;
+        padding: 4px;
       }
+    }
 
-      &:hover {
-        .down-arrow-icon {
-          animation: fade-down 1.5s infinite linear;
-        }
+    &:hover {
+      .down-arrow-icon {
+        animation: fade-down 1.5s infinite linear;
       }
+    }
 
-      &.active {
-        .down-arrow-icon {
-          animation: fade-down 1.5s infinite linear;
-          &:before {
-            content: "\ec4c";
-          }
+    &.active {
+      .down-arrow-icon {
+        animation: fade-down 1.5s infinite linear;
+        &:before {
+          content: "\ec4c";
         }
       }
     }
   }
 }
 
-// .hori-timeline{
-//     .events{
-//         .event-list{
-//             text-align: center;
-//             display: block;
+// .hori-timeline {
+//   .events {
+//     .event-list {
+//       text-align: center;
+//       display: block;
 
-//             .event-down-icon{
-//                 position: relative;
-//                 &::before{
-//                     content: "";
-//                     position: absolute;
-//                     width: 100%;
-//                     top: 16px;
-//                     left: 0;
-//                     right: 0;
-//                     border-bottom: 3px dashed $gray-300;
-//                 }
-//                 .down-arrow-icon{
-//                     position: relative;
-//                     background-color: $card-bg;
-//                     padding: 4px;
-//                 }
-//             }
-
-//             &:hover{
-//                 .down-arrow-icon{
-//                     animation: fade-down 1.5s infinite linear;
-//                 }
-//             }
-
-//             &.active{
-//                 .down-arrow-icon{
-//                     animation: fade-down 1.5s infinite linear;
-//                     &:before {
-//                         content: "\ec4c";
-//                     }
-//                 }
-//             }
+//       .event-down-icon {
+//         position: relative;
+//         &::before {
+//           content: "";
+//           position: absolute;
+//           width: 100%;
+//           top: 16px;
+//           left: 0;
+//           right: 0;
+//           border-bottom: 3px dashed $gray-300;
 //         }
+//         .down-arrow-icon {
+//           position: relative;
+//           background-color: $card-bg;
+//           padding: 4px;
+//         }
+//       }
+
+//       &:hover {
+//         .down-arrow-icon {
+//           animation: fade-down 1.5s infinite linear;
+//         }
+//       }
+
+//       &.active {
+//         .down-arrow-icon {
+//           animation: fade-down 1.5s infinite linear;
+//           &:before {
+//             content: "\ec4c";
+//           }
+//         }
+//       }
 //     }
+//   }
 // }
 
 /************** vertical timeline **************/

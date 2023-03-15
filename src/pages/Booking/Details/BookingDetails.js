@@ -42,16 +42,17 @@ const BookingDetails = props => {
 
   /*
   ==================================================
-  State from Redux
+  STATE FROM REDUX
   ==================================================
   */
+
   const { bookingDetail } = useSelector(state => ({
     bookingDetail: state.bookings.bookingDetail,
   }))
 
   /*
   ==================================================
-  Param (Id) and useEffect
+  PRAMS (ID) & useEffect
   ==================================================
   */
   const {
@@ -62,15 +63,15 @@ const BookingDetails = props => {
     if (params && params.id) {
       dispatch(onGetBookingDetail(params.id))
     }
-  }, [params, onGetBookingDetail, dispatch])
+  }, [params, onGetBookingDetail])
 
   /*
   ==================================================
-  Check-in Function
+  CHECK-IN FUNCTION
   ==================================================
   */
 
-  //Notification
+  /* NOTIFICATION */
   toastr.options = {
     closeButton: false,
     debug: false,
@@ -89,22 +90,20 @@ const BookingDetails = props => {
     hideMethod: "fadeOut",
   }
 
-  //Check-in
+  /* HANDLE CHECK IN */
   const handleCheckIn = id => {
-    if (params.id) {
-      dispatch(checkInBooking(id))
-      toastr.success("Check-in thành công", "Thành công")
-      //history.push("/booking")
-    }
+    dispatch(checkInBooking(id))
+    toastr.success("Check-in thành công", "Thành công")
+    dispatch(onGetBookingDetail(id))
   }
 
   /*
   ==================================================
-  Format Date Time
+  FORMAT DATE TIME from API
   ==================================================
   */
 
-  //Book Date
+  /* DATE */
   const bookingDate = bookingDetail.date
   const bookDate = new Date(bookingDate)
   const formattedDate = bookDate.toLocaleDateString("vi-VN", {
@@ -113,7 +112,7 @@ const BookingDetails = props => {
     year: "numeric",
   })
 
-  //Create Date
+  /* CREATE AT  */
   const createAtDate = bookingDetail.createdAt
   const createDate = new Date(createAtDate)
   const formattedDate1 = createDate.toLocaleDateString("vi-VN", {
@@ -129,7 +128,7 @@ const BookingDetails = props => {
   })
   const formattedDateTime1 = `${formattedDate1} - ${formattedTime1}`
 
-  //Check-in Date
+  /* ARRIVED DATE */
   const checkInDate = bookingDetail.arrivedDateTime
   const checkDate = new Date(checkInDate)
   const formattedDate2 = checkDate.toLocaleDateString("vi-VN", {
@@ -145,26 +144,7 @@ const BookingDetails = props => {
   })
   const formattedDateTime2 = `${formattedDate2} - ${formattedTime2}`
 
-  const optionGroup = [
-    {
-      label: "Picnic",
-      options: [
-        { label: "Mustard", value: "Mustard" },
-        { label: "Ketchup", value: "Ketchup" },
-        { label: "Relish", value: "Relish" },
-      ],
-    },
-    {
-      label: "Camping",
-      options: [
-        { label: "Tent", value: "Tent" },
-        { label: "Flashlight", value: "Flashlight" },
-        { label: "Toilet Paper", value: "Toilet Paper" },
-      ],
-    },
-  ]
-  const [selectedGroup, setselectedGroup] = useState(null)
-
+  /* ========================================== RENDER ==============================================*/
   return (
     <React.Fragment>
       <div className="page-content">
@@ -191,7 +171,7 @@ const BookingDetails = props => {
 
                             <div className="avatar-sm ms-auto">
                               <div className="avatar-title bg-light rounded-circle text-primary font-size-20">
-                                <i className="bx bxs-book-bookmark"></i>
+                                <i className="bx bxs-card"></i>
                               </div>
                             </div>
                           </div>
@@ -211,7 +191,7 @@ const BookingDetails = props => {
 
                             <div className="avatar-sm ms-auto">
                               <div className="avatar-title bg-light rounded-circle text-primary font-size-20">
-                                <i className="bx bxs-note"></i>
+                                <i className="bx bx-calendar-plus"></i>
                               </div>
                             </div>
                           </div>
@@ -229,7 +209,7 @@ const BookingDetails = props => {
 
                             <div className="avatar-sm ms-auto">
                               <div className="avatar-title bg-light rounded-circle text-primary font-size-20">
-                                <i className="bx bxs-note"></i>
+                                <i className="bx bx-calendar"></i>
                               </div>
                             </div>
                           </div>
@@ -251,11 +231,11 @@ const BookingDetails = props => {
                               </h5>
                             </div>
 
-                            {/* <div className="avatar-sm ms-auto">
+                            <div className="avatar-sm ms-auto">
                               <div className="avatar-title bg-light rounded-circle text-primary font-size-20">
-                                <i className="bx bxs-message-square-dots"></i>
+                                <i className="bx bxs-calendar-check"></i>
                               </div>
-                            </div> */}
+                            </div>
                           </div>
                         </CardBody>
                       </Card>
@@ -266,17 +246,17 @@ const BookingDetails = props => {
               <Row>
                 <Col xl={12}>
                   <Row>
-                    <Col xl={6}>
+                    <Col xl={4}>
                       <Card>
                         <CardBody>
-                          <CardTitle className="mb-4">
+                          <CardTitle className="mb-3">
                             Thông tin cá nhân
                           </CardTitle>
-                          {/* <p className="text-muted mb-4">
-                              {userProfile.personalDetail}
-                            </p> */}
+                          {/* <p className="text-muted mb-3">
+                            Thông tin của khách{" "}
+                          </p> */}
                           <div className="table-responsive">
-                            <Table className="table-nowrap mb-0">
+                            <Table className="mb-0">
                               <tbody>
                                 <tr>
                                   <th scope="row">Họ và tên :</th>
@@ -295,26 +275,20 @@ const BookingDetails = props => {
                                   <th scope="row">E-mail :</th>
                                   <td>{bookingDetail.user.email}</td>
                                 </tr>
-                                <tr>
-                                  <th scope="row">Địa chỉ:</th>
-                                  <td>{bookingDetail.user.email}</td>
-                                </tr>
-                                {/* <tr>
-                                    <th scope="row">Location :</th>
-                                    <td>{userProfile.location}</td>
-                                  </tr> */}
                               </tbody>
                             </Table>
                           </div>
                         </CardBody>
                       </Card>
                     </Col>
-                    <Col xl={6}>
+                    <Col xl={4}>
                       <Card>
                         <CardBody>
-                          <CardTitle className="mb-4">Phương tiện</CardTitle>
-
+                          <CardTitle className="mb-3">Phương tiện</CardTitle>
                           <div className="table-responsive">
+                            {/* <p className="text-muted mb-3">
+                              Thông tin xe đặt lịch
+                            </p> */}
                             <Table className="table-nowrap mb-0">
                               <tbody>
                                 <tr>
@@ -329,16 +303,37 @@ const BookingDetails = props => {
                                   <th scope="row">Dòng xe :</th>
                                   <td>{bookingDetail.car.carModel}</td>
                                 </tr>
-                                <tr>
-                                  <th scope="row">Tình trạng xe :</th>
-                                  <td>
-                                    {map(
-                                      bookingDetail.symptoms,
-                                      symptom => symptom.name
-                                    ).join(", ")}
-                                  </td>
-                                </tr>
                               </tbody>
+                            </Table>
+                          </div>
+                        </CardBody>
+                      </Card>
+                    </Col>
+                    <Col xl={4}>
+                      <Card>
+                        <CardBody>
+                          <CardTitle className="mb-3">
+                            Tình trạng xe được khách mô tả
+                          </CardTitle>
+                          {/* <p className="text-muted mb-3">
+                            Thông tin của khách{" "}
+                          </p> */}
+                          <div className="table-responsive">
+                            <Table className="mb-0">
+                              {map(bookingDetail.symptoms, symptom => (
+                                <tbody>
+                                  <tr key={symptom.id}>
+                                    <td
+                                      scope="row"
+                                      className="mdi mdi-chevron-right text-primary"
+                                    >
+                                      <span className="text-black">
+                                        {symptom.name}
+                                      </span>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              ))}
                             </Table>
                           </div>
                         </CardBody>
@@ -525,33 +520,33 @@ const BookingDetails = props => {
                       </Row>
                     </CardBody>
                   </Card> */}
-                  {!bookingDetail.isArrived && bookingDetail.isActived ? (
-                    <Row className="mt-4">
-                      <Col sm="6">
-                        <Link
-                          to="/booking"
-                          className="btn text-muted d-none d-sm-inline-block btn-link"
-                        >
-                          <i className="mdi mdi-arrow-left me-1" /> Trở về trang
-                          danh sách đặt lịch{" "}
-                        </Link>
-                      </Col>
+                  <Row className="mt-4">
+                    <Col sm="6">
+                      <Link
+                        to="/booking"
+                        className="btn text-muted d-none d-sm-inline-block btn-link"
+                      >
+                        <i className="mdi mdi-arrow-left me-1" /> Trở về trang
+                        danh sách đặt lịch{" "}
+                      </Link>
+                    </Col>
+                    {!bookingDetail.isArrived && bookingDetail.isActived ? (
                       <Col sm="6">
                         <div className="text-sm-end">
                           <Button
                             type="button"
                             color="success"
                             className="btn btn-lg"
-                            onClick={() => handleCheckIn(bookingDetail.id)}
+                            onClick={() => handleCheckIn(params.id)}
                           >
                             Check-in
                           </Button>
                         </div>
                       </Col>
-                    </Row>
-                  ) : (
-                    ""
-                  )}
+                    ) : (
+                      ""
+                    )}
+                  </Row>
                 </Col>
               </Row>
             </>

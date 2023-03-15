@@ -2,6 +2,7 @@
   "name": "empire-garage-fe",
   "version": "2.0.0",
   "private": true,
+   "homepage": "https://myusername.github.io/my-app",
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^34.0.0",
     "@ckeditor/ckeditor5-react": "^5.0.0",
@@ -29,6 +30,7 @@
     "eslint": "^7.29.0",
     "firebase": "^9.6.10",
     "formik": "^2.2.9",
+    "gh-pages": "^5.0.0",
     "google-maps-react": "^2.0.6",
     "i18next": "^21.6.16",
     "i18next-browser-languagedetector": "^6.1.4",
@@ -104,7 +106,9 @@
     "lint:fix": "eslint --fix .",
     "format": "prettier --write \"**/*.{js,jsx,json,md,html,css,less,scss}\"",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "react-scripts build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -162,6 +166,7 @@
   "devDependencies": {
     "eslint-config-standard-react": "^9.2.0",
     "eslint-plugin-react": "^7.20.6",
-    "prettier": "^2.1.1"
+    "prettier": "^2.1.1",
+    "gh-pages": "^5.0.0"
   }
 }

@@ -11,6 +11,8 @@ import {
   PUT_ASSIGN_EXPERT_SUCCESS,
   GET_STATUS_LOG_SUCCESS,
   GET_STATUS_LOG_FAIL,
+  PUT_CONFIRM_SERVICES_SUCCESS,
+  PUT_CONFIRM_SERVICES_FAIL,
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -58,6 +60,18 @@ const orderServices = (state = INIT_STATE, action) => {
         error: action.payload,
       }
 
+    case GET_STATUS_LOG_SUCCESS:
+      return {
+        ...state,
+        orderServiceLog: action.payload,
+      }
+
+    case GET_STATUS_LOG_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      }
+
     // case PUT_ORDER_SERVICE_SUCCESS:
     //   return {
     //     ...state,
@@ -83,7 +97,11 @@ const orderServices = (state = INIT_STATE, action) => {
     case PUT_ASSIGN_EXPERT_SUCCESS:
       return {
         ...state,
-        orderServicesDetails: action.payload,
+        orderServicesDetails: state.orderServicesDetails.map(service =>
+          service.id.toString() === action.payload.id.toString()
+            ? { ...action.pay.load, service }
+            : service
+        ),
       }
 
     case PUT_ASSIGN_EXPERT_FAIL:
@@ -92,13 +110,17 @@ const orderServices = (state = INIT_STATE, action) => {
         error: action.payload,
       }
 
-    case GET_STATUS_LOG_SUCCESS:
+    case PUT_CONFIRM_SERVICES_SUCCESS:
       return {
         ...state,
-        orderServiceLog: action.payload,
+        orderServicesDetails: state.orderServicesDetails.map(service =>
+          service.id.toString() === action.payload.id.toString()
+            ? { ...action.pay.load, service }
+            : service
+        ),
       }
 
-    case GET_STATUS_LOG_FAIL:
+    case PUT_CONFIRM_SERVICES_FAIL:
       return {
         ...state,
         error: action.payload,

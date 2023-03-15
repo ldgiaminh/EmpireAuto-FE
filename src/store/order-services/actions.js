@@ -14,6 +14,9 @@ import {
   GET_STATUS_LOG,
   GET_STATUS_LOG_SUCCESS,
   GET_STATUS_LOG_FAIL,
+  PUT_CONFIRM_SERVICES,
+  PUT_CONFIRM_SERVICES_SUCCESS,
+  PUT_CONFIRM_SERVICES_FAIL,
 } from "./actionTypes"
 
 /*
@@ -37,7 +40,7 @@ export const getOrderServicesListsFail = error => ({
 
 /*
 ================================================ 
-GET OrderServices list by date
+GET OrderServices List By Status
 ================================================
 */
 export const getOrderServicesListByStatus = status => ({
@@ -132,5 +135,25 @@ export const getStatusLogSuccess = orderServiceLog => ({
 
 export const getStatusLogFail = error => ({
   type: GET_STATUS_LOG_FAIL,
+  payload: error,
+})
+
+/*
+================================================ 
+PUT Confirm Service
+================================================
+*/
+export const putConfirmServices = (orderServiceId, services) => ({
+  type: PUT_CONFIRM_SERVICES,
+  payload: { orderServiceId, services },
+})
+
+export const putConfirmServicesSuccess = orderServicesDetails => ({
+  type: PUT_CONFIRM_SERVICES_SUCCESS,
+  payload: orderServicesDetails,
+})
+
+export const putConfirmServicesFail = error => ({
+  type: PUT_CONFIRM_SERVICES_FAIL,
   payload: error,
 })

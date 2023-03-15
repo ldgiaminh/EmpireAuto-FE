@@ -53,16 +53,23 @@ const bookings = (state = INIT_STATE, action) => {
         bookingDetail: action.payload,
       }
 
+    case CHECKIN_BOOKING_SUCCESS:
+      return {
+        ...state,
+        bookingDetail: state.bookingDetail.map(booking =>
+          booking.id.toString() === action.payload.id.toString()
+            ? { booking, ...action.payload }
+            : booking
+        ),
+        bookings: state.bookings.filter(
+          booking => booking.id.toString() !== action.payload.id.toString()
+        ),
+      }
+
     case CHECKIN_BOOKING_FAIL:
       return {
         ...state,
         error: action.payload,
-      }
-
-    case CHECKIN_BOOKING_SUCCESS:
-      return {
-        ...state,
-        bookingDetail: action.payload,
       }
 
     case GET_BOOKING_DETAIL_FAIL:

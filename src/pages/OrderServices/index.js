@@ -24,16 +24,19 @@ import {
   TabPane,
 } from "reactstrap"
 
-import { OrderCode, Name, DateCell, ModalCar, Plate } from "./OrderServiceCol"
+import {
+  OrderCode,
+  Name,
+  DateCell,
+  ModalCar,
+  Plate,
+  Expert,
+} from "./OrderServiceCol"
 
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb"
-import DeleteModal from "components/Common/DeleteModal"
 
-import {
-  getOrderServicesLists as onGetOrderServices,
-  getOrderServicesListByStatus as onGetOrderServicesListByStatus,
-} from "store/order-services/actions"
+import { getOrderServicesListByStatus as onGetOrderServicesListByStatus } from "store/order-services/actions"
 import { isEmpty } from "lodash"
 
 //redux
@@ -41,14 +44,15 @@ import { useSelector, useDispatch } from "react-redux"
 
 const OrderSerives = props => {
   //meta title
-  document.title = "Dịch Vụ | Empire Admin"
+  document.title = "Theo dõi tiến trình | Empire Admin"
 
   const statusServices = [
-    { id: "0", title: "Phân công" },
-    { id: "1", title: "Chờ chuẩn đoán" },
-    { id: "2", title: "Xác nhận và thanh toán" },
-    { id: "3", title: "Hoàn tất dịch vụ" },
-    { id: "4", title: "Đã lấy xe" },
+    { id: "0", title: "Chờ phân công" },
+    { id: "1", title: "Đã có kỹ thuật viên" },
+    { id: "2", title: "Đã chuẩn đoán" },
+    { id: "3", title: "Xác nhận và thanh toán" },
+    { id: "4", title: "Chờ khách lấy xe" },
+    { id: "5", title: "Hoàn thành" },
     { id: "-1", title: "Hủy" },
   ]
 
@@ -67,6 +71,7 @@ const OrderSerives = props => {
   const toggleTab = tab => {
     if (activeTab !== tab) {
       setActiveTab(tab)
+      dispatch(onGetOrderServicesListByStatus(tab))
     }
   }
 
@@ -192,7 +197,15 @@ const OrderSerives = props => {
         },
       },
       {
-        Header: "Chẩn đoán",
+        Header: "Kỹ thuật viên",
+        accessor: "expert.fullname",
+        disableFilters: true,
+        Cell: cellProps => {
+          return <Expert {...cellProps} />
+        },
+      },
+      {
+        Header: "Chi tiết",
         accessor: "action",
         disableFilters: true,
         Cell: cellProps => {
@@ -218,7 +231,7 @@ const OrderSerives = props => {
 
   useEffect(() => {
     if (orderServicess && !orderServicess.length) {
-      dispatch(onGetOrderServices())
+      dispatch(onGetOrderServicesListByStatus(activeTab))
     }
   }, [dispatch, orderServicess])
 
@@ -226,19 +239,12 @@ const OrderSerives = props => {
     setOrderService(orderServicess)
   }, [orderServicess])
 
-  const diagnosingList = orderServicess.filter(service => service.status === 0)
-  const pendingList = orderServicess.filter(service => service.status === 1)
-  const confirmList = orderServicess.filter(service => service.status === 2)
-  const doneList = orderServicess.filter(service => service.status === 3)
-  const checkoutList = orderServicess.filter(service => service.status === 4)
-  const cancelList = orderServicess.filter(service => service.status === -1)
-
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
           {/* Render Breadcrumbs */}
-          <Breadcrumbs title="Dịch Vụ" breadcrumbItem="Dịch Vụ" />
+          <Breadcrumbs title="Theo dõi tiến trình" breadcrumbItem="Danh sách" />
           <Row>
             <Col lg="12">
               <Card>
@@ -263,7 +269,7 @@ const OrderSerives = props => {
                     <TabPane tabId="0" id="diagnosing">
                       <TableContainer
                         columns={columnsAssign}
-                        data={diagnosingList}
+                        data={orderServicess}
                         isGlobalFilter={true}
                         // isAddUserList={true}
                         // handleUserClick={handleUserClicks}
@@ -274,7 +280,7 @@ const OrderSerives = props => {
                     <TabPane tabId="1" id="diagnosing">
                       <TableContainer
                         columns={columns}
-                        data={pendingList}
+                        data={orderServicess}
                         isGlobalFilter={true}
                         // isAddUserList={true}
                         // handleUserClick={handleUserClicks}
@@ -285,7 +291,7 @@ const OrderSerives = props => {
                     <TabPane tabId="2" id="pending">
                       <TableContainer
                         columns={columns}
-                        data={confirmList}
+                        data={orderServicess}
                         isGlobalFilter={true}
                         // isAddUserList={true}
                         // handleUserClick={handleUserClicks}
@@ -296,7 +302,7 @@ const OrderSerives = props => {
                     <TabPane tabId="3" id="done">
                       <TableContainer
                         columns={columns}
-                        data={doneList}
+                        data={orderServicess}
                         isGlobalFilter={true}
                         // isAddUserList={true}
                         // handleUserClick={handleUserClicks}
@@ -307,7 +313,18 @@ const OrderSerives = props => {
                     <TabPane tabId="4" id="checkout">
                       <TableContainer
                         columns={columns}
-                        data={checkoutList}
+                        data={orderServicess}
+                        isGlobalFilter={true}
+                        // isAddUserList={true}
+                        // handleUserClick={handleUserClicks}
+                        customPageSize={10}
+                        className="custom-header-css"
+                      />
+                    </TabPane>
+                    <TabPane tabId="5" id="checkout">
+                      <TableContainer
+                        columns={columns}
+                        data={orderServicess}
                         isGlobalFilter={true}
                         // isAddUserList={true}
                         // handleUserClick={handleUserClicks}
@@ -318,7 +335,7 @@ const OrderSerives = props => {
                     <TabPane tabId="-1" id="cancel">
                       <TableContainer
                         columns={columns}
-                        data={cancelList}
+                        data={orderServicess}
                         isGlobalFilter={true}
                         // isAddUserList={true}
                         // handleUserClick={handleUserClicks}

@@ -212,7 +212,7 @@ const TableContainer = ({
                 color="success"
                 onClick={handleCheckInClick}
               >
-                <i className="mdi mdi-plus me-1" />
+                <i className="mdi mdi-qrcode-scan me-1" />
                 Quét mã Check-in
               </Button>
             </div>

@@ -107,11 +107,10 @@ export const getBookingsLists = () => get(url.GET_BOOKING_LIST)
 
 //Booking List By Date
 export const getBookingListsByDate = date =>
-  get(`${url.GET_BOOKING_LIST_BY_DATE}?date=${date}`, date)
+  get(`${url.GET_BOOKING_LIST_BY_DATE}?date=${date}`, { params: date })
 
 //Booking Detail
-export const getBookingsDetails = id =>
-  get(`${url.GET_BOOKING_DETAIL}/${id}`, { params: { id } })
+export const getBookingsDetails = id => get(`${url.GET_BOOKING_DETAIL}/${id}`)
 
 //Check-in Booking
 export const checkinBooking = id => put(`${url.CHECKIN_BOOKING}/${id}`, id)
@@ -152,6 +151,11 @@ export const putAssignExperts = (id, exId) =>
 
 /* GET STATUS LOG */
 export const getStatusLog = id => get(`${url.GET_STATUS_LOG}/${id}`)
+
+/* CONFIRM SERVICES */
+
+export const putConfirmServices = (id, services) =>
+  put(`${url.PUT_CONFIRM_SERVICES}/${id}/confirm`, services)
 
 /*
 ================================================

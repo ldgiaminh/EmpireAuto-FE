@@ -28,12 +28,8 @@ const DateCell = cell => {
     return ""
   }
   const formattedDateTime = formatDate(cell.value, "DD/MM/YYYY H:mm:ss")
-  const formattedTime = formattedDateTime.split(" ")[1] // get the formatted time from the formatted date and time
+  const formattedTime = formattedDateTime.split(" - ")[1] // get the formatted time from the formatted date and time
   return `${formattedDateTime.split(" ")[0]} ${formattedTime}` // return the formatted date and time in the desired format
-}
-
-const TimeCell = cell => {
-  return cell.value ? cell.value : "" // format the date value using the formatDate function
 }
 
 const ModalCar = cell => {
@@ -44,4 +40,8 @@ const Plate = cell => {
   return cell.value ? cell.value : ""
 }
 
-export { OrderCode, Name, DateCell, ModalCar, Plate }
+const Expert = cell => {
+  return cell.value ? cell.value : ""
+}
+
+export { OrderCode, Name, DateCell, ModalCar, Plate, Expert }
