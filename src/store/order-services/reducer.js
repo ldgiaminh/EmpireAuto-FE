@@ -13,12 +13,16 @@ import {
   GET_STATUS_LOG_FAIL,
   PUT_CONFIRM_SERVICES_SUCCESS,
   PUT_CONFIRM_SERVICES_FAIL,
+  PUT_CONFIRM_PAID_SERVICES_SUCCESS,
+  PUT_CONFIRM_PAID_SERVICES_FAIL,
+  POST_CHECKOUT_SERVICES_SUCCESS,
+  POST_CHECKOUT_SERVICES_FAIL,
 } from "./actionTypes"
 
 const INIT_STATE = {
   orderServicess: [],
   orderServicesDetails: {},
-  orderServiceLog: [],
+  orderServiceLogs: [],
   error: {},
 }
 
@@ -63,7 +67,7 @@ const orderServices = (state = INIT_STATE, action) => {
     case GET_STATUS_LOG_SUCCESS:
       return {
         ...state,
-        orderServiceLog: action.payload,
+        orderServiceLogs: action.payload,
       }
 
     case GET_STATUS_LOG_FAIL:
@@ -121,6 +125,34 @@ const orderServices = (state = INIT_STATE, action) => {
       }
 
     case PUT_CONFIRM_SERVICES_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      }
+
+    case PUT_CONFIRM_PAID_SERVICES_SUCCESS:
+      return {
+        ...state,
+        orderServicesDetails: state.orderServicesDetails.map(service =>
+          service.id.toString() === action.payload.id.toString()
+            ? { ...action.pay.load, service }
+            : service
+        ),
+      }
+
+    case PUT_CONFIRM_PAID_SERVICES_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      }
+
+    case POST_CHECKOUT_SERVICES_SUCCESS:
+      return {
+        ...state,
+        orderServiceLogs: [...state.orderServiceLogs, action.payload],
+      }
+
+    case POST_CHECKOUT_SERVICES_FAIL:
       return {
         ...state,
         error: action.payload,

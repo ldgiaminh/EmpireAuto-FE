@@ -45,6 +45,12 @@ export const GET_STATUS_LOG = "/order-service-status-logs/order-service"
 //Confirm Service
 export const PUT_CONFIRM_SERVICES = "/order-services"
 
+//Confirm & Paid
+export const PUT_CONFIRM_PAID_SERVICES = "/order-services"
+
+//CheckOut
+export const POST_CHECKOUT_SERVICES = "/order-service-status-logs"
+
 /*
 ================================================ 
 GROUP SERVICE

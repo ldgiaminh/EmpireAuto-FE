@@ -157,6 +157,17 @@ export const getStatusLog = id => get(`${url.GET_STATUS_LOG}/${id}`)
 export const putConfirmServices = (id, services) =>
   put(`${url.PUT_CONFIRM_SERVICES}/${id}/confirm`, services)
 
+/* CONFIRM & PAID */
+
+export const putConfirmPaid = (id, services) => {
+  put(`${url.PUT_CONFIRM_PAID_SERVICES}/${id}/confirm-and-paid`, services)
+}
+
+/* CHECKOUT */
+export const postCheckOut = statusLogId => {
+  post(url.POST_CHECKOUT_SERVICES, statusLogId)
+}
+
 /*
 ================================================
 GROUP SERVICE

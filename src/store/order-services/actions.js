@@ -17,6 +17,12 @@ import {
   PUT_CONFIRM_SERVICES,
   PUT_CONFIRM_SERVICES_SUCCESS,
   PUT_CONFIRM_SERVICES_FAIL,
+  PUT_CONFIRM_PAID_SERVICES,
+  PUT_CONFIRM_PAID_SERVICES_SUCCESS,
+  PUT_CONFIRM_PAID_SERVICES_FAIL,
+  POST_CHECKOUT_SERVICES,
+  POST_CHECKOUT_SERVICES_SUCCESS,
+  POST_CHECKOUT_SERVICES_FAIL,
 } from "./actionTypes"
 
 /*
@@ -155,5 +161,45 @@ export const putConfirmServicesSuccess = orderServicesDetails => ({
 
 export const putConfirmServicesFail = error => ({
   type: PUT_CONFIRM_SERVICES_FAIL,
+  payload: error,
+})
+
+/*
+================================================ 
+PUT Confirm & Paid
+================================================
+*/
+export const putConfirmPaid = (orderServiceId, services) => ({
+  type: PUT_CONFIRM_PAID_SERVICES,
+  payload: { orderServiceId, services },
+})
+
+export const putConfirmPaidSuccess = orderServicesDetails => ({
+  type: PUT_CONFIRM_PAID_SERVICES_SUCCESS,
+  payload: orderServicesDetails,
+})
+
+export const putConfirmPaidFail = error => ({
+  type: PUT_CONFIRM_PAID_SERVICES_FAIL,
+  payload: error,
+})
+
+/*
+================================================ 
+POST Check out
+================================================
+*/
+export const postCheckOut = statusLogId => ({
+  type: POST_CHECKOUT_SERVICES,
+  payload: { statusLogId },
+})
+
+export const postCheckOutSuccess = orderServiceLog => ({
+  type: POST_CHECKOUT_SERVICES_SUCCESS,
+  payload: orderServiceLog,
+})
+
+export const postCheckOutFail = error => ({
+  type: POST_CHECKOUT_SERVICES_FAIL,
   payload: error,
 })

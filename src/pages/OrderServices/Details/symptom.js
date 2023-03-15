@@ -2,7 +2,6 @@ import React from "react"
 import { Card, CardBody, Col } from "reactstrap"
 
 const Symptoms = ({ symptoms }) => {
-  console.log(symptoms)
   return (
     <React.Fragment>
       <Col xl={6}>

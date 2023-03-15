@@ -18,26 +18,48 @@ import { useDispatch } from "react-redux"
 
 import {
   getOrderServicesDetails as onGetOrderServiceDetail,
-  putConfirmServices as confirmService,
+  putConfirmPaid as onConfirmPaidServices,
+  postCheckOut as checkOutServices,
 } from "store/order-services/actions"
 
-const Cart = ({ id, services, healthCarRecord, order }) => {
-  const inpRow = [{ id: "", isConfirmed: false }]
-  const [inputFields, setInputFields] = useState([])
-
+const Cart = ({ details, services, healthCarRecord, order }) => {
   const dispatch = useDispatch()
+
+  const [inputFields, setInputFields] = useState(() => {
+    return services.map(service => {
+      return {
+        id: service.id,
+        isConfirmed: service.isConfirmed,
+      }
+    })
+  })
+
+  // const handleInputChange = event => {
+  //   const { id, checked } = event.target
+  //   const index = inputFields.findIndex(input => input.id === id)
+  //   const newInputFields = [...inputFields]
+  //   if (index !== -1 && newInputFields[index].isConfirmed !== checked) {
+  //     newInputFields[index].isConfirmed = checked
+  //   } else if (index === -1) {
+  //     newInputFields.push({ id: id, isConfirmed: checked })
+  //   }
+  //   setInputFields(newInputFields)
+  // }
 
   const handleInputChange = event => {
     const { id, checked } = event.target
-    const index = inputFields.findIndex(input => input.id === id)
-    const newInputFields = [...inputFields]
-    if (index !== -1 && newInputFields[index].isConfirmed !== checked) {
-      newInputFields[index].isConfirmed = checked
-    } else if (index === -1) {
-      newInputFields.push({ id: id, isConfirmed: checked })
-    }
-    setInputFields(newInputFields)
+    setInputFields(prevFields => {
+      return services.map(service => {
+        const existingField = prevFields.find(field => field.id === service.id)
+        return {
+          id: service.id,
+          isConfirmed: existingField ? existingField.isConfirmed : false,
+        }
+      })
+    })
   }
+
+  const total = services.reduce((acc, service) => acc + service.price, 0)
 
   toastr.options = {
     closeButton: false,
@@ -57,13 +79,34 @@ const Cart = ({ id, services, healthCarRecord, order }) => {
     hideMethod: "fadeOut",
   }
 
+  // const handleConfirm = () => {
+  //   const services = {
+  //     orderServiceDetails: inputFields,
+  //     paymentMethod: 1,
+  //   }
+  //   dispatch(onConfirmPaidServices(id, services))
+  //   console.log(services)
+  //   toastr.success("Xác nhận thành công dịch vụ của đơn" + id, "Thành công")
+  //   dispatch(onGetOrderServiceDetail(id))
+  // }
+
   const handleConfirm = () => {
-    const services = {
-      orderServiceDetails: inputFields,
+    console.log(inputFields)
+  }
+
+  const handleCheckOut = () => {
+    const statusLogId = {
+      orderServiceId: details.id,
+      orderServiceStatusId: 5,
     }
-    dispatch(confirmService(id, services))
-    toastr.success("Xác nhận thành công dịch vụ của đơn" + id, "Thành công")
-    dispatch(onGetOrderServiceDetail(id))
+    console.log(statusLogId)
+    //dispatch(checkOutServices(statusLogId))
+    toastr.success(
+      "Xác nhận thành công dịch vụ của đơn #" + details.code,
+      "Thành công"
+    )
+    //console.log(dispatch(checkOutServices, log))
+    dispatch(onGetOrderServiceDetail(details.id))
   }
 
   const confirmedServices = services.filter(
@@ -105,28 +148,6 @@ const Cart = ({ id, services, healthCarRecord, order }) => {
                   ))}
                 </div>
 
-                {/* <Row className="task-dates mb-4">
-                  <Col sm="4" xs="6">
-                    <div className="mt-4">
-                      <h5 className="font-size-14">
-                        <i className="bx bx-calendar me-1 text-primary" /> Start
-                        Date
-                      </h5>
-                      <p className="text-muted mb-0">15/03/2023</p>
-                    </div>
-                  </Col>
-
-                  <Col sm="4" xs="6">
-                    <div className="mt-4">
-                      <h5 className="font-size-14">
-                        <i className="bx bx-calendar-check me-1 text-primary" />{" "}
-                        Due Date
-                      </h5>
-                      <p className="text-muted mb-0">15/03/2023</p>
-                    </div>
-                  </Col>
-                </Row> */}
-
                 {unconfirmedServices.length > 0 && (
                   <>
                     <h5>Dịch vụ không xác nhận</h5>
@@ -143,7 +164,7 @@ const Cart = ({ id, services, healthCarRecord, order }) => {
                     <Col sm="12">
                       <div className="text-sm-end mt-2 mt-sm-0">
                         <Button
-                          onClick={handleConfirm}
+                          onClick={handleCheckOut}
                           className="btn btn-success"
                         >
                           {/* <i className="mdi mdi-cart-arrow-right me-1" /> */}
@@ -183,7 +204,7 @@ const Cart = ({ id, services, healthCarRecord, order }) => {
                               </Link>
                             </h5>
                           </td>
-                          <td>$ {service.price}</td>
+                          <td>{service.price}₫</td>
                           <td>
                             <input
                               type="checkbox"
@@ -205,7 +226,8 @@ const Cart = ({ id, services, healthCarRecord, order }) => {
                         onClick={handleConfirm}
                         className="btn btn-success"
                       >
-                        <i className="mdi mdi-cart-arrow-right me-1" /> Xác nhận{" "}
+                        <i className="mdi mdi-cart-arrow-right me-1" /> Xác nhận
+                        và thanh toán
                       </Button>
                     </div>
                   </Col>
@@ -230,7 +252,7 @@ const Cart = ({ id, services, healthCarRecord, order }) => {
                     ))}
                     <tr>
                       <th>Total :</th>
-                      <th>$ 1744.22</th>
+                      <th>{total}₫</th>
                     </tr>
                   </tbody>
                 </Table>

@@ -9,6 +9,8 @@ import {
   PUT_ASSIGN_EXPERT,
   PUT_CONFIRM_SERVICES,
   GET_STATUS_LOG,
+  PUT_CONFIRM_PAID_SERVICES,
+  POST_CHECKOUT_SERVICES,
 } from "./actionTypes"
 
 import {
@@ -24,6 +26,10 @@ import {
   putAssginExpertsSuccess,
   putConfirmServicesFail,
   putConfirmServicesSuccess,
+  putConfirmPaidFail,
+  putConfirmPaidSuccess,
+  postCheckOutFail,
+  postCheckOutSuccess,
   getStatusLogFail,
   getStatusLogSuccess,
 } from "./actions"
@@ -35,9 +41,10 @@ import {
   putOrderServices,
   putAssignExperts,
   putConfirmServices,
+  putConfirmPaid,
+  postCheckOut,
   getStatusLog,
 } from "../../helpers/fakebackend_helper"
-import { take } from "lodash"
 
 function* fetchOrderServicessLists() {
   try {
@@ -93,6 +100,24 @@ function* onConfirmServices({ payload: { orderServiceId, services } }) {
   }
 }
 
+function* onConfirmPaidServices({ payload: { orderServiceId, services } }) {
+  try {
+    const response = yield call(putConfirmPaid, orderServiceId, services)
+    yield put(putConfirmPaidSuccess(response))
+  } catch (error) {
+    yield put(putConfirmPaidFail(error))
+  }
+}
+
+function* checkOutServices({ payload: { statusLogId } }) {
+  try {
+    const response = yield call(postCheckOut, statusLogId)
+    yield put(postCheckOutSuccess(response))
+  } catch (error) {
+    yield put(postCheckOutFail(error))
+  }
+}
+
 function* fetchStatusLog({ orderServiceId }) {
   try {
     const response = yield call(getStatusLog, orderServiceId)
@@ -111,7 +136,9 @@ function* orderServicesSaga() {
   yield takeEvery(GET_ORDER_SERVICE_DETAIL, fetchOrderServicesDetails)
   yield takeEvery(PUT_ORDER_SERVICE, onRecommendService)
   yield takeEvery(PUT_ASSIGN_EXPERT, onAssignExpert)
-  yield takeEvery(PUT_CONFIRM_SERVICES, onConfirmServices)
+  //yield takeEvery(PUT_CONFIRM_SERVICES, onConfirmServices)
+  yield takeEvery(PUT_CONFIRM_PAID_SERVICES, onConfirmPaidServices)
+  yield takeEvery(POST_CHECKOUT_SERVICES, checkOutServices)
   yield takeEvery(GET_STATUS_LOG, fetchStatusLog)
 }
 

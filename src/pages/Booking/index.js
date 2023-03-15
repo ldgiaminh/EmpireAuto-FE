@@ -211,7 +211,7 @@ const BookingList = props => {
       setCheckInModal(false)
       toastr.success("Check-in thành công", "Thành công")
       dispatch(onGetBookings())
-      //history.push(`/booking-detail/${booking.id}`)
+      history.push(`/booking-detail/${booking.id}`)
     }
   }
 

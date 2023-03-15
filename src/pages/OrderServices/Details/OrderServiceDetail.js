@@ -190,7 +190,7 @@ const OrderServiceDetail = props => {
               <Row>
                 {orderServicesDetails.healthCarRecord != null ? (
                   <Cart
-                    id={params.id}
+                    details={orderServicesDetails}
                     services={orderServicesDetails.orderServiceDetails}
                     healthCarRecord={orderServicesDetails.healthCarRecord}
                     order={orderServicesDetails}

@@ -62,7 +62,6 @@ const AssignTechnicians = ({ order, expert }) => {
       toastr.success("Đã phân công cho " + selectedGroup.label, "Thành công")
       dispatch(onGetOrderServiceDetail(order.id))
     }
-    console.log(dispatch(assignExpert(order.id, exId)))
   }
 
   return (
@@ -95,7 +94,7 @@ const AssignTechnicians = ({ order, expert }) => {
           </Card>
         </Col>
       ) : (
-        <Col xl="12">
+        <Col xl="6">
           <Card>
             <CardBody>
               <h5 className="card-title mb-2">Phân công kỹ thuật viên</h5>
