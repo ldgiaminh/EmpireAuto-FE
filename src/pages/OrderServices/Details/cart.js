@@ -25,14 +25,30 @@ import {
 const Cart = ({ details, services, healthCarRecord, order }) => {
   const dispatch = useDispatch()
 
-  const [inputFields, setInputFields] = useState(() => {
-    return services.map(service => {
-      return {
-        id: service.id,
-        isConfirmed: service.isConfirmed,
-      }
-    })
-  })
+  // const [inputFields, setInputFields] = useState(() => {
+  //   return services.map(service => {
+  //     return {
+  //       id: service.id,
+  //       isConfirmed: service.isConfirmed,
+  //     }
+  //   })
+  // })
+
+  const [inputFields, setInputFields] = useState([])
+
+  const initialConfirmed = inputFields.every(field => !field.isConfirmed)
+
+  const handleInputChange = event => {
+    const { id, checked } = event.target
+    const index = inputFields.findIndex(input => input.id === id)
+    const newInputFields = [...inputFields]
+    if (index !== -1 && newInputFields[index].isConfirmed !== checked) {
+      newInputFields[index].isConfirmed = checked
+    } else if (index === -1) {
+      newInputFields.push({ id: id, isConfirmed: checked })
+    }
+    setInputFields(newInputFields)
+  }
 
   // const handleInputChange = event => {
   //   const { id, checked } = event.target
@@ -43,21 +59,11 @@ const Cart = ({ details, services, healthCarRecord, order }) => {
   //   } else if (index === -1) {
   //     newInputFields.push({ id: id, isConfirmed: checked })
   //   }
-  //   setInputFields(newInputFields)
-  // }
 
-  const handleInputChange = event => {
-    const { id, checked } = event.target
-    setInputFields(prevFields => {
-      return services.map(service => {
-        const existingField = prevFields.find(field => field.id === service.id)
-        return {
-          id: service.id,
-          isConfirmed: existingField ? existingField.isConfirmed : false,
-        }
-      })
-    })
-  }
+  //   const hasConfirmed = newInputFields.some(field => field.isConfirmed)
+
+  //   setInputFields(hasConfirmed ? newInputFields : initialConfirmed)
+  // }
 
   const total = services.reduce((acc, service) => acc + service.price, 0)
 
@@ -79,33 +85,28 @@ const Cart = ({ details, services, healthCarRecord, order }) => {
     hideMethod: "fadeOut",
   }
 
-  // const handleConfirm = () => {
-  //   const services = {
-  //     orderServiceDetails: inputFields,
-  //     paymentMethod: 1,
-  //   }
-  //   dispatch(onConfirmPaidServices(id, services))
-  //   console.log(services)
-  //   toastr.success("Xác nhận thành công dịch vụ của đơn" + id, "Thành công")
-  //   dispatch(onGetOrderServiceDetail(id))
-  // }
-
   const handleConfirm = () => {
-    console.log(inputFields)
+    const services = {
+      orderServiceDetails: inputFields,
+      paymentMethod: 1,
+    }
+    dispatch(onConfirmPaidServices(id, services))
+    console.log(services)
+    toastr.success("Xác nhận thành công dịch vụ của đơn", "#" + details.code)
+    dispatch(onGetOrderServiceDetail(details.id))
   }
+
+  // const handleConfirm = () => {
+  //   console.log(inputFields)
+  // }
 
   const handleCheckOut = () => {
     const statusLogId = {
       orderServiceId: details.id,
       orderServiceStatusId: 5,
     }
-    console.log(statusLogId)
-    //dispatch(checkOutServices(statusLogId))
-    toastr.success(
-      "Xác nhận thành công dịch vụ của đơn #" + details.code,
-      "Thành công"
-    )
-    //console.log(dispatch(checkOutServices, log))
+    dispatch(checkOutServices(statusLogId))
+    toastr.success("Khách đã nhận lại xe", "#" + details.code)
     dispatch(onGetOrderServiceDetail(details.id))
   }
 

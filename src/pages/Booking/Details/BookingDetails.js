@@ -32,6 +32,8 @@ import {
 
 //redux
 import { useSelector, useDispatch } from "react-redux"
+import { ref, set } from "firebase/database"
+import { db } from "helpers/firebase"
 
 const BookingDetails = props => {
   //meta title
@@ -71,7 +73,7 @@ const BookingDetails = props => {
   ==================================================
   */
 
-  /* NOTIFICATION */
+  /* ALERT */
   toastr.options = {
     closeButton: false,
     debug: false,
@@ -90,11 +92,35 @@ const BookingDetails = props => {
     hideMethod: "fadeOut",
   }
 
+  var today = new Date(),
+    date =
+      today.getFullYear() +
+      "-" +
+      (today.getMonth() + 1) +
+      "-" +
+      today.getDate() +
+      " " +
+      today.getHours() +
+      ":" +
+      today.getMinutes() +
+      ":" +
+      today.getSeconds()
+
+  const sendNotification = userId => {
+    set(ref(db, `users/${userId}/notifications`), {
+      isRead: false,
+      message: "Check-in thành công #" + bookingDetail.code,
+      time: new Date().toISOString(),
+      title: "Bạn đã check-in thành công",
+    })
+  }
+
   /* HANDLE CHECK IN */
   const handleCheckIn = id => {
     dispatch(checkInBooking(id))
     toastr.success("Check-in thành công", "Thành công")
     dispatch(onGetBookingDetail(id))
+    sendNotification(id)
   }
 
   /*
@@ -157,7 +183,7 @@ const BookingDetails = props => {
 
           {!isEmpty(bookingDetail) && (
             <>
-              <Row>
+              {/* <Row>
                 <Col xl={12}>
                   <Row>
                     <Col lg={3}>
@@ -252,9 +278,7 @@ const BookingDetails = props => {
                           <CardTitle className="mb-3">
                             Thông tin cá nhân
                           </CardTitle>
-                          {/* <p className="text-muted mb-3">
-                            Thông tin của khách{" "}
-                          </p> */}
+                        
                           <div className="table-responsive">
                             <Table className="mb-0">
                               <tbody>
@@ -286,9 +310,6 @@ const BookingDetails = props => {
                         <CardBody>
                           <CardTitle className="mb-3">Phương tiện</CardTitle>
                           <div className="table-responsive">
-                            {/* <p className="text-muted mb-3">
-                              Thông tin xe đặt lịch
-                            </p> */}
                             <Table className="table-nowrap mb-0">
                               <tbody>
                                 <tr>
@@ -315,9 +336,7 @@ const BookingDetails = props => {
                           <CardTitle className="mb-3">
                             Tình trạng xe được khách mô tả
                           </CardTitle>
-                          {/* <p className="text-muted mb-3">
-                            Thông tin của khách{" "}
-                          </p> */}
+
                           <div className="table-responsive">
                             <Table className="mb-0">
                               {map(bookingDetail.symptoms, symptom => (
@@ -341,11 +360,11 @@ const BookingDetails = props => {
                     </Col>
                   </Row>
                 </Col>
-              </Row>
+              </Row> */}
 
               <Row>
                 <Col>
-                  {/* <Card>
+                  <Card>
                     <CardBody>
                       <CardTitle>Thông tin tổng</CardTitle>
                       <CardSubtitle className="mb-3">
@@ -363,10 +382,43 @@ const BookingDetails = props => {
                                     style={{ width: "300px" }}
                                     className={"text-capitalize"}
                                   >
-                                    Mã đặt lịch :
+                                    Tên khách:
                                   </th>
-                                  <td>{bookingDetail.code}</td>
+                                  <td>{bookingDetail.user.fullname}</td>
                                 </tr>
+                                <tr>
+                                  <th
+                                    scope="row"
+                                    style={{ width: "300px" }}
+                                    className={"text-capitalize"}
+                                  >
+                                    Số điện thoại :
+                                  </th>
+                                  <td>{`(+${bookingDetail.user.phone.slice(
+                                    1,
+                                    3
+                                  )}) ${bookingDetail.user.phone.slice(
+                                    3
+                                  )}`}</td>
+                                </tr>
+                                <tr>
+                                  <th
+                                    scope="row"
+                                    style={{ width: "300px" }}
+                                    className={"text-capitalize"}
+                                  >
+                                    E-mail :
+                                  </th>
+                                  <td>{bookingDetail.user.email}</td>
+                                </tr>
+                              </tbody>
+                            </Table>
+                          </div>
+                        </Col>
+                        <Col xl="6">
+                          <div className="table-responsive">
+                            <Table className="table table-borderless  mb-0">
+                              <tbody>
                                 <tr>
                                   <th
                                     scope="row"
@@ -411,53 +463,10 @@ const BookingDetails = props => {
                             </Table>
                           </div>
                         </Col>
-                        <Col xl="6">
-                          <div className="table-responsive">
-                            <Table className="table table-borderless  mb-0">
-                              <tbody>
-                                <tr>
-                                  <th
-                                    scope="row"
-                                    style={{ width: "300px" }}
-                                    className={"text-capitalize"}
-                                  >
-                                    Tên khách:
-                                  </th>
-                                  <td>{bookingDetail.user.fullname}</td>
-                                </tr>
-                                <tr>
-                                  <th
-                                    scope="row"
-                                    style={{ width: "300px" }}
-                                    className={"text-capitalize"}
-                                  >
-                                    Số điện thoại :
-                                  </th>
-                                  <td>{`(+${bookingDetail.user.phone.slice(
-                                    1,
-                                    3
-                                  )}) ${bookingDetail.user.phone.slice(
-                                    3
-                                  )}`}</td>
-                                </tr>
-                                <tr>
-                                  <th
-                                    scope="row"
-                                    style={{ width: "300px" }}
-                                    className={"text-capitalize"}
-                                  >
-                                    E-mail :
-                                  </th>
-                                  <td>{bookingDetail.user.email}</td>
-                                </tr>
-                              </tbody>
-                            </Table>
-                          </div>
-                        </Col>
                       </Row>
                     </CardBody>
                     <CardBody>
-                      <CardTitle className="mt-3">Phương tiện</CardTitle>
+                      <CardTitle>Phương tiện</CardTitle>
                       <CardSubtitle className="mb-3">
                         Thông về phương tiện và tình trạng
                       </CardSubtitle>
@@ -507,10 +516,9 @@ const BookingDetails = props => {
                                     Tình trạng khách mô tả :
                                   </th>
                                   <td>
-                                    {map(
-                                      bookingDetail.symptoms,
-                                      symptom => symptom.name
-                                    )}
+                                    {bookingDetail.symptoms
+                                      .map(symptom => symptom.name)
+                                      .join(", ")}
                                   </td>
                                 </tr>
                               </tbody>
@@ -519,7 +527,7 @@ const BookingDetails = props => {
                         </Col>
                       </Row>
                     </CardBody>
-                  </Card> */}
+                  </Card>
                   <Row className="mt-4">
                     <Col sm="6">
                       <Link
