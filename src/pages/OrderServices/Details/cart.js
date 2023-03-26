@@ -2,11 +2,14 @@ import React, { useState } from "react"
 import { Link } from "react-router-dom"
 import toastr from "toastr"
 import "toastr/build/toastr.min.css"
+import classnames from "classnames"
+
 import PropTypes from "prop-types"
 import {
   Button,
   Card,
   CardBody,
+  CardSubtitle,
   CardTitle,
   Col,
   Input,
@@ -22,7 +25,7 @@ import {
   postCheckOut as checkOutServices,
 } from "store/order-services/actions"
 
-const Cart = ({ details, services, healthCarRecord, order }) => {
+const Cart = ({ details, services }) => {
   const dispatch = useDispatch()
 
   // const [inputFields, setInputFields] = useState(() => {
@@ -85,19 +88,15 @@ const Cart = ({ details, services, healthCarRecord, order }) => {
     hideMethod: "fadeOut",
   }
 
-  const handleConfirm = () => {
-    const services = {
-      orderServiceDetails: inputFields,
-      paymentMethod: 1,
-    }
-    dispatch(onConfirmPaidServices(id, services))
-    console.log(services)
-    toastr.success("Xác nhận thành công dịch vụ của đơn", "#" + details.code)
-    dispatch(onGetOrderServiceDetail(details.id))
-  }
-
   // const handleConfirm = () => {
-  //   console.log(inputFields)
+  //   const services = {
+  //     orderServiceDetails: inputFields,
+  //     paymentMethod: 1,
+  //   }
+  //   dispatch(onConfirmPaidServices(id, services))
+  //   console.log(services)
+  //   toastr.success("Xác nhận thành công dịch vụ của đơn", "#" + details.code)
+  //   dispatch(onGetOrderServiceDetail(details.id))
   // }
 
   const handleCheckOut = () => {
@@ -110,131 +109,89 @@ const Cart = ({ details, services, healthCarRecord, order }) => {
     dispatch(onGetOrderServiceDetail(details.id))
   }
 
-  const confirmedServices = services.filter(
-    service => service.isConfirmed === true
-  )
-  const unconfirmedServices = services.filter(
-    service => service.isConfirmed === false
-  )
-
   return (
     <React.Fragment>
-      <Row className="mt-4">
+      <Row className="mt-3">
         <Col xl="8">
           <Card>
-            {order.status === 3 || order.status === 4 || order.status === 5 ? (
-              <CardBody>
-                <div className="d-flex">
-                  <div className="flex-grow-1 overflow-hidden">
-                    <h5 className="text-truncate font-size-15">
-                      Những dịch vụ khách đã xác nhận và thanh toán
-                    </h5>
-                    <p className="text-muted">
-                      Thông tin chi tiết sau khi khách xác nhận và thanh toán
-                      các dịch vụ
-                    </p>
-                  </div>
-                </div>
-
-                <h5 className="font-size-15 mt-4">Kết quả chuẩn đoán :</h5>
-
-                <p className="text-muted">{healthCarRecord.symptom}</p>
-
-                <div className="text-muted mt-4">
-                  {confirmedServices.map((service, index) => (
-                    <p key={index}>
-                      <i className="mdi mdi-chevron-right text-primary me-1" />{" "}
-                      {service.item.name}
-                    </p>
-                  ))}
-                </div>
-
-                {unconfirmedServices.length > 0 && (
-                  <>
-                    <h5>Dịch vụ không xác nhận</h5>
-                    {unconfirmedServices.map((service, index) => (
-                      <p key={index}>
-                        <i className="mdi mdi-chevron-right text-primary me-1" />{" "}
-                        {service.item.name}
-                      </p>
-                    ))}
-                  </>
-                )}
-                {order.status === 4 ? (
-                  <Row className="mt-4">
-                    <Col sm="12">
-                      <div className="text-sm-end mt-2 mt-sm-0">
-                        <Button
-                          onClick={handleCheckOut}
-                          className="btn btn-success"
-                        >
-                          {/* <i className="mdi mdi-cart-arrow-right me-1" /> */}
-                          Khách đã nhận lại xe{" "}
-                        </Button>
-                      </div>
-                    </Col>
-                  </Row>
-                ) : (
-                  ""
-                )}
-              </CardBody>
-            ) : (
-              <CardBody>
-                <div className="table-responsive">
-                  <CardTitle className="mb-3">
-                    Những dịch vụ được kỹ thuật viên gợi ý
-                  </CardTitle>
-                  <div className="mb-5">
-                    <h5 className="font-size-15 mt-4">Ghi chú :</h5>
-                    <p className="text-muted">{healthCarRecord.symptom}</p>
-                  </div>
-                  <Table className="table align-middle mb-0 table-nowrap">
-                    <thead className="table-light">
-                      <tr>
-                        <th>Dịch vụ</th>
-                        <th colSpan="2">Giá tiền</th>
+            <CardBody>
+              <div className="table-responsive">
+                <CardTitle className="mb-3">
+                  Những dịch vụ đã được xác nhận và thanh toán
+                </CardTitle>
+                {/* <div className="mb-5">
+                  <h5 className="font-size-15 mt-4">Ghi chú :</h5>
+                  <p className="text-muted">{healthCarRecord.symptom}</p>
+                </div> */}
+                <Table className="table align-middle mb-0 table-nowrap">
+                  <thead className="table-light">
+                    <tr>
+                      <th>Dịch vụ</th>
+                      <th colSpan="2">Giá tiền</th>
+                      {/* <th>Tổng</th> */}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {services.map(service => (
+                      <tr key={service.id}>
+                        <td>
+                          <h5 className="font-size-14 text-truncate">
+                            <Link to="#" className="text-dark">
+                              {service.item.name}
+                            </Link>
+                          </h5>
+                          <p className="mb-0">
+                            {/* Color :{" "} */}
+                            <span className="fw-medium">
+                              {service.item.category}
+                            </span>
+                          </p>
+                        </td>
+                        <td>{service.price.toLocaleString()}đ</td>
+                        {/* <td>{service.price}đ</td> */}
+                        {/* <td>
+                          <Link
+                            to="#"
+                            onClick={() => removeCartItem(product.id)}
+                            className="action-icon text-danger"
+                          >
+                            {" "}
+                            <i className="mdi mdi-trash-can font-size-18" />
+                          </Link>
+                        </td> */}
                       </tr>
-                    </thead>
-                    <tbody>
-                      {services.map((service, index) => (
-                        <tr key={index}>
-                          <td>
-                            <h5 className="font-size-14 text-truncate">
-                              <Link to={"#"} className="text-dark">
-                                {service.item.name}
-                              </Link>
-                            </h5>
-                          </td>
-                          <td>{service.price}₫</td>
-                          <td>
-                            <input
-                              type="checkbox"
-                              className="form-check-input"
-                              id={service.id}
-                              defaultChecked={service.isConfirmed}
-                              onChange={handleInputChange}
-                            />
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </Table>
-                </div>
-                <Row className="mt-4">
-                  <Col sm="12">
-                    <div className="text-sm-end mt-2 mt-sm-0">
-                      <Button
-                        onClick={handleConfirm}
-                        className="btn btn-success"
-                      >
-                        <i className="mdi mdi-cart-arrow-right me-1" /> Xác nhận
-                        và thanh toán
-                      </Button>
-                    </div>
-                  </Col>
-                </Row>
-              </CardBody>
-            )}
+                    ))}
+                    {/* {healthCarRecord.healthCarRecordProblems.map(
+                        (problem, problemIndex) =>
+                        
+                          problem.items.map((item, itemIndex) => (
+                         
+                            <tr key={`${problemIndex}-${itemIndex}`}>
+                              <td>
+                                <h5 className="font-size-14 text-truncate">
+                                  <Link to={"#"} className="text-dark">
+                                    {item.name}
+                                  </Link>
+                                </h5>
+                              </td>
+                              <td>{item.presentPrice}₫</td>
+                            
+                              /* <td>
+        <input
+          type="checkbox"
+          className="form-check-input"
+          id={`${problemIndex}-${itemIndex}`}
+          defaultChecked={item.isConfirmed}
+          onChange={handleInputChange}
+        />
+      </td>
+                            </tr>
+                          ))
+                      )} */}
+                  </tbody>
+                </Table>
+              </div>
+            </CardBody>
           </Card>
         </Col>
         <Col xl="4">
@@ -248,12 +205,12 @@ const Cart = ({ details, services, healthCarRecord, order }) => {
                     {services.map((service, index) => (
                       <tr key={index}>
                         <td>{service.item.name} :</td>
-                        <td>{service.price}</td>
+                        <td>{service.price.toLocaleString()}</td>
                       </tr>
                     ))}
                     <tr>
                       <th>Total :</th>
-                      <th>{total}₫</th>
+                      <th>{total.toLocaleString()}₫</th>
                     </tr>
                   </tbody>
                 </Table>

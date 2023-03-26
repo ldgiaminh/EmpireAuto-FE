@@ -25,22 +25,15 @@ import Select from "react-select"
 //Import Breadcrumb
 import Breadcrumbs from "../../../components/Common/Breadcrumb"
 
-import {
-  getOrderServicesDetails as onGetOrderServiceDetail,
-  putOrderServices as onRecommendService,
-  putAssignExperts as assignExpert,
-  getStatusLog as onGetStatusLog,
-} from "store/order-services/actions"
+import { getOrderServicesDetails as onGetOrderServiceDetail } from "store/order-services/actions"
 
 import { getExperts as onGetExpert } from "store/actions"
 
 //redux
 import { useSelector, useDispatch } from "react-redux"
-import CardUser from "./card-user"
-import MiniWidget from "./mini-widget"
-import AssignTechnicians from "./assign-technicians"
+
 import Cart from "./cart"
-import Symptoms from "./symptom"
+import CarRecord from "./health-car-record"
 
 const OrderServiceDetail = props => {
   //meta title
@@ -80,11 +73,11 @@ const OrderServiceDetail = props => {
     dispatch(onGetExpert())
   }, [onGetExpert])
 
-  useEffect(() => {
-    if (params && params.id) {
-      dispatch(onGetStatusLog(params.id))
-    }
-  }, [params, onGetStatusLog])
+  // useEffect(() => {
+  //   if (params && params.id) {
+  //     dispatch(onGetStatusLog(params.id))
+  //   }
+  // }, [params, onGetStatusLog])
 
   // Function for Create Input Fields
   function handleAddFields() {
@@ -174,11 +167,10 @@ const OrderServiceDetail = props => {
                 <Col>
                   <Card>
                     <CardBody>
-                      <CardTitle>Thông tin tổng</CardTitle>
+                      <CardTitle>THÔNG TIN TỔNG</CardTitle>
                       <CardSubtitle className="mb-3">
-                        Chi tiết về đặt lịch và thông tin khách hàng
+                        Chi tiết về đơn hàng và thông tin khách hàng
                       </CardSubtitle>
-
                       <Row>
                         <Col lg="6">
                           <div className="table-responsive">
@@ -273,16 +265,23 @@ const OrderServiceDetail = props => {
                                     style={{ width: "300px" }}
                                     className={"text-capitalize"}
                                   >
+                                    Số tiền từ đặt lịch :
+                                  </th>
+                                  <td>
+                                    {orderServicesDetails.prepaidFromBooking.toLocaleString()}
+                                    ₫
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <th
+                                    scope="row"
+                                    style={{ width: "300px" }}
+                                    className={"text-capitalize"}
+                                  >
                                     Tình trạng khách mô tả :
                                   </th>
                                   <td>
-                                    {Array.isArray(
-                                      orderServicesDetails.receivingStatus
-                                    )
-                                      ? orderServicesDetails.receivingStatus.join(
-                                          ", "
-                                        )
-                                      : ""}
+                                    {orderServicesDetails.receivingStatus}
                                   </td>
                                 </tr>
                                 <tr>
@@ -294,7 +293,7 @@ const OrderServiceDetail = props => {
                                     Kỹ thuật viên chính :
                                   </th>
                                   <td>
-                                    {orderServicesDetails.expert.fullname !=
+                                    {orderServicesDetails.expert?.fullname !=
                                     null
                                       ? orderServicesDetails.expert.fullname
                                       : "Chưa có kỹ thuật viên chính"}
@@ -306,34 +305,19 @@ const OrderServiceDetail = props => {
                         </Col>
                       </Row>
                     </CardBody>
+                    {orderServicesDetails.healthCarRecord != null ? (
+                      <CarRecord
+                        record={orderServicesDetails.healthCarRecord}
+                      />
+                    ) : (
+                      ""
+                    )}
                   </Card>
                 </Col>
               </Row>
-              {/* <Row>
-                <CardUser information={orderServicesDetails} />
-
-                <Col xl="8">
-                  <Row>
-                    <MiniWidget order={orderServicesDetails} />
-                  </Row>
-
-                  <Row>
-                    <Symptoms symptoms={orderServicesDetails} />
-                    <AssignTechnicians
-                      order={orderServicesDetails}
-                      expert={users}
-                    />
-                  </Row>
-                </Col>
-              </Row> */}
               <Row>
-                {orderServicesDetails.healthCarRecord != null ? (
-                  <Cart
-                    details={orderServicesDetails}
-                    services={orderServicesDetails.orderServiceDetails}
-                    healthCarRecord={orderServicesDetails.healthCarRecord}
-                    order={orderServicesDetails}
-                  />
+                {orderServicesDetails.orderServiceDetails.length > 0 ? (
+                  <Cart services={orderServicesDetails.orderServiceDetails} />
                 ) : (
                   ""
                 )}

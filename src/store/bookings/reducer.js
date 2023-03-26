@@ -13,12 +13,15 @@ import {
   CHECKIN_BOOKING_SUCCESS,
   GET_BOOKING_LIST_BY_DATE_SUCCESS,
   GET_BOOKING_LIST_BY_DATE_FAIL,
+  CHECKIN_QRCODE_SUCCESS,
+  CHECKIN_QRCODE_FAIL,
 } from "./actionTypes"
 
 const INIT_STATE = {
   bookings: [],
   bookingDetail: {},
   error: {},
+  dataDetail: {},
 }
 
 const bookings = (state = INIT_STATE, action) => {
@@ -67,6 +70,18 @@ const bookings = (state = INIT_STATE, action) => {
       }
 
     case CHECKIN_BOOKING_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      }
+
+    case CHECKIN_QRCODE_SUCCESS:
+      return {
+        ...state,
+        dataDetail: action.payload,
+      }
+
+    case CHECKIN_QRCODE_FAIL:
       return {
         ...state,
         error: action.payload,

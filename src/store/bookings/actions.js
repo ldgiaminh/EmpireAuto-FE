@@ -20,6 +20,9 @@ import {
   GET_BOOKING_LIST_BY_DATE,
   GET_BOOKING_LIST_BY_DATE_FAIL,
   GET_BOOKING_LIST_BY_DATE_SUCCESS,
+  CHECKIN_QRCODE,
+  CHECKIN_QRCODE_SUCCESS,
+  CHECKIN_QRCODE_FAIL,
 } from "./actionTypes"
 
 /*
@@ -100,6 +103,27 @@ export const checkinBookingSuccess = bookingDetail => ({
 
 export const checkinBookingFail = error => ({
   type: CHECKIN_BOOKING_FAIL,
+  error,
+})
+
+/*
+================================================
+CHECK-IN QR CODE
+================================================
+*/
+
+export const checkinQRCode = data => ({
+  type: CHECKIN_QRCODE,
+  payload: data,
+})
+
+export const checkinQRCodeSuccess = dataDetail => ({
+  type: CHECKIN_QRCODE_SUCCESS,
+  payload: dataDetail,
+})
+
+export const checkinQRCodeFail = error => ({
+  type: CHECKIN_QRCODE_FAIL,
   error,
 })
 

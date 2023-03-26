@@ -2,31 +2,40 @@ import React, { useState } from "react"
 import QrReader from "react-qr-reader"
 import toastr from "toastr"
 import "toastr/build/toastr.min.css"
-import { checkinBooking as checkInBooking } from "store/actions"
+import { useDispatch } from "react-redux"
+import uuid from "uuid"
+
+import {
+  checkinBooking as checkInBooking,
+  checkinQRCode as checkInQRCode,
+} from "store/actions"
+import { ref, set } from "firebase/database"
+import { db } from "helpers/firebase"
 
 const QrScanner = props => {
   const { history } = props
-
+  const dispatch = useDispatch()
   const [qrData, setQRData] = useState("")
   const [showScanner, setShowScanner] = useState(true)
   const [bookingId, setBookingId] = useState(null)
   const [errorStatus, setErrorStatus] = useState(null)
+  const obj = JSON.parse(localStorage.getItem("authUser"))
 
   const handleScan = data => {
     if (data) {
       setShowScanner(false)
       setQRData(data)
-      //Call API close generation
+      //dispatch(checkInQRCode(data))
+      //goToCheckin(data.bookingId)
       fetch(
-        `https://empire-api.azurewebsites.net/api/v1/booking-qrcode/close-generation?qrcode=${encodeURIComponent(
+        `https://dev-empire-api.azurewebsites.net/api/v1/booking-qrcode/close-generation?qrcode=${encodeURIComponent(
           data
         )}`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI4ZTc1ZjI2ZS0wNGU1LTRlNzctOWNkZi05YWM1MWM2MGU4M2IiLCJuYW1lIjoiVGjDtG5nIEhvw6BuZyIsIm5hbWVpZCI6IjciLCJyb2xlIjoiVVMiLCJuYmYiOjE2NzcxMzk5NDQsImV4cCI6MTcwODY3NTk0NCwiaWF0IjoxNjc3MTM5OTQ0fQ.CKR7ILcdt9KrGr-I6kxugrQ8jBeaMuTlDLPF8kW53EQ",
+            Authorization: "Bearer " + obj.accessToken,
           },
         }
       )
@@ -38,20 +47,18 @@ const QrScanner = props => {
           return response.json()
         })
         .then(data => {
-          setBookingId(data.bookingId)
-          //Redirect to booking detail
-          goToCheckin(data.bookingId)
+          setBookingId(data.id)
+          goToCheckin(data.id, data.code, data.user.id)
         })
         .catch(error => {
           console.error("Error:", error)
         })
+      console.log(data)
     }
   }
-
   const handleError = err => {
     console.error(err)
   }
-
   const toggleScanner = () => {
     setShowScanner(!showScanner)
   }
@@ -74,8 +81,21 @@ const QrScanner = props => {
     hideMethod: "fadeOut",
   }
 
-  const goToCheckin = id => {
+  const now = new Date()
+  const timeZoneOffset = 7 // Vietnam is GMT+7
+
+  const vietnamDate = new Date(now.getTime() + timeZoneOffset * 60 * 60 * 1000)
+  const isoDateTime = vietnamDate.toISOString()
+
+  const goToCheckin = (id, code, userId) => {
     dispatch(checkInBooking(id))
+    const notificationId = uuid.v4()
+    set(ref(db, `users/${userId}/notifications/${notificationId}`), {
+      isRead: "false",
+      message: "Check-in thành công #" + code,
+      time: isoDateTime,
+      title: "Bạn đã check-in thành công",
+    })
     toastr.success("Check-in thành công", "Thành công")
     history.push(`/booking-detail/${id}`)
   }

@@ -47,11 +47,11 @@ const OrderSerives = props => {
   document.title = "Theo dõi tiến trình | Empire Admin"
 
   const statusServices = [
-    { id: "0", title: "Chờ phân công" },
-    { id: "1", title: "Đã có kỹ thuật viên" },
-    { id: "2", title: "Đã chuẩn đoán" },
-    { id: "3", title: "Xác nhận và thanh toán" },
-    { id: "4", title: "Chờ khách lấy xe" },
+    { id: "0", title: "Phân công" },
+    { id: "1", title: "Đang chuẩn đoán" },
+    { id: "2", title: "Chờ xác nhận và thanh toán" },
+    { id: "3", title: "Đang thực hiện" },
+    { id: "4", title: "Chờ khách nhận xe" },
     { id: "5", title: "Hoàn thành" },
     { id: "-1", title: "Hủy" },
   ]
@@ -131,7 +131,7 @@ const OrderSerives = props => {
           return (
             <Button
               type="button"
-              color="primary"
+              color="warning"
               className="btn-sm btn-rounded"
               onClick={() =>
                 history.push(
@@ -277,7 +277,7 @@ const OrderSerives = props => {
                         className="custom-header-css"
                       />
                     </TabPane>
-                    <TabPane tabId="1" id="diagnosing">
+                    <TabPane tabId="1" id="confirmPrice">
                       <TableContainer
                         columns={columns}
                         data={orderServicess}
@@ -288,7 +288,7 @@ const OrderSerives = props => {
                         className="custom-header-css"
                       />
                     </TabPane>
-                    <TabPane tabId="2" id="pending">
+                    <TabPane tabId="2" id="confirmPaid">
                       <TableContainer
                         columns={columns}
                         data={orderServicess}

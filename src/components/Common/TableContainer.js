@@ -189,21 +189,7 @@ const TableContainer = ({
             </div>
           </Col>
         )}
-        {isAddBookingOptions && (
-          <Col sm="7">
-            <div className="text-sm-end">
-              <Button
-                type="button"
-                color="success"
-                className="btn-rounded mb-2 me-2"
-                onClick={handleBookingClick}
-              >
-                <i className="mdi mdi-plus me-1" />
-                Thêm đặt lịch
-              </Button>
-            </div>
-          </Col>
-        )}
+
         {isCheckin && (
           <Col sm="7">
             <div className="text-sm-end">

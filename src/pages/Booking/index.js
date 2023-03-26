@@ -306,24 +306,24 @@ const BookingList = props => {
           )
         },
       },
-      {
-        Header: "Check-in",
-        accessor: "action",
-        disableFilters: true,
-        Cell: cellProps => {
-          return (
-            <Button
-              type="button"
-              color="success"
-              onClick={() => {
-                toggleViewModal(cellProps.row.original)
-              }}
-            >
-              Check-in
-            </Button>
-          )
-        },
-      },
+      // {
+      //   Header: "Check-in",
+      //   accessor: "action",
+      //   disableFilters: true,
+      //   Cell: cellProps => {
+      //     return (
+      //       <Button
+      //         type="button"
+      //         color="success"
+      //         onClick={() => {
+      //           toggleViewModal(cellProps.row.original)
+      //         }}
+      //       >
+      //         Check-in
+      //       </Button>
+      //     )
+      //   },
+      // },
     ],
     []
   )

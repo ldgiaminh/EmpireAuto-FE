@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import PropTypes from "prop-types"
 import { Link, withRouter } from "react-router-dom"
+import uuid from "uuid"
 import { connect } from "react-redux"
 import { isEmpty, map } from "lodash"
 import toastr from "toastr"
@@ -92,25 +93,18 @@ const BookingDetails = props => {
     hideMethod: "fadeOut",
   }
 
-  var today = new Date(),
-    date =
-      today.getFullYear() +
-      "-" +
-      (today.getMonth() + 1) +
-      "-" +
-      today.getDate() +
-      " " +
-      today.getHours() +
-      ":" +
-      today.getMinutes() +
-      ":" +
-      today.getSeconds()
+  const now = new Date()
+  const timeZoneOffset = 7 // Vietnam is GMT+7
+
+  const vietnamDate = new Date(now.getTime() + timeZoneOffset * 60 * 60 * 1000)
+  const isoDateTime = vietnamDate.toISOString()
 
   const sendNotification = userId => {
-    set(ref(db, `users/${userId}/notifications`), {
-      isRead: false,
+    const notificationId = uuid.v4()
+    set(ref(db, `users/${userId}/notifications/${notificationId}`), {
+      isRead: "false",
       message: "Check-in thành công #" + bookingDetail.code,
-      time: new Date().toISOString(),
+      time: isoDateTime,
       title: "Bạn đã check-in thành công",
     })
   }
@@ -169,6 +163,22 @@ const BookingDetails = props => {
     hour12: false,
   })
   const formattedDateTime2 = `${formattedDate2} - ${formattedTime2}`
+
+  /* ARRIVED DATE */
+  const PaidDate = bookingDetail.transaction?.transactionDate
+  const paidDate = new Date(PaidDate)
+  const formattedDate3 = paidDate.toLocaleDateString("vi-VN", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  })
+  const formattedTime3 = paidDate.toLocaleTimeString("vi-VN", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  })
+  const formattedDateTime3 = `${formattedTime3} - ${formattedDate3}`
 
   /* ========================================== RENDER ==============================================*/
   return (
@@ -411,38 +421,6 @@ const BookingDetails = props => {
                                   </th>
                                   <td>{bookingDetail.user.email}</td>
                                 </tr>
-                              </tbody>
-                            </Table>
-                          </div>
-                        </Col>
-                        <Col xl="6">
-                          <div className="table-responsive">
-                            <Table className="table table-borderless  mb-0">
-                              <tbody>
-                                <tr>
-                                  <th
-                                    scope="row"
-                                    style={{ width: "300px" }}
-                                    className={"text-capitalize"}
-                                  >
-                                    Thời gian tạo lịch :
-                                  </th>
-                                  <td>{formattedDateTime1}</td>
-                                </tr>
-                                <tr>
-                                  <th
-                                    scope="row"
-                                    style={{ width: "300px" }}
-                                    className={"text-capitalize"}
-                                  >
-                                    Thời gian check-in :
-                                  </th>
-                                  <td>
-                                    {bookingDetail.arrivedDateTime != null
-                                      ? formattedDateTime2
-                                      : "Xe chưa đến ga-ra"}
-                                  </td>
-                                </tr>
                                 <tr>
                                   <th
                                     scope="row"
@@ -458,6 +436,80 @@ const BookingDetails = props => {
                                         : "Chưa đến"
                                       : "Hủy"}
                                   </td>
+                                </tr>
+                              </tbody>
+                            </Table>
+                          </div>
+                        </Col>
+                        <Col xl="6">
+                          <div className="table-responsive">
+                            <Table className="table table-borderless  mb-0">
+                              <tbody>
+                                {/* <tr>
+                                  <th
+                                    scope="row"
+                                    style={{ width: "300px" }}
+                                    className={"text-capitalize"}
+                                  >
+                                    Thời gian tạo lịch :
+                                  </th>
+                                  <td>{formattedDateTime1}</td>
+                                </tr> */}
+                                <tr>
+                                  <th
+                                    scope="row"
+                                    style={{ width: "300px" }}
+                                    className={"text-capitalize"}
+                                  >
+                                    Thời gian check-in :
+                                  </th>
+                                  <td>
+                                    {bookingDetail.arrivedDateTime != null
+                                      ? formattedDateTime2
+                                      : "Xe chưa đến ga-ra"}
+                                  </td>
+                                </tr>
+                                {bookingDetail.transaction.total > 0 ? (
+                                  <tr>
+                                    <th
+                                      scope="row"
+                                      style={{ width: "300px" }}
+                                      className={"text-capitalize"}
+                                    >
+                                      Số tiền :
+                                    </th>
+                                    <td>
+                                      {bookingDetail.transaction.total.toLocaleString()}{" "}
+                                      ₫
+                                    </td>
+                                  </tr>
+                                ) : (
+                                  ""
+                                )}
+                                <tr>
+                                  <th
+                                    scope="row"
+                                    style={{ width: "300px" }}
+                                    className={"text-capitalize"}
+                                  >
+                                    Phương thức thanh toán :
+                                  </th>
+                                  <td>
+                                    {
+                                      bookingDetail.transaction.paymentMethod
+                                        .name
+                                    }
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <th
+                                    scope="row"
+                                    style={{ width: "300px" }}
+                                    className={"text-capitalize"}
+                                  >
+                                    Thanh toán lúc :
+                                  </th>
+                                  <td>{formattedDateTime3}</td>
                                 </tr>
                               </tbody>
                             </Table>
