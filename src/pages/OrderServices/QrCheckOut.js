@@ -5,15 +5,12 @@ import "toastr/build/toastr.min.css"
 import { useDispatch } from "react-redux"
 import uuid from "uuid"
 
-import {
-  checkinBooking as checkInBooking,
-  checkinQRCode as checkInQRCode,
-} from "store/actions"
+import { postCheckOut as checkOutOrder } from "store/actions"
 import { ref, set } from "firebase/database"
 import { db } from "helpers/firebase"
 import { useSelector } from "react-redux"
 
-const QrScanner = props => {
+const QrCheckOut = props => {
   const { history } = props
   const dispatch = useDispatch()
   const [qrData, setQRData] = useState("")
@@ -31,9 +28,8 @@ const QrScanner = props => {
     if (data) {
       setShowScanner(false)
       setQRData(data)
-
       fetch(
-        `https://dev-empire-api.azurewebsites.net/api/v1/booking-qrcode/close-generation?qrcode=${encodeURIComponent(
+        `https://dev-empire-api.azurewebsites.net/api/v1/order-services/close-checkout-qrcode-generation?qrCode=${encodeURIComponent(
           data
         )}`,
         {
@@ -52,12 +48,13 @@ const QrScanner = props => {
           return response.json()
         })
         .then(data => {
-          setBookingId(data.id)
-          goToCheckin(data.id, data.code, data.user.id)
+          //   console.log(data)
+          checkOutOrderServices(data.orderServiceId)
         })
         .catch(error => {
           console.error("Error:", error)
         })
+      //   console.log(data)
     }
   }
   const handleError = err => {
@@ -91,17 +88,21 @@ const QrScanner = props => {
   const vietnamDate = new Date(now.getTime() + timeZoneOffset * 60 * 60 * 1000)
   const isoDateTime = vietnamDate.toISOString()
 
-  const goToCheckin = (id, code, userId) => {
-    dispatch(checkInBooking(id, isAssign))
-    const notificationId = uuid.v4()
-    set(ref(db, `users/${userId}/notifications/${notificationId}`), {
-      isRead: "false",
-      message: "Check-in thành công #" + code,
-      time: isoDateTime,
-      title: "Bạn đã check-in thành công",
-    })
+  const checkOutOrderServices = id => {
+    const checkOut = {
+      orderServiceId: id,
+      orderServiceStatusId: 5,
+    }
+    dispatch(checkOutOrder(checkOut))
+    // const notificationId = uuid.v4()
+    // set(ref(db, `users/${userId}/notifications/${notificationId}`), {
+    //   isRead: "false",
+    //   message: "Đã nhận phương tiện " + code,
+    //   time: isoDateTime,
+    //   title: "Hoàn tất dịch vụ tại Empire Garage",
+    // })
     toastr.success("Check-in thành công", "Thành công")
-    history.push(`/booking-detail/${id}`)
+    history.push(`/order-service-detail/${id}`)
   }
 
   return (
@@ -121,4 +122,4 @@ const QrScanner = props => {
   )
 }
 
-export default QrScanner
+export default QrCheckOut

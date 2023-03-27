@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react"
 import PropTypes from "prop-types"
 import { Link, withRouter } from "react-router-dom"
 import { isEmpty, map } from "lodash"
+import toastr from "toastr"
+import "toastr/build/toastr.min.css"
 
 import {
   Button,
@@ -25,9 +27,11 @@ import Select from "react-select"
 //Import Breadcrumb
 import Breadcrumbs from "../../../components/Common/Breadcrumb"
 
-import { getOrderServicesDetails as onGetOrderServiceDetail } from "store/order-services/actions"
-
-import { getExperts as onGetExpert } from "store/actions"
+import {
+  getOrderServicesDetails as onGetOrderServiceDetail,
+  getExperts as onGetExpert,
+  putAssignExperts as assignExpert,
+} from "store/actions"
 
 //redux
 import { useSelector, useDispatch } from "react-redux"
@@ -150,6 +154,46 @@ const OrderServiceDetail = props => {
   })
   const formattedDateTime = ` ${formattedTime} - ${formattedDate}`
 
+  function handleSelectGroup(selectedGroup) {
+    setselectedGroup(selectedGroup)
+  }
+
+  const optionGroup = users.map(ex => ({
+    label: ex.fullname,
+    value: ex.id,
+  }))
+
+  toastr.options = {
+    closeButton: false,
+    debug: false,
+    newestOnTop: true,
+    progressBar: false,
+    positionClass: "toast-top-right",
+    preventDuplicates: false,
+    onclick: null,
+    showDuration: "300",
+    hideDuration: "1000",
+    timeOut: "5000",
+    extendedTimeOut: "1000",
+    showEasing: "swing",
+    hideEasing: "linear",
+    showMethod: "fadeIn",
+    hideMethod: "fadeOut",
+  }
+
+  const handleAssignExpert = id => {
+    const exId = selectedGroup.value
+    if (id) {
+      dispatch(assignExpert(id, exId))
+      toastr.success("Đã phân công cho " + selectedGroup.label, "Thành công")
+      dispatch(onGetOrderServiceDetail(id))
+    }
+  }
+
+  const handleCheckOutClick = () => {
+    history.push("/scanner-checkout")
+  }
+
   return (
     <>
       <div className="page-content">
@@ -167,10 +211,29 @@ const OrderServiceDetail = props => {
                 <Col>
                   <Card>
                     <CardBody>
-                      <CardTitle>THÔNG TIN TỔNG</CardTitle>
-                      <CardSubtitle className="mb-3">
-                        Chi tiết về đơn hàng và thông tin khách hàng
-                      </CardSubtitle>
+                      <div className="d-flex justify-content-between">
+                        <div>
+                          <CardTitle>THÔNG TIN TỔNG</CardTitle>
+                          <CardSubtitle className="mb-3">
+                            Chi tiết về đơn hàng và thông tin khách hàng
+                          </CardSubtitle>
+                        </div>
+
+                        {orderServicesDetails.status === 4 ? (
+                          <div className="ml-auto">
+                            <Button
+                              type="button"
+                              color="success"
+                              onClick={handleCheckOutClick}
+                            >
+                              <i className="mdi mdi-qrcode-scan me-1" />
+                              Quét mã nhận xe
+                            </Button>
+                          </div>
+                        ) : (
+                          " "
+                        )}
+                      </div>
                       <Row>
                         <Col lg="6">
                           <div className="table-responsive">
@@ -245,7 +308,7 @@ const OrderServiceDetail = props => {
                             </Table>
                           </div>
                         </Col>
-                        <Col lg="6">
+                        <Col xl="6">
                           <div className="table-responsive">
                             <Table className="table table-borderless  mb-0">
                               <tbody>
@@ -292,12 +355,35 @@ const OrderServiceDetail = props => {
                                   >
                                     Kỹ thuật viên chính :
                                   </th>
-                                  <td>
-                                    {orderServicesDetails.expert?.fullname !=
-                                    null
-                                      ? orderServicesDetails.expert.fullname
-                                      : "Chưa có kỹ thuật viên chính"}
-                                  </td>
+                                  {orderServicesDetails.expert != null ? (
+                                    <td>
+                                      {orderServicesDetails.expert.fullname}
+                                    </td>
+                                  ) : (
+                                    <td>
+                                      <div className="form-group">
+                                        <Select
+                                          value={selectedGroup}
+                                          onChange={handleSelectGroup}
+                                          options={optionGroup}
+                                          classNamePrefix="select2-selection"
+                                          placeholder="Chọn kỹ thuật viên"
+                                          required={true}
+                                        />
+                                        <Button
+                                          onClick={() =>
+                                            handleAssignExpert(params.id)
+                                          }
+                                          type="button"
+                                          color="primary"
+                                          className="w-md mt-2"
+                                          disabled={!selectedGroup}
+                                        >
+                                          Phân công
+                                        </Button>
+                                      </div>
+                                    </td>
+                                  )}
                                 </tr>
                               </tbody>
                             </Table>

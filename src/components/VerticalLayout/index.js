@@ -81,23 +81,23 @@ const Layout = props => {
     dispatch(changeLayout("vertical"))
   }, [dispatch])
 
-  useEffect(() => {
-    //init body click event fot toggle rightbar
-    document.body.addEventListener("click", hideRightbar, true)
+  // useEffect(() => {
+  //   //init body click event fot toggle rightbar
+  //   document.body.addEventListener("click", hideRightbar, true)
 
-    if (isPreloader === true) {
-      document.getElementById("preloader").style.display = "block"
-      document.getElementById("status").style.display = "block"
+  //   if (isPreloader === true) {
+  //     document.getElementById("preloader").style.display = "block"
+  //     document.getElementById("status").style.display = "block"
 
-      setTimeout(function () {
-        document.getElementById("preloader").style.display = "none"
-        document.getElementById("status").style.display = "none"
-      }, 2500)
-    } else {
-      document.getElementById("preloader").style.display = "none"
-      document.getElementById("status").style.display = "none"
-    }
-  }, [isPreloader])
+  //     setTimeout(function () {
+  //       document.getElementById("preloader").style.display = "none"
+  //       document.getElementById("status").style.display = "none"
+  //     }, 2500)
+  //   } else {
+  //     document.getElementById("preloader").style.display = "none"
+  //     document.getElementById("status").style.display = "none"
+  //   }
+  // }, [isPreloader])
 
   useEffect(() => {
     if (leftSideBarTheme) {
@@ -131,7 +131,7 @@ const Layout = props => {
 
   return (
     <React.Fragment>
-      <div id="preloader">
+      {/* <div id="preloader">
         <div id="status">
           <div className="spinner-chase">
             <div className="chase-dot" />
@@ -142,7 +142,7 @@ const Layout = props => {
             <div className="chase-dot" />
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div id="layout-wrapper">
         <Header toggleMenuCallback={toggleMenuCallback} />

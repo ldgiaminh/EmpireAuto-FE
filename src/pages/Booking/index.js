@@ -3,7 +3,7 @@ import { withRouter, Link } from "react-router-dom"
 import Loader from "components/Loader"
 import PropTypes from "prop-types"
 import toastr from "toastr"
-import { isEmpty } from "lodash"
+import { isEmpty, replace } from "lodash"
 import "toastr/build/toastr.min.css"
 import TableContainer from "../../components/Common/TableContainer"
 import classnames from "classnames"
@@ -32,6 +32,8 @@ import {
   Plate,
   Status,
 } from "./BookingUserListCol"
+
+import img1 from "../../assets/images/small/no-data.png"
 
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb"
@@ -95,25 +97,6 @@ const BookingList = props => {
 
   /*
   ==================================================
-  Changes Tabs
-  ==================================================
-  */
-
-  //Father Tabs
-  const toggleTab = index => {
-    setActiveTab(index)
-    setSubActiveTab(0)
-    const activeDate = weekDays[index].date
-    dispatch(onGetBookingByDate(activeDate))
-  }
-
-  //Nested Tabs
-  const toggleSubTab = index => {
-    setSubActiveTab(index)
-  }
-
-  /*
-  ==================================================
   Call api and useEffect
   ==================================================
   */
@@ -128,8 +111,6 @@ const BookingList = props => {
 
   useEffect(() => {
     if (bookings && !bookings.length) {
-      // dispatch(onLoading(true))
-      //dispatch(onGetBookings())
       dispatch(onGetBookingByDate(activeDate))
     }
   }, [dispatch, bookings, activeDate])
@@ -143,6 +124,26 @@ const BookingList = props => {
       setBooking(bookings)
     }
   }, [bookings])
+
+  /*
+  ==================================================
+  Changes Tabs
+  ==================================================
+  */
+
+  //Father Tabs
+  const toggleTab = index => {
+    setActiveTab(index)
+    setSubActiveTab(0)
+    const activeDate = weekDays[index].date
+    dispatch(onLoading(true))
+    dispatch(onGetBookingByDate(activeDate))
+  }
+
+  //Nested Tabs
+  const toggleSubTab = index => {
+    setSubActiveTab(index)
+  }
 
   /*
   ==================================================
@@ -402,13 +403,12 @@ const BookingList = props => {
     <React.Fragment>
       {isPreloader && <Loader />}
 
-      <CheckInModal
+      {/* <CheckInModal
         isOpen={checkinModal}
         toggle={toggleViewModal}
         data={booking}
         handleCheckIn={handleCheckIn}
-      />
-
+      /> */}
       {!isPreloader && (
         <div className="page-content">
           <Container fluid>
@@ -440,100 +440,132 @@ const BookingList = props => {
                       ))}
                     </Nav>
 
-                    <div className="mt-4">
-                      {weekDays.map((day, index) => (
-                        <div key={index}>
-                          {activeTab === index && (
-                            <>
-                              <ul
-                                className="nav nav-tabs nav-tabs-custom"
-                                role="tablist"
-                              >
-                                <NavItem>
-                                  <NavLink
-                                    className={classnames({
-                                      active: subActiveTab === 0,
-                                    })}
-                                    onClick={() => {
-                                      toggleSubTab(0)
-                                    }}
-                                  >
-                                    Chưa đến
-                                  </NavLink>
-                                </NavItem>
-                                <NavItem>
-                                  <NavLink
-                                    className={classnames({
-                                      active: subActiveTab === 1,
-                                    })}
-                                    onClick={() => {
-                                      toggleSubTab(1)
-                                    }}
-                                  >
-                                    Đã đến
-                                  </NavLink>
-                                </NavItem>
-                                <NavItem>
-                                  <NavLink
-                                    className={classnames({
-                                      active: subActiveTab === 2,
-                                    })}
-                                    onClick={() => {
-                                      toggleSubTab(2)
-                                    }}
-                                  >
-                                    Hủy
-                                  </NavLink>
-                                </NavItem>
-                              </ul>
-                              <TabContent className="p-3 mt-4">
-                                {subActiveTab === 0 && (
-                                  <TabPane id="not-yet">
-                                    <TableContainer
-                                      columns={columnsNotYet}
-                                      data={pendingBooking}
-                                      isGlobalFilter={true}
-                                      isAddBookingOptions={false}
-                                      //handleUserClick={handleUserClicks}
-                                      isCheckin={true}
-                                      handleCheckInClick={handleCheckInClick}
-                                      customPageSize={10}
-                                      className="custom-header-css"
-                                    />
-                                  </TabPane>
-                                )}
-                                {subActiveTab === 1 && (
-                                  <TabPane id="not-yet">
-                                    <TableContainer
-                                      columns={columnsArrivedCancel}
-                                      data={arrivedBooking}
-                                      isGlobalFilter={true}
-                                      isAddBookingOptions={false}
-                                      //handleUserClick={handleUserClicks}
-                                      customPageSize={10}
-                                      className="custom-header-css"
-                                    />
-                                  </TabPane>
-                                )}
-                                {subActiveTab === 2 && (
-                                  <TabPane id="not-yet">
-                                    <TableContainer
-                                      columns={columnsArrivedCancel}
-                                      data={cancelBooking}
-                                      isGlobalFilter={true}
-                                      isAddBookingOptions={false}
-                                      //handleUserClick={handleUserClicks}
-                                      customPageSize={10}
-                                      className="custom-header-css"
-                                    />
-                                  </TabPane>
-                                )}
-                              </TabContent>
-                            </>
-                          )}
+                    {bookings.length ? (
+                      <div className="mt-4">
+                        {weekDays.map((day, index) => (
+                          <div key={index}>
+                            {activeTab === index && (
+                              <>
+                                <ul
+                                  className="nav nav-tabs nav-tabs-custom"
+                                  role="tablist"
+                                >
+                                  <NavItem>
+                                    <NavLink
+                                      className={classnames({
+                                        active: subActiveTab === 0,
+                                      })}
+                                      onClick={() => {
+                                        toggleSubTab(0)
+                                      }}
+                                    >
+                                      Chưa đến
+                                    </NavLink>
+                                  </NavItem>
+                                  <NavItem>
+                                    <NavLink
+                                      className={classnames({
+                                        active: subActiveTab === 1,
+                                      })}
+                                      onClick={() => {
+                                        toggleSubTab(1)
+                                      }}
+                                    >
+                                      Đã đến
+                                    </NavLink>
+                                  </NavItem>
+                                  <NavItem>
+                                    <NavLink
+                                      className={classnames({
+                                        active: subActiveTab === 2,
+                                      })}
+                                      onClick={() => {
+                                        toggleSubTab(2)
+                                      }}
+                                    >
+                                      Hủy
+                                    </NavLink>
+                                  </NavItem>
+                                </ul>
+                                <TabContent className="p-3 mt-4">
+                                  {subActiveTab === 0 && (
+                                    <TabPane id="not-yet">
+                                      <TableContainer
+                                        columns={columnsNotYet}
+                                        data={pendingBooking}
+                                        isGlobalFilter={true}
+                                        isAddBookingOptions={false}
+                                        //handleUserClick={handleUserClicks}
+                                        isCheckin={true}
+                                        handleCheckInClick={handleCheckInClick}
+                                        customPageSize={10}
+                                        className="custom-header-css"
+                                      />
+                                    </TabPane>
+                                  )}
+                                  {subActiveTab === 1 && (
+                                    <TabPane id="not-yet">
+                                      <TableContainer
+                                        columns={columnsArrivedCancel}
+                                        data={arrivedBooking}
+                                        isGlobalFilter={true}
+                                        isAddBookingOptions={false}
+                                        //handleUserClick={handleUserClicks}
+                                        customPageSize={10}
+                                        className="custom-header-css"
+                                      />
+                                    </TabPane>
+                                  )}
+                                  {subActiveTab === 2 && (
+                                    <TabPane id="not-yet">
+                                      <TableContainer
+                                        columns={columnsArrivedCancel}
+                                        data={cancelBooking}
+                                        isGlobalFilter={true}
+                                        isAddBookingOptions={false}
+                                        //handleUserClick={handleUserClicks}
+                                        customPageSize={10}
+                                        className="custom-header-css"
+                                      />
+                                    </TabPane>
+                                  )}
+                                </TabContent>
+                              </>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="pt-3">
+                        <div className="row justify-content-center">
+                          <div className="col-xl-12">
+                            <div>
+                              <div className="my-5">
+                                <div className="text-center">
+                                  <h4>
+                                    Chưa có đặt lịch cho ngày{" "}
+                                    {new Date(activeDate).toLocaleDateString(
+                                      "en-GB",
+                                      {
+                                        day: "2-digit",
+                                        month: "2-digit",
+                                      }
+                                    )}
+                                  </h4>
+                                </div>
+
+                                <img
+                                  src={img1}
+                                  alt=""
+                                  className="mx-auto d-block"
+                                  style={{ height: 400 }}
+                                />
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                      ))}
-                    </div>
+                      </div>
+                    )}
                   </CardBody>
                 </Card>
               </Col>

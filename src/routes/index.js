@@ -36,6 +36,7 @@ import SymptomLists from "../pages/Symptom/index"
 
 //Group Service
 import GroupService from "../pages/GroupService/index"
+import QrCheckOut from "pages/OrderServices/QrCheckOut"
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
@@ -44,6 +45,7 @@ const authProtectedRoutes = [
   { path: "/booking", component: Booking },
   { path: "/booking-detail/:id", component: BookingDetails },
   { path: "/scanner", component: QrScanner },
+  { path: "/scanner-checkout", component: QrCheckOut },
 
   //order service
   { path: "/order-service", component: OrderService },

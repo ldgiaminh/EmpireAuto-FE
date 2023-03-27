@@ -12,6 +12,7 @@ import {
   changePreloader,
   changeTopbarTheme,
   showRightSidebarAction,
+  changeAutoAssign,
 } from "../../store/actions"
 
 //SimpleBar
@@ -57,13 +58,36 @@ const RightSidebar = props => {
               >
                 <i className="mdi mdi-close noti-icon" />
               </Link>
-              <h5 className="m-0">Settings</h5>
+              <h5 className="m-0">Cài đặt</h5>
             </div>
 
             <hr className="my-0" />
 
             <div className="p-4">
-              <div className="radio-toolbar">
+              <FormGroup>
+                <span className="mb-2 d-block" id="radio-title">
+                  Chỉ định kỹ thuật viên
+                </span>
+
+                <div className="form-check form-switch">
+                  <input
+                    type="checkbox"
+                    className="form-check-input checkbox"
+                    id="checkbox_1"
+                    checked={props.isAssign}
+                    onChange={() => {
+                      //props.changeAutoAssign(!props.isAssign)
+                      props.changeAutoAssign(!props.isAssign)
+                    }}
+                  />
+
+                  <label className="form-check-label" htmlFor="checkbox_1">
+                    Tắt/Bật
+                  </label>
+                </div>
+              </FormGroup>
+
+              {/* <div className="radio-toolbar">
                 <span className="mb-2 d-block">Layouts</span>
                 <input
                   type="radio"
@@ -631,7 +655,7 @@ const RightSidebar = props => {
                 target="_blank"
               >
                 <i className="mdi mdi-cart ms-1" /> Purchase Now
-              </Link>
+              </Link> */}
             </div>
           </div>
         </SimpleBar>
@@ -658,6 +682,8 @@ RightSidebar.propTypes = {
   showRightSidebarAction: PropTypes.func,
   topbarTheme: PropTypes.any,
   onClose: PropTypes.func,
+  changeAutoAssign: PropTypes.func,
+  isAssign: PropTypes.bool,
 }
 
 const mapStateToProps = state => {
@@ -673,4 +699,5 @@ export default connect(mapStateToProps, {
   changeTopbarTheme,
   changePreloader,
   showRightSidebarAction,
+  changeAutoAssign,
 })(RightSidebar)

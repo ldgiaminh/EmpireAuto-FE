@@ -38,6 +38,8 @@ import {
   checkinBooking,
   checkinQRCode,
 } from "../../helpers/fakebackend_helper"
+import { changePreloader } from "store/actions"
+import { CHANGE_PRELOADER } from "store/layout/actionTypes"
 
 function* fetchBookingsLists() {
   try {
@@ -50,28 +52,38 @@ function* fetchBookingsLists() {
 
 function* fetchBookingsListByDate({ date }) {
   try {
+    //yield put(changePreloader(true))
     const response = yield call(getBookingListsByDate, date)
     yield put(getBookingListsByDateSuccess(response))
   } catch (error) {
     yield put(getBookingListsByDateFail(error))
+  } finally {
+    yield put(changePreloader(false))
   }
 }
 
 function* fetchBookingsDetails({ bookingId }) {
   try {
+    yield put(changePreloader(true))
     const response = yield call(getBookingsDetails, bookingId)
     yield put(getBookingDetailsSuccess(response))
   } catch (error) {
     yield put(checkinBookingFail(error))
   }
+  // finally {
+  //   yield put(changePreloader(false))
+  // }
 }
 
-function* checkInBookings({ bookingId }) {
+function* checkInBookings({ payload: { bookingId, isAssign } }) {
   try {
-    const response = yield call(checkinBooking, bookingId)
+    //yield put(changePreloader(true))
+    const response = yield call(checkinBooking, bookingId, isAssign)
     yield put(checkinBookingSuccess(response))
   } catch (error) {
     yield put(getBookingDetailsFail(error))
+  } finally {
+    yield put(changePreloader(false))
   }
 }
 

@@ -99,13 +99,6 @@ const AssignTechnicians = ({ order, expert }) => {
             <CardBody>
               <h5 className="card-title mb-2">Phân công kỹ thuật viên</h5>
 
-              {/* <div>
-              <p className="text-muted mb-2">
-                <i className="mdi mdi-wallet me-1" /> Wallet Balance
-              </p>
-              <h5>$ 9148.23</h5>
-            </div> */}
-
               <h6 className="font-size-14 mb-4 text-muted">
                 Chọn kỹ thuật viên chính cho đơn hàng này
               </h6>

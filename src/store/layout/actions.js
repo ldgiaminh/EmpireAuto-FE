@@ -9,6 +9,8 @@ import {
   SHOW_SIDEBAR,
   CHANGE_PRELOADER,
   TOGGLE_LEFTMENU,
+  AUTO_ASSIGN,
+  CHANGE_AUTO_ASSIGN,
 } from "./actionTypes"
 
 export const changeLayout = layout => ({
@@ -18,6 +20,11 @@ export const changeLayout = layout => ({
 
 export const changePreloader = layout => ({
   type: CHANGE_PRELOADER,
+  payload: layout,
+})
+
+export const changeAutoAssign = layout => ({
+  type: CHANGE_AUTO_ASSIGN,
   payload: layout,
 })
 

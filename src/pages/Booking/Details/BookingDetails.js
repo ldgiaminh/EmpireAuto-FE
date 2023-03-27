@@ -29,12 +29,14 @@ import Breadcrumbs from "components/Common/Breadcrumb"
 import {
   getBookingDetails as onGetBookingDetail,
   checkinBooking as checkInBooking,
-} from "store/bookings/actions"
+  changePreloader as onLoading,
+} from "store/actions"
 
 //redux
 import { useSelector, useDispatch } from "react-redux"
 import { ref, set } from "firebase/database"
 import { db } from "helpers/firebase"
+import Loader from "components/Loader"
 
 const BookingDetails = props => {
   //meta title
@@ -49,8 +51,10 @@ const BookingDetails = props => {
   ==================================================
   */
 
-  const { bookingDetail } = useSelector(state => ({
+  const { bookingDetail, isAssign, isPreloader } = useSelector(state => ({
     bookingDetail: state.bookings.bookingDetail,
+    isPreloader: state.Layout.isPreloader,
+    isAssign: state.Layout.isAssign,
   }))
 
   /*
@@ -64,7 +68,9 @@ const BookingDetails = props => {
 
   useEffect(() => {
     if (params && params.id) {
+      //dispatch(onLoading(true))
       dispatch(onGetBookingDetail(params.id))
+      dispatch(onLoading(false))
     }
   }, [params, onGetBookingDetail])
 
@@ -111,10 +117,13 @@ const BookingDetails = props => {
 
   /* HANDLE CHECK IN */
   const handleCheckIn = id => {
-    dispatch(checkInBooking(id))
-    toastr.success("Check-in thành công", "Thành công")
-    dispatch(onGetBookingDetail(id))
-    sendNotification(id)
+    if (id) {
+      dispatch(onLoading(true))
+      dispatch(checkInBooking(id, isAssign))
+      toastr.success("Check-in thành công", "Thành công")
+      dispatch(onGetBookingDetail(id))
+      sendNotification(id)
+    }
   }
 
   /*
@@ -183,17 +192,19 @@ const BookingDetails = props => {
   /* ========================================== RENDER ==============================================*/
   return (
     <React.Fragment>
-      <div className="page-content">
-        <Container fluid>
-          {/* Render Breadcrumb */}
-          <Breadcrumbs
-            title="Đặt lịch"
-            breadcrumbItem={"#" + bookingDetail.code}
-          />
+      {isPreloader && <Loader />}
+      {!isPreloader && (
+        <div className="page-content">
+          <Container fluid>
+            {/* Render Breadcrumb */}
+            <Breadcrumbs
+              title="Đặt lịch"
+              breadcrumbItem={"#" + bookingDetail.code}
+            />
 
-          {!isEmpty(bookingDetail) && (
-            <>
-              {/* <Row>
+            {!isEmpty(bookingDetail) && (
+              <>
+                {/* <Row>
                 <Col xl={12}>
                   <Row>
                     <Col lg={3}>
@@ -372,80 +383,80 @@ const BookingDetails = props => {
                 </Col>
               </Row> */}
 
-              <Row>
-                <Col>
-                  <Card>
-                    <CardBody>
-                      <CardTitle>Thông tin tổng</CardTitle>
-                      <CardSubtitle className="mb-3">
-                        Chi tiết về đặt lịch và thông tin khách hàng
-                      </CardSubtitle>
+                <Row>
+                  <Col>
+                    <Card>
+                      <CardBody>
+                        <CardTitle>Thông tin tổng</CardTitle>
+                        <CardSubtitle className="mb-3">
+                          Chi tiết về đặt lịch và thông tin khách hàng
+                        </CardSubtitle>
 
-                      <Row>
-                        <Col xl="6">
-                          <div className="table-responsive">
-                            <Table className="table table-borderless  mb-0">
-                              <tbody>
-                                <tr>
-                                  <th
-                                    scope="row"
-                                    style={{ width: "300px" }}
-                                    className={"text-capitalize"}
-                                  >
-                                    Tên khách:
-                                  </th>
-                                  <td>{bookingDetail.user.fullname}</td>
-                                </tr>
-                                <tr>
-                                  <th
-                                    scope="row"
-                                    style={{ width: "300px" }}
-                                    className={"text-capitalize"}
-                                  >
-                                    Số điện thoại :
-                                  </th>
-                                  <td>{`(+${bookingDetail.user.phone.slice(
-                                    1,
-                                    3
-                                  )}) ${bookingDetail.user.phone.slice(
-                                    3
-                                  )}`}</td>
-                                </tr>
-                                <tr>
-                                  <th
-                                    scope="row"
-                                    style={{ width: "300px" }}
-                                    className={"text-capitalize"}
-                                  >
-                                    E-mail :
-                                  </th>
-                                  <td>{bookingDetail.user.email}</td>
-                                </tr>
-                                <tr>
-                                  <th
-                                    scope="row"
-                                    style={{ width: "300px" }}
-                                    className={"text-capitalize"}
-                                  >
-                                    Trạng thái :
-                                  </th>
-                                  <td>
-                                    {bookingDetail.isActived
-                                      ? bookingDetail.isArrived
-                                        ? "Đã đến"
-                                        : "Chưa đến"
-                                      : "Hủy"}
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </Table>
-                          </div>
-                        </Col>
-                        <Col xl="6">
-                          <div className="table-responsive">
-                            <Table className="table table-borderless  mb-0">
-                              <tbody>
-                                {/* <tr>
+                        <Row>
+                          <Col xl="6">
+                            <div className="table-responsive">
+                              <Table className="table table-borderless  mb-0">
+                                <tbody>
+                                  <tr>
+                                    <th
+                                      scope="row"
+                                      style={{ width: "300px" }}
+                                      className={"text-capitalize"}
+                                    >
+                                      Tên khách:
+                                    </th>
+                                    <td>{bookingDetail.user.fullname}</td>
+                                  </tr>
+                                  <tr>
+                                    <th
+                                      scope="row"
+                                      style={{ width: "300px" }}
+                                      className={"text-capitalize"}
+                                    >
+                                      Số điện thoại :
+                                    </th>
+                                    <td>{`(+${bookingDetail.user.phone.slice(
+                                      1,
+                                      3
+                                    )}) ${bookingDetail.user.phone.slice(
+                                      3
+                                    )}`}</td>
+                                  </tr>
+                                  <tr>
+                                    <th
+                                      scope="row"
+                                      style={{ width: "300px" }}
+                                      className={"text-capitalize"}
+                                    >
+                                      E-mail :
+                                    </th>
+                                    <td>{bookingDetail.user.email}</td>
+                                  </tr>
+                                  <tr>
+                                    <th
+                                      scope="row"
+                                      style={{ width: "300px" }}
+                                      className={"text-capitalize"}
+                                    >
+                                      Trạng thái :
+                                    </th>
+                                    <td>
+                                      {bookingDetail.isActived
+                                        ? bookingDetail.isArrived
+                                          ? "Đã đến"
+                                          : "Chưa đến"
+                                        : "Hủy"}
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </Table>
+                            </div>
+                          </Col>
+                          <Col xl="6">
+                            <div className="table-responsive">
+                              <Table className="table table-borderless  mb-0">
+                                <tbody>
+                                  {/* <tr>
                                   <th
                                     scope="row"
                                     style={{ width: "300px" }}
@@ -455,170 +466,173 @@ const BookingDetails = props => {
                                   </th>
                                   <td>{formattedDateTime1}</td>
                                 </tr> */}
-                                <tr>
-                                  <th
-                                    scope="row"
-                                    style={{ width: "300px" }}
-                                    className={"text-capitalize"}
-                                  >
-                                    Thời gian check-in :
-                                  </th>
-                                  <td>
-                                    {bookingDetail.arrivedDateTime != null
-                                      ? formattedDateTime2
-                                      : "Xe chưa đến ga-ra"}
-                                  </td>
-                                </tr>
-                                {bookingDetail.transaction.total > 0 ? (
                                   <tr>
                                     <th
                                       scope="row"
                                       style={{ width: "300px" }}
                                       className={"text-capitalize"}
                                     >
-                                      Số tiền :
+                                      Thời gian check-in :
                                     </th>
                                     <td>
-                                      {bookingDetail.transaction.total.toLocaleString()}{" "}
-                                      ₫
+                                      {bookingDetail.arrivedDateTime != null
+                                        ? formattedDateTime2
+                                        : "Xe chưa đến ga-ra"}
                                     </td>
                                   </tr>
-                                ) : (
-                                  ""
-                                )}
-                                <tr>
-                                  <th
-                                    scope="row"
-                                    style={{ width: "300px" }}
-                                    className={"text-capitalize"}
-                                  >
-                                    Phương thức thanh toán :
-                                  </th>
-                                  <td>
-                                    {
-                                      bookingDetail.transaction.paymentMethod
-                                        .name
-                                    }
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <th
-                                    scope="row"
-                                    style={{ width: "300px" }}
-                                    className={"text-capitalize"}
-                                  >
-                                    Thanh toán lúc :
-                                  </th>
-                                  <td>{formattedDateTime3}</td>
-                                </tr>
-                              </tbody>
-                            </Table>
-                          </div>
-                        </Col>
-                      </Row>
-                    </CardBody>
-                    <CardBody>
-                      <CardTitle>Phương tiện</CardTitle>
-                      <CardSubtitle className="mb-3">
-                        Thông về phương tiện và tình trạng
-                      </CardSubtitle>
-                      <Row>
-                        <Col xl="6">
-                          <div className="table-responsive">
-                            <Table className="table table-borderless  mb-0">
-                              <tbody>
-                                <tr>
-                                  <th
-                                    scope="row"
-                                    style={{ width: "300px" }}
-                                    className={"text-capitalize"}
-                                  >
-                                    Biển số xe :
-                                  </th>
-                                  <td>{bookingDetail.car.carLisenceNo}</td>
-                                </tr>
-                                <tr>
-                                  <th
-                                    scope="row"
-                                    style={{ width: "300px" }}
-                                    className={"text-capitalize"}
-                                  >
-                                    Dòng xe :
-                                  </th>
-                                  <td>
-                                    {bookingDetail.car.carBrand +
-                                      " - " +
-                                      bookingDetail.car.carModel}
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </Table>
-                          </div>
-                        </Col>
-                        <Col xl="6">
-                          <div className="table-responsive">
-                            <Table className="table table-borderless  mb-0">
-                              <tbody>
-                                <tr>
-                                  <th
-                                    scope="row"
-                                    style={{ width: "300px" }}
-                                    className={"text-capitalize"}
-                                  >
-                                    Tình trạng khách mô tả :
-                                  </th>
-                                  <td>
-                                    {bookingDetail.symptoms
-                                      .map(symptom => symptom.name)
-                                      .join(", ")}
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </Table>
-                          </div>
-                        </Col>
-                      </Row>
-                    </CardBody>
-                  </Card>
-                  <Row className="mt-4">
-                    <Col sm="6">
-                      <Link
-                        to="/booking"
-                        className="btn text-muted d-none d-sm-inline-block btn-link"
-                      >
-                        <i className="mdi mdi-arrow-left me-1" /> Trở về trang
-                        danh sách đặt lịch{" "}
-                      </Link>
-                    </Col>
-                    {!bookingDetail.isArrived && bookingDetail.isActived ? (
+                                  {bookingDetail.transaction.total > 0 ? (
+                                    <tr>
+                                      <th
+                                        scope="row"
+                                        style={{ width: "300px" }}
+                                        className={"text-capitalize"}
+                                      >
+                                        Số tiền :
+                                      </th>
+                                      <td>
+                                        {bookingDetail.transaction.total.toLocaleString()}{" "}
+                                        ₫
+                                      </td>
+                                    </tr>
+                                  ) : (
+                                    ""
+                                  )}
+                                  <tr>
+                                    <th
+                                      scope="row"
+                                      style={{ width: "300px" }}
+                                      className={"text-capitalize"}
+                                    >
+                                      Phương thức thanh toán :
+                                    </th>
+                                    <td>
+                                      {
+                                        bookingDetail.transaction.paymentMethod
+                                          .name
+                                      }
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <th
+                                      scope="row"
+                                      style={{ width: "300px" }}
+                                      className={"text-capitalize"}
+                                    >
+                                      Thanh toán lúc :
+                                    </th>
+                                    <td>{formattedDateTime3}</td>
+                                  </tr>
+                                </tbody>
+                              </Table>
+                            </div>
+                          </Col>
+                        </Row>
+                      </CardBody>
+                      <CardBody>
+                        <CardTitle>Phương tiện</CardTitle>
+                        <CardSubtitle className="mb-3">
+                          Thông về phương tiện và tình trạng
+                        </CardSubtitle>
+                        <Row>
+                          <Col xl="6">
+                            <div className="table-responsive">
+                              <Table className="table table-borderless  mb-0">
+                                <tbody>
+                                  <tr>
+                                    <th
+                                      scope="row"
+                                      style={{ width: "300px" }}
+                                      className={"text-capitalize"}
+                                    >
+                                      Biển số xe :
+                                    </th>
+                                    <td>{bookingDetail.car.carLisenceNo}</td>
+                                  </tr>
+                                  <tr>
+                                    <th
+                                      scope="row"
+                                      style={{ width: "300px" }}
+                                      className={"text-capitalize"}
+                                    >
+                                      Dòng xe :
+                                    </th>
+                                    <td>
+                                      {bookingDetail.car.carBrand +
+                                        " - " +
+                                        bookingDetail.car.carModel}
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </Table>
+                            </div>
+                          </Col>
+                          <Col xl="6">
+                            <div className="table-responsive">
+                              <Table className="table table-borderless  mb-0">
+                                <tbody>
+                                  <tr>
+                                    <th
+                                      scope="row"
+                                      style={{ width: "300px" }}
+                                      className={"text-capitalize"}
+                                    >
+                                      Tình trạng khách mô tả :
+                                    </th>
+                                    <td>
+                                      {bookingDetail.symptoms
+                                        .map(symptom => symptom.name)
+                                        .join(", ")}
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </Table>
+                            </div>
+                          </Col>
+                        </Row>
+                      </CardBody>
+                    </Card>
+                    <Row className="mt-4">
                       <Col sm="6">
-                        <div className="text-sm-end">
-                          <Button
-                            type="button"
-                            color="success"
-                            className="btn btn-lg"
-                            onClick={() => handleCheckIn(params.id)}
-                          >
-                            Check-in
-                          </Button>
-                        </div>
+                        <Link
+                          to="/booking"
+                          className="btn text-muted d-none d-sm-inline-block btn-link"
+                        >
+                          <i className="mdi mdi-arrow-left me-1" /> Trở về trang
+                          danh sách đặt lịch{" "}
+                        </Link>
                       </Col>
-                    ) : (
-                      ""
-                    )}
-                  </Row>
-                </Col>
-              </Row>
-            </>
-          )}
-        </Container>
-      </div>
+                      {!bookingDetail.isArrived && bookingDetail.isActived ? (
+                        <Col sm="6">
+                          <div className="text-sm-end">
+                            <Button
+                              type="button"
+                              color="success"
+                              className="btn btn-lg"
+                              onClick={() => handleCheckIn(params.id)}
+                            >
+                              Check-in
+                            </Button>
+                          </div>
+                        </Col>
+                      ) : (
+                        ""
+                      )}
+                    </Row>
+                  </Col>
+                </Row>
+              </>
+            )}
+          </Container>
+        </div>
+      )}
     </React.Fragment>
   )
 }
 
 BookingDetails.propTypes = {
   match: PropTypes.object,
+  isAssign: PropTypes.bool,
+  isPreloader: PropTypes.bool,
 }
 
 export default withRouter(BookingDetails)

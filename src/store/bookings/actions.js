@@ -91,9 +91,12 @@ CHECK-IN BOOKING
 ================================================
 */
 
-export const checkinBooking = bookingId => ({
+export const checkinBooking = (bookingId, isAssign) => ({
   type: CHECKIN_BOOKING,
-  bookingId,
+  payload: {
+    bookingId,
+    isAssign,
+  },
 })
 
 export const checkinBookingSuccess = bookingDetail => ({

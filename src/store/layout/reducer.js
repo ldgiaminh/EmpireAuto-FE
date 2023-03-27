@@ -10,6 +10,7 @@ import {
   CHANGE_PRELOADER,
   TOGGLE_LEFTMENU,
   SHOW_SIDEBAR,
+  CHANGE_AUTO_ASSIGN,
 } from "./actionTypes"
 
 //constants
@@ -34,6 +35,7 @@ const INIT_STATE = {
   isMobile: false,
   showSidebar: true,
   leftMenu: false,
+  isAssign: true,
 }
 
 const Layout = (state = INIT_STATE, action) => {
@@ -47,6 +49,12 @@ const Layout = (state = INIT_STATE, action) => {
       return {
         ...state,
         isPreloader: action.payload,
+      }
+
+    case CHANGE_AUTO_ASSIGN:
+      return {
+        ...state,
+        isAssign: action.payload,
       }
 
     case CHANGE_LAYOUT_WIDTH:
