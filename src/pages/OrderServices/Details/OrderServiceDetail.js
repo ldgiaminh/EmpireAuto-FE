@@ -219,16 +219,22 @@ const OrderServiceDetail = props => {
                           </CardSubtitle>
                         </div>
 
-                        {orderServicesDetails.status === 4 ? (
+                        {orderServicesDetails.status == 4 ? (
                           <div className="ml-auto">
                             <Button
                               type="button"
-                              color="success"
+                              color="primary"
                               onClick={handleCheckOutClick}
                             >
                               <i className="mdi mdi-qrcode-scan me-1" />
                               Quét mã nhận xe
                             </Button>
+                          </div>
+                        ) : orderServicesDetails.status == 5 ? (
+                          <div className="ml-auto">
+                            <span className="badge bg-success font-size-14">
+                              Hoàn Thành
+                            </span>
                           </div>
                         ) : (
                           " "

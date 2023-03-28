@@ -149,7 +149,12 @@ const orderServices = (state = INIT_STATE, action) => {
     case POST_CHECKOUT_SERVICES_SUCCESS:
       return {
         ...state,
-        orderServiceLogs: [...state.orderServiceLogs, action.payload],
+        orderServiceLogs: action.payload,
+        orderServicesDetails: state.orderServicesDetails.map(service =>
+          service.id.toString() === action.payload.orderServiceId.toString()
+            ? { ...action.pay.load, service }
+            : service
+        ),
       }
 
     case POST_CHECKOUT_SERVICES_FAIL:
