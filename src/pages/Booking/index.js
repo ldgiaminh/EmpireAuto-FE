@@ -136,7 +136,7 @@ const BookingList = props => {
     setActiveTab(index)
     setSubActiveTab(0)
     const activeDate = weekDays[index].date
-    dispatch(onLoading(true))
+    //dispatch(onLoading(true))
     dispatch(onGetBookingByDate(activeDate))
   }
 

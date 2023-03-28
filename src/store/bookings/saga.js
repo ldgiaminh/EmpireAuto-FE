@@ -57,9 +57,10 @@ function* fetchBookingsListByDate({ date }) {
     yield put(getBookingListsByDateSuccess(response))
   } catch (error) {
     yield put(getBookingListsByDateFail(error))
-  } finally {
-    yield put(changePreloader(false))
   }
+  // finally {
+  //   yield put(changePreloader(false))
+  // }
 }
 
 function* fetchBookingsDetails({ bookingId }) {
@@ -82,9 +83,10 @@ function* checkInBookings({ payload: { bookingId, isAssign } }) {
     yield put(checkinBookingSuccess(response))
   } catch (error) {
     yield put(getBookingDetailsFail(error))
-  } finally {
-    yield put(changePreloader(false))
   }
+  // finally {
+  //   yield put(changePreloader(false))
+  // }
 }
 
 function* checkInQRCodes({ data }) {

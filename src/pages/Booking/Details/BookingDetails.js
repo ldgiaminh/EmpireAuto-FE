@@ -70,7 +70,7 @@ const BookingDetails = props => {
     if (params && params.id) {
       //dispatch(onLoading(true))
       dispatch(onGetBookingDetail(params.id))
-      dispatch(onLoading(false))
+      //dispatch(onLoading(false))
     }
   }, [params, onGetBookingDetail])
 
@@ -118,7 +118,7 @@ const BookingDetails = props => {
   /* HANDLE CHECK IN */
   const handleCheckIn = id => {
     if (id) {
-      dispatch(onLoading(true))
+      //dispatch(onLoading(true))
       dispatch(checkInBooking(id, isAssign))
       toastr.success("Check-in thành công", "Thành công")
       dispatch(onGetBookingDetail(id))
