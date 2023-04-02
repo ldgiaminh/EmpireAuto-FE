@@ -64,9 +64,6 @@ const bookings = (state = INIT_STATE, action) => {
             ? { booking, ...action.payload }
             : booking
         ),
-        bookings: state.bookings.filter(
-          booking => booking.id.toString() !== action.payload.id.toString()
-        ),
       }
 
     case CHECKIN_BOOKING_FAIL:

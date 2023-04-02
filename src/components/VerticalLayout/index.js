@@ -25,7 +25,7 @@ const Layout = props => {
   const dispatch = useDispatch()
 
   const {
-    isPreloader,
+    // isPreloader,
     leftSideBarThemeImage,
     layoutWidth,
     leftSideBarType,
@@ -33,7 +33,7 @@ const Layout = props => {
     showRightSidebar,
     leftSideBarTheme,
   } = useSelector(state => ({
-    isPreloader: state.Layout.isPreloader,
+    // isPreloader: state.Layout.isPreloader,
     leftSideBarThemeImage: state.Layout.leftSideBarThemeImage,
     leftSideBarType: state.Layout.leftSideBarType,
     layoutWidth: state.Layout.layoutWidth,
@@ -166,7 +166,7 @@ Layout.propTypes = {
   changeSidebarType: PropTypes.func,
   changeTopbarTheme: PropTypes.func,
   children: PropTypes.object,
-  isPreloader: PropTypes.any,
+  // isPreloader: PropTypes.any,
   layoutWidth: PropTypes.any,
   leftSideBarTheme: PropTypes.any,
   leftSideBarThemeImage: PropTypes.any,

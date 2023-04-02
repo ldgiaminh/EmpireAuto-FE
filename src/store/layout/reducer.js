@@ -24,12 +24,12 @@ import {
 } from "../../constants/layout"
 
 const INIT_STATE = {
-  layoutType: layoutTypes.VERTICAL,
+  layoutType: layoutTypes.HORIZONTAL,
   layoutWidth: layoutWidthTypes.FLUID,
   leftSideBarTheme: leftSideBarThemeTypes.DARK,
   leftSideBarThemeImage: leftBarThemeImageTypes.NONE,
   leftSideBarType: leftSidebarTypes.DEFAULT,
-  topbarTheme: topBarThemeTypes.LIGHT,
+  topbarTheme: topBarThemeTypes.DARK,
   isPreloader: false,
   showRightSidebar: false,
   isMobile: false,

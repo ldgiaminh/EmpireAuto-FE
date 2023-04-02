@@ -29,8 +29,7 @@ import Breadcrumbs from "components/Common/Breadcrumb"
 import {
   getBookingDetails as onGetBookingDetail,
   checkinBooking as checkInBooking,
-  changePreloader as onLoading,
-} from "store/actions"
+} from "store/bookings/actions"
 
 //redux
 import { useSelector, useDispatch } from "react-redux"
@@ -54,7 +53,8 @@ const BookingDetails = props => {
   const { bookingDetail, isAssign, isPreloader } = useSelector(state => ({
     bookingDetail: state.bookings.bookingDetail,
     isPreloader: state.Layout.isPreloader,
-    isAssign: state.Layout.isAssign,
+
+    // isAssign: state.Layout.isAssign,
   }))
 
   /*
@@ -68,11 +68,12 @@ const BookingDetails = props => {
 
   useEffect(() => {
     if (params && params.id) {
-      //dispatch(onLoading(true))
       dispatch(onGetBookingDetail(params.id))
-      //dispatch(onLoading(false))
     }
-  }, [params, onGetBookingDetail])
+  }, [params, onGetBookingDetail, isPreloader])
+
+  console.log(bookingDetail)
+  console.log(isPreloader)
 
   /*
   ==================================================
@@ -118,10 +119,9 @@ const BookingDetails = props => {
   /* HANDLE CHECK IN */
   const handleCheckIn = id => {
     if (id) {
-      //dispatch(onLoading(true))
-      dispatch(checkInBooking(id, isAssign))
+      //dispatch(checkInBooking(id, isAssign))
       toastr.success("Check-in thành công", "Thành công")
-      dispatch(onGetBookingDetail(id))
+      //dispatch(onGetBookingDetail(id))
       sendNotification(id)
     }
   }
@@ -133,29 +133,29 @@ const BookingDetails = props => {
   */
 
   /* DATE */
-  const bookingDate = bookingDetail.date
-  const bookDate = new Date(bookingDate)
-  const formattedDate = bookDate.toLocaleDateString("vi-VN", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  })
+  // const bookingDate = bookingDetail.date
+  // const bookDate = new Date(bookingDate)
+  // const formattedDate = bookDate.toLocaleDateString("vi-VN", {
+  //   day: "2-digit",
+  //   month: "2-digit",
+  //   year: "numeric",
+  // })
 
   /* CREATE AT  */
-  const createAtDate = bookingDetail.createdAt
-  const createDate = new Date(createAtDate)
-  const formattedDate1 = createDate.toLocaleDateString("vi-VN", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  })
-  const formattedTime1 = createDate.toLocaleTimeString("vi-VN", {
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: false,
-  })
-  const formattedDateTime1 = `${formattedDate1} - ${formattedTime1}`
+  // const createAtDate = bookingDetail.createdAt
+  // const createDate = new Date(createAtDate)
+  // const formattedDate1 = createDate.toLocaleDateString("vi-VN", {
+  //   day: "2-digit",
+  //   month: "2-digit",
+  //   year: "numeric",
+  // })
+  // const formattedTime1 = createDate.toLocaleTimeString("vi-VN", {
+  //   hour: "2-digit",
+  //   minute: "2-digit",
+  //   second: "2-digit",
+  //   hour12: false,
+  // })
+  // const formattedDateTime1 = `${formattedDate1} - ${formattedTime1}`
 
   /* ARRIVED DATE */
   const checkInDate = bookingDetail.arrivedDateTime
@@ -193,6 +193,7 @@ const BookingDetails = props => {
   return (
     <React.Fragment>
       {isPreloader && <Loader />}
+
       {!isPreloader && (
         <div className="page-content">
           <Container fluid>
@@ -204,185 +205,6 @@ const BookingDetails = props => {
 
             {!isEmpty(bookingDetail) && (
               <>
-                {/* <Row>
-                <Col xl={12}>
-                  <Row>
-                    <Col lg={3}>
-                      <Card className="mini-stats-wid">
-                        <CardBody>
-                          <div className="d-flex flex-wrap">
-                            <div className="me-3">
-                              <p className="text-muted mb-2">Mã Đặt Lịch</p>
-                              <h5 className="mb-0">{bookingDetail.code}</h5>
-                            </div>
-
-                            <div className="avatar-sm ms-auto">
-                              <div className="avatar-title bg-light rounded-circle text-primary font-size-20">
-                                <i className="bx bxs-card"></i>
-                              </div>
-                            </div>
-                          </div>
-                        </CardBody>
-                      </Card>
-                    </Col>
-                    <Col lg={3}>
-                      <Card className="blog-stats-wid">
-                        <CardBody>
-                          <div className="d-flex flex-wrap">
-                            <div className="me-3">
-                              <p className="text-muted mb-2">
-                                Ngày gữi yêu cầu
-                              </p>
-                              <h5 className="mb-0">{formattedDateTime1}</h5>
-                            </div>
-
-                            <div className="avatar-sm ms-auto">
-                              <div className="avatar-title bg-light rounded-circle text-primary font-size-20">
-                                <i className="bx bx-calendar-plus"></i>
-                              </div>
-                            </div>
-                          </div>
-                        </CardBody>
-                      </Card>
-                    </Col>
-                    <Col lg={3}>
-                      <Card className="blog-stats-wid">
-                        <CardBody>
-                          <div className="d-flex flex-wrap">
-                            <div className="me-3">
-                              <p className="text-muted mb-2">Ngày đặt lịch</p>
-                              <h5 className="mb-0">{formattedDate}</h5>
-                            </div>
-
-                            <div className="avatar-sm ms-auto">
-                              <div className="avatar-title bg-light rounded-circle text-primary font-size-20">
-                                <i className="bx bx-calendar"></i>
-                              </div>
-                            </div>
-                          </div>
-                        </CardBody>
-                      </Card>
-                    </Col>
-                    <Col lg={3}>
-                      <Card className="blog-stats-wid">
-                        <CardBody>
-                          <div className="d-flex flex-wrap">
-                            <div className="me-3">
-                              <p className="text-muted mb-2">
-                                Thời gian Check-in
-                              </p>
-                              <h5 className="mb-0">
-                                {bookingDetail.arrivedDateTime != null
-                                  ? formattedDateTime2
-                                  : "Xe chưa đến ga-ra"}
-                              </h5>
-                            </div>
-
-                            <div className="avatar-sm ms-auto">
-                              <div className="avatar-title bg-light rounded-circle text-primary font-size-20">
-                                <i className="bx bxs-calendar-check"></i>
-                              </div>
-                            </div>
-                          </div>
-                        </CardBody>
-                      </Card>
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
-              <Row>
-                <Col xl={12}>
-                  <Row>
-                    <Col xl={4}>
-                      <Card>
-                        <CardBody>
-                          <CardTitle className="mb-3">
-                            Thông tin cá nhân
-                          </CardTitle>
-                        
-                          <div className="table-responsive">
-                            <Table className="mb-0">
-                              <tbody>
-                                <tr>
-                                  <th scope="row">Họ và tên :</th>
-                                  <td>{bookingDetail.user.fullname}</td>
-                                </tr>
-                                <tr>
-                                  <th scope="row">Số điện thoại :</th>
-                                  <td>{`(+${bookingDetail.user.phone.slice(
-                                    1,
-                                    3
-                                  )}) ${bookingDetail.user.phone.slice(
-                                    3
-                                  )}`}</td>
-                                </tr>
-                                <tr>
-                                  <th scope="row">E-mail :</th>
-                                  <td>{bookingDetail.user.email}</td>
-                                </tr>
-                              </tbody>
-                            </Table>
-                          </div>
-                        </CardBody>
-                      </Card>
-                    </Col>
-                    <Col xl={4}>
-                      <Card>
-                        <CardBody>
-                          <CardTitle className="mb-3">Phương tiện</CardTitle>
-                          <div className="table-responsive">
-                            <Table className="table-nowrap mb-0">
-                              <tbody>
-                                <tr>
-                                  <th scope="row">Biển số xe :</th>
-                                  <td>{bookingDetail.car.carLisenceNo} </td>
-                                </tr>
-                                <tr>
-                                  <th scope="row">Thương hiệu :</th>
-                                  <td>{bookingDetail.car.carBrand}</td>
-                                </tr>
-                                <tr>
-                                  <th scope="row">Dòng xe :</th>
-                                  <td>{bookingDetail.car.carModel}</td>
-                                </tr>
-                              </tbody>
-                            </Table>
-                          </div>
-                        </CardBody>
-                      </Card>
-                    </Col>
-                    <Col xl={4}>
-                      <Card>
-                        <CardBody>
-                          <CardTitle className="mb-3">
-                            Tình trạng xe được khách mô tả
-                          </CardTitle>
-
-                          <div className="table-responsive">
-                            <Table className="mb-0">
-                              {map(bookingDetail.symptoms, symptom => (
-                                <tbody>
-                                  <tr key={symptom.id}>
-                                    <td
-                                      scope="row"
-                                      className="mdi mdi-chevron-right text-primary"
-                                    >
-                                      <span className="text-black">
-                                        {symptom.name}
-                                      </span>
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              ))}
-                            </Table>
-                          </div>
-                        </CardBody>
-                      </Card>
-                    </Col>
-                  </Row>
-                </Col>
-              </Row> */}
-
                 <Row>
                   <Col>
                     <Card>
@@ -608,7 +430,7 @@ const BookingDetails = props => {
                               type="button"
                               color="success"
                               className="btn btn-lg"
-                              onClick={() => handleCheckIn(params.id)}
+                              onClick={() => handleCheckIn(bookingDetail.id)}
                             >
                               Check-in
                             </Button>
@@ -631,8 +453,8 @@ const BookingDetails = props => {
 
 BookingDetails.propTypes = {
   match: PropTypes.object,
-  isAssign: PropTypes.bool,
   isPreloader: PropTypes.bool,
+  // isAssign: PropTypes.bool,
 }
 
 export default withRouter(BookingDetails)

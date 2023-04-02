@@ -117,13 +117,14 @@ const BookingList = props => {
 
   useEffect(() => {
     setBooking(bookings)
-  }, [bookings])
+  }, [bookings, booking])
 
   useEffect(() => {
     if (!isEmpty(bookings)) {
       setBooking(bookings)
     }
   }, [bookings])
+  console.log(booking)
 
   /*
   ==================================================
@@ -151,13 +152,13 @@ const BookingList = props => {
   ==================================================
   */
   const tableBookings = index => {
-    const filteredBookings = bookings.filter(booking => {
+    const filteredBookings = booking.filter(b => {
       if (index === 0) {
-        return !booking.isArrived && booking.isActived
+        return !b.isArrived && b.isActived
       } else if (index === 1) {
-        return booking.isArrived && booking.isActived
+        return b.isArrived && b.isActived
       } else if (index === 2) {
-        return !booking.isArrived && !booking.isActived
+        return !b.isArrived && !b.isActived
       }
     })
     return filteredBookings
@@ -205,23 +206,23 @@ const BookingList = props => {
     hideMethod: "fadeOut",
   }
 
-  const [checkinModal, setCheckInModal] = useState(false)
+  // const [checkinModal, setCheckInModal] = useState(false)
 
-  const toggleViewModal = bookingData => {
-    setBooking(bookingData)
-    setCheckInModal(!checkinModal)
-  }
+  // const toggleViewModal = bookingData => {
+  //   setBooking(bookingData)
+  //   setCheckInModal(!checkinModal)
+  // }
 
-  const handleCheckIn = () => {
-    if (booking.id) {
-      dispatch(checkInBooking(booking.id))
-      onPaginationPageChange(1)
-      setCheckInModal(false)
-      toastr.success("Check-in thành công", "Thành công")
-      dispatch(onGetBookings())
-      history.push(`/booking-detail/${booking.id}`)
-    }
-  }
+  // const handleCheckIn = () => {
+  //   if (booking.id) {
+  //     dispatch(checkInBooking(booking.id))
+  //     onPaginationPageChange(1)
+  //     setCheckInModal(false)
+  //     toastr.success("Check-in thành công", "Thành công")
+  //     dispatch(onGetBookings())
+  //     history.push(`/booking-detail/${booking.id}`)
+  //   }
+  // }
 
   const handleCheckInClick = () => {
     history.push("/scanner")
@@ -440,101 +441,101 @@ const BookingList = props => {
                       ))}
                     </Nav>
 
-                    {bookings.length ? (
-                      <div className="mt-4">
-                        {weekDays.map((day, index) => (
-                          <div key={index}>
-                            {activeTab === index && (
-                              <>
-                                <ul
-                                  className="nav nav-tabs nav-tabs-custom"
-                                  role="tablist"
-                                >
-                                  <NavItem>
-                                    <NavLink
-                                      className={classnames({
-                                        active: subActiveTab === 0,
-                                      })}
-                                      onClick={() => {
-                                        toggleSubTab(0)
-                                      }}
-                                    >
-                                      Chưa đến
-                                    </NavLink>
-                                  </NavItem>
-                                  <NavItem>
-                                    <NavLink
-                                      className={classnames({
-                                        active: subActiveTab === 1,
-                                      })}
-                                      onClick={() => {
-                                        toggleSubTab(1)
-                                      }}
-                                    >
-                                      Đã đến
-                                    </NavLink>
-                                  </NavItem>
-                                  <NavItem>
-                                    <NavLink
-                                      className={classnames({
-                                        active: subActiveTab === 2,
-                                      })}
-                                      onClick={() => {
-                                        toggleSubTab(2)
-                                      }}
-                                    >
-                                      Hủy
-                                    </NavLink>
-                                  </NavItem>
-                                </ul>
-                                <TabContent className="p-3 mt-4">
-                                  {subActiveTab === 0 && (
-                                    <TabPane id="not-yet">
-                                      <TableContainer
-                                        columns={columnsNotYet}
-                                        data={pendingBooking}
-                                        isGlobalFilter={true}
-                                        isAddBookingOptions={false}
-                                        //handleUserClick={handleUserClicks}
-                                        isCheckin={true}
-                                        handleCheckInClick={handleCheckInClick}
-                                        customPageSize={10}
-                                        className="custom-header-css"
-                                      />
-                                    </TabPane>
-                                  )}
-                                  {subActiveTab === 1 && (
-                                    <TabPane id="not-yet">
-                                      <TableContainer
-                                        columns={columnsArrivedCancel}
-                                        data={arrivedBooking}
-                                        isGlobalFilter={true}
-                                        isAddBookingOptions={false}
-                                        //handleUserClick={handleUserClicks}
-                                        customPageSize={10}
-                                        className="custom-header-css"
-                                      />
-                                    </TabPane>
-                                  )}
-                                  {subActiveTab === 2 && (
-                                    <TabPane id="not-yet">
-                                      <TableContainer
-                                        columns={columnsArrivedCancel}
-                                        data={cancelBooking}
-                                        isGlobalFilter={true}
-                                        isAddBookingOptions={false}
-                                        //handleUserClick={handleUserClicks}
-                                        customPageSize={10}
-                                        className="custom-header-css"
-                                      />
-                                    </TabPane>
-                                  )}
-                                </TabContent>
-                              </>
-                            )}
-                          </div>
-                        ))}
-                      </div>
+                    <div className="mt-4">
+                      {weekDays.map((day, index) => (
+                        <div key={index}>
+                          {activeTab === index && (
+                            <>
+                              <ul
+                                className="nav nav-tabs nav-tabs-custom"
+                                role="tablist"
+                              >
+                                <NavItem>
+                                  <NavLink
+                                    className={classnames({
+                                      active: subActiveTab === 0,
+                                    })}
+                                    onClick={() => {
+                                      toggleSubTab(0)
+                                    }}
+                                  >
+                                    Chưa đến
+                                  </NavLink>
+                                </NavItem>
+                                <NavItem>
+                                  <NavLink
+                                    className={classnames({
+                                      active: subActiveTab === 1,
+                                    })}
+                                    onClick={() => {
+                                      toggleSubTab(1)
+                                    }}
+                                  >
+                                    Đã đến
+                                  </NavLink>
+                                </NavItem>
+                                <NavItem>
+                                  <NavLink
+                                    className={classnames({
+                                      active: subActiveTab === 2,
+                                    })}
+                                    onClick={() => {
+                                      toggleSubTab(2)
+                                    }}
+                                  >
+                                    Hủy
+                                  </NavLink>
+                                </NavItem>
+                              </ul>
+                              <TabContent className="p-3 mt-4">
+                                {subActiveTab === 0 && (
+                                  <TabPane id="not-yet">
+                                    <TableContainer
+                                      columns={columnsNotYet}
+                                      data={pendingBooking}
+                                      isGlobalFilter={true}
+                                      isAddBookingOptions={false}
+                                      //handleUserClick={handleUserClicks}
+                                      isCheckin={true}
+                                      handleCheckInClick={handleCheckInClick}
+                                      customPageSize={10}
+                                      className="custom-header-css"
+                                    />
+                                  </TabPane>
+                                )}
+                                {subActiveTab === 1 && (
+                                  <TabPane id="not-yet">
+                                    <TableContainer
+                                      columns={columnsArrivedCancel}
+                                      data={arrivedBooking}
+                                      isGlobalFilter={true}
+                                      isAddBookingOptions={false}
+                                      //handleUserClick={handleUserClicks}
+                                      customPageSize={10}
+                                      className="custom-header-css"
+                                    />
+                                  </TabPane>
+                                )}
+                                {subActiveTab === 2 && (
+                                  <TabPane id="not-yet">
+                                    <TableContainer
+                                      columns={columnsArrivedCancel}
+                                      data={cancelBooking}
+                                      isGlobalFilter={true}
+                                      isAddBookingOptions={false}
+                                      //handleUserClick={handleUserClicks}
+                                      customPageSize={10}
+                                      className="custom-header-css"
+                                    />
+                                  </TabPane>
+                                )}
+                              </TabContent>
+                            </>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                    {/* {booking.length ? (
                     ) : (
                       <div className="pt-3">
                         <div className="row justify-content-center">
@@ -565,7 +566,7 @@ const BookingList = props => {
                           </div>
                         </div>
                       </div>
-                    )}
+                    )} */}
                   </CardBody>
                 </Card>
               </Col>
