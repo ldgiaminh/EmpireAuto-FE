@@ -41,7 +41,7 @@ const Plate = cell => {
 }
 
 const Expert = cell => {
-  return cell.value ? cell.value : ""
+  return cell.value ? cell.value : "Chưa có kỹ thuật viên"
 }
 
 export { OrderCode, Name, DateCell, ModalCar, Plate, Expert }

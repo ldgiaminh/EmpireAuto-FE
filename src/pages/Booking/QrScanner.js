@@ -18,7 +18,6 @@ const QrScanner = props => {
   const dispatch = useDispatch()
   const [qrData, setQRData] = useState("")
   const [showScanner, setShowScanner] = useState(true)
-  const [bookingId, setBookingId] = useState(null)
   const [errorStatus, setErrorStatus] = useState(null)
   const obj = JSON.parse(localStorage.getItem("authUser"))
 
@@ -52,7 +51,6 @@ const QrScanner = props => {
           return response.json()
         })
         .then(data => {
-          setBookingId(data.id)
           goToCheckin(data.id, data.code, data.user.id)
         })
         .catch(error => {

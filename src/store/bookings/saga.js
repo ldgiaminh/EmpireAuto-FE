@@ -38,6 +38,7 @@ import {
   checkinBooking,
   checkinQRCode,
 } from "../../helpers/fakebackend_helper"
+import { changePreloader } from "store/actions"
 
 function* fetchBookingsLists() {
   try {
@@ -85,7 +86,7 @@ function* checkInQRCodes({ data }) {
 }
 
 function* bookingsSaga() {
-  yield takeEvery(GET_BOOKING_LIST, fetchBookingsLists)
+  // yield takeEvery(GET_BOOKING_LIST, fetchBookingsLists)
   yield takeEvery(GET_BOOKING_LIST_BY_DATE, fetchBookingsListByDate)
   yield takeEvery(GET_BOOKING_DETAIL, fetchBookingsDetails)
   yield takeEvery(CHECKIN_BOOKING, checkInBookings)

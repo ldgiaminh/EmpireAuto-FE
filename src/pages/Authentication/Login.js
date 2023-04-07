@@ -49,7 +49,7 @@ const Login = props => {
     enableReinitialize: true,
 
     initialValues: {
-      email: "admin@gmail.com" || "",
+      email: "recep@empire.com" || "",
       password: "123456" || "",
     },
     validationSchema: Yup.object({
@@ -58,46 +58,12 @@ const Login = props => {
     }),
     onSubmit: values => {
       dispatch(loginUser(values, props.history))
-      console.log(values)
     },
   })
 
   const { error } = useSelector(state => ({
     error: state.Login.error,
   }))
-
-  // const signIn = (res, type) => {
-  //   if (type === "google" && res) {
-  //     const postData = {
-  //       name: res.profileObj.name,
-  //       email: res.profileObj.email,
-  //       token: res.tokenObj.access_token,
-  //       idToken: res.tokenId,
-  //     }
-  //     dispatch(socialLogin(postData, props.history, type))
-  //   } else if (type === "facebook" && res) {
-  //     const postData = {
-  //       name: res.name,
-  //       email: res.email,
-  //       token: res.accessToken,
-  //       idToken: res.tokenId,
-  //     }
-  //     dispatch(socialLogin(postData, props.history, type))
-  //   }
-  // }
-
-  //handleGoogleLoginResponse
-  // const googleResponse = response => {
-  //   signIn(response, "google")
-  // }
-
-  //handleTwitterLoginResponse
-  // const twitterResponse = e => {}
-
-  //handleFacebookLoginResponse
-  // const facebookResponse = response => {
-  //   signIn(response, "facebook")
-  // }
 
   return (
     <React.Fragment>

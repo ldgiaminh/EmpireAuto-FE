@@ -142,8 +142,8 @@ const Cart = ({ details, services }) => {
                           </h5>
                           <p className="mb-0">
                             {/* Color :{" "} */}
-                            <span className="fw-medium">
-                              {service.item.category}
+                            <span className="fw-medium text-muted">
+                              {service.item.problem.name}
                             </span>
                           </p>
                         </td>

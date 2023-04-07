@@ -15,15 +15,16 @@ import { db } from "helpers/firebase"
 
 const NotificationDropdown = props => {
   // Declare a new state variable, which we'll call "menu"
+  const [menu, setMenu] = useState(false)
+
+  const [userId, setUserId] = useState("")
   useEffect(() => {
     if (localStorage.getItem("authUser")) {
       const obj = JSON.parse(localStorage.getItem("authUser"))
       setUserId(obj.id)
     }
   }, [])
-  const [menu, setMenu] = useState(false)
 
-  const [userId, setUserId] = useState("")
   const [notis, setNotis] = useState({})
 
   // useEffect(() => {

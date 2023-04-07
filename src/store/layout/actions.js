@@ -9,7 +9,6 @@ import {
   SHOW_SIDEBAR,
   CHANGE_PRELOADER,
   TOGGLE_LEFTMENU,
-  AUTO_ASSIGN,
   CHANGE_AUTO_ASSIGN,
 } from "./actionTypes"
 

@@ -15,6 +15,8 @@ import {
   GET_BOOKING_LIST_BY_DATE_FAIL,
   CHECKIN_QRCODE_SUCCESS,
   CHECKIN_QRCODE_FAIL,
+  GET_BOOKING_DETAIL,
+  GET_BOOKING_LIST_BY_DATE,
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -22,38 +24,61 @@ const INIT_STATE = {
   bookingDetail: {},
   error: {},
   dataDetail: {},
+  isLoading: false,
 }
 
 const bookings = (state = INIT_STATE, action) => {
   switch (action.type) {
-    case GET_BOOKING_LIST_SUCCESS:
-      return {
-        ...state,
-        bookings: action.payload,
-      }
+    // case GET_BOOKING_LIST_SUCCESS:
+    //   return {
+    //     ...state,
+    //     bookings: action.payload,
+    //   }
 
-    case GET_BOOKING_LIST_FAIL:
+    // case GET_BOOKING_LIST_FAIL:
+    //   return {
+    //     ...state,
+    //     error: action.payload,
+    //   }
+
+    case GET_BOOKING_LIST_BY_DATE:
       return {
         ...state,
-        error: action.payload,
+        isLoading: true,
       }
 
     case GET_BOOKING_LIST_BY_DATE_SUCCESS:
       return {
         ...state,
+        isLoading: false,
         bookings: action.payload,
       }
 
     case GET_BOOKING_LIST_BY_DATE_FAIL:
       return {
         ...state,
+        isLoading: false,
         error: action.payload,
+      }
+
+    case GET_BOOKING_DETAIL:
+      return {
+        ...state,
+        isLoading: true,
       }
 
     case GET_BOOKING_DETAIL_SUCCESS:
       return {
         ...state,
+        isLoading: false,
         bookingDetail: action.payload,
+      }
+
+    case GET_BOOKING_DETAIL_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload,
       }
 
     case CHECKIN_BOOKING_SUCCESS:
@@ -79,60 +104,6 @@ const bookings = (state = INIT_STATE, action) => {
       }
 
     case CHECKIN_QRCODE_FAIL:
-      return {
-        ...state,
-        error: action.payload,
-      }
-
-    case GET_BOOKING_DETAIL_FAIL:
-      return {
-        ...state,
-        error: action.payload,
-      }
-
-    case GET_BOOKING_DETAIL_SUCCESS:
-      return {
-        ...state,
-        bookingDetail: action.payload,
-      }
-
-    case ADD_BOOKING_SUCCESS:
-      return {
-        ...state,
-        bookings: [...state.bookings, action.payload],
-      }
-
-    case ADD_BOOKING_FAIL:
-      return {
-        ...state,
-        error: action.payload,
-      }
-
-    case UPDATE_BOOKING_SUCCESS:
-      return {
-        ...state,
-        bookings: state.bookings.map(user =>
-          booking.id.toString() === action.payload.id.toString()
-            ? { booking, ...action.payload }
-            : booking
-        ),
-      }
-
-    case UPDATE_BOOKING_FAIL:
-      return {
-        ...state,
-        error: action.payload,
-      }
-
-    case DELETE_BOOKING_SUCCESS:
-      return {
-        ...state,
-        booking: state.bookings.filter(
-          booking => booking.id.toString() !== action.payload.id.toString()
-        ),
-      }
-
-    case DELETE_BOOKING_FAIL:
       return {
         ...state,
         error: action.payload,

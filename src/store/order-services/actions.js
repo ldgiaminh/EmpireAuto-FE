@@ -23,6 +23,9 @@ import {
   POST_CHECKOUT_SERVICES,
   POST_CHECKOUT_SERVICES_SUCCESS,
   POST_CHECKOUT_SERVICES_FAIL,
+  GET_ORDER_SERVICE_LIST_BY_STATUS,
+  GET_ORDER_SERVICE_LIST_BY_STATUS_FAIL,
+  GET_ORDER_SERVICE_LIST_BY_STATUS_SUCCESS,
 } from "./actionTypes"
 
 /*
@@ -50,17 +53,17 @@ GET OrderServices List By Status
 ================================================
 */
 export const getOrderServicesListByStatus = status => ({
-  type: GET_ORDER_SERVICE_LIST,
+  type: GET_ORDER_SERVICE_LIST_BY_STATUS,
   status,
 })
 
 export const getOrderServicesListByStatusSuccess = orderServicess => ({
-  type: GET_ORDER_SERVICE_LIST_SUCCESS,
+  type: GET_ORDER_SERVICE_LIST_BY_STATUS_SUCCESS,
   payload: orderServicess,
 })
 
 export const getOrderServicesListByStatusFail = error => ({
-  type: GET_ORDER_SERVICE_LIST_FAIL,
+  type: GET_ORDER_SERVICE_LIST_BY_STATUS_FAIL,
   payload: error,
 })
 

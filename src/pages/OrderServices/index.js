@@ -2,21 +2,14 @@ import React, { useEffect, useState, useRef, useMemo } from "react"
 import { withRouter, Link } from "react-router-dom"
 import TableContainer from "../../components/Common/TableContainer"
 import classnames from "classnames"
-
+import img1 from "../../assets/images/small/no-data.png"
+import PropTypes from "prop-types"
 import {
   Card,
   CardBody,
   Col,
   Container,
   Row,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  Label,
-  FormFeedback,
-  UncontrolledTooltip,
-  Input,
-  Form,
   Button,
   NavItem,
   NavLink,
@@ -41,8 +34,9 @@ import { isEmpty } from "lodash"
 
 //redux
 import { useSelector, useDispatch } from "react-redux"
+import Loading from "components/Loader/Loading"
 
-const OrderSerives = props => {
+const OrderServicesList = props => {
   //meta title
   document.title = "Theo dõi tiến trình | Empire Admin"
 
@@ -61,10 +55,11 @@ const OrderSerives = props => {
   const dispatch = useDispatch()
 
   const [activeTab, setActiveTab] = useState("0")
-  const [orderService, setOrderService] = useState()
+  const [orderService, setOrderService] = useState([])
 
-  const { orderServicess } = useSelector(state => ({
+  const { orderServicess, isLoading } = useSelector(state => ({
     orderServicess: state.orderServices.orderServicess,
+    isLoading: state.orderServices.isLoading,
   }))
 
   //Change Tabs
@@ -74,79 +69,6 @@ const OrderSerives = props => {
       dispatch(onGetOrderServicesListByStatus(tab))
     }
   }
-
-  const columnsAssign = useMemo(
-    () => [
-      {
-        Header: "Mã đơn hàng",
-        accessor: "code",
-        width: "150px",
-        style: {
-          textAlign: "center",
-          width: "10%",
-          background: "#0000",
-        },
-        filterable: true,
-        Cell: cellProps => {
-          return <OrderCode {...cellProps} />
-        },
-      },
-      {
-        Header: "Tên khách hàng",
-        accessor: "order.user.fullname",
-        disableFilters: true,
-        Cell: cellProps => {
-          return <Name {...cellProps} />
-        },
-      },
-      {
-        Header: "Thời gian check-in",
-        accessor: "order.updatedAt",
-        disableFilters: true,
-        Cell: cellProps => {
-          return <DateCell {...cellProps} />
-        },
-      },
-      {
-        Header: "Modal xe",
-        accessor: "car.carBrand",
-        disableFilters: true,
-        Cell: cellProps => {
-          return <ModalCar {...cellProps} />
-        },
-      },
-      {
-        Header: "Biển số xe",
-        accessor: "car.carLisenceNo",
-        disableFilters: true,
-        Cell: cellProps => {
-          return <Plate {...cellProps} />
-        },
-      },
-      {
-        Header: "Chẩn đoán",
-        accessor: "action",
-        disableFilters: true,
-        Cell: cellProps => {
-          return (
-            <Button
-              type="button"
-              color="warning"
-              className="btn-sm btn-rounded"
-              onClick={() =>
-                history.push(
-                  `/order-service-detail/${cellProps.row.original.id}`
-                )
-              }
-            >
-              Phân công
-            </Button>
-          )
-        },
-      },
-    ],
-    []
-  )
 
   const columns = useMemo(
     () => [
@@ -173,8 +95,8 @@ const OrderSerives = props => {
         },
       },
       {
-        Header: "Ngày đến",
-        accessor: "order.updatedAt",
+        Header: "Thời gian check-in",
+        accessor: "order.createdAt",
         disableFilters: true,
         Cell: cellProps => {
           return <DateCell {...cellProps} />
@@ -212,7 +134,9 @@ const OrderSerives = props => {
           return (
             <Button
               type="button"
-              color="primary"
+              color={
+                cellProps.row.original.expert != null ? "primary" : "warning"
+              }
               className="btn-sm btn-rounded"
               onClick={() =>
                 history.push(
@@ -220,7 +144,9 @@ const OrderSerives = props => {
                 )
               }
             >
-              Xem chi tiết
+              {cellProps.row.original.expert != null
+                ? "Xem chi tiết"
+                : "Phân công"}
             </Button>
           )
         },
@@ -230,20 +156,23 @@ const OrderSerives = props => {
   )
 
   useEffect(() => {
-    if (orderServicess && !orderServicess.length) {
-      dispatch(onGetOrderServicesListByStatus(activeTab))
-    }
-  }, [dispatch, orderServicess])
+    dispatch(onGetOrderServicesListByStatus(activeTab))
+  }, [dispatch])
 
   useEffect(() => {
     setOrderService(orderServicess)
+  }, [orderServicess])
+
+  useEffect(() => {
+    if (!isEmpty(orderServicess)) {
+      setOrderService(orderServicess)
+    }
   }, [orderServicess])
 
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          {/* Render Breadcrumbs */}
           <Breadcrumbs title="Theo dõi tiến trình" breadcrumbItem="Danh sách" />
           <Row>
             <Col lg="12">
@@ -265,85 +194,96 @@ const OrderSerives = props => {
                       </NavItem>
                     ))}
                   </ul>
-                  <TabContent activeTab={activeTab} className="p-3">
-                    <TabPane tabId="0" id="diagnosing">
-                      <TableContainer
-                        columns={columnsAssign}
-                        data={orderServicess}
-                        isGlobalFilter={true}
-                        // isAddUserList={true}
-                        // handleUserClick={handleUserClicks}
-                        customPageSize={10}
-                        className="custom-header-css"
-                      />
-                    </TabPane>
-                    <TabPane tabId="1" id="confirmPrice">
-                      <TableContainer
-                        columns={columns}
-                        data={orderServicess}
-                        isGlobalFilter={true}
-                        // isAddUserList={true}
-                        // handleUserClick={handleUserClicks}
-                        customPageSize={10}
-                        className="custom-header-css"
-                      />
-                    </TabPane>
-                    <TabPane tabId="2" id="confirmPaid">
-                      <TableContainer
-                        columns={columns}
-                        data={orderServicess}
-                        isGlobalFilter={true}
-                        // isAddUserList={true}
-                        // handleUserClick={handleUserClicks}
-                        customPageSize={10}
-                        className="custom-header-css"
-                      />
-                    </TabPane>
-                    <TabPane tabId="3" id="done">
-                      <TableContainer
-                        columns={columns}
-                        data={orderServicess}
-                        isGlobalFilter={true}
-                        // isAddUserList={true}
-                        // handleUserClick={handleUserClicks}
-                        customPageSize={10}
-                        className="custom-header-css"
-                      />
-                    </TabPane>
-                    <TabPane tabId="4" id="checkout">
-                      <TableContainer
-                        columns={columns}
-                        data={orderServicess}
-                        isGlobalFilter={true}
-                        // isAddUserList={true}
-                        // handleUserClick={handleUserClicks}
-                        customPageSize={10}
-                        className="custom-header-css"
-                      />
-                    </TabPane>
-                    <TabPane tabId="5" id="checkout">
-                      <TableContainer
-                        columns={columns}
-                        data={orderServicess}
-                        isGlobalFilter={true}
-                        // isAddUserList={true}
-                        // handleUserClick={handleUserClicks}
-                        customPageSize={10}
-                        className="custom-header-css"
-                      />
-                    </TabPane>
-                    <TabPane tabId="-1" id="cancel">
-                      <TableContainer
-                        columns={columns}
-                        data={orderServicess}
-                        isGlobalFilter={true}
-                        // isAddUserList={true}
-                        // handleUserClick={handleUserClicks}
-                        customPageSize={10}
-                        className="custom-header-css"
-                      />
-                    </TabPane>
-                  </TabContent>
+                  {isLoading && <Loading />}
+                  {!isLoading &&
+                    (orderService.length ? (
+                      <TabContent activeTab={activeTab} className="p-3">
+                        <TabPane tabId="0" id="diagnosing">
+                          <TableContainer
+                            columns={columns}
+                            data={orderService}
+                            isGlobalFilter={true}
+                            customPageSize={10}
+                            className="custom-header-css"
+                          />
+                        </TabPane>
+                        <TabPane tabId="1" id="confirmPrice">
+                          <TableContainer
+                            columns={columns}
+                            data={orderService}
+                            isGlobalFilter={true}
+                            customPageSize={10}
+                            className="custom-header-css"
+                          />
+                        </TabPane>
+                        <TabPane tabId="2" id="confirmPaid">
+                          <TableContainer
+                            columns={columns}
+                            data={orderService}
+                            isGlobalFilter={true}
+                            customPageSize={10}
+                            className="custom-header-css"
+                          />
+                        </TabPane>
+                        <TabPane tabId="3" id="done">
+                          <TableContainer
+                            columns={columns}
+                            data={orderService}
+                            isGlobalFilter={true}
+                            customPageSize={10}
+                            className="custom-header-css"
+                          />
+                        </TabPane>
+                        <TabPane tabId="4" id="checkout">
+                          <TableContainer
+                            columns={columns}
+                            data={orderService}
+                            isGlobalFilter={true}
+                            customPageSize={10}
+                            className="custom-header-css"
+                          />
+                        </TabPane>
+                        <TabPane tabId="5" id="checkout">
+                          <TableContainer
+                            columns={columns}
+                            data={orderService}
+                            isGlobalFilter={true}
+                            customPageSize={10}
+                            className="custom-header-css"
+                          />
+                        </TabPane>
+                        <TabPane tabId="-1" id="cancel">
+                          <TableContainer
+                            columns={columns}
+                            data={orderService}
+                            isGlobalFilter={true}
+                            customPageSize={10}
+                            className="custom-header-css"
+                          />
+                        </TabPane>
+                      </TabContent>
+                    ) : (
+                      <div className="pt-3">
+                        <div className="row justify-content-center">
+                          <div className="col-xl-12">
+                            <div>
+                              <div className="my-5">
+                                <div className="text-center">
+                                  <h4>Không có dữ liệu</h4>
+                                </div>
+
+                                <img
+                                  src={img1}
+                                  alt=""
+                                  className="mx-auto d-block"
+                                  style={{ height: 400 }}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                 </CardBody>
               </Card>
             </Col>
@@ -354,4 +294,8 @@ const OrderSerives = props => {
   )
 }
 
-export default withRouter(OrderSerives)
+OrderServicesList.propTypes = {
+  isLoading: PropTypes.bool,
+}
+
+export default withRouter(OrderServicesList)

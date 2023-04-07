@@ -38,6 +38,11 @@ import SymptomLists from "../pages/Symptom/index"
 import GroupService from "../pages/GroupService/index"
 import QrCheckOut from "pages/OrderServices/QrCheckOut"
 
+//Error Page
+import Pages404 from "pages/Authentication/pages-404"
+import Pages500 from "pages/Authentication/pages-500"
+import Pages403 from "pages/Authentication/pages-403"
+
 const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
 
@@ -74,11 +79,16 @@ const authProtectedRoutes = [
   { path: "/", exact: true, component: () => <Redirect to="/dashboard" /> },
 ]
 
+// const recepProtectedRoutes = []
+
 const publicRoutes = [
   { path: "/logout", component: Logout },
   { path: "/login", component: Login },
   { path: "/forgot-password", component: ForgetPwd },
   { path: "/register", component: Register },
+  { path: "/pages-404", component: Pages404 },
+  { path: "/pages-403", component: Pages403 },
+  { path: "/pages-500", component: Pages500 },
 ]
 
 export { publicRoutes, authProtectedRoutes }

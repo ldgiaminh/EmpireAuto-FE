@@ -17,6 +17,8 @@ import {
   PUT_CONFIRM_PAID_SERVICES_FAIL,
   POST_CHECKOUT_SERVICES_SUCCESS,
   POST_CHECKOUT_SERVICES_FAIL,
+  GET_ORDER_SERVICE_LIST_BY_STATUS,
+  GET_ORDER_SERVICE_DETAIL,
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -24,6 +26,7 @@ const INIT_STATE = {
   orderServicesDetails: {},
   orderServiceLogs: [],
   error: {},
+  isLoading: false,
 }
 
 const orderServices = (state = INIT_STATE, action) => {
@@ -40,27 +43,43 @@ const orderServices = (state = INIT_STATE, action) => {
         error: action.payload,
       }
 
+    case GET_ORDER_SERVICE_LIST_BY_STATUS:
+      return {
+        ...state,
+        isLoading: true,
+      }
+
     case GET_ORDER_SERVICE_LIST_BY_STATUS_SUCCESS:
       return {
         ...state,
+        isLoading: false,
         orderServicess: action.payload,
       }
 
     case GET_ORDER_SERVICE_LIST_BY_STATUS_FAIL:
       return {
         ...state,
+        isLoading: false,
         error: action.payload,
+      }
+
+    case GET_ORDER_SERVICE_DETAIL:
+      return {
+        ...state,
+        isLoading: true,
       }
 
     case GET_ORDER_SERVICE_DETAIL_SUCCESS:
       return {
         ...state,
+        isLoading: false,
         orderServicesDetails: action.payload,
       }
 
     case GET_ORDER_SERVICE_DETAIL_FAIL:
       return {
         ...state,
+        isLoading: false,
         error: action.payload,
       }
 
