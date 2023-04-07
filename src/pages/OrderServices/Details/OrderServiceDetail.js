@@ -38,6 +38,7 @@ import { useSelector, useDispatch } from "react-redux"
 
 import Cart from "./cart"
 import CarRecord from "./health-car-record"
+import Loading from "components/Loader/Loading"
 
 const OrderServiceDetail = props => {
   //meta title
@@ -59,13 +60,19 @@ const OrderServiceDetail = props => {
   const { history } = props
   const dispatch = useDispatch()
 
-  const { orderServicesDetails, groupService, users, orderServiceLog } =
-    useSelector(state => ({
-      orderServicesDetails: state.orderServices.orderServicesDetails,
-      groupService: state.groupServices.groupService,
-      users: state.userLists.users,
-      orderServiceLog: state.orderServices.orderServiceLog,
-    }))
+  const {
+    orderServicesDetails,
+    groupService,
+    users,
+    orderServiceLog,
+    isLoading,
+  } = useSelector(state => ({
+    orderServicesDetails: state.orderServices.orderServicesDetails,
+    groupService: state.groupServices.groupService,
+    users: state.userLists.users,
+    isLoading: state.orderServices.isLoading,
+    orderServiceLog: state.orderServices.orderServiceLog,
+  }))
 
   useEffect(() => {
     if (params && params.id) {
@@ -139,23 +146,21 @@ const OrderServiceDetail = props => {
   //   console.log(params)
   // }
 
-  const createAtDate = orderServicesDetails?.order?.createdAt
-  const createDate = new Date(createAtDate)
-  const formattedDate = createDate.toLocaleDateString("vi-VN", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  })
-  const formattedTime = createDate.toLocaleTimeString("vi-VN", {
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: false,
-  })
-  const formattedDateTime = ` ${formattedTime} - ${formattedDate}`
-
-  function handleSelectGroup(selectedGroup) {
-    setselectedGroup(selectedGroup)
+  const formattedDateTime = date => {
+    const createDate = new Date(date)
+    const formattedDate = createDate.toLocaleDateString("vi-VN", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    })
+    const formattedTime = createDate.toLocaleTimeString("vi-VN", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    })
+    const formatted = `${formattedDate} - ${formattedTime}`
+    return formatted
   }
 
   const optionGroup = users.map(ex => ({
@@ -197,16 +202,18 @@ const OrderServiceDetail = props => {
   return (
     <>
       <div className="page-content">
+        {isLoading && <Loading />}
         <Container fluid={true}>
-          <Breadcrumbs
-            title="Dịch vụ"
-            breadcrumbItem={
-              "Theo dõi tiến trình" + " - " + ("#" + orderServicesDetails.code)
-            }
-          />
-
-          {!isEmpty(orderServicesDetails) && (
+          {!isLoading && !isEmpty(orderServicesDetails) && (
             <React.Fragment>
+              <Breadcrumbs
+                title="Dịch vụ"
+                breadcrumbItem={
+                  "Theo dõi tiến trình" +
+                  " - " +
+                  ("#" + orderServicesDetails.code)
+                }
+              />
               <Row>
                 <Col>
                   <Card>
@@ -326,7 +333,11 @@ const OrderServiceDetail = props => {
                                   >
                                     Hóa đơn tạo lúc :
                                   </th>
-                                  <td>{formattedDateTime}</td>
+                                  <td>
+                                    {formattedDateTime(
+                                      orderServicesDetails.order.createdAt
+                                    )}
+                                  </td>
                                 </tr>
                                 <tr>
                                   <th
@@ -424,6 +435,7 @@ const OrderServiceDetail = props => {
 
 OrderServiceDetail.propTypes = {
   history: PropTypes.object,
+  isLoading: PropTypes.bool,
 }
 
 export default withRouter(OrderServiceDetail)

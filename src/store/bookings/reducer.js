@@ -17,6 +17,7 @@ import {
   CHECKIN_QRCODE_FAIL,
   GET_BOOKING_DETAIL,
   GET_BOOKING_LIST_BY_DATE,
+  CHECKIN_BOOKING,
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -81,9 +82,16 @@ const bookings = (state = INIT_STATE, action) => {
         error: action.payload,
       }
 
+    case CHECKIN_BOOKING:
+      return {
+        ...state,
+        isLoading: true,
+      }
+
     case CHECKIN_BOOKING_SUCCESS:
       return {
         ...state,
+        isLoading: false,
         bookingDetail: state.bookingDetail.map(booking =>
           booking.id.toString() === action.payload.id.toString()
             ? { booking, ...action.payload }
@@ -94,6 +102,7 @@ const bookings = (state = INIT_STATE, action) => {
     case CHECKIN_BOOKING_FAIL:
       return {
         ...state,
+        isLoading: false,
         error: action.payload,
       }
 
