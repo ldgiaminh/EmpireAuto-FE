@@ -82,13 +82,13 @@ const Navbar = props => {
               {role === "RE" ? (
                 <ul className="navbar-nav">
                   <li className="nav-item">
-                    <Link className="nav-link" to="/booking">
+                    <Link className="nav-link" to="/bookings">
                       <i className="bx bx-calendar me-2"></i>
                       {props.t("Đặt lịch")}
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/order-service">
+                    <Link className="nav-link" to="/order-services">
                       <i className="bx bxs-detail me-2"></i>
                       {props.t("Theo dõi tiến trình")}
                     </Link>

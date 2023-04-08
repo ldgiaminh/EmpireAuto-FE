@@ -139,9 +139,7 @@ const OrderServicesList = props => {
               }
               className="btn-sm btn-rounded"
               onClick={() =>
-                history.push(
-                  `/order-service-detail/${cellProps.row.original.id}`
-                )
+                history.push(`/order-services/${cellProps.row.original.id}`)
               }
             >
               {cellProps.row.original.expert != null

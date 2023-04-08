@@ -47,14 +47,14 @@ const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
 
   //booking
-  { path: "/booking", component: Booking },
-  { path: "/booking-detail/:id", component: BookingDetails },
+  { path: "/bookings", component: Booking },
+  { path: "/bookings/:id", component: BookingDetails },
   { path: "/scanner", component: QrScanner },
   { path: "/scanner-checkout", component: QrCheckOut },
 
   //order service
-  { path: "/order-service", component: OrderService },
-  { path: "/order-service-detail/:id", component: OrderServiceDetail },
+  { path: "/order-services", component: OrderService },
+  { path: "/order-services/:id", component: OrderServiceDetail },
 
   //transaction
   { path: "/transactions", component: Transaction },

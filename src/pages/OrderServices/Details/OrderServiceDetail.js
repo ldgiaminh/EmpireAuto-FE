@@ -458,6 +458,17 @@ const OrderServiceDetail = props => {
               ) : (
                 ""
               )}
+              <Row className="mt-2 mb-5">
+                <Col sm="6">
+                  <Link
+                    to="/order-services"
+                    className="btn text-muted d-none d-sm-inline-block btn-link"
+                  >
+                    <i className="mdi mdi-arrow-left me-1" /> Trở về trang danh
+                    sách{" "}
+                  </Link>
+                </Col>
+              </Row>
             </React.Fragment>
           )}
         </Container>

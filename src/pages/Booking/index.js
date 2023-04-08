@@ -270,12 +270,14 @@ const BookingList = props => {
         Header: "Chi tiết",
         accessor: "view",
         disableFilters: true,
-        Cell: ({ row }) => {
+        Cell: cellProps => {
           return (
             <Button
               type="button"
               color="primary"
-              onClick={() => history.push(`/booking-detail/${row.original.id}`)}
+              onClick={() =>
+                history.push(`/bookings/${cellProps.row.original.id}`)
+              }
             >
               Xem chi tiết
             </Button>

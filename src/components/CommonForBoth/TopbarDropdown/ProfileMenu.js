@@ -68,11 +68,11 @@ class ProfileMenu extends Component {
             id="page-header-user-dropdown"
             tag="button"
           >
-            <img
+            {/* <img
               className="rounded-circle header-profile-user"
               src={user1}
               alt="Header Avatar"
-            />{" "}
+            />{" "} */}
             <span className="d-none d-xl-inline-block ms-1">
               {this.state.name}
             </span>
