@@ -19,6 +19,7 @@ import {
   POST_CHECKOUT_SERVICES_FAIL,
   GET_ORDER_SERVICE_LIST_BY_STATUS,
   GET_ORDER_SERVICE_DETAIL,
+  PUT_ASSIGN_EXPERT,
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -117,9 +118,19 @@ const orderServices = (state = INIT_STATE, action) => {
         error: action.payload,
       }
 
-    case PUT_ASSIGN_EXPERT_SUCCESS:
+    case PUT_ASSIGN_EXPERT:
       return {
         ...state,
+        isLoading: true,
+      }
+
+    case PUT_ASSIGN_EXPERT_SUCCESS:
+      if (!Array.isArray(state.orderServicesDetails)) {
+        return state
+      }
+      return {
+        ...state,
+        isLoading: false,
         orderServicesDetails: state.orderServicesDetails.map(service =>
           service.id.toString() === action.payload.id.toString()
             ? { ...action.pay.load, service }
@@ -130,6 +141,7 @@ const orderServices = (state = INIT_STATE, action) => {
     case PUT_ASSIGN_EXPERT_FAIL:
       return {
         ...state,
+        isLoading: false,
         error: action.payload,
       }
 

@@ -117,12 +117,12 @@ export const putAssignExperts = (orderServiceId, exId) => ({
   payload: { orderServiceId, exId },
 })
 
-export const putAssginExpertsSuccess = orderServicesDetails => ({
+export const putAssignExpertsSuccess = orderServicesDetails => ({
   type: PUT_ASSIGN_EXPERT_SUCCESS,
   payload: orderServicesDetails,
 })
 
-export const putAssginExpertsFail = error => ({
+export const putAssignExpertsFail = error => ({
   type: PUT_ASSIGN_EXPERT_FAIL,
   payload: error,
 })

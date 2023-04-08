@@ -13,14 +13,8 @@ import {
   CardTitle,
   Col,
   Container,
-  Form,
-  FormGroup,
-  Input,
-  InputGroup,
-  Label,
   Row,
   Table,
-  Progress,
 } from "reactstrap"
 import Select from "react-select"
 
@@ -44,21 +38,22 @@ const OrderServiceDetail = props => {
   //meta title
   document.title = "Theo dõi tiến trình | Empire Admin"
 
-  const [step1, setStep1] = useState(true)
-  const [step2, setStep2] = useState(false)
-
-  const [symptom, setSymptom] = useState("")
-  const [selectedGroup, setselectedGroup] = useState(null)
-
-  const inpRow = [{ itemId: "", price: "" }]
-  const [inputFields, setinputFields] = useState(inpRow)
-
-  const {
-    match: { params },
-  } = props
-
   const { history } = props
   const dispatch = useDispatch()
+
+  const [selectedGroup, setSelectedGroup] = useState(null)
+  const [isAssign, setIsAssign] = useState(false)
+
+  const handleReAssign = () => {
+    setIsAssign(!isAssign)
+    setSelectedGroup(null)
+  }
+
+  /*
+  ==================================================
+  STATE FROM REDUX
+  ==================================================
+  */
 
   const {
     orderServicesDetails,
@@ -74,6 +69,16 @@ const OrderServiceDetail = props => {
     orderServiceLog: state.orderServices.orderServiceLog,
   }))
 
+  /*
+  ==================================================
+  USE EFFECT
+  ==================================================
+  */
+
+  const {
+    match: { params },
+  } = props
+
   useEffect(() => {
     if (params && params.id) {
       dispatch(onGetOrderServiceDetail(params.id))
@@ -83,6 +88,12 @@ const OrderServiceDetail = props => {
   useEffect(() => {
     dispatch(onGetExpert())
   }, [onGetExpert])
+
+  /*
+  ==================================================
+  FORMAT DATE & TIME
+  ==================================================
+  */
 
   const formattedDateTime = date => {
     const createDate = new Date(date)
@@ -101,8 +112,14 @@ const OrderServiceDetail = props => {
     return formatted
   }
 
+  /*
+  ==================================================
+  ASSIGN TO EXPERTS
+  ==================================================
+  */
+
   function handleSelectGroup(selectedGroup) {
-    setselectedGroup(selectedGroup)
+    setSelectedGroup(selectedGroup)
   }
 
   const optionGroup = users.map(ex => ({
@@ -133,9 +150,17 @@ const OrderServiceDetail = props => {
     if (id) {
       dispatch(assignExpert(id, exId))
       toastr.success("Đã phân công cho " + selectedGroup.label, "Thành công")
+      setIsAssign(!isAssign)
+      setSelectedGroup(null)
       dispatch(onGetOrderServiceDetail(id))
     }
   }
+
+  /*
+  ==================================================
+  SCAN QR-CODE TO CHECK-OUT
+  ==================================================
+  */
 
   const handleCheckOutClick = () => {
     history.push("/scanner-checkout")
@@ -190,9 +215,9 @@ const OrderServiceDetail = props => {
                         )}
                       </div>
                       <Row>
-                        <Col lg="6">
+                        <Col xl="6">
                           <div className="table-responsive">
-                            <Table className="table table-borderless  mb-0">
+                            <Table className="table table-borderless mb-0">
                               <tbody>
                                 <tr>
                                   <th
@@ -253,11 +278,17 @@ const OrderServiceDetail = props => {
                                   >
                                     Thương hiệu xe:
                                   </th>
-                                  <td>
-                                    {orderServicesDetails.car.carBrand +
-                                      " - " +
-                                      orderServicesDetails.car.carModel}
-                                  </td>
+                                  <td>{orderServicesDetails.car.carBrand}</td>
+                                </tr>
+                                <tr>
+                                  <th
+                                    scope="row"
+                                    style={{ width: "300px" }}
+                                    className={"text-capitalize"}
+                                  >
+                                    Dòng xe:
+                                  </th>
+                                  <td>{orderServicesDetails.car.carModel}</td>
                                 </tr>
                               </tbody>
                             </Table>
@@ -265,7 +296,7 @@ const OrderServiceDetail = props => {
                         </Col>
                         <Col xl="6">
                           <div className="table-responsive">
-                            <Table className="table table-borderless  mb-0">
+                            <Table className="table table-borderless mb-0">
                               <tbody>
                                 <tr>
                                   <th
@@ -309,17 +340,77 @@ const OrderServiceDetail = props => {
                                 <tr>
                                   <th
                                     scope="row"
-                                    // style={{ width: "300px" }}
+                                    style={{
+                                      width: "300px",
+                                      verticalAlign: "middle",
+                                    }}
                                     className={"text-capitalize"}
                                   >
                                     Kỹ thuật viên chính :
                                   </th>
-                                  {orderServicesDetails.expert != null ? (
-                                    <td>
-                                      {orderServicesDetails.expert.fullname}
-                                    </td>
+                                  {orderServicesDetails.expert !== null ? (
+                                    orderServicesDetails.status === 1 ? (
+                                      isAssign ? (
+                                        <td>
+                                          <div className="form-group">
+                                            <Select
+                                              value={selectedGroup}
+                                              onChange={handleSelectGroup}
+                                              options={optionGroup}
+                                              classNamePrefix="select2-selection"
+                                              placeholder="Chọn kỹ thuật viên"
+                                              required={true}
+                                              // menuPlacement="top"
+                                            />
+                                            <Button
+                                              onClick={() =>
+                                                handleAssignExpert(params.id)
+                                              }
+                                              type="button"
+                                              color="primary"
+                                              className="w-md mt-2 me-2"
+                                              disabled={!selectedGroup}
+                                            >
+                                              Phân công
+                                            </Button>
+                                            <Button
+                                              onClick={handleReAssign}
+                                              type="button"
+                                              color="light"
+                                              className="w-md mt-2"
+                                            >
+                                              Hủy
+                                            </Button>
+                                          </div>
+                                        </td>
+                                      ) : (
+                                        <td
+                                          style={{
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                            alignItems: "baseline",
+                                            verticalAlign: "middle",
+                                          }}
+                                        >
+                                          {orderServicesDetails.expert.fullname}
+
+                                          <button
+                                            type="button"
+                                            className="btn btn-light btn-label"
+                                            onClick={handleReAssign}
+                                          >
+                                            <i className="mdi mdi-pencil label-icon "></i>{" "}
+                                            Phân công lại
+                                          </button>
+                                        </td>
+                                      )
+                                    ) : (
+                                      <td>
+                                        {orderServicesDetails.expert.fullname}
+                                      </td>
+                                    )
                                   ) : (
-                                    <td style={{ wordBreak: "break-word" }}>
+                                    <td>
                                       <div className="form-group">
                                         <Select
                                           value={selectedGroup}
@@ -350,6 +441,7 @@ const OrderServiceDetail = props => {
                         </Col>
                       </Row>
                     </CardBody>
+
                     {orderServicesDetails.healthCarRecord != null ? (
                       <CarRecord
                         record={orderServicesDetails.healthCarRecord}

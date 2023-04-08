@@ -22,8 +22,6 @@ import {
   getOrderServicesListByStatusFail,
   putOrderServicesFail,
   putOrderServicesSuccess,
-  putAssginExpertsFail,
-  putAssginExpertsSuccess,
   putConfirmServicesFail,
   putConfirmServicesSuccess,
   putConfirmPaidFail,
@@ -32,6 +30,8 @@ import {
   postCheckOutSuccess,
   getStatusLogFail,
   getStatusLogSuccess,
+  putAssignExpertsSuccess,
+  putAssignExpertsFail,
 } from "./actions"
 
 import {
@@ -85,9 +85,9 @@ function* onRecommendService({ payload: { orderServiceId, services } }) {
 function* onAssignExpert({ payload: { orderServiceId, exId } }) {
   try {
     const response = yield call(putAssignExperts, orderServiceId, exId)
-    yield put(putAssginExpertsSuccess(response))
+    yield put(putAssignExpertsSuccess(response))
   } catch (error) {
-    yield put(putAssginExpertsFail(error))
+    yield put(putAssignExpertsFail(error))
   }
 }
 
