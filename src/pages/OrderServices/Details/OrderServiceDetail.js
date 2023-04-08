@@ -84,68 +84,6 @@ const OrderServiceDetail = props => {
     dispatch(onGetExpert())
   }, [onGetExpert])
 
-  // useEffect(() => {
-  //   if (params && params.id) {
-  //     dispatch(onGetStatusLog(params.id))
-  //   }
-  // }, [params, onGetStatusLog])
-
-  // Function for Create Input Fields
-  function handleAddFields() {
-    const item1 = { itemId: "", price: "" }
-    setinputFields([...inputFields, item1])
-    setselectedGroup(null)
-  }
-
-  // Function for Remove Input Fields
-  function handleRemoveFields(index) {
-    const updatedFields = [...inputFields]
-    updatedFields.splice(index, 1)
-    setinputFields(updatedFields)
-  }
-
-  // const handleSelectGroup = (selectedOption, index) => {
-  //   // set the selected option
-  //   setselectedGroup(selectedOption)
-
-  //   // update the price field in the input
-  //   const updatedFields = [...inputFields]
-  //   updatedFields[index] = {
-  //     itemId: selectedOption.itemId,
-  //     price: selectedOption.price,
-  //   }
-  //   setinputFields(updatedFields)
-  // }
-
-  // const optionGroup1 = groupService.map(group => {
-  //   const selectedOptionIds = inputFields.map(field => field.itemId) // get the ids of all selected options
-  //   const options = group.items
-  //     .filter(option => !selectedOptionIds.includes(option.id)) // filter out options that have already been selected
-  //     .map(option => ({
-  //       label: option.name,
-  //       value: option.id,
-  //       itemId: option.id,
-  //       price: option.presentPrice.price,
-  //     }))
-  //   return {
-  //     label: group.name,
-  //     options: options,
-  //   }
-  // })
-
-  // const handleSubmit = e => {
-  //   e.preventDefault()
-  //   const services = {
-  //     healthCarRecord: {
-  //       symptom,
-  //     },
-  //     orderServiceDetails: inputFields,
-  //   }
-  //   //dispatch(onRecommendService(params.id, services))
-  //   console.log(services)
-  //   console.log(params)
-  // }
-
   const formattedDateTime = date => {
     const createDate = new Date(date)
     const formattedDate = createDate.toLocaleDateString("vi-VN", {
@@ -161,6 +99,10 @@ const OrderServiceDetail = props => {
     })
     const formatted = `${formattedDate} - ${formattedTime}`
     return formatted
+  }
+
+  function handleSelectGroup(selectedGroup) {
+    setselectedGroup(selectedGroup)
   }
 
   const optionGroup = users.map(ex => ({
@@ -367,7 +309,7 @@ const OrderServiceDetail = props => {
                                 <tr>
                                   <th
                                     scope="row"
-                                    style={{ width: "300px" }}
+                                    // style={{ width: "300px" }}
                                     className={"text-capitalize"}
                                   >
                                     Kỹ thuật viên chính :
@@ -377,7 +319,7 @@ const OrderServiceDetail = props => {
                                       {orderServicesDetails.expert.fullname}
                                     </td>
                                   ) : (
-                                    <td>
+                                    <td style={{ wordBreak: "break-word" }}>
                                       <div className="form-group">
                                         <Select
                                           value={selectedGroup}
@@ -418,13 +360,12 @@ const OrderServiceDetail = props => {
                   </Card>
                 </Col>
               </Row>
-              <Row>
-                {orderServicesDetails.orderServiceDetails.length > 0 ? (
-                  <Cart services={orderServicesDetails.orderServiceDetails} />
-                ) : (
-                  ""
-                )}
-              </Row>
+
+              {orderServicesDetails.orderServiceDetails.length > 0 ? (
+                <Cart services={orderServicesDetails.orderServiceDetails} />
+              ) : (
+                ""
+              )}
             </React.Fragment>
           )}
         </Container>

@@ -127,8 +127,10 @@ const Cart = ({ details, services }) => {
                   <thead className="table-light">
                     <tr>
                       <th>Dịch vụ</th>
-                      <th colSpan="2">Giá tiền</th>
-                      {/* <th>Tổng</th> */}
+                      <th>Giá tiền</th>
+                      {services.some(service => service.note !== null) && (
+                        <th>Ghi chú</th>
+                      )}
                     </tr>
                   </thead>
                   <tbody>
@@ -141,14 +143,17 @@ const Cart = ({ details, services }) => {
                             </Link>
                           </h5>
                           <p className="mb-0">
-                            {/* Color :{" "} */}
                             <span className="fw-medium text-muted">
                               {service.item.problem.name}
                             </span>
                           </p>
                         </td>
                         <td>{service.price.toLocaleString()}đ</td>
-                        {/* <td>{service.price}đ</td> */}
+                        {service.note !== null ? (
+                          <td style={{ whiteSpace: "pre-wrap" }}>
+                            {service.note}
+                          </td>
+                        ) : null}
                         {/* <td>
                           <Link
                             to="#"

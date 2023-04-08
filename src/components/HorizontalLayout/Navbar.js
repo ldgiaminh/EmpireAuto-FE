@@ -9,51 +9,15 @@ import { withTranslation } from "react-i18next"
 
 import { connect } from "react-redux"
 
+const getUserName = () => {
+  if (localStorage.getItem("authUser")) {
+    const obj = JSON.parse(localStorage.getItem("authUser"))
+    return obj
+  }
+}
+
 const Navbar = props => {
-  const [dashboard, setdashboard] = useState(false)
-  const [ui, setui] = useState(false)
-  const [app, setapp] = useState(false)
-  const [email, setemail] = useState(false)
-  const [ecommerce, setecommerce] = useState(false)
-  const [crypto, setcrypto] = useState(false)
-  const [project, setproject] = useState(false)
-  const [task, settask] = useState(false)
-  const [contact, setcontact] = useState(false)
-  const [blog, setBlog] = useState(false)
-  const [component, setcomponent] = useState(false)
-  const [form, setform] = useState(false)
-  const [table, settable] = useState(false)
-  const [chart, setchart] = useState(false)
-  const [icon, seticon] = useState(false)
-  const [map, setmap] = useState(false)
-  const [extra, setextra] = useState(false)
-  const [invoice, setinvoice] = useState(false)
-  const [auth, setauth] = useState(false)
-  const [utility, setutility] = useState(false)
-
   const [role, setRole] = useState("")
-
-  useEffect(() => {
-    var matchingMenuItem = null
-    var ul = document.getElementById("navigation")
-    var items = ul.getElementsByTagName("a")
-    for (var i = 0; i < items.length; ++i) {
-      if (props.location.pathname === items[i].pathname) {
-        matchingMenuItem = items[i]
-        break
-      }
-    }
-    if (matchingMenuItem) {
-      activateParentDropdown(matchingMenuItem)
-    }
-  })
-
-  useEffect(() => {
-    if (localStorage.getItem("authUser")) {
-      const obj = JSON.parse(localStorage.getItem("authUser"))
-      setRole(obj.role)
-    }
-  }, [])
 
   function activateParentDropdown(item) {
     item.classList.add("active")
@@ -82,6 +46,26 @@ const Navbar = props => {
     return false
   }
 
+  useEffect(() => {
+    var matchingMenuItem = null
+    var ul = document.getElementById("navigation")
+    var items = ul.getElementsByTagName("a")
+    for (var i = 0; i < items.length; ++i) {
+      if (props.location.pathname === items[i].pathname) {
+        matchingMenuItem = items[i]
+        break
+      }
+    }
+    if (matchingMenuItem) {
+      activateParentDropdown(matchingMenuItem)
+    }
+
+    var userData = getUserName()
+    if (userData) {
+      setRole(userData.role)
+    }
+  })
+
   return (
     <React.Fragment>
       <div className="topnav">
@@ -90,59 +74,45 @@ const Navbar = props => {
             className="navbar navbar-light navbar-expand-lg topnav-menu"
             id="navigation"
           >
-            {role === "RE" ? (
-              <ul className="navbar-nav">
-                <li className="nav-item">
-                  <Link className="nav-link" to="/booking">
-                    <i className="bx bx-calendar me-2"></i>
-                    {props.t("Đặt lịch")}
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/order-service">
-                    <i className="bx bxs-detail me-2"></i>
-                    {props.t("Theo dõi tiến trình")}
-                  </Link>
-                </li>
-              </ul>
-            ) : role === "MA" ? (
-              <ul className="navbar-nav">
-                <li className="nav-item">
-                  <Link className="nav-link" to="/symptoms">
-                    <i className="bx bx-calendar me-2"></i>
-                    {props.t("Tình trạng")}
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/users">
-                    <i className="bx bxs-user-circle me-2"></i>
-                    {props.t("Khách hàng")}
-                  </Link>
-                </li>
-              </ul>
-            ) : (
-              ""
-            )}
-            {/* <Collapse
+            <Collapse
               isOpen={props.leftMenu}
               className="navbar-collapse"
               id="topnav-menu-content"
             >
-              <ul className="navbar-nav">
-                <li className="nav-item">
-                  <Link className="nav-link" to="/booking">
-                    <i className="bx bx-calendar me-2"></i>
-                    {props.t("Đặt lịch")}
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/order-service">
-                    <i className="bx bxs-detail me-2"></i>
-                    {props.t("Theo dõi tiến trình")}
-                  </Link>
-                </li>
-              </ul>
-            </Collapse> */}
+              {role === "RE" ? (
+                <ul className="navbar-nav">
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/booking">
+                      <i className="bx bx-calendar me-2"></i>
+                      {props.t("Đặt lịch")}
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/order-service">
+                      <i className="bx bxs-detail me-2"></i>
+                      {props.t("Theo dõi tiến trình")}
+                    </Link>
+                  </li>
+                </ul>
+              ) : role === "MA" ? (
+                <ul className="navbar-nav">
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/booking">
+                      <i className="bx bx-calendar me-2"></i>
+                      {props.t("Đặt lịch")}
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/order-service">
+                      <i className="bx bxs-detail me-2"></i>
+                      {props.t("Theo dõi tiến trình")}
+                    </Link>
+                  </li>
+                </ul>
+              ) : (
+                ""
+              )}
+            </Collapse>
           </nav>
         </div>
       </div>
@@ -154,13 +124,12 @@ Navbar.propTypes = {
   leftMenu: PropTypes.any,
   location: PropTypes.any,
   menuOpen: PropTypes.any,
-  success: PropTypes.any,
   t: PropTypes.any,
 }
 
 const mapStatetoProps = state => {
-  const { leftMenu, success } = state.Layout
-  return { leftMenu, success }
+  const { leftMenu } = state.Layout
+  return { leftMenu }
 }
 
 export default withRouter(
