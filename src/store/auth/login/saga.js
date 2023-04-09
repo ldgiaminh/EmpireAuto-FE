@@ -70,7 +70,7 @@ function* loginUser({ payload: { user, history } }) {
     if (response.role === "MA") {
       history.push("/dashboard")
     } else if (response.role === "RE") {
-      history.push("/booking")
+      history.push("/bookings")
     } else {
       localStorage.removeItem("authUser")
       history.push("/pages-403")

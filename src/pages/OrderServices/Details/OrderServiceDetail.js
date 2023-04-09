@@ -118,8 +118,8 @@ const OrderServiceDetail = props => {
   ==================================================
   */
 
-  function handleSelectGroup(selectedGroup) {
-    setSelectedGroup(selectedGroup)
+  function handleSelectGroup(selected) {
+    setSelectedGroup(selected)
   }
 
   const optionGroup = users.map(ex => ({
@@ -146,13 +146,12 @@ const OrderServiceDetail = props => {
   }
 
   const handleAssignExpert = id => {
-    const exId = selectedGroup.value
     if (id) {
+      const exId = selectedGroup.value
       dispatch(assignExpert(id, exId))
       toastr.success("Đã phân công cho " + selectedGroup.label, "Thành công")
       setIsAssign(!isAssign)
       setSelectedGroup(null)
-      dispatch(onGetOrderServiceDetail(id))
     }
   }
 
@@ -166,6 +165,7 @@ const OrderServiceDetail = props => {
     history.push("/scanner-checkout")
   }
 
+  /* ========================================== RENDER ==============================================*/
   return (
     <>
       <div className="page-content">
@@ -364,7 +364,9 @@ const OrderServiceDetail = props => {
                                             />
                                             <Button
                                               onClick={() =>
-                                                handleAssignExpert(params.id)
+                                                handleAssignExpert(
+                                                  orderServicesDetails.id
+                                                )
                                               }
                                               type="button"
                                               color="primary"
@@ -422,7 +424,9 @@ const OrderServiceDetail = props => {
                                         />
                                         <Button
                                           onClick={() =>
-                                            handleAssignExpert(params.id)
+                                            handleAssignExpert(
+                                              orderServicesDetails.id
+                                            )
                                           }
                                           type="button"
                                           color="primary"

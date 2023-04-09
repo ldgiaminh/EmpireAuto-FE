@@ -111,13 +111,13 @@ const BookingDetails = props => {
       dispatch(checkInBooking(id, isAssign))
       toastr.success("Check-in thành công", "Thành công")
       dispatch(onGetBookingDetail(id))
-      sendNotification(id)
+      sendNotification(bookingDetail.user.id)
     }
   }
 
   /*
   ==================================================
-  FORMAT DATE TIME from API
+  FORMAT DATE TIME 
   ==================================================
   */
 
@@ -150,12 +150,11 @@ const BookingDetails = props => {
                 title="Đặt lịch"
                 breadcrumbItem={"#" + bookingDetail.code}
               />
-
               <Row>
                 <Col>
                   <Card>
                     <CardBody>
-                      <CardTitle>Thông tin tổng</CardTitle>
+                      <CardTitle>THÔNG TIN TỔNG</CardTitle>
                       <CardSubtitle className="mb-3">
                         Chi tiết về đặt lịch và thông tin khách hàng
                       </CardSubtitle>
@@ -293,7 +292,7 @@ const BookingDetails = props => {
                       </Row>
                     </CardBody>
                     <CardBody>
-                      <CardTitle>Phương tiện</CardTitle>
+                      <CardTitle>PHƯƠNG TIỆN</CardTitle>
                       <CardSubtitle className="mb-3">
                         Thông về phương tiện và tình trạng
                       </CardSubtitle>
@@ -371,9 +370,10 @@ const BookingDetails = props => {
                           <Button
                             type="button"
                             color="success"
-                            className="btn btn-lg"
+                            className="btn btn-label w-md"
                             onClick={() => handleCheckIn(bookingDetail.id)}
                           >
+                            <i className="bx bx-check-double label-icon"></i>
                             Check-in
                           </Button>
                         </div>

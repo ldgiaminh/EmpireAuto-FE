@@ -1,5 +1,5 @@
 import PropTypes from "prop-types"
-import React from "react"
+import React, { useEffect } from "react"
 
 import { Switch, BrowserRouter as Router } from "react-router-dom"
 import { connect } from "react-redux"
@@ -53,6 +53,18 @@ const App = props => {
     }
     return layoutCls
   }
+
+  // useEffect(() => {
+  //   const clearLocalStorage = () => {
+  //     localStorage.clear()
+  //   }
+
+  //   window.addEventListener("beforeunload", clearLocalStorage)
+
+  //   return () => {
+  //     window.removeEventListener("beforeunload", clearLocalStorage)
+  //   }
+  // }, [])
 
   const Layout = getLayout()
   return (
