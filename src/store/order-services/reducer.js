@@ -125,9 +125,6 @@ const orderServices = (state = INIT_STATE, action) => {
       }
 
     case PUT_ASSIGN_EXPERT_SUCCESS:
-      if (!Array.isArray(state.orderServicesDetails)) {
-        return state
-      }
       return {
         ...state,
         isLoading: false,
