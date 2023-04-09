@@ -1,5 +1,5 @@
 {
-  "name": "empire-garage-fe",
+  "name": "empiregarage-fe",
   "version": "2.0.0",
   "private": true,
   "dependencies": {
@@ -29,7 +29,6 @@
     "eslint": "^7.29.0",
     "firebase": "^9.6.10",
     "formik": "^2.2.9",
-    "gh-pages": "^5.0.0",
     "google-maps-react": "^2.0.6",
     "i18next": "^21.6.16",
     "i18next-browser-languagedetector": "^6.1.4",
@@ -105,9 +104,7 @@
     "lint:fix": "eslint --fix .",
     "format": "prettier --write \"**/*.{js,jsx,json,md,html,css,less,scss}\"",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "predeploy": "react-scripts build",
-    "deploy": "gh-pages -d build"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
@@ -165,7 +162,6 @@
   "devDependencies": {
     "eslint-config-standard-react": "^9.2.0",
     "eslint-plugin-react": "^7.20.6",
-    "prettier": "^2.1.1",
-    "gh-pages": "^5.0.0"
+    "prettier": "^2.1.1"
   }
 }
