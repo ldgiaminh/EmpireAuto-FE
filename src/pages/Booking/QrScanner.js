@@ -99,7 +99,7 @@ const QrScanner = props => {
       title: "Bạn đã check-in thành công",
     })
     toastr.success("Check-in thành công", "Thành công")
-    history.push(`/booking-detail/${id}`)
+    history.push(`/bookings/${id}`)
   }
 
   return (

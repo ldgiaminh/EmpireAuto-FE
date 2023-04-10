@@ -102,7 +102,7 @@ const QrCheckOut = props => {
     //   title: "Hoàn tất dịch vụ tại Empire Garage",
     // })
     toastr.success("Check-out thành công", "Thành công")
-    history.push(`/order-service-detail/${id}`)
+    history.push(`/order-services/${id}`)
   }
 
   return (
