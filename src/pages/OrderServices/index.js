@@ -135,14 +135,14 @@ const OrderServicesList = props => {
             <Button
               type="button"
               color={
-                cellProps.row.original.expert != null ? "primary" : "warning"
+                cellProps.row.original.expert !== null ? "primary" : "warning"
               }
               className="btn-sm btn-rounded"
               onClick={() =>
                 history.push(`/order-services/${cellProps.row.original.id}`)
               }
             >
-              {cellProps.row.original.expert != null
+              {cellProps.row.original.expert !== null
                 ? "Xem chi tiết"
                 : "Phân công"}
             </Button>
@@ -166,6 +166,8 @@ const OrderServicesList = props => {
       setOrderService(orderServicess)
     }
   }, [orderServicess])
+
+  console.log(orderService)
 
   return (
     <React.Fragment>

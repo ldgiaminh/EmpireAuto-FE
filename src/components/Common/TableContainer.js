@@ -40,7 +40,7 @@ function GlobalFilter({
               id="search-bar-0"
               type="text"
               className="form-control"
-              placeholder={`${count} records...`}
+              placeholder={`${count} dòng...`}
               value={value || ""}
             />
           </label>
@@ -69,6 +69,15 @@ const TableContainer = ({
   className,
   customPageSizeOptions,
 }) => {
+  // const sortees = React.useMemo(
+  //   () => [
+  //     {
+  //       id: "order.createdAt",
+  //       desc: true,
+  //     },
+  //   ],
+  //   []
+  // )
   const {
     getTableProps,
     getTableBodyProps,
@@ -95,11 +104,12 @@ const TableContainer = ({
       initialState: {
         pageIndex: 0,
         pageSize: customPageSize,
-        sortBy: [
-          {
-            desc: true,
-          },
-        ],
+        // sortBy: [
+        //   {
+        //     desc: true,
+        //   },
+        // ],
+        // sortBy: sortees,
       },
     },
     useGlobalFilter,

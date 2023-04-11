@@ -55,13 +55,7 @@ const OrderServiceDetail = props => {
   ==================================================
   */
 
-  const {
-    orderServicesDetails,
-    groupService,
-    users,
-    orderServiceLog,
-    isLoading,
-  } = useSelector(state => ({
+  const { orderServicesDetails, users, isLoading } = useSelector(state => ({
     orderServicesDetails: state.orderServices.orderServicesDetails,
     groupService: state.groupServices.groupService,
     users: state.userLists.users,
@@ -152,6 +146,7 @@ const OrderServiceDetail = props => {
       toastr.success("Đã phân công cho " + selectedGroup.label, "Thành công")
       setIsAssign(!isAssign)
       setSelectedGroup(null)
+      //dispatch(onGetOrderServiceDetail(id))
     }
   }
 
@@ -295,8 +290,8 @@ const OrderServiceDetail = props => {
                           </div>
                         </Col>
                         <Col xl="6">
-                          <div className="table-responsive">
-                            <Table className="table table-borderless mb-0">
+                          <div>
+                            <Table className="table table-borderless mb-5">
                               <tbody>
                                 <tr>
                                   <th
@@ -352,7 +347,7 @@ const OrderServiceDetail = props => {
                                     orderServicesDetails.status === 1 ? (
                                       isAssign ? (
                                         <td>
-                                          <div className="form-group">
+                                          <>
                                             <Select
                                               value={selectedGroup}
                                               onChange={handleSelectGroup}
@@ -360,6 +355,7 @@ const OrderServiceDetail = props => {
                                               classNamePrefix="select2-selection"
                                               placeholder="Chọn kỹ thuật viên"
                                               required={true}
+                                              onClick={e => e.preventDefault()}
                                               // menuPlacement="top"
                                             />
                                             <Button
@@ -383,7 +379,7 @@ const OrderServiceDetail = props => {
                                             >
                                               Hủy
                                             </Button>
-                                          </div>
+                                          </>
                                         </td>
                                       ) : (
                                         <td
