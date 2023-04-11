@@ -128,14 +128,13 @@ const orderServices = (state = INIT_STATE, action) => {
       return {
         ...state,
         isLoading: false,
-        orderServicesDetails: state.orderServicesDetails.map(service =>
-          service.id.toString() === action.payload.id.toString()
-            ? { ...action.pay.load, service }
-            : service
-        ),
+        orderServicesDetails: {
+          ...state.orderServicesDetails,
+        },
       }
 
     case PUT_ASSIGN_EXPERT_FAIL:
+      console.log(state.error)
       return {
         ...state,
         isLoading: false,

@@ -113,6 +113,7 @@ const BookingDetails = props => {
       dispatch(onGetBookingDetail(id))
       sendNotification(bookingDetail.user.id)
     }
+    dispatch(onGetBookingDetail(id))
   }
 
   /*

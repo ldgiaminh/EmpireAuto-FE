@@ -92,11 +92,14 @@ const bookings = (state = INIT_STATE, action) => {
       return {
         ...state,
         isLoading: false,
-        bookingDetail: state.bookingDetail.map(booking =>
-          booking.id.toString() === action.payload.id.toString()
-            ? { booking, ...action.payload }
-            : booking
-        ),
+        // bookingDetail: state.bookingDetail.map(booking =>
+        //   booking.id.toString() === action.payload.id.toString()
+        //     ? { booking, ...action.payload }
+        //     : booking
+        // ),
+        bookingDetail: {
+          ...state.bookingDetail,
+        },
       }
 
     case CHECKIN_BOOKING_FAIL:

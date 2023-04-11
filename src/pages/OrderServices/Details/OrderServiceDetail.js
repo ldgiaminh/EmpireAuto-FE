@@ -146,8 +146,9 @@ const OrderServiceDetail = props => {
       toastr.success("Đã phân công cho " + selectedGroup.label, "Thành công")
       setIsAssign(!isAssign)
       setSelectedGroup(null)
-      //dispatch(onGetOrderServiceDetail(id))
+      dispatch(onGetOrderServiceDetail(id))
     }
+    dispatch(onGetOrderServiceDetail(id))
   }
 
   /*
