@@ -24,7 +24,7 @@ import {
 
 const INIT_STATE = {
   orderServicess: [],
-  orderServicesDetails: {},
+  orderServicesDetail: {},
   orderServiceLogs: [],
   error: {},
   isLoading: false,
@@ -74,7 +74,7 @@ const orderServices = (state = INIT_STATE, action) => {
       return {
         ...state,
         isLoading: false,
-        orderServicesDetails: action.payload,
+        orderServicesDetail: action.payload,
       }
 
     case GET_ORDER_SERVICE_DETAIL_FAIL:
@@ -109,7 +109,7 @@ const orderServices = (state = INIT_STATE, action) => {
     case PUT_ORDER_SERVICE_SUCCESS:
       return {
         ...state,
-        orderServicesDetails: action.payload,
+        orderServicesDetail: action.payload,
       }
 
     case PUT_ORDER_SERVICE_FAIL:
@@ -128,13 +128,15 @@ const orderServices = (state = INIT_STATE, action) => {
       return {
         ...state,
         isLoading: false,
-        orderServicesDetails: {
-          ...state.orderServicesDetails,
+        orderServicesDetail: {
+          ...state.orderServicesDetail,
+          expert: {
+            ...state.orderServicesDetail.expert,
+          },
         },
       }
 
     case PUT_ASSIGN_EXPERT_FAIL:
-      console.log(state.error)
       return {
         ...state,
         isLoading: false,
@@ -144,7 +146,7 @@ const orderServices = (state = INIT_STATE, action) => {
     case PUT_CONFIRM_SERVICES_SUCCESS:
       return {
         ...state,
-        orderServicesDetails: state.orderServicesDetails.map(service =>
+        orderServicesDetail: state.orderServicesDetail.map(service =>
           service.id.toString() === action.payload.id.toString()
             ? { ...action.pay.load, service }
             : service
@@ -160,7 +162,7 @@ const orderServices = (state = INIT_STATE, action) => {
     case PUT_CONFIRM_PAID_SERVICES_SUCCESS:
       return {
         ...state,
-        orderServicesDetails: state.orderServicesDetails.map(service =>
+        orderServicesDetail: state.orderServicesDetail.map(service =>
           service.id.toString() === action.payload.id.toString()
             ? { ...action.pay.load, service }
             : service
@@ -177,7 +179,7 @@ const orderServices = (state = INIT_STATE, action) => {
       return {
         ...state,
         orderServiceLogs: action.payload,
-        orderServicesDetails: state.orderServicesDetails.map(service =>
+        orderServicesDetail: state.orderServicesDetail.map(service =>
           service.id.toString() === action.payload.orderServiceId.toString()
             ? { ...action.pay.load, service }
             : service

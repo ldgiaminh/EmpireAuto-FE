@@ -42,6 +42,8 @@ import QrCheckOut from "pages/OrderServices/QrCheckOut"
 import Pages404 from "pages/Authentication/pages-404"
 import Pages500 from "pages/Authentication/pages-500"
 import Pages403 from "pages/Authentication/pages-403"
+import AddNewItems from "pages/Item/AddNewItems"
+import CreateNew from "pages/Action/Create"
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
@@ -71,8 +73,14 @@ const authProtectedRoutes = [
   //Vehicle
   { path: "/car-brand", component: CarBrand },
 
+  //Items
+  { path: "/add-new-items", component: AddNewItems },
+
   // //profile
   { path: "/profile", component: UserProfile },
+
+  //Create
+  { path: "/create-new", component: CreateNew },
 
   // this route should be at the end of all other routes
   // eslint-disable-next-line react/display-name

@@ -40,7 +40,7 @@ import { facebook, google } from "../../config"
 
 const Login = props => {
   //meta title
-  document.title = "Login | Empire Admin"
+  document.title = "Login | Empire Garage"
 
   const dispatch = useDispatch()
 
@@ -53,8 +53,8 @@ const Login = props => {
       password: "123456" || "",
     },
     validationSchema: Yup.object({
-      email: Yup.string().required("Please Enter Your Email"),
-      password: Yup.string().required("Please Enter Your Password"),
+      email: Yup.string().required("Vui lòng nhập Email"),
+      password: Yup.string().required("Vui lòng nhập mật khẩu"),
     }),
     onSubmit: values => {
       dispatch(loginUser(values, props.history))
@@ -82,7 +82,7 @@ const Login = props => {
                     <Col xs={7}>
                       <div className="text-primary p-4">
                         <h5 className="text-primary">Chào mừng !</h5>
-                        <p>Vui lòng đăng nhập vào Empire Admin</p>
+                        <p>Vui lòng đăng nhập vào Empire Garage</p>
                       </div>
                     </Col>
                     <Col className="col-5 align-self-end">

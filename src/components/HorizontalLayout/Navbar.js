@@ -17,6 +17,11 @@ const getUserName = () => {
 }
 
 const Navbar = props => {
+  const [app, setapp] = useState(false)
+  const [email, setemail] = useState(false)
+
+  const [add, setadd] = useState(false)
+
   const [role, setRole] = useState("")
 
   function activateParentDropdown(item) {
@@ -79,39 +84,194 @@ const Navbar = props => {
               className="navbar-collapse"
               id="topnav-menu-content"
             >
-              {role === "RE" ? (
-                <ul className="navbar-nav">
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/bookings">
-                      <i className="bx bx-calendar me-2"></i>
-                      {props.t("Đặt lịch")}
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/order-services">
-                      <i className="bx bxs-detail me-2"></i>
-                      {props.t("Theo dõi tiến trình")}
-                    </Link>
-                  </li>
-                </ul>
-              ) : role === "MA" ? (
-                <ul className="navbar-nav">
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/booking">
-                      <i className="bx bx-calendar me-2"></i>
-                      {props.t("Đặt lịch")}
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/order-service">
-                      <i className="bx bxs-detail me-2"></i>
-                      {props.t("Theo dõi tiến trình")}
-                    </Link>
-                  </li>
-                </ul>
-              ) : (
-                ""
-              )}
+              <ul className="navbar-nav">
+                {(() => {
+                  switch (role) {
+                    case "RE":
+                      return (
+                        <React.Fragment>
+                          <li className="nav-item">
+                            <Link className="nav-link" to="/bookings">
+                              <i className="bx bx-calendar me-2"></i>
+                              {props.t("Đặt lịch")}
+                            </Link>
+                          </li>
+                          <li className="nav-item">
+                            <Link className="nav-link" to="/order-services">
+                              <i className="bx bxs-detail me-2"></i>
+                              {props.t("Theo dõi tiến trình")}
+                            </Link>
+                          </li>
+                        </React.Fragment>
+                      )
+                    case "MA":
+                      return (
+                        <React.Fragment>
+                          <li className="nav-item">
+                            <Link className="nav-link" to="/">
+                              <i className="bx bxs-home-circle me-2"></i>
+                              {props.t("Bảng điều khiển")}
+                            </Link>
+                          </li>
+
+                          <li className="nav-item dropdown">
+                            <Link
+                              to="/#"
+                              onClick={e => {
+                                e.preventDefault()
+                                setapp(!app)
+                              }}
+                              className="nav-link dropdown-togglez arrow-none"
+                            >
+                              <i className="bx bx-customize me-2"></i>
+                              {props.t("Apps")}{" "}
+                              <div className="arrow-down"></div>
+                            </Link>
+                            <div
+                              className={classname("dropdown-menu", {
+                                show: app,
+                              })}
+                            >
+                              <div className="dropdown">
+                                <Link
+                                  to="/#"
+                                  className="dropdown-item dropdown-toggle arrow-none"
+                                  onClick={e => {
+                                    e.preventDefault()
+                                    setemail(!email)
+                                  }}
+                                >
+                                  {props.t("Email")}{" "}
+                                  <div className="arrow-down"></div>
+                                </Link>
+                                <div
+                                  className={classname("dropdown-menu", {
+                                    show: email,
+                                  })}
+                                >
+                                  <Link
+                                    to="/email-inbox"
+                                    className="dropdown-item"
+                                  >
+                                    {props.t("Inbox")}
+                                  </Link>
+                                  <Link
+                                    to="/email-read"
+                                    className="dropdown-item"
+                                  >
+                                    {props.t("Read Email")}
+                                  </Link>
+                                  <div className="dropdown">
+                                    <Link
+                                      className="dropdown-item dropdown-toggle arrow-none"
+                                      to="/#"
+                                      onClick={e => {
+                                        e.preventDefault()
+                                        setemail(!email)
+                                      }}
+                                    >
+                                      <span key="t-email-templates">
+                                        Templates
+                                      </span>{" "}
+                                      <div className="arrow-down"></div>
+                                    </Link>
+                                    <div
+                                      className={classname("dropdown-menu", {
+                                        show: email,
+                                      })}
+                                    >
+                                      <Link
+                                        to="/email-template-basic"
+                                        className="dropdown-item"
+                                      >
+                                        {props.t("Basic Action")}
+                                      </Link>
+                                      <Link
+                                        to="/email-template-alert"
+                                        className="dropdown-item"
+                                      >
+                                        {props.t("Alert Email")}
+                                      </Link>
+                                      <Link
+                                        to="/email-template-billing"
+                                        className="dropdown-item"
+                                      >
+                                        {props.t("Billing Email")}
+                                      </Link>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </li>
+
+                          <li className="nav-item">
+                            <Link className="nav-link" to="/">
+                              <i className="bx bxs-car me-2"></i>
+                              {props.t("Dòng xe")}
+                            </Link>
+                          </li>
+
+                          <li className="nav-item">
+                            <Link className="nav-link" to="/symptoms">
+                              <i className="bx bxs-spreadsheet me-2"></i>
+                              {props.t("Triệu chứng")}
+                            </Link>
+                          </li>
+
+                          <li className="nav-item">
+                            <Link className="nav-link" to="/users">
+                              <i className="bx bxs-user me-2"></i>
+                              {props.t("Khách hàng")}
+                            </Link>
+                          </li>
+
+                          <li className="nav-item">
+                            <Link className="nav-link" to="/create-new">
+                              <i className="bx bx-customize me-2"></i>
+                              {props.t("Tạo mới")}
+                            </Link>
+                          </li>
+
+                          {/* <li className="nav-item dropdown">
+                            <Link
+                              to="/#"
+                              onClick={e => {
+                                e.preventDefault()
+                                setadd(!add)
+                              }}
+                              className="nav-link dropdown-togglez arrow-none"
+                            >
+                              <i className="bx bx-customize me-2"></i>
+                              {props.t("Tạo mới")}{" "}
+                              <div className="arrow-down"></div>
+                            </Link>
+                            <div
+                              className={classname("dropdown-menu", {
+                                show: add,
+                              })}
+                            >
+                              <Link
+                                to="/add-new-car-brand"
+                                className="dropdown-item"
+                              >
+                                {props.t("Thêm hãng xe")}
+                              </Link>
+                              <Link
+                                to="/add-new-items"
+                                className="dropdown-item"
+                              >
+                                {props.t("Thêm dịch vụ")}
+                              </Link>
+                            </div>
+                          </li> */}
+                        </React.Fragment>
+                      )
+                    default:
+                      return null
+                  }
+                })()}
+              </ul>
             </Collapse>
           </nav>
         </div>

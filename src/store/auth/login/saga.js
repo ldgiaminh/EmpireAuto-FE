@@ -76,7 +76,20 @@ function* loginUser({ payload: { user, history } }) {
       history.push("/pages-403")
     }
   } catch (error) {
-    yield put(apiError(error))
+    const message = error.response.data.error.message
+    console.log(message)
+    switch (message) {
+      case "EMAIL_NOT_FOUND":
+        yield put(apiError("Email không tồn tại"))
+        break
+      case "INVALID_PASSWORD":
+        yield put(apiError("Mật khẩu không chính xác"))
+        break
+      default:
+        yield put(apiError("Đã có lỗi xảy ra"))
+        break
+    }
+    console.clear()
   }
 }
 

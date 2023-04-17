@@ -210,12 +210,27 @@ const Cart = ({ details, services }) => {
                     {services.map((service, index) => (
                       <tr key={index}>
                         <td>{service.item.name} :</td>
-                        <td>{service.price.toLocaleString()}</td>
+                        <td>{service.price.toLocaleString()}đ</td>
                       </tr>
                     ))}
                     <tr>
-                      <th>Total :</th>
-                      <th>{total.toLocaleString()}₫</th>
+                      <td>Phí kiểm tra :</td>
+                      <td>{details.prepaidFromBooking}đ</td>
+                    </tr>
+                    <tr>
+                      <th>Tạm tính :</th>
+                      <th>{total.toLocaleString()}đ</th>
+                    </tr>
+                    <tr>
+                      <td className="text-danger">Phí đặt lịch :</td>
+                      <td className="text-danger">
+                        - {details.prepaidFromBooking}đ
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <th>Tổng cộng :</th>
+                      <th>{total.toLocaleString()}đ</th>
                     </tr>
                   </tbody>
                 </Table>

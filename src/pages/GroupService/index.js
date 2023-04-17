@@ -41,7 +41,7 @@ import { Name } from "./ItemCol"
 
 function GroupService() {
   //meta title
-  document.title = "Các dịch vụ | Empire Admin"
+  document.title = "Các dịch vụ | Empire Garage"
 
   const [activeTab, setActiveTab] = useState("1")
 

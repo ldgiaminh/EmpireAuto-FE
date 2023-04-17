@@ -33,21 +33,16 @@ import { useSelector, useDispatch } from "react-redux"
 import Cart from "./cart"
 import CarRecord from "./health-car-record"
 import Loading from "components/Loader/Loading"
+import PreloadDetail from "components/Loader/PreloadDetail"
 
 const OrderServiceDetail = props => {
   //meta title
-  document.title = "Theo dõi tiến trình | Empire Admin"
+  document.title = "Theo dõi tiến trình | Empire Garage"
 
   const { history } = props
   const dispatch = useDispatch()
 
-  const [selectedGroup, setSelectedGroup] = useState(null)
   const [isAssign, setIsAssign] = useState(false)
-
-  const handleReAssign = () => {
-    setIsAssign(!isAssign)
-    setSelectedGroup(null)
-  }
 
   /*
   ==================================================
@@ -55,9 +50,8 @@ const OrderServiceDetail = props => {
   ==================================================
   */
 
-  const { orderServicesDetails, users, isLoading } = useSelector(state => ({
-    orderServicesDetails: state.orderServices.orderServicesDetails,
-    groupService: state.groupServices.groupService,
+  const { orderServicesDetail, users, isLoading } = useSelector(state => ({
+    orderServicesDetail: state.orderServices.orderServicesDetail,
     users: state.userLists.users,
     isLoading: state.orderServices.isLoading,
     orderServiceLog: state.orderServices.orderServiceLog,
@@ -77,11 +71,11 @@ const OrderServiceDetail = props => {
     if (params && params.id) {
       dispatch(onGetOrderServiceDetail(params.id))
     }
-  }, [params, onGetOrderServiceDetail])
+  }, [params, dispatch])
 
   useEffect(() => {
     dispatch(onGetExpert())
-  }, [onGetExpert])
+  }, [dispatch])
 
   /*
   ==================================================
@@ -112,6 +106,13 @@ const OrderServiceDetail = props => {
   ==================================================
   */
 
+  const [selectedGroup, setSelectedGroup] = useState(null)
+
+  const handleReAssign = () => {
+    setIsAssign(!isAssign)
+    setSelectedGroup(null)
+  }
+
   function handleSelectGroup(selected) {
     setSelectedGroup(selected)
   }
@@ -121,32 +122,36 @@ const OrderServiceDetail = props => {
     value: ex.id,
   }))
 
-  toastr.options = {
-    closeButton: false,
-    debug: false,
-    newestOnTop: true,
-    progressBar: false,
-    positionClass: "toast-top-right",
-    preventDuplicates: false,
-    onclick: null,
-    showDuration: "300",
-    hideDuration: "1000",
-    timeOut: "5000",
-    extendedTimeOut: "1000",
-    showEasing: "swing",
-    hideEasing: "linear",
-    showMethod: "fadeIn",
-    hideMethod: "fadeOut",
+  // toastr.options = {
+  //   closeButton: false,
+  //   debug: false,
+  //   newestOnTop: true,
+  //   progressBar: false,
+  //   positionClass: "toast-top-right",
+  //   preventDuplicates: false,
+  //   onclick: null,
+  //   showDuration: "300",
+  //   hideDuration: "1000",
+  //   timeOut: "5000",
+  //   extendedTimeOut: "1000",
+  //   showEasing: "swing",
+  //   hideEasing: "linear",
+  //   showMethod: "fadeIn",
+  //   hideMethod: "fadeOut",
+  // }
+
+  const handleUpdateState = id => {
+    dispatch(onGetOrderServiceDetail(id))
   }
 
-  const handleAssignExpert = id => {
-    if (id) {
-      const exId = selectedGroup.value
+  const handleAssignExpert = () => {
+    const id = params.id
+    const exId = selectedGroup.value
+    if ((id, exId)) {
       dispatch(assignExpert(id, exId))
-      toastr.success("Đã phân công cho " + selectedGroup.label, "Thành công")
-      setIsAssign(!isAssign)
+      handleUpdateState(id)
+      setIsAssign(false)
       setSelectedGroup(null)
-      dispatch(onGetOrderServiceDetail(id))
     }
     dispatch(onGetOrderServiceDetail(id))
   }
@@ -164,17 +169,17 @@ const OrderServiceDetail = props => {
   /* ========================================== RENDER ==============================================*/
   return (
     <>
+      {isLoading && <PreloadDetail />}
       <div className="page-content">
-        {isLoading && <Loading />}
         <Container fluid={true}>
-          {!isLoading && !isEmpty(orderServicesDetails) && (
+          {!isLoading && !isEmpty(orderServicesDetail) && (
             <React.Fragment>
               <Breadcrumbs
                 title="Dịch vụ"
                 breadcrumbItem={
                   "Theo dõi tiến trình" +
                   " - " +
-                  ("#" + orderServicesDetails.code)
+                  ("#" + orderServicesDetail.code)
                 }
               />
               <Row>
@@ -189,7 +194,7 @@ const OrderServiceDetail = props => {
                           </CardSubtitle>
                         </div>
 
-                        {orderServicesDetails.status == 4 ? (
+                        {orderServicesDetail.status == 4 ? (
                           <div className="ml-auto">
                             <Button
                               type="button"
@@ -200,7 +205,7 @@ const OrderServiceDetail = props => {
                               Quét mã nhận xe
                             </Button>
                           </div>
-                        ) : orderServicesDetails.status == 5 ? (
+                        ) : orderServicesDetail.status == 5 ? (
                           <div className="ml-auto">
                             <span className="badge bg-success font-size-14">
                               Hoàn Thành
@@ -212,83 +217,77 @@ const OrderServiceDetail = props => {
                       </div>
                       <Row>
                         <Col xl="6">
-                          <div className="table-responsive">
-                            <Table className="table table-borderless mb-0">
-                              <tbody>
-                                <tr>
-                                  <th
-                                    scope="row"
-                                    style={{ width: "300px" }}
-                                    className={"text-capitalize"}
-                                  >
-                                    Tên khách:
-                                  </th>
-                                  <td>
-                                    {orderServicesDetails.order.user.fullname}
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <th
-                                    scope="row"
-                                    style={{ width: "300px" }}
-                                    className={"text-capitalize"}
-                                  >
-                                    Số điện thoại :
-                                  </th>
-                                  <td>{`(+${orderServicesDetails.order.user.phone.slice(
-                                    1,
-                                    3
-                                  )}) ${orderServicesDetails.order.user.phone.slice(
-                                    3
-                                  )}`}</td>
-                                </tr>
-                                <tr>
-                                  <th
-                                    scope="row"
-                                    style={{ width: "300px" }}
-                                    className={"text-capitalize"}
-                                  >
-                                    E-mail :
-                                  </th>
-                                  <td>
-                                    {orderServicesDetails.order.user.email}
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <th
-                                    scope="row"
-                                    style={{ width: "300px" }}
-                                    className={"text-capitalize"}
-                                  >
-                                    Biển số xe:
-                                  </th>
-                                  <td>
-                                    {orderServicesDetails.car.carLisenceNo}
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <th
-                                    scope="row"
-                                    style={{ width: "300px" }}
-                                    className={"text-capitalize"}
-                                  >
-                                    Thương hiệu xe:
-                                  </th>
-                                  <td>{orderServicesDetails.car.carBrand}</td>
-                                </tr>
-                                <tr>
-                                  <th
-                                    scope="row"
-                                    style={{ width: "300px" }}
-                                    className={"text-capitalize"}
-                                  >
-                                    Dòng xe:
-                                  </th>
-                                  <td>{orderServicesDetails.car.carModel}</td>
-                                </tr>
-                              </tbody>
-                            </Table>
-                          </div>
+                          <Table className="table table-borderless mb-0">
+                            <tbody>
+                              <tr>
+                                <th
+                                  scope="row"
+                                  style={{ width: "300px" }}
+                                  className={"text-capitalize"}
+                                >
+                                  Tên khách:
+                                </th>
+                                <td>
+                                  {orderServicesDetail.order.user.fullname}
+                                </td>
+                              </tr>
+                              <tr>
+                                <th
+                                  scope="row"
+                                  style={{ width: "300px" }}
+                                  className={"text-capitalize"}
+                                >
+                                  Số điện thoại :
+                                </th>
+                                <td>{`(+${orderServicesDetail.order.user.phone.slice(
+                                  1,
+                                  3
+                                )}) ${orderServicesDetail.order.user.phone.slice(
+                                  3
+                                )}`}</td>
+                              </tr>
+                              <tr>
+                                <th
+                                  scope="row"
+                                  style={{ width: "300px" }}
+                                  className={"text-capitalize"}
+                                >
+                                  E-mail :
+                                </th>
+                                <td>{orderServicesDetail.order.user.email}</td>
+                              </tr>
+                              <tr>
+                                <th
+                                  scope="row"
+                                  style={{ width: "300px" }}
+                                  className={"text-capitalize"}
+                                >
+                                  Biển số xe:
+                                </th>
+                                <td>{orderServicesDetail.car.carLisenceNo}</td>
+                              </tr>
+                              <tr>
+                                <th
+                                  scope="row"
+                                  style={{ width: "300px" }}
+                                  className={"text-capitalize"}
+                                >
+                                  Thương hiệu xe:
+                                </th>
+                                <td>{orderServicesDetail.car.carBrand}</td>
+                              </tr>
+                              <tr>
+                                <th
+                                  scope="row"
+                                  style={{ width: "300px" }}
+                                  className={"text-capitalize"}
+                                >
+                                  Dòng xe:
+                                </th>
+                                <td>{orderServicesDetail.car.carModel}</td>
+                              </tr>
+                            </tbody>
+                          </Table>
                         </Col>
                         <Col xl="6">
                           <div>
@@ -304,7 +303,7 @@ const OrderServiceDetail = props => {
                                   </th>
                                   <td>
                                     {formattedDateTime(
-                                      orderServicesDetails.order.createdAt
+                                      orderServicesDetail.order.createdAt
                                     )}
                                   </td>
                                 </tr>
@@ -317,7 +316,7 @@ const OrderServiceDetail = props => {
                                     Số tiền từ đặt lịch :
                                   </th>
                                   <td>
-                                    {orderServicesDetails.prepaidFromBooking.toLocaleString()}
+                                    {orderServicesDetail.prepaidFromBooking.toLocaleString()}
                                     ₫
                                   </td>
                                 </tr>
@@ -329,9 +328,7 @@ const OrderServiceDetail = props => {
                                   >
                                     Tình trạng khách mô tả :
                                   </th>
-                                  <td>
-                                    {orderServicesDetails.receivingStatus}
-                                  </td>
+                                  <td>{orderServicesDetail.receivingStatus}</td>
                                 </tr>
                                 <tr>
                                   <th
@@ -344,10 +341,10 @@ const OrderServiceDetail = props => {
                                   >
                                     Kỹ thuật viên chính :
                                   </th>
-                                  {orderServicesDetails.expert !== null ? (
-                                    orderServicesDetails.status === 1 ? (
-                                      isAssign ? (
-                                        <td>
+                                  <td>
+                                    {orderServicesDetail.expert !== null ? (
+                                      orderServicesDetail.status === 1 ? (
+                                        isAssign ? (
                                           <>
                                             <Select
                                               value={selectedGroup}
@@ -360,11 +357,7 @@ const OrderServiceDetail = props => {
                                               // menuPlacement="top"
                                             />
                                             <Button
-                                              onClick={() =>
-                                                handleAssignExpert(
-                                                  orderServicesDetails.id
-                                                )
-                                              }
+                                              onClick={handleAssignExpert}
                                               type="button"
                                               color="primary"
                                               className="w-md mt-2 me-2"
@@ -381,36 +374,37 @@ const OrderServiceDetail = props => {
                                               Hủy
                                             </Button>
                                           </>
-                                        </td>
-                                      ) : (
-                                        <td
-                                          style={{
-                                            display: "flex",
-                                            justifyContent: "space-between",
-                                            alignItems: "baseline",
-                                            verticalAlign: "middle",
-                                          }}
-                                        >
-                                          {orderServicesDetails.expert.fullname}
-
-                                          <button
-                                            type="button"
-                                            className="btn btn-light btn-label"
-                                            onClick={handleReAssign}
+                                        ) : (
+                                          <div
+                                            style={{
+                                              display: "flex",
+                                              justifyContent: "space-between",
+                                              alignItems: "baseline",
+                                              verticalAlign: "middle",
+                                            }}
                                           >
-                                            <i className="mdi mdi-pencil label-icon "></i>{" "}
-                                            Phân công lại
-                                          </button>
-                                        </td>
+                                            {
+                                              orderServicesDetail.expert
+                                                .fullname
+                                            }
+
+                                            <button
+                                              type="button"
+                                              className="btn btn-light btn-label"
+                                              onClick={handleReAssign}
+                                            >
+                                              <i className="mdi mdi-pencil label-icon "></i>{" "}
+                                              Phân công lại
+                                            </button>
+                                          </div>
+                                        )
+                                      ) : (
+                                        <>
+                                          {orderServicesDetail.expert.fullname}
+                                        </>
                                       )
                                     ) : (
-                                      <td>
-                                        {orderServicesDetails.expert.fullname}
-                                      </td>
-                                    )
-                                  ) : (
-                                    <td>
-                                      <div className="form-group">
+                                      <>
                                         <Select
                                           value={selectedGroup}
                                           onChange={handleSelectGroup}
@@ -418,13 +412,10 @@ const OrderServiceDetail = props => {
                                           classNamePrefix="select2-selection"
                                           placeholder="Chọn kỹ thuật viên"
                                           required={true}
+                                          //onClick={e => e.preventDefault()}
                                         />
                                         <Button
-                                          onClick={() =>
-                                            handleAssignExpert(
-                                              orderServicesDetails.id
-                                            )
-                                          }
+                                          onClick={handleAssignExpert}
                                           type="button"
                                           color="primary"
                                           className="w-md mt-2"
@@ -432,9 +423,9 @@ const OrderServiceDetail = props => {
                                         >
                                           Phân công
                                         </Button>
-                                      </div>
-                                    </td>
-                                  )}
+                                      </>
+                                    )}
+                                  </td>
                                 </tr>
                               </tbody>
                             </Table>
@@ -443,10 +434,8 @@ const OrderServiceDetail = props => {
                       </Row>
                     </CardBody>
 
-                    {orderServicesDetails.healthCarRecord != null ? (
-                      <CarRecord
-                        record={orderServicesDetails.healthCarRecord}
-                      />
+                    {orderServicesDetail.healthCarRecord != null ? (
+                      <CarRecord record={orderServicesDetail.healthCarRecord} />
                     ) : (
                       ""
                     )}
@@ -454,8 +443,11 @@ const OrderServiceDetail = props => {
                 </Col>
               </Row>
 
-              {orderServicesDetails.orderServiceDetails.length > 0 ? (
-                <Cart services={orderServicesDetails.orderServiceDetails} />
+              {orderServicesDetail.orderServiceDetails.length > 0 ? (
+                <Cart
+                  services={orderServicesDetail.orderServiceDetails}
+                  details={orderServicesDetail}
+                />
               ) : (
                 ""
               )}
@@ -479,8 +471,8 @@ const OrderServiceDetail = props => {
 }
 
 OrderServiceDetail.propTypes = {
-  history: PropTypes.object,
   isLoading: PropTypes.bool,
+  match: PropTypes.any,
 }
 
 export default withRouter(OrderServiceDetail)

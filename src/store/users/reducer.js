@@ -17,6 +17,7 @@ const INIT_STATE = {
   users: [],
   userProfile: {},
   error: {},
+  isLoading: false,
 }
 
 const userLists = (state = INIT_STATE, action) => {

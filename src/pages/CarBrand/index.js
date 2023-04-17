@@ -6,7 +6,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb"
 
 const CarBrand = () => {
   //meta title
-  document.title = "Các hãng xe | Empire Admin"
+  document.title = "Các hãng xe | Empire Garage"
   return (
     <>
       <div className="page-content">

@@ -21,6 +21,9 @@ export * from "./items/actions"
 //Symptom
 export * from "./symptoms/actions"
 
+//Car Brand
+export * from "./brand/actions"
+
 //Ecommerce
 export * from "./e-commerce/actions"
 

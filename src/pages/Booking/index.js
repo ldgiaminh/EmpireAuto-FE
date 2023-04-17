@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useMemo } from "react"
+import React, { useEffect, useState, useMemo } from "react"
 import { withRouter } from "react-router-dom"
 import PropTypes from "prop-types"
 import toastr from "toastr"
@@ -45,7 +45,7 @@ import Loading from "components/Loader/Loading"
 
 const BookingList = props => {
   //meta title
-  document.title = "Đặt Lịch | Empire Admin"
+  document.title = "Đặt Lịch | Empire Garage"
 
   const { history } = props
   const dispatch = useDispatch()
@@ -116,8 +116,10 @@ const BookingList = props => {
   }, [bookings])
 
   useEffect(() => {
-    const isToday = moment().isSame(today, "day")
-    setIsChecking(isToday)
+    //const isToday = moment().isSame(today, "day")
+    if (today) {
+      setIsChecking(true)
+    }
   }, [])
 
   /*
@@ -243,9 +245,9 @@ const BookingList = props => {
         },
       },
       {
-        Header: "Thương hiệu",
+        Header: "Hãng xe",
         accessor: "car.carBrand",
-        filterable: true,
+        disableFilters: true,
         Cell: cellProps => {
           return <ModalCar {...cellProps} />
         },
@@ -253,7 +255,7 @@ const BookingList = props => {
       {
         Header: "Dòng xe",
         accessor: "car.carModel",
-        filterable: true,
+        disableFilters: true,
         Cell: cellProps => {
           return <ModalCar {...cellProps} />
         },

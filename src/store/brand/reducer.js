@@ -17,7 +17,7 @@ const INIT_STATE = {
   error: {},
 }
 
-const carsBrands = (state = INIT_STATE, action) => {
+const brands = (state = INIT_STATE, action) => {
   switch (action.type) {
     case GET_CARS_BRAND_SUCCESS:
       return {
@@ -90,4 +90,4 @@ const carsBrands = (state = INIT_STATE, action) => {
   }
 }
 
-export default carsBrands
+export default brands

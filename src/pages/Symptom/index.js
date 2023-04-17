@@ -32,7 +32,7 @@ import { useSelector, useDispatch } from "react-redux"
 
 const SymptomLists = props => {
   //meta title
-  document.title = "Danh sách triệu chứng | Empire Admin"
+  document.title = "Danh sách triệu chứng | Empire Garage"
 
   const dispatch = useDispatch()
   const [symptom, setSymptom] = useState()

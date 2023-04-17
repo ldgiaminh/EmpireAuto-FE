@@ -6,7 +6,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb"
 
 const Transaction = () => {
   //meta title
-  document.title = "Các giao dịch | Empire Admin"
+  document.title = "Các giao dịch | Empire Garage"
   return (
     <>
       <div className="page-content">

@@ -8,26 +8,32 @@ import {
   getCarsBrandFail,
   addNewCarsBrandSuccess,
   addNewCarsBrandFail,
+  getCarsModelSuccess,
+  getCarsModelFail,
+  addNewCarsModelSuccess,
+  addNewCarsModelFail,
 } from "./actions"
 
 //Include Both Helper File with needed methods
-import { addNewCarsBrand, getCarsBrand } from "../../helpers/fakebackend_helper"
+import { addNewCarsModel, getCarsModel } from "../../helpers/fakebackend_helper"
+import { GET_CARS_MODEL } from "./actionTypes"
+import { ADD_NEW_CAR_MODEL } from "./actionTypes"
 
-function* fetchCarsBrand() {
+function* fetchCarsModel() {
   try {
-    const response = yield call(getCarsBrand)
-    yield put(getCarsBrandSuccess(response))
+    const response = yield call(getCarsModel)
+    yield put(getCarsModelSuccess(response))
   } catch (error) {
-    yield put(getCarsBrandFail(error))
+    yield put(getCarsModelFail(error))
   }
 }
 
-function* onAddBrand({ payload: carBrand }) {
+function* onAddModel({ payload: carsModel }) {
   try {
-    const response = yield call(addNewCarsBrand, carBrand)
-    yield put(addNewCarsBrandSuccess(response))
+    const response = yield call(addNewCarsModel, carsModel)
+    yield put(addNewCarsModelSuccess(response))
   } catch (error) {
-    yield put(addNewCarsBrandFail(error))
+    yield put(addNewCarsModelFail(error))
   }
 }
 
@@ -58,12 +64,12 @@ function* onAddBrand({ payload: carBrand }) {
 //   }
 // }
 
-function* brandsSaga() {
-  yield takeEvery(GET_CARS_BRAND, fetchCarsBrand)
+function* modelsSaga() {
+  yield takeEvery(GET_CARS_MODEL, fetchCarsModel)
   // yield takeEvery(GET_USER_PROFILE, fetchUserProfile)
-  yield takeEvery(ADD_NEW_CAR_BRAND, onAddBrand)
+  yield takeEvery(ADD_NEW_CAR_MODEL, onAddModel)
   // yield takeEvery(UPDATE_USER, onUpdateUser)
   // yield takeEvery(DELETE_USER, onDeleteUser)
 }
 
-export default brandsSaga
+export default modelsSaga

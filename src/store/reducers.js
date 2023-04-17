@@ -24,6 +24,9 @@ import items from "./items/reducer"
 //symptom
 import symptomsLists from "./symptoms/reducer"
 
+//brand
+import brands from "./brand/reducer"
+
 //E-commerce
 import ecommerce from "./e-commerce/reducer"
 
@@ -80,6 +83,7 @@ const rootReducer = combineReducers({
   orderServices,
   groupServices,
   items,
+  brands,
 })
 
 export default rootReducer

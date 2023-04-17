@@ -155,8 +155,8 @@ export const putOrderServices = (id, services) =>
 
 /* PUT ASSIGN EXPERT */
 
-export const putAssignExperts = (id, exId) =>
-  put(`${url.PUT_ASSIGN_EXPERT}/${id}/assign-expert/${exId}`)
+export const putAssignExperts = (orderServiceId, exId) =>
+  put(`${url.PUT_ASSIGN_EXPERT}/${orderServiceId}/assign-expert/${exId}`)
 
 /* GET STATUS LOG */
 export const getStatusLog = id => get(`${url.GET_STATUS_LOG}/${id}`)
@@ -260,6 +260,30 @@ export const updateCarsBrand = carBrand => put(url.UPDATE_CAR_BRAND, carBrand)
 // delete car brand
 export const deleteCarsBrand = carBrand =>
   del(url.DELETE_CAR_BRAND, { headers: { carBrand } })
+
+/*
+================================================
+CAR MODEL
+================================================
+*/
+
+// get car model
+export const getCarsModel = () => get(url.GET_CARS_MODEL)
+
+// get detail car model
+
+export const getCarsModelDetails = () => get(url.GET_CARS_MODEL_DETAIL)
+
+// add car model
+export const addNewCarsModel = carsModel =>
+  post(url.ADD_NEW_CAR_MODEL, carsModel)
+
+// update car model
+export const updateCarsModel = carsModel => put(url.UPDATE_CAR_MODEL, carsModel)
+
+// delete car model
+export const deleteCarsModel = carsModel =>
+  del(url.DELETE_CAR_MODEL, { headers: { carsModel } })
 
 /*
 ================================================

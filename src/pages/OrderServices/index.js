@@ -38,7 +38,7 @@ import Loading from "components/Loader/Loading"
 
 const OrderServicesList = props => {
   //meta title
-  document.title = "Theo dõi tiến trình | Empire Admin"
+  document.title = "Theo dõi tiến trình | Empire Garage"
 
   const statusServices = [
     { id: "0", title: "Phân công" },
@@ -103,8 +103,16 @@ const OrderServicesList = props => {
         },
       },
       {
-        Header: "Modal xe",
+        Header: "Hãng xe",
         accessor: "car.carBrand",
+        disableFilters: true,
+        Cell: cellProps => {
+          return <ModalCar {...cellProps} />
+        },
+      },
+      {
+        Header: "Dòng xe",
+        accessor: "car.carModel",
         disableFilters: true,
         Cell: cellProps => {
           return <ModalCar {...cellProps} />

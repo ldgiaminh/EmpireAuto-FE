@@ -29,11 +29,11 @@ import {
 import { useSelector, useDispatch } from "react-redux"
 import { ref, set } from "firebase/database"
 import { db } from "helpers/firebase"
-import Loading from "components/Loader/Loading"
+import PreloadDetail from "../../../components/Loader/PreloadDetail"
 
 const BookingDetails = props => {
   //meta title
-  document.title = "Chi Tiết Đặt Lịch | Empire Admin"
+  document.title = "Chi Tiết Đặt Lịch | Empire Garage"
 
   const dispatch = useDispatch()
 
@@ -142,8 +142,8 @@ const BookingDetails = props => {
   /* ========================================== RENDER ==============================================*/
   return (
     <React.Fragment>
+      {isLoading && <PreloadDetail />}
       <div className="page-content">
-        {isLoading && <Loading />}
         <Container fluid>
           {!isLoading && !isEmpty(bookingDetail) && (
             <>
@@ -348,6 +348,25 @@ const BookingDetails = props => {
                                       .join(", ")}
                                   </td>
                                 </tr>
+                                {bookingDetail.unresolvedProblems.length ===
+                                0 ? (
+                                  ""
+                                ) : (
+                                  <tr>
+                                    <th
+                                      scope="row"
+                                      style={{ width: "300px" }}
+                                      className={"text-capitalize"}
+                                    >
+                                      Vấn đề tái sửa chữa :
+                                    </th>
+                                    <td>
+                                      {bookingDetail.unresolvedProblems
+                                        .map(problem => problem.name)
+                                        .join(", ")}
+                                    </td>
+                                  </tr>
+                                )}
                               </tbody>
                             </Table>
                           </div>

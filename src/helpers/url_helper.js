@@ -86,11 +86,23 @@ CAR BRAND
 ================================================
 */
 
-export const GET_CARS_BRAND = "/Brands"
-export const GET_CARS_BRAND_DETAIL = "/Brands"
-export const ADD_NEW_CAR_BRAND = "/Brands"
-export const UPDATE_CAR_BRAND = "/Brands"
-export const DELETE_CAR_BRAND = "/Brands"
+export const GET_CARS_BRAND = "/brands"
+export const GET_CARS_BRAND_DETAIL = "/brands"
+export const ADD_NEW_CAR_BRAND = "/brands"
+export const UPDATE_CAR_BRAND = "/brands"
+export const DELETE_CAR_BRAND = "/brands"
+
+/*
+================================================ 
+CAR BRAND
+================================================
+*/
+
+export const GET_CARS_MODEL = "/models"
+export const GET_CARS_MODEL_DETAIL = "/models"
+export const ADD_NEW_CAR_MODEL = "/models"
+export const UPDATE_CAR_MODEL = "/models"
+export const DELETE_CAR_MODEL = "/models"
 
 /*
 ================================================ 

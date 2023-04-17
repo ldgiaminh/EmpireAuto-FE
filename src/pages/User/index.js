@@ -37,7 +37,7 @@ import { useSelector, useDispatch } from "react-redux"
 
 const UserLists = props => {
   //meta title
-  document.title = "Danh sách các khách hàng | Empire Admin"
+  document.title = "Danh sách các khách hàng | Empire Garage"
 
   const dispatch = useDispatch()
   const [user, setUser] = useState()
@@ -159,7 +159,7 @@ const UserLists = props => {
 
   useEffect(() => {
     dispatch(onGetUsers())
-  }, [dispatch, users])
+  }, [dispatch])
 
   useEffect(() => {
     setUser(users)
@@ -179,7 +179,7 @@ const UserLists = props => {
         <Container fluid>
           {/* Render Breadcrumbs */}
           <Breadcrumbs
-            title="Quản lý"
+            title="Khách h"
             breadcrumbItem="Danh sách cách khách hàng"
           />
           <Row>
@@ -191,7 +191,6 @@ const UserLists = props => {
                     data={customers}
                     isGlobalFilter={true}
                     isAddUserList={false}
-                    // handleUserClick={handleUserClicks}
                     customPageSize={10}
                     className="custom-header-css"
                   />
