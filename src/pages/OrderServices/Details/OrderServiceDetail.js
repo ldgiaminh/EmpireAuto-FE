@@ -333,6 +333,20 @@ const OrderServiceDetail = props => {
                                 <tr>
                                   <th
                                     scope="row"
+                                    style={{ width: "300px" }}
+                                    className={"text-capitalize"}
+                                  >
+                                    Vấn đề tái sửa chữa :
+                                  </th>
+                                  <td>
+                                    {orderServicesDetail.considerProblems
+                                      .map(consider => consider.name)
+                                      .join(", ")}
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <th
+                                    scope="row"
                                     style={{
                                       width: "300px",
                                       verticalAlign: "middle",
