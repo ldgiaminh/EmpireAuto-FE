@@ -1,23 +1,17 @@
 import React, { useEffect, useMemo, useState } from "react"
 import PropTypes from "prop-types"
 import {
-  Badge,
   Button,
   Card,
   CardBody,
   Col,
   Container,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
   Row,
-  Table,
-  UncontrolledDropdown,
   UncontrolledTooltip,
 } from "reactstrap"
 import { isEmpty, map } from "lodash"
 
-import { Name } from "./CarBrandlistCol"
+import { Name } from "./CarBrandCol"
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
