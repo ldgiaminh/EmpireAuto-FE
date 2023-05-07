@@ -42,12 +42,12 @@ const OrderServicesList = props => {
 
   const statusServices = [
     { id: "0", title: "Phân công" },
-    { id: "1", title: "Đang chuẩn đoán" },
-    { id: "2", title: "Chờ xác nhận và thanh toán" },
+    { id: "1", title: "Đang chẩn đoán" },
+    { id: "2", title: "Chờ xác nhận & thanh toán" },
     { id: "3", title: "Đang thực hiện" },
     { id: "4", title: "Chờ khách nhận xe" },
     { id: "5", title: "Hoàn thành" },
-    { id: "-1", title: "Hủy" },
+    { id: "-1", title: "Đã Hủy" },
   ]
 
   const { history } = props
@@ -175,8 +175,6 @@ const OrderServicesList = props => {
     }
   }, [orderServicess])
 
-  console.log(orderService)
-
   return (
     <React.Fragment>
       <div className="page-content">
@@ -186,7 +184,10 @@ const OrderServicesList = props => {
             <Col lg="12">
               <Card>
                 <CardBody>
-                  <ul className="nav nav-tabs nav-tabs-custom" role="tablist">
+                  <ul
+                    className="nav nav-tabs nav-tabs-custom nav-justified"
+                    role="tablist"
+                  >
                     {statusServices.map(tab => (
                       <NavItem key={tab.id}>
                         <NavLink

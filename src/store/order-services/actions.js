@@ -197,9 +197,9 @@ export const postCheckOut = statusLogId => ({
   payload: { statusLogId },
 })
 
-export const postCheckOutSuccess = orderServiceLog => ({
+export const postCheckOutSuccess = orderServicesDetails => ({
   type: POST_CHECKOUT_SERVICES_SUCCESS,
-  payload: orderServiceLog,
+  payload: orderServicesDetails,
 })
 
 export const postCheckOutFail = error => ({

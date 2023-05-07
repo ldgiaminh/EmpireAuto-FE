@@ -25,6 +25,7 @@ import {
   getOrderServicesDetails as onGetOrderServiceDetail,
   getExperts as onGetExpert,
   putAssignExperts as assignExpert,
+  postCheckOut as checkOutOrder,
 } from "store/actions"
 
 //redux
@@ -149,11 +150,11 @@ const OrderServiceDetail = props => {
     const exId = selectedGroup.value
     if ((id, exId)) {
       dispatch(assignExpert(id, exId))
-      handleUpdateState(id)
+      // handleUpdateState(id)
       setIsAssign(false)
       setSelectedGroup(null)
     }
-    dispatch(onGetOrderServiceDetail(id))
+    // dispatch(onGetOrderServiceDetail(id))
   }
 
   /*
@@ -162,8 +163,16 @@ const OrderServiceDetail = props => {
   ==================================================
   */
 
-  const handleCheckOutClick = () => {
+  const handleCheckOutQr = () => {
     history.push("/scanner-checkout")
+  }
+
+  const handleCheckOut = id => {
+    const checkOut = {
+      orderServiceId: id,
+      orderServiceStatusId: 5,
+    }
+    dispatch(checkOutOrder(checkOut))
   }
 
   /* ========================================== RENDER ==============================================*/
@@ -194,18 +203,18 @@ const OrderServiceDetail = props => {
                           </CardSubtitle>
                         </div>
 
-                        {orderServicesDetail.status == 4 ? (
+                        {orderServicesDetail.status === 4 ? (
                           <div className="ml-auto">
                             <Button
                               type="button"
                               color="primary"
-                              onClick={handleCheckOutClick}
+                              onClick={handleCheckOutQr}
                             >
                               <i className="mdi mdi-qrcode-scan me-1" />
                               Quét mã nhận xe
                             </Button>
                           </div>
-                        ) : orderServicesDetail.status == 5 ? (
+                        ) : orderServicesDetail.status === 5 ? (
                           <div className="ml-auto">
                             <span className="badge bg-success font-size-14">
                               Hoàn Thành
@@ -330,20 +339,25 @@ const OrderServiceDetail = props => {
                                   </th>
                                   <td>{orderServicesDetail.receivingStatus}</td>
                                 </tr>
-                                <tr>
-                                  <th
-                                    scope="row"
-                                    style={{ width: "300px" }}
-                                    className={"text-capitalize"}
-                                  >
-                                    Vấn đề tái sửa chữa :
-                                  </th>
-                                  <td>
-                                    {orderServicesDetail.considerProblems
-                                      .map(consider => consider.name)
-                                      .join(", ")}
-                                  </td>
-                                </tr>
+                                {orderServicesDetail.considerProblems.length ===
+                                0 ? (
+                                  ""
+                                ) : (
+                                  <tr>
+                                    <th
+                                      scope="row"
+                                      style={{ width: "300px" }}
+                                      className={"text-capitalize"}
+                                    >
+                                      Vấn đề tái sửa chữa :
+                                    </th>
+                                    <td>
+                                      {orderServicesDetail.considerProblems
+                                        .map(consider => consider.name)
+                                        .join(", ")}
+                                    </td>
+                                  </tr>
+                                )}
                                 <tr>
                                   <th
                                     scope="row"
@@ -475,6 +489,23 @@ const OrderServiceDetail = props => {
                     sách{" "}
                   </Link>
                 </Col>
+                {orderServicesDetail.status === 4 ? (
+                  <Col sm="6">
+                    <div className="text-sm-end">
+                      <Button
+                        type="button"
+                        color="success"
+                        className="btn btn-label w-md"
+                        onClick={() => handleCheckOut(params.id)}
+                      >
+                        <i className="bx bx-check-double label-icon"></i>
+                        Check-Out
+                      </Button>
+                    </div>
+                  </Col>
+                ) : (
+                  ""
+                )}
               </Row>
             </React.Fragment>
           )}

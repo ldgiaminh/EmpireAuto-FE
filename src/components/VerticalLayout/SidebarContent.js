@@ -1,5 +1,5 @@
 import PropTypes from "prop-types"
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 
 // //Import Scrollbar
 import SimpleBar from "simplebar-react"
@@ -13,6 +13,15 @@ import { Link } from "react-router-dom"
 import { withTranslation } from "react-i18next"
 
 const SidebarContent = props => {
+  const [role, setRole] = useState("")
+
+  useEffect(() => {
+    if (localStorage.getItem("authUser")) {
+      const obj = JSON.parse(localStorage.getItem("authUser"))
+      setRole(obj.role)
+    }
+  })
+
   const ref = useRef()
   // Use ComponentDidMount and ComponentDidUpdate method symultaniously
   useEffect(() => {
@@ -91,6 +100,79 @@ const SidebarContent = props => {
     <React.Fragment>
       <SimpleBar className="h-100" ref={ref}>
         <div id="sidebar-menu">
+          {/* <ul className="metismenu list-unstyled" id="side-menu">
+            {(() => {
+              switch (role) {
+                case "RE":
+                  return (
+                    <React.Fragment>
+                      <li className="menu-title">{props.t("Danh Mục")} </li>
+
+                      <li>
+                        <Link to="/bookings">
+                          <i className="bx bx-calendar"></i>
+                          <span>{props.t("Đặt Lịch")}</span>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="/order-services">
+                          <i className="bx bxs-detail"></i>
+                          <span>{props.t("Theo dõi tiến trình")}</span>
+                        </Link>
+                      </li>
+                    </React.Fragment>
+                  )
+                case "MA":
+                  return (
+                    <React.Fragment>
+                      <li className="menu-title">{props.t("Thương mại")}</li>
+                      <li>
+                        <Link to="/booking">
+                          <i className="bx bx-receipt"></i>
+                          <span>{props.t("Hóa đơn")}</span>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="/transactions">
+                          <i className="bx bx-money"></i>
+                          <span>{props.t("Giao dịch")}</span>
+                        </Link>
+                      </li>
+
+                      <li className="menu-title">{props.t("Dịch vụ")}</li>
+                      <li>
+                        <Link to="/service-list">
+                          <i className="bx bx-window"></i>
+                          <span>{props.t("Các dịch vụ")}</span>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="/symptoms">
+                          <i className="bx bx-spreadsheet"></i>
+                          <span>{props.t("Triệu chứng")}</span>
+                        </Link>
+                      </li>
+
+                      <li className="menu-title">{props.t("Quản lý")}</li>
+                      <li>
+                        <Link to="/car-brand">
+                          <i className="bx bx-car"></i>
+                          <span>{props.t("Phương tiện")}</span>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="/users">
+                          <i className="bx bxs-user-circle"></i>
+                          <span>{props.t("Khách hàng")}</span>
+                        </Link>
+                      </li>
+                    </React.Fragment>
+                  )
+                default:
+                  return null
+              }
+            })()}
+          </ul> */}
           <ul className="metismenu list-unstyled" id="side-menu">
             <li className="menu-title">{props.t("Danh Mục")} </li>
             <li>
@@ -100,13 +182,13 @@ const SidebarContent = props => {
               </Link>
             </li>
             <li>
-              <Link to="/booking">
+              <Link to="/bookings">
                 <i className="bx bx-calendar"></i>
                 <span>{props.t("Đặt Lịch")}</span>
               </Link>
             </li>
             <li>
-              <Link to="/order-service">
+              <Link to="/order-services">
                 <i className="bx bxs-detail"></i>
                 <span>{props.t("Theo dõi tiến trình")}</span>
               </Link>

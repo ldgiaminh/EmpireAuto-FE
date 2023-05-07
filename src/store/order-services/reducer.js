@@ -20,12 +20,12 @@ import {
   GET_ORDER_SERVICE_LIST_BY_STATUS,
   GET_ORDER_SERVICE_DETAIL,
   PUT_ASSIGN_EXPERT,
+  POST_CHECKOUT_SERVICES,
 } from "./actionTypes"
 
 const INIT_STATE = {
   orderServicess: [],
   orderServicesDetail: {},
-  orderServiceLogs: [],
   error: {},
   isLoading: false,
 }
@@ -106,90 +106,72 @@ const orderServices = (state = INIT_STATE, action) => {
     //     ),
     //   }
 
-    case PUT_ORDER_SERVICE_SUCCESS:
-      return {
-        ...state,
-        orderServicesDetail: action.payload,
-      }
+    // case PUT_ORDER_SERVICE_SUCCESS:
+    //   return {
+    //     ...state,
+    //     orderServicesDetail: action.payload,
+    //   }
 
-    case PUT_ORDER_SERVICE_FAIL:
-      return {
-        ...state,
-        error: action.payload,
-      }
+    // case PUT_ORDER_SERVICE_FAIL:
+    //   return {
+    //     ...state,
+    //     error: action.payload,
+    //   }
 
-    case PUT_ASSIGN_EXPERT:
-      return {
-        ...state,
-        isLoading: true,
-      }
+    // case PUT_ASSIGN_EXPERT:
+    //   return {
+    //     ...state,
+    //     isLoading: true,
+    //   }
 
     case PUT_ASSIGN_EXPERT_SUCCESS:
       return {
         ...state,
-        isLoading: false,
-        orderServicesDetail: {
-          ...state.orderServicesDetail,
-          expert: {
-            ...state.orderServicesDetail.expert,
-          },
-        },
+        //isLoading: false,
+        orderServicesDetail: action.payload,
       }
 
     case PUT_ASSIGN_EXPERT_FAIL:
       return {
         ...state,
-        isLoading: false,
+        //isLoading: false,
         error: action.payload,
       }
 
-    case PUT_CONFIRM_SERVICES_SUCCESS:
-      return {
-        ...state,
-        orderServicesDetail: state.orderServicesDetail.map(service =>
-          service.id.toString() === action.payload.id.toString()
-            ? { ...action.pay.load, service }
-            : service
-        ),
-      }
+    // case PUT_CONFIRM_PAID_SERVICES_SUCCESS:
+    //   return {
+    //     ...state,
+    //     orderServicesDetail: state.orderServicesDetail.map(service =>
+    //       service.id.toString() === action.payload.id.toString()
+    //         ? { ...action.pay.load, service }
+    //         : service
+    //     ),
+    //   }
 
-    case PUT_CONFIRM_SERVICES_FAIL:
-      return {
-        ...state,
-        error: action.payload,
-      }
+    // case PUT_CONFIRM_PAID_SERVICES_FAIL:
+    //   return {
+    //     ...state,
+    //     error: action.payload,
+    //   }
 
-    case PUT_CONFIRM_PAID_SERVICES_SUCCESS:
+    case POST_CHECKOUT_SERVICES:
       return {
         ...state,
-        orderServicesDetail: state.orderServicesDetail.map(service =>
-          service.id.toString() === action.payload.id.toString()
-            ? { ...action.pay.load, service }
-            : service
-        ),
-      }
-
-    case PUT_CONFIRM_PAID_SERVICES_FAIL:
-      return {
-        ...state,
-        error: action.payload,
+        isLoading: true,
       }
 
     case POST_CHECKOUT_SERVICES_SUCCESS:
       return {
         ...state,
-        orderServiceLogs: action.payload,
-        orderServicesDetail: state.orderServicesDetail.map(service =>
-          service.id.toString() === action.payload.orderServiceId.toString()
-            ? { ...action.pay.load, service }
-            : service
-        ),
+        isLoading: false,
+        orderServicesDetail: action.payload,
       }
 
     case POST_CHECKOUT_SERVICES_FAIL:
       return {
         ...state,
         error: action.payload,
+        isLoading: false,
       }
 
     default:

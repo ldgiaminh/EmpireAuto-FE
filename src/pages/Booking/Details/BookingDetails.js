@@ -95,13 +95,14 @@ const BookingDetails = props => {
   const vietnamDate = new Date(now.getTime() + timeZoneOffset * 60 * 60 * 1000)
   const isoDateTime = vietnamDate.toISOString()
 
-  const sendNotification = userId => {
+  const sendNotification = (userId, code, bookingId) => {
     const notificationId = uuid.v4()
     set(ref(db, `users/${userId}/notifications/${notificationId}`), {
       isRead: "false",
-      message: "Check-in thành công #" + bookingDetail.code,
+      message: "Check-in thành công #" + code,
       time: isoDateTime,
       title: "Bạn đã check-in thành công",
+      bookingId: bookingId,
     })
   }
 
@@ -111,7 +112,7 @@ const BookingDetails = props => {
       dispatch(checkInBooking(id, isAssign))
       toastr.success("Check-in thành công", "Thành công")
       dispatch(onGetBookingDetail(id))
-      sendNotification(bookingDetail.user.id)
+      sendNotification(bookingDetail.user.id, bookingDetail.code, id)
     }
     dispatch(onGetBookingDetail(id))
   }
@@ -394,7 +395,7 @@ const BookingDetails = props => {
                             onClick={() => handleCheckIn(bookingDetail.id)}
                           >
                             <i className="bx bx-check-double label-icon"></i>
-                            Check-in
+                            Check-In
                           </Button>
                         </div>
                       </Col>

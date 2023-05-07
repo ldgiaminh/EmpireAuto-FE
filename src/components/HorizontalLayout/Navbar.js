@@ -19,7 +19,7 @@ const getUserName = () => {
 const Navbar = props => {
   const [app, setapp] = useState(false)
   const [email, setemail] = useState(false)
-
+  const [manage, setManage] = useState(false)
   const [add, setadd] = useState(false)
 
   const [role, setRole] = useState("")
@@ -202,6 +202,33 @@ const Navbar = props => {
                                   </div>
                                 </div>
                               </div>
+                            </div>
+                          </li>
+
+                          <li className="nav-item dropdown">
+                            <Link
+                              to="/#"
+                              onClick={e => {
+                                e.preventDefault()
+                                setManage(!manage)
+                              }}
+                              className="nav-link dropdown-togglez arrow-none"
+                            >
+                              <i className="bx bx-customize me-2"></i>
+                              {props.t("Quản lý")}{" "}
+                              <div className="arrow-down"></div>
+                            </Link>
+                            <div
+                              className={classname("dropdown-menu", {
+                                show: manage,
+                              })}
+                            >
+                              <Link to="/symptoms" className="dropdown-item">
+                                {props.t("Triệu chứng")}
+                              </Link>
+                              <Link to="/car-brands" className="dropdown-item">
+                                {props.t("Hãng xe")}
+                              </Link>
                             </div>
                           </li>
 

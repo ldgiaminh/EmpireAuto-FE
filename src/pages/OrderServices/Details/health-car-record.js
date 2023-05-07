@@ -4,7 +4,7 @@ import { Button, CardBody, CardSubtitle, CardTitle, Col, Row } from "reactstrap"
 const CarRecord = ({ record }) => {
   return (
     <React.Fragment>
-      <CardBody className="mt-4">
+      <CardBody>
         <CardTitle>CHUẨN ĐOÁN TỪ KỸ THUẬT VIÊN</CardTitle>
         <CardSubtitle className="text-muted">
           Thông tin chi tiết ghi nhận các tình trạng xe kèm chuẩn đoán của kỹ
