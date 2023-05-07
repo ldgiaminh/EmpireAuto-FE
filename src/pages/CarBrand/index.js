@@ -17,7 +17,7 @@ import {
 } from "reactstrap"
 import { isEmpty, map } from "lodash"
 
-import { Name, Img } from "./CarBrandlistCol"
+import { Name } from "./CarBrandlistCol"
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
