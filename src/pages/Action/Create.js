@@ -26,12 +26,22 @@ import Breadcrumbs from "../../components/Common/Breadcrumb"
 
 import AddNewCarBrand from "pages/CarBrand/AddNewCarBrand"
 import AddNewCarModel from "pages/Model/AddNewCarModel"
+import AddNewCarProblem from "pages/Problem/AddNewProblem"
+import AddNewCarItem from "pages/Item/AddNewItems"
 
 const CreateNew = () => {
   //meta title
   document.title = "Tạo mới | Empire Garage"
 
-  const [activeTab, setactiveTab] = useState("1")
+  const [activeTab, setActiveTab] = useState("0")
+
+  const numTabs = [
+    { id: "0", title: "Dịch vụ" },
+    { id: "1", title: "Vấn đề" },
+    { id: "2", title: "Dòng xe" },
+    { id: "3", title: "Thương hiệu xe" },
+    { id: "4", title: "Triệu chứng" },
+  ]
 
   /*
   ==================================================
@@ -40,74 +50,49 @@ const CreateNew = () => {
   */
 
   return (
-    <React.Fragment>
+    <>
       <div className="page-content">
         <Container fluid>
           {/* Render Breadcrumb */}
-          <Breadcrumbs title="Ecommerce" breadcrumbItem="Checkout" />
+          <Breadcrumbs title="Tạo mới" breadcrumbItem="Tạo mới" />
 
           <div className="checkout-tabs">
             <Row>
               <Col xl="2" sm="3">
-                <Nav className="flex-column" pills>
-                  <NavItem>
-                    <NavLink
-                      className={classnames({ active: activeTab === "1" })}
-                      onClick={() => {
-                        setactiveTab("1")
-                      }}
-                    >
-                      <i className="bx bxs-truck d-block check-nav-icon mt-4 mb-2" />
-                      <p className="font-weight-bold mb-4">Shipping Info</p>
-                    </NavLink>
-                  </NavItem>
-                  <NavItem>
-                    <NavLink
-                      className={classnames({ active: activeTab === "2" })}
-                      onClick={() => {
-                        setactiveTab("2")
-                      }}
-                    >
-                      <i className="bx bx-money d-block check-nav-icon mt-4 mb-2" />
-                      <p className="font-weight-bold mb-4">Payment Info</p>
-                    </NavLink>
-                  </NavItem>
-                  <NavItem>
-                    <NavLink
-                      className={classnames({ active: activeTab === "3" })}
-                      onClick={() => {
-                        setactiveTab("3")
-                      }}
-                    >
-                      <i className="bx bx-badge-check d-block check-nav-icon mt-4 mb-2" />
-                      <p className="font-weight-bold mb-4">Confirmation</p>
-                    </NavLink>
-                  </NavItem>
+                <Nav pills className="flex-column">
+                  {numTabs.map(tab => (
+                    <NavItem key={tab.id}>
+                      <NavLink
+                        style={{ cursor: "pointer" }}
+                        className={classnames({
+                          "mb-2": true,
+                          active: activeTab === tab.id,
+                        })}
+                        onClick={() => {
+                          setActiveTab(tab.id)
+                        }}
+                      >
+                        {tab.title}
+                      </NavLink>
+                    </NavItem>
+                  ))}
                 </Nav>
               </Col>
               <Col xl="10" sm="9">
                 <Card>
                   <CardBody>
                     <TabContent activeTab={activeTab}>
-                      <TabPane tabId="1">
-                        <AddNewCarBrand />
+                      <TabPane tabId="0">
+                        <AddNewCarItem />
                       </TabPane>
-                      <TabPane
-                        tabId="2"
-                        id="v-pills-payment"
-                        role="tabpanel"
-                        aria-labelledby="v-pills-payment-tab"
-                      >
+                      <TabPane tabId="1">
+                        <AddNewCarProblem />
+                      </TabPane>
+                      <TabPane tabId="2">
                         <AddNewCarModel />
                       </TabPane>
-                      <TabPane tabId="3" id="v-pills-confir" role="tabpanel">
-                        <Card className="shadow-none border mb-0">
-                          <CardBody>
-                            <CardTitle className="mb-4">
-                              Order Summary
-                            </CardTitle>
-                          </CardBody>
-                        </Card>
+                      <TabPane tabId="3">
+                        <AddNewCarBrand />
                       </TabPane>
                     </TabContent>
                   </CardBody>
@@ -139,7 +124,7 @@ const CreateNew = () => {
           </div>
         </Container>
       </div>
-    </React.Fragment>
+    </>
   )
 }
 

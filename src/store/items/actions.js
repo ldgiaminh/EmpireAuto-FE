@@ -1,24 +1,118 @@
 import {
-  GET_ITEM_LIST,
-  GET_ITEM_LIST_FAIL,
-  GET_ITEM_LIST_SUCCESS,
+  ADD_NEW_CAR_ITEM,
+  ADD_CAR_ITEM_FAIL,
+  ADD_CAR_ITEM_SUCCESS,
+  DELETE_CAR_ITEM,
+  DELETE_CAR_ITEM_FAIL,
+  DELETE_CAR_ITEM_SUCCESS,
+  UPDATE_CAR_ITEM,
+  UPDATE_CAR_ITEM_FAIL,
+  UPDATE_CAR_ITEM_SUCCESS,
+  GET_CARS_ITEM,
+  GET_CARS_ITEM_FAIL,
+  GET_CARS_ITEM_SUCCESS,
+  GET_CAR_ITEM_DETAIL,
+  GET_CAR_ITEM_DETAIL_FAIL,
+  GET_CAR_ITEM_DETAIL_SUCCESS,
 } from "./actionTypes"
 
 /*
 ================================================ 
-GET ITEM LIST 
+GET Item 
 ================================================
 */
-export const getItemLists = () => ({
-  type: GET_ITEM_LIST,
+export const getCarsItem = () => ({
+  type: GET_CARS_ITEM,
 })
 
-export const getItemListsSuccess = items => ({
-  type: GET_ITEM_LIST_SUCCESS,
-  payload: items,
+export const getCarsItemSuccess = carsItem => ({
+  type: GET_CARS_ITEM_SUCCESS,
+  payload: carsItem,
 })
 
-export const getItemListsFail = error => ({
-  type: GET_ITEM_LIST_FAIL,
+export const getCarsItemFail = error => ({
+  type: GET_CARS_ITEM_FAIL,
+  payload: error,
+})
+
+/*
+================================================ 
+GET Item Detail
+================================================
+*/
+export const getCarsItemDetail = () => ({
+  type: GET_CAR_ITEM_DETAIL,
+})
+
+export const getCarsItemDetailSuccess = carsItemDetail => ({
+  type: GET_CAR_ITEM_DETAIL_SUCCESS,
+  payload: carsItemDetail,
+})
+
+export const getCarsItemDetailFail = error => ({
+  type: GET_CAR_ITEM_DETAIL_FAIL,
+  payload: error,
+})
+
+/*
+================================================ 
+POST Add New Item
+================================================
+*/
+
+export const addNewCarsItem = carsItem => ({
+  type: ADD_NEW_CAR_ITEM,
+  payload: carsItem,
+})
+
+export const addNewCarsItemSuccess = carsItem => ({
+  type: ADD_CAR_ITEM_SUCCESS,
+  payload: carsItem,
+})
+
+export const addNewCarsItemFail = error => ({
+  type: ADD_CAR_ITEM_FAIL,
+  payload: error,
+})
+
+/*
+================================================ 
+PUT Item Update
+================================================
+*/
+
+export const updateCarsItem = carsItem => ({
+  type: UPDATE_CAR_ITEM,
+  payload: carsItem,
+})
+
+export const updateCarsItemSuccess = carsItem => ({
+  type: UPDATE_CAR_ITEM_SUCCESS,
+  payload: carsItem,
+})
+
+export const updateCarsItemFail = error => ({
+  type: UPDATE_CAR_ITEM_FAIL,
+  payload: error,
+})
+
+/*
+================================================ 
+DELETE Item 
+================================================
+*/
+
+export const deleteCarsItem = carsItem => ({
+  type: DELETE_CAR_ITEM,
+  payload: carsItem,
+})
+
+export const deleteCarsItemSuccess = carsItem => ({
+  type: DELETE_CAR_ITEM_SUCCESS,
+  payload: carsItem,
+})
+
+export const deleteCarsItemFail = error => ({
+  type: DELETE_CAR_ITEM_FAIL,
   payload: error,
 })

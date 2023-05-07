@@ -94,13 +94,14 @@ const QrCheckOut = props => {
       orderServiceStatusId: 5,
     }
     dispatch(checkOutOrder(checkOut))
-    // const notificationId = uuid.v4()
-    // set(ref(db, `users/${userId}/notifications/${notificationId}`), {
-    //   isRead: "false",
-    //   message: "Đã nhận phương tiện " + code,
-    //   time: isoDateTime,
-    //   title: "Hoàn tất dịch vụ tại Empire Garage",
-    // })
+    const notificationId = uuid.v4()
+    set(ref(db, `users/${userId}/notifications/${notificationId}`), {
+      isRead: "false",
+      message: "Đã nhận phương tiện " + code,
+      time: isoDateTime,
+      title: "Hoàn tất dịch vụ tại Empire Garage",
+      orderServiceId: id,
+    })
     toastr.success("Check-out thành công", "Thành công")
     history.push(`/order-services/${id}`)
   }

@@ -13,27 +13,34 @@ import {
 
 import { useDispatch, useSelector } from "react-redux"
 
-import { getCarsBrand as onGetCarBrand } from "store/actions"
+import {
+  getCarsBrand as onGetCarBrand,
+  addNewCarsModel as onAddNewCarModel,
+} from "store/actions"
 
 const AddNewCarModel = () => {
   const dispatch = useDispatch()
 
-  const [selectedGroup, setselectedGroup] = useState(null)
+  const [selectedGroup, setSelectedGroup] = useState(null)
 
   const [model, setModel] = useState({
     name: "",
     brandId: "",
   })
 
-  function handleSelectGroup(selectedGroup) {
-    setselectedGroup(selectedGroup)
+  function handleSelectGroup(selected) {
+    setSelectedGroup(selected)
+    setModel({
+      ...model,
+      brandId: selected.value,
+    })
   }
 
   const { carsBrand } = useSelector(state => ({
     carsBrand: state.brands.carsBrand,
   }))
 
-  const handleChangeModel = e => {
+  const handleChange = e => {
     const value = e.target.value
     setModel({ ...model, [e.target.name]: value })
   }
@@ -49,12 +56,14 @@ const AddNewCarModel = () => {
 
   const saveModel = e => {
     e.preventDefault()
+    console.log(model)
+    dispatch(onAddNewCarModel(model))
   }
   return (
     <div>
       <CardTitle>Dòng xe</CardTitle>
       <CardSubtitle className="mb-4">Fill all information below</CardSubtitle>
-      <Form>
+      <Form onSubmit={saveModel}>
         <FormGroup className="select2-container mb-4" row>
           <Label md="2" className="col-form-label">
             Hãng xe

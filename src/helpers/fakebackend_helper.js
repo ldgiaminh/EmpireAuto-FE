@@ -187,15 +187,6 @@ export const getGroupService = () => get(url.GET_GROUP_SERVICE)
 
 /*
 ================================================
-ITEM
-================================================
-*/
-
-//Item List
-export const getItemLists = () => get(url.GET_ITEM_LIST)
-
-/*
-================================================
 USER
 ================================================
 */
@@ -245,11 +236,12 @@ CAR BRAND
 */
 
 // get car brand
-export const getCarsBrand = () => get(url.GET_CARS_BRAND)
+export const getCarsBrand = () => get(url.GET_CAR_BRAND)
 
 // get detail car brand
 
-export const getCarsBrandDetails = () => get(url.GET_CARS_BRAND_DETAIL)
+export const getCarsBrandDetails = id =>
+  get(`${url.GET_CAR_BRAND_DETAIL}/${id}`)
 
 // add car brand
 export const addNewCarsBrand = carBrand => post(url.ADD_NEW_CAR_BRAND, carBrand)
@@ -268,11 +260,15 @@ CAR MODEL
 */
 
 // get car model
-export const getCarsModel = () => get(url.GET_CARS_MODEL)
+export const getCarsModel = () => get(url.GET_CAR_MODEL)
+
+// get car model by brand
+export const getCarsModelByBrand = id =>
+  get(`${url.GET_CAR_MODEL_BY_BRAND}/model-by-brand/${id}`)
 
 // get detail car model
-
-export const getCarsModelDetails = () => get(url.GET_CARS_MODEL_DETAIL)
+export const getCarsModelDetails = id =>
+  get(`${url.GET_CAR_MODEL_DETAIL}/${id}`)
 
 // add car model
 export const addNewCarsModel = carsModel =>
@@ -284,6 +280,57 @@ export const updateCarsModel = carsModel => put(url.UPDATE_CAR_MODEL, carsModel)
 // delete car model
 export const deleteCarsModel = carsModel =>
   del(url.DELETE_CAR_MODEL, { headers: { carsModel } })
+
+/*
+================================================
+CAR PROBLEM
+================================================
+*/
+
+// get car problem
+export const getCarsProblem = () => get(url.GET_CAR_PROBLEM)
+
+// get car problem by model
+export const getCarsProblemByModel = id =>
+  get(`${url.GET_CAR_PROBLEM_BY_MODEL}/problems-by-model/${id}`)
+
+// get detail car problem
+export const getCarsProblemDetails = id =>
+  get(`${url.GET_CAR_PROBLEM_DETAIL}/{${id}}`)
+
+// add car problem
+export const addNewCarsProblem = carsProblem =>
+  post(url.ADD_NEW_CAR_PROBLEM, carsProblem)
+
+// update car problem
+export const updateCarsProblem = carsProblem =>
+  put(url.UPDATE_CAR_PROBLEM, carsProblem)
+
+// delete car problem
+export const deleteCarsProblem = carsProblem =>
+  del(url.DELETE_CAR_PROBLEM, { headers: { carsProblem } })
+
+/*
+================================================
+CAR ITEM
+================================================
+*/
+
+// get car item
+export const getCarsItem = () => get(url.GET_CAR_ITEM)
+
+// get detail car item
+export const getCarsItemDetails = id => get(`${url.GET_CAR_ITEM_DETAIL}/${id}`)
+
+// add car item
+export const addNewCarsItem = carsItem => post(url.ADD_NEW_CAR_ITEM, carsItem)
+
+// update car item
+export const updateCarsItem = carsItem => put(url.UPDATE_CAR_ITEM, carsItem)
+
+// delete car item
+export const deleteCarsItem = carsItem =>
+  del(url.DELETE_CAR_ITEM, { headers: { carsItem } })
 
 /*
 ================================================

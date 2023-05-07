@@ -57,14 +57,7 @@ export const POST_CHECKOUT_SERVICES = "/order-service-status-logs"
 GROUP SERVICE
 ================================================
 */
-export const GET_GROUP_SERVICE = "/group-services/item-list?isService=true"
-
-/*
-================================================ 
-ITEM 
-================================================
-*/
-export const GET_ITEM_LIST = "/items"
+export const GET_GROUP_SERVICE = "/group-services"
 
 /*
 ================================================ 
@@ -86,23 +79,48 @@ CAR BRAND
 ================================================
 */
 
-export const GET_CARS_BRAND = "/brands"
-export const GET_CARS_BRAND_DETAIL = "/brands"
+export const GET_CAR_BRAND = "/brands"
+export const GET_CAR_BRAND_DETAIL = "/brands"
 export const ADD_NEW_CAR_BRAND = "/brands"
 export const UPDATE_CAR_BRAND = "/brands"
 export const DELETE_CAR_BRAND = "/brands"
 
 /*
 ================================================ 
-CAR BRAND
+CAR MODEL
 ================================================
 */
 
-export const GET_CARS_MODEL = "/models"
-export const GET_CARS_MODEL_DETAIL = "/models"
+export const GET_CAR_MODEL = "/models"
+export const GET_CAR_MODEL_BY_BRAND = "/models"
+export const GET_CAR_MODEL_DETAIL = "/models"
 export const ADD_NEW_CAR_MODEL = "/models"
 export const UPDATE_CAR_MODEL = "/models"
 export const DELETE_CAR_MODEL = "/models"
+
+/*
+================================================ 
+CAR PROBLEM
+================================================
+*/
+
+export const GET_CAR_PROBLEM = "/problems"
+export const GET_CAR_PROBLEM_BY_MODEL = "/problems"
+export const GET_CAR_PROBLEM_DETAIL = "/problems"
+export const ADD_NEW_CAR_PROBLEM = "/problems"
+export const UPDATE_CAR_PROBLEM = "/problems"
+export const DELETE_CAR_PROBLEM = "/problems"
+
+/*
+================================================ 
+ITEM 
+================================================
+*/
+export const GET_CAR_ITEM = "/items"
+export const GET_CAR_ITEM_DETAIL = "/items"
+export const ADD_NEW_CAR_ITEM = "/items"
+export const UPDATE_CAR_ITEM = "/items"
+export const DELETE_CAR_ITEM = "/items"
 
 /*
 ================================================ 

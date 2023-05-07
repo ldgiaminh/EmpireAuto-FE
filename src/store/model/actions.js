@@ -14,6 +14,9 @@ import {
   GET_CAR_MODEL_DETAIL,
   GET_CAR_MODEL_DETAIL_FAIL,
   GET_CAR_MODEL_DETAIL_SUCCESS,
+  GET_CARS_MODEL_BY_BRAND,
+  GET_CARS_MODEL_BY_BRAND_SUCCESS,
+  GET_CARS_MODEL_BY_BRAND_FAIL,
 } from "./actionTypes"
 
 /*
@@ -37,7 +40,27 @@ export const getCarsModelFail = error => ({
 
 /*
 ================================================ 
-GET MODELs Detail
+GET Model By Brand 
+================================================
+*/
+export const getCarsModelByBrand = id => ({
+  type: GET_CARS_MODEL_BY_BRAND,
+  id,
+})
+
+export const getCarsModelByBrandSuccess = carsModel => ({
+  type: GET_CARS_MODEL_BY_BRAND_SUCCESS,
+  payload: carsModel,
+})
+
+export const getCarsModelByBrandFail = error => ({
+  type: GET_CARS_MODEL_BY_BRAND_FAIL,
+  payload: error,
+})
+
+/*
+================================================ 
+GET Model Detail
 ================================================
 */
 export const getCarsModelDetail = () => ({
@@ -56,7 +79,7 @@ export const getCarsModelDetailFail = error => ({
 
 /*
 ================================================ 
-POST Add New MODEL
+POST Add New Model
 ================================================
 */
 
@@ -77,7 +100,7 @@ export const addNewCarsModelFail = error => ({
 
 /*
 ================================================ 
-PUT MODELs Update
+PUT Model Update
 ================================================
 */
 
@@ -98,7 +121,7 @@ export const updateCarsModelFail = error => ({
 
 /*
 ================================================ 
-DELETE MODELs 
+DELETE Model 
 ================================================
 */
 

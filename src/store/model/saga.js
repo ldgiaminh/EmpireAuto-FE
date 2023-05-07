@@ -1,7 +1,11 @@
 import { call, put, takeEvery } from "redux-saga/effects"
 
 // User Redux States
-import { ADD_NEW_CAR_BRAND, GET_CARS_BRAND } from "./actionTypes"
+import {
+  ADD_NEW_CAR_BRAND,
+  GET_CARS_BRAND,
+  GET_CARS_MODEL_BY_BRAND,
+} from "./actionTypes"
 
 import {
   getCarsBrandSuccess,
@@ -12,12 +16,17 @@ import {
   getCarsModelFail,
   addNewCarsModelSuccess,
   addNewCarsModelFail,
+  getCarsModelByBrandSuccess,
+  getCarsModelByBrandFail,
 } from "./actions"
 
 //Include Both Helper File with needed methods
-import { addNewCarsModel, getCarsModel } from "../../helpers/fakebackend_helper"
-import { GET_CARS_MODEL } from "./actionTypes"
-import { ADD_NEW_CAR_MODEL } from "./actionTypes"
+import {
+  addNewCarsModel,
+  getCarsModel,
+  getCarsModelByBrand,
+} from "../../helpers/fakebackend_helper"
+import { GET_CARS_MODEL, ADD_NEW_CAR_MODEL } from "./actionTypes"
 
 function* fetchCarsModel() {
   try {
@@ -25,6 +34,15 @@ function* fetchCarsModel() {
     yield put(getCarsModelSuccess(response))
   } catch (error) {
     yield put(getCarsModelFail(error))
+  }
+}
+
+function* fetchCarsModelByBrand({ id }) {
+  try {
+    const response = yield call(getCarsModelByBrand, id)
+    yield put(getCarsModelByBrandSuccess(response))
+  } catch (error) {
+    yield put(getCarsModelByBrandFail(error))
   }
 }
 
@@ -66,8 +84,10 @@ function* onAddModel({ payload: carsModel }) {
 
 function* modelsSaga() {
   yield takeEvery(GET_CARS_MODEL, fetchCarsModel)
-  // yield takeEvery(GET_USER_PROFILE, fetchUserProfile)
+  yield takeEvery(GET_CARS_MODEL_BY_BRAND, fetchCarsModelByBrand)
   yield takeEvery(ADD_NEW_CAR_MODEL, onAddModel)
+  // yield takeEvery(GET_USER_PROFILE, fetchUserProfile)
+
   // yield takeEvery(UPDATE_USER, onUpdateUser)
   // yield takeEvery(DELETE_USER, onDeleteUser)
 }

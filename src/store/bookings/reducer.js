@@ -97,9 +97,7 @@ const bookings = (state = INIT_STATE, action) => {
         //     ? { booking, ...action.payload }
         //     : booking
         // ),
-        bookingDetail: {
-          ...state.bookingDetail,
-        },
+        bookingDetail: action.payload,
       }
 
     case CHECKIN_BOOKING_FAIL:

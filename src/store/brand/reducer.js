@@ -15,6 +15,7 @@ const INIT_STATE = {
   carsBrand: [],
   carsBrandDetail: {},
   error: {},
+  isLoading: false,
 }
 
 const brands = (state = INIT_STATE, action) => {

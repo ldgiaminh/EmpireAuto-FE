@@ -9,11 +9,13 @@ import {
   GET_CARS_MODEL_SUCCESS,
   GET_CAR_MODEL_DETAIL_FAIL,
   GET_CAR_MODEL_DETAIL_SUCCESS,
+  GET_CARS_MODEL_BY_BRAND_SUCCESS,
+  GET_CARS_MODEL_BY_BRAND_FAIL,
 } from "./actionTypes"
 
 const INIT_STATE = {
-  carsMODEL: [],
-  carsMODELDetail: {},
+  carsModel: [],
+  carsModelDetail: {},
   error: {},
 }
 
@@ -26,6 +28,18 @@ const models = (state = INIT_STATE, action) => {
       }
 
     case GET_CARS_MODEL_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      }
+
+    case GET_CARS_MODEL_BY_BRAND_SUCCESS:
+      return {
+        ...state,
+        carsModel: action.payload,
+      }
+
+    case GET_CARS_MODEL_BY_BRAND_FAIL:
       return {
         ...state,
         error: action.payload,

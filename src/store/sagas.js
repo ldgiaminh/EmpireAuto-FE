@@ -10,6 +10,8 @@ import groupServicesSaga from "./group-services/saga"
 import itemsSaga from "./items/saga"
 import symptomsSaga from "./symptoms/saga"
 import brandsSaga from "./brand/saga"
+import problemsSaga from "./problem/saga"
+import modelsSaga from "./model/saga"
 import ProfileSaga from "./auth/profile/saga"
 import LayoutSaga from "./layout/saga"
 import ecommerceSaga from "./e-commerce/saga"
@@ -46,6 +48,8 @@ export default function* rootSaga() {
     fork(bookingsSaga),
     fork(symptomsSaga),
     fork(brandsSaga),
+    fork(modelsSaga),
+    fork(problemsSaga),
     fork(itemsSaga),
     fork(groupServicesSaga),
     fork(orderServicesSaga),

@@ -11,39 +11,23 @@ const Name = cell => {
   return cell.value ? cell.value : ""
 }
 
-const Email = cell => {
-  return cell.value ? cell.value : ""
-}
-
-const Phone = cell => {
-  return cell.value ? cell.value : ""
-}
-
-const Address = cell => {
-  return cell.value ? cell.value : ""
-}
-
-const Gender = cell => {
-  return cell.value ? cell.value : ""
-}
-
 const Img = cell => {
   return (
     <>
       {!cell.value ? (
-        <div className="avatar-xs">
-          <span className="avatar-title rounded-circle">
+        <div className="avatar-sm">
+          <span className="avatar-title rounded">
             {console.log("cell", cell.data[0].name)}
             {cell.data[0].name.charAt(0)}
           </span>
         </div>
       ) : (
         <div>
-          <img className="rounded-circle avatar-xs" src={cell.value} alt="" />
+          <img className="rounded avatar-sm" src={cell.value} alt="" />
         </div>
       )}
     </>
   )
 }
 
-export { Name, Email, Phone, Address, Gender, Img }
+export { Name, Img }

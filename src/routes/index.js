@@ -31,6 +31,12 @@ import UserLists from "../pages/User/index"
 //Car brand
 import CarBrand from "../pages/CarBrand/index"
 
+//Car model
+import CarModel from "../pages/Model/index"
+
+//Car problem
+import CarProblem from "../pages/Problem/index"
+
 //Symptom
 import SymptomLists from "../pages/Symptom/index"
 
@@ -65,13 +71,18 @@ const authProtectedRoutes = [
   { path: "/symptoms", component: SymptomLists },
 
   //group-service
-  { path: "/service-list", component: GroupService },
+  //{ path: "/service-list", component: GroupService },
 
   //user
   { path: "/users", component: UserLists },
 
   //Vehicle
-  { path: "/car-brand", component: CarBrand },
+  { path: "/car-brands", component: CarBrand },
+  { path: "/car-brands/:id/:name/models", component: CarModel },
+  {
+    path: "/car-brands/:id/:name/models/:id/:name/problems",
+    component: CarProblem,
+  },
 
   //Items
   { path: "/add-new-items", component: AddNewItems },
