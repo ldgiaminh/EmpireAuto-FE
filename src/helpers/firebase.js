@@ -2,7 +2,7 @@
 import { initializeApp } from "firebase/app"
 import { getDatabase } from "firebase/database"
 import { getStorage } from "firebase/storage"
-
+import { getMessaging, onMessage } from "firebase/messaging"
 
 const firebaseConfig = {
   apiKey: "AIzaSyAPtftCfGOJfkIlRcoQ4QoJTwP1xXuBlm8",
@@ -20,3 +20,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig)
 export const db = getDatabase(app)
 export const storage = getStorage(app)
+export const messaging = getMessaging(app)
+
+export const onMessageListener = () =>
+  new Promise(resolve => {
+    onMessage(messaging, payload => {
+      resolve(payload)
+    })
+  })

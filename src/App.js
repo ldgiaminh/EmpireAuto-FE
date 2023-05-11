@@ -1,5 +1,5 @@
 import PropTypes from "prop-types"
-import React from "react"
+import React, { useEffect } from "react"
 
 import { Switch, BrowserRouter as Router } from "react-router-dom"
 import { connect } from "react-redux"
@@ -17,6 +17,7 @@ import NonAuthLayout from "./components/NonAuthLayout"
 
 // Import scss
 import "./assets/scss/theme.scss"
+import NotificationMessaging from "components/NotificationMessaging/NotificationMessaging"
 
 // Import Firebase Configuration file
 //import { initFirebaseBackend } from "./helpers/firebase_helper"
@@ -57,6 +58,7 @@ const App = props => {
   const Layout = getLayout()
   return (
     <React.Fragment>
+      <NotificationMessaging />
       <Router>
         <Switch>
           {publicRoutes.map((route, idx) => (
