@@ -26,6 +26,7 @@ import {
   getExperts as onGetExpert,
   putAssignExperts as assignExpert,
   postCheckOut as checkOutOrder,
+  getStatusLog as onGetStatusLog,
 } from "store/actions"
 
 //redux
@@ -35,6 +36,7 @@ import Cart from "./cart"
 import CarRecord from "./health-car-record"
 import Loading from "components/Loader/Loading"
 import PreloadDetail from "components/Loader/PreloadDetail"
+import Stepper from "./stepper"
 
 const OrderServiceDetail = props => {
   //meta title
@@ -51,12 +53,13 @@ const OrderServiceDetail = props => {
   ==================================================
   */
 
-  const { orderServicesDetail, users, isLoading } = useSelector(state => ({
-    orderServicesDetail: state.orderServices.orderServicesDetail,
-    users: state.userLists.users,
-    isLoading: state.orderServices.isLoading,
-    orderServiceLog: state.orderServices.orderServiceLog,
-  }))
+  const { orderServicesDetail, users, isLoading, orderServiceLogs } =
+    useSelector(state => ({
+      orderServicesDetail: state.orderServices.orderServicesDetail,
+      users: state.userLists.users,
+      isLoading: state.orderServices.isLoading,
+      orderServiceLogs: state.orderServices.orderServiceLogs,
+    }))
 
   /*
   ==================================================
@@ -77,6 +80,12 @@ const OrderServiceDetail = props => {
   useEffect(() => {
     dispatch(onGetExpert())
   }, [dispatch])
+
+  useEffect(() => {
+    if (params && params.id) {
+      dispatch(onGetStatusLog(params.id))
+    }
+  }, [params, dispatch])
 
   /*
   ==================================================
@@ -141,8 +150,21 @@ const OrderServiceDetail = props => {
   //   hideMethod: "fadeOut",
   // }
 
-  const handleUpdateState = id => {
-    dispatch(onGetOrderServiceDetail(id))
+  const now = new Date()
+  const timeZoneOffset = 7 // Vietnam is GMT+7
+
+  const vietnamDate = new Date(now.getTime() + timeZoneOffset * 60 * 60 * 1000)
+  const isoDateTime = vietnamDate.toISOString()
+
+  const notiExpert = ({ exId, plate }) => {
+    const notificationId = uuid.v4()
+    set(ref(db, `users/${exId}/notifications/${notificationId}`), {
+      isRead: "false",
+      message: "Vui lòng tiến hành kiểm tra và chuẩn đoán phương tiện " + plate,
+      time: isoDateTime,
+      title: "Phân công kiểm tra",
+      orderServiceId: params.id,
+    })
   }
 
   const handleAssignExpert = () => {
@@ -150,11 +172,10 @@ const OrderServiceDetail = props => {
     const exId = selectedGroup.value
     if ((id, exId)) {
       dispatch(assignExpert(id, exId))
-      // handleUpdateState(id)
+      notiExpert(exId, orderServicesDetail.car.carLisenceNo)
       setIsAssign(false)
       setSelectedGroup(null)
     }
-    // dispatch(onGetOrderServiceDetail(id))
   }
 
   /*
@@ -169,10 +190,9 @@ const OrderServiceDetail = props => {
 
   const handleCheckOut = id => {
     const checkOut = {
-      orderServiceId: id,
-      orderServiceStatusId: 5,
+      carStatusId: 2,
     }
-    dispatch(checkOutOrder(checkOut))
+    dispatch(checkOutOrder(id, checkOut))
   }
 
   /* ========================================== RENDER ==============================================*/
@@ -195,6 +215,8 @@ const OrderServiceDetail = props => {
                 <Col>
                   <Card>
                     <CardBody>
+                      {/* <Stepper logs={orderServiceLogs} /> */}
+
                       <div className="d-flex justify-content-between">
                         <div>
                           <CardTitle>THÔNG TIN TỔNG</CardTitle>
@@ -496,7 +518,9 @@ const OrderServiceDetail = props => {
                         type="button"
                         color="success"
                         className="btn btn-label w-md"
-                        onClick={() => handleCheckOut(params.id)}
+                        onClick={() =>
+                          handleCheckOut(orderServicesDetail.car.id)
+                        }
                       >
                         <i className="bx bx-check-double label-icon"></i>
                         Check-Out

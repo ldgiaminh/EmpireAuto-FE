@@ -42,10 +42,10 @@ const OrderServicesList = props => {
 
   const statusServices = [
     { id: "0", title: "Phân công" },
-    { id: "1", title: "Đang chẩn đoán" },
+    { id: "1", title: "Chẩn đoán" },
     { id: "2", title: "Xác nhận thanh toán" },
-    { id: "3", title: "Đang thực hiện" },
-    { id: "4", title: "Chờ khách nhận xe" },
+    { id: "3", title: "Thực hiện" },
+    { id: "4", title: "Nhận xe" },
     { id: "5", title: "Hoàn thành" },
     { id: "-1", title: "Đã Hủy" },
   ]

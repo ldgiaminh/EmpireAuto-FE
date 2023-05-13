@@ -17,7 +17,7 @@ const NotificationMessaging = () => {
   useEffect(() => {
     onMessageListener()
       .then(payload => {
-        console.log("Received foreground message: ", payload)
+        // console.log("Received foreground message: ", payload)
         const notification = payload
         setNoti({
           title: notification.notification.title,

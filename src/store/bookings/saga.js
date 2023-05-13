@@ -2,13 +2,9 @@ import { call, put, takeEvery } from "redux-saga/effects"
 
 //Booking Redux States
 import {
-  GET_BOOKING_LIST,
   GET_BOOKING_DETAIL,
   CHECKIN_BOOKING,
   GET_BOOKING_LIST_BY_DATE,
-  ADD_NEW_BOOKING,
-  UPDATE_BOOKING,
-  DELETE_BOOKING,
   CHECKIN_QRCODE,
 } from "./actionTypes"
 
@@ -23,12 +19,6 @@ import {
   checkinBookingSuccess,
   checkinQRCodeFail,
   checkinQRCodeSuccess,
-  addNewBookingFail,
-  addNewBookingSuccess,
-  deleteBookingError,
-  deleteBookingSuccess,
-  updateBookingFail,
-  updateBookingSuccess,
 } from "./actions"
 
 import {
@@ -38,16 +28,15 @@ import {
   checkinBooking,
   checkinQRCode,
 } from "../../helpers/fakebackend_helper"
-import { changePreloader } from "store/actions"
 
-function* fetchBookingsLists() {
-  try {
-    const response = yield call(getBookingsLists)
-    yield put(getBookingListsSuccess(response))
-  } catch (error) {
-    yield put(getBookingListsFail(error))
-  }
-}
+// function* fetchBookingsLists() {
+//   try {
+//     const response = yield call(getBookingsLists)
+//     yield put(getBookingListsSuccess(response))
+//   } catch (error) {
+//     yield put(getBookingListsFail(error))
+//   }
+// }
 
 function* fetchBookingsListByDate({ date }) {
   try {

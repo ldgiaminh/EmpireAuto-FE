@@ -215,7 +215,7 @@ const Cart = ({ details, services }) => {
                     ))}
                     <tr>
                       <td>Phí kiểm tra :</td>
-                      <td>{details.prepaidFromBooking}đ</td>
+                      <td>{details.prepaidFromBooking.toLocaleString()}đ</td>
                     </tr>
                     <tr>
                       <th>Tạm tính :</th>
@@ -224,7 +224,7 @@ const Cart = ({ details, services }) => {
                     <tr>
                       <td className="text-danger">Phí đặt lịch :</td>
                       <td className="text-danger">
-                        - {details.prepaidFromBooking}đ
+                        - {details.prepaidFromBooking.toLocaleString()}đ
                       </td>
                     </tr>
 

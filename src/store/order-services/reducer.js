@@ -28,6 +28,7 @@ const INIT_STATE = {
   orderServicesDetail: {},
   error: {},
   isLoading: false,
+  orderServiceLogs: [],
 }
 
 const orderServices = (state = INIT_STATE, action) => {

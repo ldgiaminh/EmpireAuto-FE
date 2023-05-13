@@ -9,7 +9,7 @@ const Loading = () => {
           <div>
             <div className="my-5">
               <div className="text-center">
-                <Spinner className="ms-2" color="primary" />
+                <Spinner className="ms-2 mt-4" color="primary" />
               </div>
             </div>
           </div>

@@ -77,7 +77,6 @@ function* loginUser({ payload: { user, history } }) {
     }
   } catch (error) {
     const message = error.response.data.error.message
-    console.log(message)
     switch (message) {
       case "EMAIL_NOT_FOUND":
         yield put(apiError("Email không tồn tại"))
