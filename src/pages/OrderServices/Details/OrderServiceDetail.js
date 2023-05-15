@@ -159,7 +159,7 @@ const OrderServiceDetail = props => {
   const vietnamDate = new Date(now.getTime() + timeZoneOffset * 60 * 60 * 1000)
   const isoDateTime = vietnamDate.toISOString()
 
-  const notiExpert = (exId, plate) => {
+  const realTimeExpert = (exId, plate) => {
     const notificationId = uuid.v4()
     set(ref(db, `users/${exId}/notifications/${notificationId}`), {
       isRead: "false",
@@ -170,12 +170,23 @@ const OrderServiceDetail = props => {
     })
   }
 
+  const realTimeCheckOut = (userId, plate, brand, model) => {
+    const notificationId = uuid.v4()
+    set(ref(db, `users/${userId}/notifications/${notificationId}`), {
+      isRead: "false",
+      message: "Đã nhận lại phương tiện " + plate + "," + brand + " - " + model,
+      time: isoDateTime,
+      title: "Hoàn tất sử dụng dịch vụ tại Empire Garage",
+      orderServiceId: params.id,
+    })
+  }
+
   const handleAssignExpert = () => {
     const id = params.id
     const exId = selectedGroup.value
     if ((id, exId)) {
       dispatch(assignExpert(id, exId))
-      notiExpert(exId, orderServicesDetail.car.carLisenceNo)
+      realTimeExpert(exId, orderServicesDetail.car.carLisenceNo)
       setIsAssign(false)
       setSelectedGroup(null)
     }
@@ -191,11 +202,17 @@ const OrderServiceDetail = props => {
     history.push("/scanner-checkout")
   }
 
-  const handleCheckOut = id => {
+  const handleCheckOut = () => {
     const checkOut = {
-      carStatusId: 2,
+      inGarage: false,
     }
-    dispatch(checkOutOrder(id, checkOut))
+    dispatch(checkOutOrder(orderServicesDetail.car.id, checkOut))
+    realTimeCheckOut(
+      orderServicesDetail.order.user.id,
+      orderServicesDetail.car.carLisenceNo,
+      orderServicesDetail.car.carBrand,
+      orderServicesDetail.car.carModel
+    )
   }
 
   /* ========================================== RENDER ==============================================*/

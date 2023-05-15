@@ -173,8 +173,8 @@ export const putConfirmPaid = (id, services) => {
 }
 
 /* CHECKOUT */
-export const postCheckOut = statusLogId => {
-  post(url.POST_CHECKOUT_SERVICES, statusLogId)
+export const postCheckOut = (carId, checkOut) => {
+  post(`${url.POST_CHECKOUT_SERVICES}/${carId}/car-status-logs`, checkOut)
 }
 
 /*

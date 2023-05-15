@@ -99,9 +99,9 @@ const BookingDetails = props => {
     const notificationId = uuid.v4()
     set(ref(db, `users/${userId}/notifications/${notificationId}`), {
       isRead: "false",
-      message: "Check-in thành công #" + code,
+      message: "Bạn đã check-in thành công #" + code,
       time: isoDateTime,
-      title: "Bạn đã check-in thành công",
+      title: "Check-in thành công",
       bookingId: bookingId,
     })
   }

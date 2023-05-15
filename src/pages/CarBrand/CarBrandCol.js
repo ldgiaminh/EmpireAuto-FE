@@ -10,7 +10,7 @@ const Img = cell => {
       {!cell.value ? (
         <div className="avatar-sm">
           <span className="avatar-title rounded">
-            {console.log("cell", cell.data[0].name)}
+            {/* {console.log("cell", cell.data[0].name)} */}
             {cell.data[0].name.charAt(0)}
           </span>
         </div>

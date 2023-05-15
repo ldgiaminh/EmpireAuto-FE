@@ -192,9 +192,9 @@ export const putConfirmPaidFail = error => ({
 POST Check out
 ================================================
 */
-export const postCheckOut = statusLogId => ({
+export const postCheckOut = (carId, checkOut) => ({
   type: POST_CHECKOUT_SERVICES,
-  payload: { statusLogId },
+  payload: { carId, checkOut },
 })
 
 export const postCheckOutSuccess = orderServicesDetails => ({

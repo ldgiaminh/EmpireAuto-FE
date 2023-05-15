@@ -126,6 +126,7 @@ const Cart = ({ details, services }) => {
                 <Table className="table align-middle mb-0 table-nowrap">
                   <thead className="table-light">
                     <tr>
+                      <th>Hình ảnh</th>
                       <th>Dịch vụ</th>
                       <th>Giá tiền</th>
                       {services.some(service => service.note !== null) && (
@@ -136,17 +137,23 @@ const Cart = ({ details, services }) => {
                   <tbody>
                     {services.map(service => (
                       <tr key={service.id}>
+                        {service.images.map(img => (
+                          <td key={img.id}>
+                            <img
+                              src={img.img}
+                              alt="product-img"
+                              title="product-img"
+                              className="avatar-md"
+                            />
+                          </td>
+                        ))}
                         <td>
                           <h5 className="font-size-14 text-truncate">
                             <Link to="#" className="text-dark">
                               {service.item.name}
                             </Link>
                           </h5>
-                          <p className="mb-0">
-                            <span className="fw-medium text-muted">
-                              {service.item.problem.name}
-                            </span>
-                          </p>
+                          <p className="mb-0">{service.item.problem.name}</p>
                         </td>
                         <td>{service.price.toLocaleString()}đ</td>
                         {service.note !== null ? (

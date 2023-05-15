@@ -8,21 +8,14 @@ import uuid from "uuid"
 import { postCheckOut as checkOutOrder } from "store/actions"
 import { ref, set } from "firebase/database"
 import { db } from "helpers/firebase"
-import { useSelector } from "react-redux"
 
 const QrCheckOut = props => {
   const { history } = props
   const dispatch = useDispatch()
   const [qrData, setQRData] = useState("")
   const [showScanner, setShowScanner] = useState(true)
-  const [bookingId, setBookingId] = useState(null)
   const [errorStatus, setErrorStatus] = useState(null)
   const obj = JSON.parse(localStorage.getItem("authUser"))
-
-  const { isAssign } = useSelector(state => ({
-    //  isPreloader: state.Layout.isPreloader,
-    isAssign: state.Layout.isAssign,
-  }))
 
   const handleScan = data => {
     if (data) {
@@ -48,20 +41,23 @@ const QrCheckOut = props => {
           return response.json()
         })
         .then(data => {
-          //   console.log(data)
-          checkOutOrderServices(data.orderServiceId)
+          checkOutOrderServices(
+            data.car.id,
+            data.order.user.id,
+            data.car.carLisenceNo,
+            data.car.carBrand,
+            data.car.carModel,
+            code,
+            data.id
+          )
         })
         .catch(error => {
           console.error("Error:", error)
         })
-      //   console.log(data)
     }
   }
   const handleError = err => {
     console.error(err)
-  }
-  const toggleScanner = () => {
-    setShowScanner(!showScanner)
   }
 
   toastr.options = {
@@ -88,22 +84,30 @@ const QrCheckOut = props => {
   const vietnamDate = new Date(now.getTime() + timeZoneOffset * 60 * 60 * 1000)
   const isoDateTime = vietnamDate.toISOString()
 
-  const checkOutOrderServices = id => {
+  const checkOutOrderServices = ({
+    carId,
+    userId,
+    plate,
+    brand,
+    model,
+    code,
+    orderServiceId,
+  }) => {
     const checkOut = {
-      orderServiceId: id,
-      orderServiceStatusId: 5,
+      inGarage: false,
     }
-    dispatch(checkOutOrder(checkOut))
+    console.log(carId, checkOut)
+    dispatch(checkOutOrder(carId, checkOut))
     const notificationId = uuid.v4()
     set(ref(db, `users/${userId}/notifications/${notificationId}`), {
       isRead: "false",
-      message: "Đã nhận phương tiện " + code,
+      message: "Đã nhận lại phương tiện " + plate + "," + brand + " - " + model,
       time: isoDateTime,
-      title: "Hoàn tất dịch vụ tại Empire Garage",
-      orderServiceId: id,
+      title: "Hoàn tất sử dụng dịch vụ tại Empire Garage",
+      orderServiceId: orderServiceId,
     })
-    toastr.success("Check-out thành công", "Thành công")
-    history.push(`/order-services/${id}`)
+    toastr.success("Check-out thành công hóa đơn " + code, "Thành công")
+    history.push(`/order-services/${orderServiceId}`)
   }
 
   return (

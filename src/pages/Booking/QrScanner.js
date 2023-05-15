@@ -5,10 +5,7 @@ import "toastr/build/toastr.min.css"
 import { useDispatch } from "react-redux"
 import uuid from "uuid"
 
-import {
-  checkinBooking as checkInBooking,
-  checkinQRCode as checkInQRCode,
-} from "store/actions"
+import { checkinBooking as checkInBooking } from "store/actions"
 import { ref, set } from "firebase/database"
 import { db } from "helpers/firebase"
 import { useSelector } from "react-redux"
@@ -61,9 +58,6 @@ const QrScanner = props => {
   const handleError = err => {
     console.error(err)
   }
-  const toggleScanner = () => {
-    setShowScanner(!showScanner)
-  }
 
   toastr.options = {
     closeButton: false,
@@ -94,9 +88,10 @@ const QrScanner = props => {
     const notificationId = uuid.v4()
     set(ref(db, `users/${userId}/notifications/${notificationId}`), {
       isRead: "false",
-      message: "Check-in thành công #" + code,
+      message: "Bạn đã check-in thành công #" + code,
       time: isoDateTime,
-      title: "Bạn đã check-in thành công",
+      title: "Check-in thành công",
+      bookingId: id,
     })
     toastr.success("Check-in thành công", "Thành công")
     history.push(`/bookings/${id}`)

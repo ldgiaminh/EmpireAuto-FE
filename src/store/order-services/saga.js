@@ -109,9 +109,9 @@ function* onConfirmPaidServices({ payload: { orderServiceId, services } }) {
   }
 }
 
-function* checkOutServices({ payload: { statusLogId } }) {
+function* checkOutServices({ payload: { carId, checkOut } }) {
   try {
-    const response = yield call(postCheckOut, statusLogId)
+    const response = yield call(postCheckOut, carId, checkOut)
     yield put(postCheckOutSuccess(response))
   } catch (error) {
     yield put(postCheckOutFail(error))
