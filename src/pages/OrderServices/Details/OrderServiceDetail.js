@@ -4,6 +4,7 @@ import { Link, withRouter } from "react-router-dom"
 import { isEmpty, map } from "lodash"
 import toastr from "toastr"
 import "toastr/build/toastr.min.css"
+import uuid from "uuid"
 
 import {
   Button,
@@ -37,6 +38,8 @@ import CarRecord from "./health-car-record"
 import Loading from "components/Loader/Loading"
 import PreloadDetail from "components/Loader/PreloadDetail"
 import Stepper from "./stepper"
+import { ref, set } from "firebase/database"
+import { db } from "helpers/firebase"
 
 const OrderServiceDetail = props => {
   //meta title
@@ -156,7 +159,7 @@ const OrderServiceDetail = props => {
   const vietnamDate = new Date(now.getTime() + timeZoneOffset * 60 * 60 * 1000)
   const isoDateTime = vietnamDate.toISOString()
 
-  const notiExpert = ({ exId, plate }) => {
+  const notiExpert = (exId, plate) => {
     const notificationId = uuid.v4()
     set(ref(db, `users/${exId}/notifications/${notificationId}`), {
       isRead: "false",
