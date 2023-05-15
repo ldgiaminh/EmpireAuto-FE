@@ -17,6 +17,10 @@ import {
   Table,
 } from "reactstrap"
 
+import img3 from "../../../assets/images/small/img-3.jpg"
+import img7 from "../../../assets/images/small/img-7.jpg"
+const imageZoom = [img3, img7]
+
 import { useDispatch } from "react-redux"
 
 import {
@@ -25,7 +29,14 @@ import {
   postCheckOut as checkOutServices,
 } from "store/order-services/actions"
 
+//Lightbox
+import Lightbox from "react-image-lightbox"
+import "react-image-lightbox/style.css"
+
 const Cart = ({ details, services }) => {
+  const [photoIndex, setPhotoIndex] = useState(0)
+  const [isOpenImg, setIsOpenImg] = useState(false)
+
   const dispatch = useDispatch()
 
   // const [inputFields, setInputFields] = useState(() => {
@@ -111,6 +122,44 @@ const Cart = ({ details, services }) => {
 
   return (
     <React.Fragment>
+      {isOpenImg ? (
+        services && services[0].images.length > 1 ? (
+          <Lightbox
+            mainSrc={services[0].images[photoIndex].img}
+            nextSrc={
+              services[0].images[(photoIndex + 1) % services[0].images.length]
+                .img
+            }
+            prevSrc={
+              services[0].images[
+                (photoIndex + services[0].images.length - 1) %
+                  services[0].images.length
+              ].img
+            }
+            onCloseRequest={() => {
+              setIsOpenImg(false)
+            }}
+            onMovePrevRequest={() => {
+              setPhotoIndex(
+                (photoIndex + services[0].images.length - 1) %
+                  services[0].images.length
+              )
+            }}
+            onMoveNextRequest={() => {
+              setPhotoIndex((photoIndex + 1) % services[0].images.length)
+            }}
+            imageCaption={"Hình " + parseFloat(photoIndex + 1)}
+          />
+        ) : (
+          <Lightbox
+            mainSrc={services && services[0].images[photoIndex].img}
+            enableZoom={true}
+            onCloseRequest={() => {
+              setIsOpenImg(false)
+            }}
+          />
+        )
+      ) : null}
       <Row className="mt-3">
         <Col xl="8">
           <Card>
@@ -119,14 +168,12 @@ const Cart = ({ details, services }) => {
                 <CardTitle className="mb-3">
                   Những dịch vụ đã được xác nhận và thanh toán
                 </CardTitle>
-                {/* <div className="mb-5">
-                  <h5 className="font-size-15 mt-4">Ghi chú :</h5>
-                  <p className="text-muted">{healthCarRecord.symptom}</p>
-                </div> */}
                 <Table className="table align-middle mb-0 table-nowrap">
                   <thead className="table-light">
                     <tr>
-                      <th>Hình ảnh</th>
+                      {services.some(service => service.images.length > 0) && (
+                        <th>Hình ảnh</th>
+                      )}
                       <th>Dịch vụ</th>
                       <th>Giá tiền</th>
                       {services.some(service => service.note !== null) && (
@@ -137,16 +184,22 @@ const Cart = ({ details, services }) => {
                   <tbody>
                     {services.map(service => (
                       <tr key={service.id}>
-                        {service.images.map(img => (
-                          <td key={img.id}>
+                        {service.images.length > 0 ? (
+                          <td>
                             <img
-                              src={img.img}
+                              src={service.images[0].img}
                               alt="product-img"
                               title="product-img"
                               className="avatar-md"
+                              onClick={() => {
+                                setIsOpenImg(true)
+                                setPhotoIndex(0)
+                              }}
                             />
                           </td>
-                        ))}
+                        ) : (
+                          ""
+                        )}
                         <td>
                           <h5 className="font-size-14 text-truncate">
                             <Link to="#" className="text-dark">
