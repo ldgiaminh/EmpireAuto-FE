@@ -17,12 +17,13 @@ const NotificationMessaging = () => {
   useEffect(() => {
     onMessageListener()
       .then(payload => {
-        // console.log("Received foreground message: ", payload)
+        console.log("Received foreground message: ", payload)
         const notification = payload
         setNoti({
           title: notification.notification.title,
           body: notification.notification.body,
         })
+        setIsShow(true)
 
         //Set a timeout for 10 seconds to close the notification
         setTimeout(() => {
