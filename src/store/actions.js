@@ -30,6 +30,9 @@ export * from "./model/actions"
 //Car Problem
 export * from "./problem/actions"
 
+//Fcm Token
+export * from "./fcm-token/actions"
+
 //Ecommerce
 export * from "./e-commerce/actions"
 

@@ -33,6 +33,9 @@ import models from "./model/reducer"
 //problem
 import problems from "./problem/reducer"
 
+//fcm token
+import fcmToken from "./fcm-token/reducer"
+
 //E-commerce
 import ecommerce from "./e-commerce/reducer"
 
@@ -92,6 +95,7 @@ const rootReducer = combineReducers({
   brands,
   models,
   problems,
+  fcmToken,
 })
 
 export default rootReducer

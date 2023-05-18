@@ -12,6 +12,7 @@ import symptomsSaga from "./symptoms/saga"
 import brandsSaga from "./brand/saga"
 import problemsSaga from "./problem/saga"
 import modelsSaga from "./model/saga"
+import fcmTokenSaga from "./fcm-token/saga"
 import ProfileSaga from "./auth/profile/saga"
 import LayoutSaga from "./layout/saga"
 import ecommerceSaga from "./e-commerce/saga"
@@ -53,5 +54,6 @@ export default function* rootSaga() {
     fork(itemsSaga),
     fork(groupServicesSaga),
     fork(orderServicesSaga),
+    fork(fcmTokenSaga),
   ])
 }
