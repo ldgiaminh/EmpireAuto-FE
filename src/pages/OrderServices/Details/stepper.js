@@ -1,11 +1,8 @@
 import React from "react"
 
 const Stepper = ({ logs }) => {
-  /*
-  ==================================================
-  FORMAT DATE & TIME
-  ==================================================
-  */
+  console.log(logs)
+  //Format Date
   const formattedDateTime = date => {
     const createDate = new Date(date)
     const formattedDate = createDate.toLocaleDateString("vi-VN", {
@@ -27,13 +24,13 @@ const Stepper = ({ logs }) => {
         {/* Start */}
         <div
           className={
-            logs && logs.started.logDateTime != null
+            logs.started && logs.started.logDateTime !== null
               ? "md-step active"
               : "md-step"
           }
         >
           <div className="md-step-circle">
-            {logs && logs.started.logDateTime != null ? (
+            {logs.started && logs.started.logDateTime !== null ? (
               <i className="fas fa-check"></i>
             ) : (
               <span>1</span>
@@ -41,7 +38,7 @@ const Stepper = ({ logs }) => {
           </div>
           <div className="md-step-title">Checkin</div>
           <div className="md-step-optional">
-            {logs && logs.started.logDateTime != null
+            {logs.started && logs.started.logDateTime !== null
               ? formattedDateTime(logs.started.logDateTime)
               : ""}
           </div>
@@ -52,13 +49,13 @@ const Stepper = ({ logs }) => {
         {/* Diagnose */}
         <div
           className={
-            logs && logs.started.logDateTime != null
+            logs.started && logs.started.logDateTime !== null
               ? "md-step active"
               : "md-step"
           }
         >
           <div className="md-step-circle">
-            {logs && logs.diagnosed.logDateTime != null ? (
+            {logs.diagnosed && logs.diagnosed.logDateTime !== null ? (
               <i className="fas fa-check"></i>
             ) : (
               <span>2</span>
@@ -66,7 +63,7 @@ const Stepper = ({ logs }) => {
           </div>
           <div className="md-step-title">Kiểm tra</div>
           <div className="md-step-optional">
-            {logs && logs.diagnosed.logDateTime != null
+            {logs.diagnosed && logs.diagnosed.logDateTime !== null
               ? formattedDateTime(logs.diagnosed.logDateTime)
               : ""}
           </div>
@@ -77,13 +74,13 @@ const Stepper = ({ logs }) => {
         {/* Confirm Paid */}
         <div
           className={
-            logs && logs.diagnosed.logDateTime != null
+            logs.diagnosed && logs.diagnosed.logDateTime !== null
               ? "md-step active"
               : "md-step"
           }
         >
           <div className="md-step-circle">
-            {logs && logs.confirmAndPaid.logDateTime != null ? (
+            {logs.confirmAndPaid && logs.confirmAndPaid.logDateTime !== null ? (
               <i className="fas fa-check"></i>
             ) : (
               <span>3</span>
@@ -91,7 +88,7 @@ const Stepper = ({ logs }) => {
           </div>
           <div className="md-step-title">Thanh toán</div>
           <div className="md-step-optional">
-            {logs && logs.confirmAndPaid.logDateTime != null
+            {logs.confirmAndPaid && logs.confirmAndPaid.logDateTime !== null
               ? formattedDateTime(logs.confirmAndPaid.logDateTime)
               : ""}
           </div>
@@ -102,13 +99,13 @@ const Stepper = ({ logs }) => {
         {/* Doing */}
         <div
           className={
-            logs && logs.confirmAndPaid.logDateTime != null
+            logs.confirmAndPaid && logs.confirmAndPaid.logDateTime !== null
               ? "md-step active"
               : "md-step"
           }
         >
           <div className="md-step-circle">
-            {logs && logs.done.logDateTime != null ? (
+            {logs.done && logs.done.logDateTime !== null ? (
               <i className="fas fa-check"></i>
             ) : (
               <span>4</span>
@@ -116,7 +113,7 @@ const Stepper = ({ logs }) => {
           </div>
           <div className="md-step-title">Thực hiện</div>
           <div className="md-step-optional">
-            {logs && logs.done.logDateTime != null
+            {logs.done && logs.done.logDateTime !== null
               ? formattedDateTime(logs.done.logDateTime)
               : ""}
           </div>
@@ -127,11 +124,13 @@ const Stepper = ({ logs }) => {
         {/* Done */}
         <div
           className={
-            logs && logs.done.logDateTime != null ? "md-step active" : "md-step"
+            logs.done && logs.done.logDateTime !== null
+              ? "md-step active"
+              : "md-step"
           }
         >
           <div className="md-step-circle">
-            {logs && logs.checkout.logDateTime != null ? (
+            {logs.checkout && logs.checkout.logDateTime !== null ? (
               <i className="fas fa-check"></i>
             ) : (
               <span>5</span>
@@ -140,7 +139,7 @@ const Stepper = ({ logs }) => {
           <div>
             <div className="md-step-title">Hoàn thành</div>
             <div className="md-step-optional">
-              {logs && logs.checkout.logDateTime != null
+              {logs.checkout && logs.checkout.logDateTime !== null
                 ? formattedDateTime(logs.checkout.logDateTime)
                 : ""}
             </div>
