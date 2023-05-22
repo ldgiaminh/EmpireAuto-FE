@@ -29,6 +29,7 @@ const INIT_STATE = {
   error: {},
   isLoading: false,
   orderServiceLogs: [],
+  checkOut: {},
 }
 
 const orderServices = (state = INIT_STATE, action) => {

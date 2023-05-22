@@ -11,7 +11,7 @@ import { postFcmToken } from "store/actions"
 import { connect } from "react-redux"
 import { withRouter } from "react-router-dom"
 
-const NotificationMessaging = props => {
+const NotificationMessaging = () => {
   const dispatch = useDispatch()
 
   const [noti, setNoti] = useState({
@@ -28,31 +28,35 @@ const NotificationMessaging = props => {
   }
 
   useEffect(() => {
-    if (localStorage.getItem("authUser")) {
-      const obj = JSON.parse(localStorage.getItem("authUser"))
-      setUuid(obj.firebaseUuid)
+    const fetchData = async () => {
+      if (localStorage.getItem("authUser")) {
+        const obj = JSON.parse(localStorage.getItem("authUser"))
+        setUuid(obj.firebaseUuid)
 
-      // Get Fcm Token
-      getToken(messaging, {
-        vapidKey:
-          "BJjxtgb-iAq8YgbzV2bSIHxRjMLFTs39YpX5qeZBzxXM4yeOnr0HbyTCNCmEhm6LkM1-f4UvzDdWxtDLphFSg-8",
-      })
-        .then(currentToken => {
+        try {
+          const currentToken = await getToken(messaging, {
+            vapidKey:
+              "BJjxtgb-iAq8YgbzV2bSIHxRjMLFTs39YpX5qeZBzxXM4yeOnr0HbyTCNCmEhm6LkM1-f4UvzDdWxtDLphFSg-8",
+          })
+
           if (currentToken) {
-            //console.log("Token ", currentToken)
+            console.log("Token ", currentToken)
             dispatch(postFcmToken(uuid, currentToken))
+            console.log(dispatch(postFcmToken(uuid, currentToken)))
           } else {
             // Show permission request UI
             console.log(
               "No registration token available. Request permission to generate one."
             )
           }
-        })
-        .catch(err => {
+        } catch (err) {
           console.log("An error occurred while retrieving token. ", err)
-        })
+        }
+      }
     }
-  })
+
+    fetchData()
+  }, [])
 
   //Listen Notification
   useEffect(() => {
@@ -93,15 +97,3 @@ const NotificationMessaging = props => {
 }
 
 export default NotificationMessaging
-
-// NotificationMessaging.propTypes = {
-//   success: PropTypes.any,
-//   t: PropTypes.any,
-// }
-
-// const mapStateoProps = state => {
-//   const { error, success } = state.Profile
-//   return { error, success }
-// }
-
-// export default withRouter(connect(mapStateoProps, {})(NotificationMessaging))

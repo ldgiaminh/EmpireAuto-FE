@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react"
 import PropTypes from "prop-types"
 import { Link, withRouter } from "react-router-dom"
 import uuid from "uuid"
-import { isEmpty, map } from "lodash"
+import { isEmpty } from "lodash"
 import toastr from "toastr"
 import "toastr/build/toastr.min.css"
+import moment from "moment" // Import the Moment.js library
 import {
   Button,
   Card,
@@ -385,7 +386,12 @@ const BookingDetails = props => {
                         danh sách đặt lịch{" "}
                       </Link>
                     </Col>
-                    {!bookingDetail.isArrived && bookingDetail.isActived ? (
+                    {!bookingDetail.isArrived &&
+                    bookingDetail.isActived &&
+                    moment(bookingDetail.checkInDate).isSame(
+                      moment(),
+                      "day"
+                    ) ? (
                       <Col sm="6">
                         <div className="text-sm-end">
                           <Button
@@ -399,9 +405,7 @@ const BookingDetails = props => {
                           </Button>
                         </div>
                       </Col>
-                    ) : (
-                      ""
-                    )}
+                    ) : null}
                   </Row>
                 </Col>
               </Row>

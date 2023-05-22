@@ -109,7 +109,7 @@ function* onConfirmPaidServices({ payload: { orderServiceId, services } }) {
   }
 }
 
-function* checkOutServices({ payload: { carId, checkOut } }) {
+function* checkOutServices({ carId, checkOut }) {
   try {
     const response = yield call(postCheckOut, carId, checkOut)
     yield put(postCheckOutSuccess(response))

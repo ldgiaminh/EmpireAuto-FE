@@ -1190,7 +1190,7 @@ $nav-tabs-border-width: $border-width;
 $nav-tabs-border-radius: $border-radius;
 $nav-tabs-link-hover-border-color: lighten($gray-300, 4%) lighten($gray-300, 4%)
   $nav-tabs-border-color;
-$nav-tabs-link-active-color: $gray-700;
+$nav-tabs-link-active-color: $black;
 $nav-tabs-link-active-bg: $gray-200;
 $nav-tabs-link-active-border-color: lighten($gray-300, 4%)
   lighten($gray-300, 4%) $nav-tabs-link-active-bg;
@@ -1600,7 +1600,7 @@ $list-group-active-border-color: $list-group-active-bg;
 $list-group-disabled-color: $gray-600;
 $list-group-disabled-bg: $list-group-bg;
 
-$list-group-action-color: $gray-700;
+$list-group-action-color: $black;
 $list-group-action-hover-color: $list-group-action-color;
 
 $list-group-action-active-color: $body-color;

@@ -8,24 +8,6 @@
     position: relative;
     padding: 24px;
 
-    &:active {
-      background-color: rgba(0, 0, 0, 0.04);
-    }
-
-    &:active {
-      border-radius: 15% / 75%;
-    }
-
-    &:first-child:active {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-    }
-
-    &:last-child:active {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-    }
-
     &:first-child .md-step-bar-left,
     &:last-child .md-step-bar-right {
       display: none;

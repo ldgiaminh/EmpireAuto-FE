@@ -134,40 +134,34 @@ ORDER SERVICE
 ================================================
 */
 
-/* GET ORDER SERVICE LIST */
-
+/* GET ORDER SERVICE LIST - NOT USING */
 export const getOrderServicesLists = () => get(url.GET_ORDER_SERVICE_LIST)
 
 /* GET ORDER SERVICE BY STATUS*/
-
 export const getOrderServicesListByStatus = status =>
   get(`${url.GET_ORDER_SERVICE_LIST_BY_STATUS}?status=${status}`)
 
-/* GET OR DER SERVICE DETAIL */
-
+/* GET ORDER SERVICE DETAIL */
 export const getOrderServicesDetails = id =>
   get(`${url.GET_ORDER_SERVICE_DETAIL}/${id}`)
 
-/* PUT ORDER SERVICE */
-
+/* PUT ORDER SERVICE - NOT USING */
 export const putOrderServices = (id, services) =>
   put(`${url.PUT_ORDER_SERVICE}/${id}/diagnosed-result`, services)
 
 /* PUT ASSIGN EXPERT */
-
 export const putAssignExperts = (orderServiceId, exId) =>
   put(`${url.PUT_ASSIGN_EXPERT}/${orderServiceId}/assign-expert/${exId}`)
 
 /* GET STATUS LOG */
-export const getStatusLog = id => get(`${url.GET_STATUS_LOG}/${id}`)
+export const getStatusLog = id =>
+  get(`${url.GET_STATUS_LOG}/${id}/order-service-status-logs`)
 
-/* CONFIRM SERVICES */
-
+/* CONFIRM SERVICES - NOT USING */
 export const putConfirmServices = (id, services) =>
   put(`${url.PUT_CONFIRM_SERVICES}/${id}/confirm`, services)
 
-/* CONFIRM & PAID */
-
+/* CONFIRM & PAID - NOT USING*/
 export const putConfirmPaid = (id, services) => {
   put(`${url.PUT_CONFIRM_PAID_SERVICES}/${id}/confirm-and-paid`, services)
 }

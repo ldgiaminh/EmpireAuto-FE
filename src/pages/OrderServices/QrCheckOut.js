@@ -96,7 +96,6 @@ const QrCheckOut = props => {
     const checkOut = {
       inGarage: false,
     }
-    console.log(carId, checkOut)
     dispatch(checkOutOrder(carId, checkOut))
     const notificationId = uuid.v4()
     set(ref(db, `users/${userId}/notifications/${notificationId}`), {

@@ -41,7 +41,7 @@ export const PUT_ORDER_SERVICE = "/order-services"
 export const PUT_ASSIGN_EXPERT = "/order-services"
 
 //Status Log
-export const GET_STATUS_LOG = "/order-service-status-logs/order-service"
+export const GET_STATUS_LOG = "/order-services"
 
 //Confirm Service
 export const PUT_CONFIRM_SERVICES = "/order-services"

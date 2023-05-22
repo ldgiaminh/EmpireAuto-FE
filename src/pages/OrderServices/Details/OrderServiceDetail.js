@@ -202,11 +202,11 @@ const OrderServiceDetail = props => {
     history.push("/scanner-checkout")
   }
 
-  const handleCheckOut = () => {
+  const handleCheckOut = carId => {
     const checkOut = {
       inGarage: false,
     }
-    dispatch(checkOutOrder(orderServicesDetail.car.id, checkOut))
+    dispatch(checkOutOrder(carId, checkOut))
     realTimeCheckOut(
       orderServicesDetail.order.user.id,
       orderServicesDetail.car.carLisenceNo,
@@ -235,9 +235,9 @@ const OrderServiceDetail = props => {
                 <Col>
                   <Card>
                     <CardBody>
-                      {/* <Stepper logs={orderServiceLogs} /> */}
+                      <Stepper logs={orderServiceLogs} />
 
-                      <div className="d-flex justify-content-between">
+                      <div className="mt-5 d-flex justify-content-between">
                         <div>
                           <CardTitle>THÔNG TIN TỔNG</CardTitle>
                           <CardSubtitle className="mb-3">
@@ -255,12 +255,6 @@ const OrderServiceDetail = props => {
                               <i className="mdi mdi-qrcode-scan me-1" />
                               Quét mã nhận xe
                             </Button>
-                          </div>
-                        ) : orderServicesDetail.status === 5 ? (
-                          <div className="ml-auto">
-                            <span className="badge bg-success font-size-14">
-                              Hoàn Thành
-                            </span>
                           </div>
                         ) : (
                           " "
