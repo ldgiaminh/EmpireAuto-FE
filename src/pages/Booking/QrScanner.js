@@ -19,7 +19,6 @@ const QrScanner = props => {
   const obj = JSON.parse(localStorage.getItem("authUser"))
 
   const { isAssign } = useSelector(state => ({
-    //  isPreloader: state.Layout.isPreloader,
     isAssign: state.Layout.isAssign,
   }))
 

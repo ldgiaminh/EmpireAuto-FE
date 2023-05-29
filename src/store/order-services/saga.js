@@ -46,14 +46,14 @@ import {
   getStatusLog,
 } from "../../helpers/fakebackend_helper"
 
-function* fetchOrderServicessLists() {
-  try {
-    const response = yield call(getOrderServicesLists)
-    yield put(getOrderServicesListsSuccess(response))
-  } catch (error) {
-    yield put(getOrderServicesListsFail(error))
-  }
-}
+// function* fetchOrderServicessLists() {
+//   try {
+//     const response = yield call(getOrderServicesLists)
+//     yield put(getOrderServicesListsSuccess(response))
+//   } catch (error) {
+//     yield put(getOrderServicesListsFail(error))
+//   }
+// }
 
 function* fetchOrderServiceListByStatus({ status }) {
   try {
@@ -73,14 +73,14 @@ function* fetchOrderServicesDetails({ orderServiceId }) {
   }
 }
 
-function* onRecommendService({ payload: { orderServiceId, services } }) {
-  try {
-    const response = yield call(putOrderServices, orderServiceId, services)
-    yield put(putOrderServicesSuccess(response))
-  } catch (error) {
-    yield put(putOrderServicesFail(error))
-  }
-}
+// function* onRecommendService({ payload: { orderServiceId, services } }) {
+//   try {
+//     const response = yield call(putOrderServices, orderServiceId, services)
+//     yield put(putOrderServicesSuccess(response))
+//   } catch (error) {
+//     yield put(putOrderServicesFail(error))
+//   }
+// }
 
 function* onAssignExpert({ payload: { orderServiceId, exId } }) {
   try {
@@ -91,27 +91,28 @@ function* onAssignExpert({ payload: { orderServiceId, exId } }) {
   }
 }
 
-function* onConfirmServices({ payload: { orderServiceId, services } }) {
-  try {
-    const response = yield call(putConfirmServices, orderServiceId, services)
-    yield put(putConfirmServicesSuccess(response))
-  } catch (error) {
-    yield put(putConfirmServicesFail(error))
-  }
-}
+// function* onConfirmServices({ payload: { orderServiceId, services } }) {
+//   try {
+//     const response = yield call(putConfirmServices, orderServiceId, services)
+//     yield put(putConfirmServicesSuccess(response))
+//   } catch (error) {
+//     yield put(putConfirmServicesFail(error))
+//   }
+// }
 
-function* onConfirmPaidServices({ payload: { orderServiceId, services } }) {
-  try {
-    const response = yield call(putConfirmPaid, orderServiceId, services)
-    yield put(putConfirmPaidSuccess(response))
-  } catch (error) {
-    yield put(putConfirmPaidFail(error))
-  }
-}
+// function* onConfirmPaidServices({ payload: { orderServiceId, services } }) {
+//   try {
+//     const response = yield call(putConfirmPaid, orderServiceId, services)
+//     yield put(putConfirmPaidSuccess(response))
+//   } catch (error) {
+//     yield put(putConfirmPaidFail(error))
+//   }
+// }
 
-function* checkOutServices({ carId, checkOut }) {
+function* checkOutServices({ carId, payload: checkOut }) {
   try {
     const response = yield call(postCheckOut, carId, checkOut)
+
     yield put(postCheckOutSuccess(response))
   } catch (error) {
     yield put(postCheckOutFail(error))
@@ -134,10 +135,10 @@ function* orderServicesSaga() {
     fetchOrderServiceListByStatus
   )
   yield takeEvery(GET_ORDER_SERVICE_DETAIL, fetchOrderServicesDetails)
-  yield takeEvery(PUT_ORDER_SERVICE, onRecommendService)
+  // yield takeEvery(PUT_ORDER_SERVICE, onRecommendService)
   yield takeEvery(PUT_ASSIGN_EXPERT, onAssignExpert)
   //yield takeEvery(PUT_CONFIRM_SERVICES, onConfirmServices)
-  yield takeEvery(PUT_CONFIRM_PAID_SERVICES, onConfirmPaidServices)
+  // yield takeEvery(PUT_CONFIRM_PAID_SERVICES, onConfirmPaidServices)
   yield takeEvery(POST_CHECKOUT_SERVICES, checkOutServices)
   yield takeEvery(GET_STATUS_LOG, fetchStatusLog)
 }

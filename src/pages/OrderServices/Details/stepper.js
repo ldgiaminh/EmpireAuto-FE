@@ -1,7 +1,6 @@
 import React from "react"
 
 const Stepper = ({ logs }) => {
-  console.log(logs)
   //Format Date
   const formattedDateTime = date => {
     const createDate = new Date(date)

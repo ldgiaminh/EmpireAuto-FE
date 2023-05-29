@@ -160,8 +160,8 @@ const Cart = ({ details, services }) => {
           />
         )
       ) : null}
-      <Row className="mt-3">
-        <Col xl="8">
+      <Row>
+        {/* <Col xl="8">
           <Card>
             <CardBody>
               <div className="table-responsive">
@@ -214,51 +214,39 @@ const Cart = ({ details, services }) => {
                             {service.note}
                           </td>
                         ) : null}
-                        {/* <td>
-                          <Link
-                            to="#"
-                            onClick={() => removeCartItem(product.id)}
-                            className="action-icon text-danger"
-                          >
-                            {" "}
-                            <i className="mdi mdi-trash-can font-size-18" />
-                          </Link>
-                        </td> */}
                       </tr>
                     ))}
-                    {/* {healthCarRecord.healthCarRecordProblems.map(
-                        (problem, problemIndex) =>
-                        
-                          problem.items.map((item, itemIndex) => (
-                         
-                            <tr key={`${problemIndex}-${itemIndex}`}>
-                              <td>
-                                <h5 className="font-size-14 text-truncate">
-                                  <Link to={"#"} className="text-dark">
-                                    {item.name}
-                                  </Link>
-                                </h5>
-                              </td>
-                              <td>{item.presentPrice}₫</td>
-                            
-                              /* <td>
-        <input
-          type="checkbox"
-          className="form-check-input"
-          id={`${problemIndex}-${itemIndex}`}
-          defaultChecked={item.isConfirmed}
-          onChange={handleInputChange}
-        />
-      </td>
-                            </tr>
-                          ))
-                      )} */}
+                    {healthCarRecord.healthCarRecordProblems.map(
+                      (problem, problemIndex) =>
+                        problem.items.map((item, itemIndex) => (
+                          <tr key={`${problemIndex}-${itemIndex}`}>
+                            <td>
+                              <h5 className="font-size-14 text-truncate">
+                                <Link to={"#"} className="text-dark">
+                                  {item.name}
+                                </Link>
+                              </h5>
+                            </td>
+                            <td>{item.presentPrice}₫</td>
+                            /*{" "}
+                            <td>
+                              <input
+                                type="checkbox"
+                                className="form-check-input"
+                                id={`${problemIndex}-${itemIndex}`}
+                                defaultChecked={item.isConfirmed}
+                                onChange={handleInputChange}
+                              />
+                            </td>
+                          </tr>
+                        ))
+                    )}
                   </tbody>
                 </Table>
               </div>
             </CardBody>
           </Card>
-        </Col>
+        </Col> */}
         <Col xl="4">
           <Card>
             <CardBody>
@@ -277,16 +265,16 @@ const Cart = ({ details, services }) => {
                       <td>Phí kiểm tra :</td>
                       <td>{details.prepaidFromBooking.toLocaleString()}đ</td>
                     </tr>
-                    <tr>
+                    {/* <tr>
                       <th>Tạm tính :</th>
                       <th>{total.toLocaleString()}đ</th>
-                    </tr>
-                    <tr>
+                    </tr> */}
+                    {/* <tr>
                       <td className="text-danger">Phí đặt lịch :</td>
                       <td className="text-danger">
                         - {details.prepaidFromBooking.toLocaleString()}đ
                       </td>
-                    </tr>
+                    </tr> */}
 
                     <tr>
                       <th>Tổng cộng :</th>
@@ -298,6 +286,71 @@ const Cart = ({ details, services }) => {
             </CardBody>
           </Card>
         </Col>
+        {details.status >= 4 ? (
+          <Col xl="8">
+            <Card>
+              <CardBody>
+                <div className="table-responsive">
+                  <CardTitle className="mb-3">
+                    Ghi chú từ kỹ thuật viên
+                  </CardTitle>
+                  <Table className="table align-middle mb-0 table-nowrap">
+                    <thead className="table-light">
+                      <tr>
+                        {services.some(
+                          service => service.images.length > 0
+                        ) && <th>Hình ảnh</th>}
+                        <th>Dịch vụ</th>
+                        {/* <th>Giá tiền</th> */}
+                        {services.some(service => service.note !== null) && (
+                          <th>Ghi chú</th>
+                        )}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {services.map(service => (
+                        <tr key={service.id}>
+                          {service.images.length > 0 ? (
+                            <td>
+                              <img
+                                src={service.images[0].img}
+                                alt="product-img"
+                                title="product-img"
+                                className="avatar-md"
+                                onClick={() => {
+                                  setIsOpenImg(true)
+                                  setPhotoIndex(0)
+                                }}
+                              />
+                            </td>
+                          ) : (
+                            ""
+                          )}
+                          <td>
+                            <h5 className="font-size-14 text-truncate">
+                              <Link to="#" className="text-dark">
+                                {service.item.name}
+                              </Link>
+                            </h5>
+                            <p className="mb-0">{service.item.problem.name}</p>
+                          </td>
+                          {/* <td>{service.price.toLocaleString()}đ</td> */}
+                          {service.note !== null ? (
+                            <td style={{ whiteSpace: "pre-wrap" }}>
+                              {service.note}
+                            </td>
+                          ) : null}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </div>
+              </CardBody>
+            </Card>
+          </Col>
+        ) : (
+          ""
+        )}
       </Row>
     </React.Fragment>
   )

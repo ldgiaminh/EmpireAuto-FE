@@ -206,7 +206,10 @@ const OrderServiceDetail = props => {
     const checkOut = {
       inGarage: false,
     }
-    dispatch(checkOutOrder(carId, checkOut))
+    if (carId) {
+      dispatch(checkOutOrder(carId, checkOut))
+    }
+    //dispatch(onGetOrderServiceDetail(params.id))
     realTimeCheckOut(
       orderServicesDetail.order.user.id,
       orderServicesDetail.car.carLisenceNo,

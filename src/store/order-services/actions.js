@@ -195,7 +195,7 @@ POST Check out
 export const postCheckOut = (carId, checkOut) => ({
   type: POST_CHECKOUT_SERVICES,
   carId,
-  checkOut,
+  payload: checkOut,
 })
 
 export const postCheckOutSuccess = orderServicesDetails => ({
