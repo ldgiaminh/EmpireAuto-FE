@@ -120,6 +120,16 @@ const BookingDetails = props => {
 
   /*
   ==================================================
+  FORMAT PHONE NUMBER
+  ==================================================
+  */
+
+  function formatPhoneNumber(phone) {
+    return `(+${phone.slice(1, 3)}) ${phone.slice(3)}`
+  }
+
+  /*
+  ==================================================
   FORMAT DATE TIME 
   ==================================================
   */
@@ -185,12 +195,13 @@ const BookingDetails = props => {
                                   >
                                     Số điện thoại :
                                   </th>
-                                  <td>{`(+${bookingDetail.user.phone.slice(
-                                    1,
-                                    3
-                                  )}) ${bookingDetail.user.phone.slice(
-                                    3
-                                  )}`}</td>
+                                  <td>
+                                    {bookingDetail.user.phone === null
+                                      ? ""
+                                      : formatPhoneNumber(
+                                          bookingDetail.user.phone
+                                        )}
+                                  </td>
                                 </tr>
                                 <tr>
                                   <th
