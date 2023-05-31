@@ -153,13 +153,13 @@ const AddNewCarItem = () => {
       <Form onSubmit={saveItem}>
         <FormGroup className="mb-4" row>
           <Label htmlFor="billing-name" md="2" className="col-form-label">
-            Tên vấn đề
+            Tên dịch vụ
           </Label>
           <Col md="10">
             <input
               className="form-control"
               type="text"
-              placeholder="Nhập tên vấn đề"
+              placeholder="Nhập tên dịch vụ"
               name="name"
               onChange={e => handleChange(e)}
               value={item.name}

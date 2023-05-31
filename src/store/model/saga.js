@@ -28,6 +28,8 @@ import {
 } from "../../helpers/fakebackend_helper"
 import { GET_CARS_MODEL, ADD_NEW_CAR_MODEL } from "./actionTypes"
 
+import { toast } from "react-toastify"
+
 function* fetchCarsModel() {
   try {
     const response = yield call(getCarsModel)
@@ -49,8 +51,10 @@ function* fetchCarsModelByBrand({ id }) {
 function* onAddModel({ payload: carsModel }) {
   try {
     const response = yield call(addNewCarsModel, carsModel)
+    toast.success("Tạo mới thành công " + response.name)
     yield put(addNewCarsModelSuccess(response))
   } catch (error) {
+    toast.error("Đã có lỗi xảy ra")
     yield put(addNewCarsModelFail(error))
   }
 }

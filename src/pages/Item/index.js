@@ -19,7 +19,7 @@ import { isEmpty, map } from "lodash"
 import TableContainer from "components/Common/TableContainer"
 import { Link, withRouter } from "react-router-dom"
 
-import { Name } from "./CarProblemlistCol"
+import { Name, Img } from "./CarItemlistCol"
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
@@ -27,42 +27,40 @@ import Breadcrumbs from "../../components/Common/Breadcrumb"
 //redux
 import { useSelector, useDispatch } from "react-redux"
 
-import { getCarsProblemByModel as onGetCarsProblemByModel } from "store/actions"
+import { getCarsItemByProblem as onGetCarsItemByProblem } from "store/actions"
 
-const CarProblem = props => {
+const CarItem = props => {
   //meta title
-  document.title = "Các dòng xe | Empire Garage"
+  document.title = "Các dịch vụ | Empire Garage"
 
   const { history } = props
   const dispatch = useDispatch()
 
-  const [problems, setProblems] = useState([])
+  const [items, setItems] = useState([])
 
-  const { carsProblem } = useSelector(state => ({
-    carsProblem: state.problems.carsProblem,
+  const { carsItem } = useSelector(state => ({
+    carsItem: state.items.carsItem,
   }))
 
   const {
     match: { params },
   } = props
 
-  console.log(params)
-
   useEffect(() => {
     if (params && params.id) {
-      dispatch(onGetCarsProblemByModel(params.id))
+      dispatch(onGetCarsItemByProblem(params.id))
     }
   }, [params, dispatch])
 
   useEffect(() => {
-    setProblems(carsProblem)
-  }, [carsProblem])
+    setItems(carsItem)
+  }, [carsItem])
 
   useEffect(() => {
-    if (!isEmpty(carsProblem)) {
-      setProblems(carsProblem)
+    if (!isEmpty(carsItem)) {
+      setItems(carsItem)
     }
-  }, [carsProblem])
+  }, [carsItem])
 
   const columns = useMemo(
     () => [
@@ -72,7 +70,31 @@ const CarProblem = props => {
           return <input type="checkbox" />
         },
       },
-
+      {
+        Header: "Img",
+        //accessor: "photo",
+        disableFilters: true,
+        filterable: true,
+        accessor: cellProps => (
+          <>
+            {!cellProps.photo ? (
+              <div className="avatar-sm">
+                <span className="avatar-title rounded">
+                  {cellProps.name.charAt(0)}
+                </span>
+              </div>
+            ) : (
+              <div>
+                <img
+                  className="rounded avatar-md"
+                  src={cellProps.photo}
+                  alt=""
+                />
+              </div>
+            )}
+          </>
+        ),
+      },
       {
         Header: "Name",
         accessor: "name",
@@ -81,27 +103,27 @@ const CarProblem = props => {
           return <Name {...cellProps} />
         },
       },
-      {
-        Header: "Các vấn đề",
-        accessor: "view",
-        disableFilters: true,
-        Cell: cellProps => {
-          return (
-            <Button
-              type="button"
-              color="primary"
-              className="btn-sm btn-rounded"
-              onClick={() =>
-                history.push(
-                  `/car-brands/${params.id}/${params.name}/models/${cellProps.row.original.id}/${cellProps.row.original.name}/problems/${cellProps.row.original.id}/items`
-                )
-              }
-            >
-              Xem các dịch vụ
-            </Button>
-          )
-        },
-      },
+      // {
+      //   Header: "Các vấn đề",
+      //   accessor: "view",
+      //   disableFilters: true,
+      //   Cell: cellProps => {
+      //     return (
+      //       <Button
+      //         type="button"
+      //         color="primary"
+      //         className="btn-sm btn-rounded"
+      //         onClick={() =>
+      //           history.push(
+      //             `/car-brands/${params.id}/${params.name}/models/${cellProps.row.original.id}/${cellProps.row.original.name}/problems`
+      //           )
+      //         }
+      //       >
+      //         Xem các dịch vụ
+      //       </Button>
+      //     )
+      //   },
+      // },
 
       {
         Header: "",
@@ -149,7 +171,7 @@ const CarProblem = props => {
         <Container fluid={true}>
           <Breadcrumbs
             title="Quản lý"
-            breadcrumbItem={`Danh sách các vấn đề xe - ${params.name}`}
+            breadcrumbItem={`Danh sách các dịch vụ xe - ${params.name}`}
           />
           <Row>
             <Col lg="12">
@@ -157,7 +179,7 @@ const CarProblem = props => {
                 <CardBody>
                   <TableContainer
                     columns={columns}
-                    data={problems}
+                    data={items}
                     isGlobalFilter={true}
                     isAddUserList={false}
                     // handleUserClick={handleUserClicks}
@@ -174,9 +196,9 @@ const CarProblem = props => {
   )
 }
 
-CarProblem.propTypes = {
+CarItem.propTypes = {
   isLoading: PropTypes.bool,
   match: PropTypes.any,
 }
 
-export default withRouter(CarProblem)
+export default withRouter(CarItem)

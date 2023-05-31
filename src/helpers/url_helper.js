@@ -117,6 +117,7 @@ ITEM
 ================================================
 */
 export const GET_CAR_ITEM = "/items"
+export const GET_CAR_ITEM_BY_PROBLEM = "/items"
 export const GET_CAR_ITEM_DETAIL = "/items"
 export const ADD_NEW_CAR_ITEM = "/items"
 export const UPDATE_CAR_ITEM = "/items"

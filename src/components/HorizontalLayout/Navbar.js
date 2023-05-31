@@ -114,7 +114,7 @@ const Navbar = props => {
                             </Link>
                           </li>
 
-                          <li className="nav-item dropdown">
+                          {/* <li className="nav-item dropdown">
                             <Link
                               to="/#"
                               onClick={e => {
@@ -203,7 +203,7 @@ const Navbar = props => {
                                 </div>
                               </div>
                             </div>
-                          </li>
+                          </li> */}
 
                           <li className="nav-item dropdown">
                             <Link
@@ -232,19 +232,19 @@ const Navbar = props => {
                             </div>
                           </li>
 
-                          <li className="nav-item">
+                          {/* <li className="nav-item">
                             <Link className="nav-link" to="/">
                               <i className="bx bxs-car me-2"></i>
                               {props.t("Dòng xe")}
                             </Link>
-                          </li>
+                          </li> */}
 
-                          <li className="nav-item">
+                          {/* <li className="nav-item">
                             <Link className="nav-link" to="/symptoms">
                               <i className="bx bxs-spreadsheet me-2"></i>
                               {props.t("Triệu chứng")}
                             </Link>
-                          </li>
+                          </li> */}
 
                           <li className="nav-item">
                             <Link className="nav-link" to="/users">

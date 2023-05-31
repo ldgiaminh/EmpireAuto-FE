@@ -9,6 +9,9 @@ import {
   GET_CARS_ITEM_SUCCESS,
   GET_CAR_ITEM_DETAIL_FAIL,
   GET_CAR_ITEM_DETAIL_SUCCESS,
+  GET_CARS_ITEM_BY_PROBLEM,
+  GET_CARS_ITEM_BY_PROBLEM_SUCCESS,
+  GET_CARS_ITEM_BY_PROBLEM_FAIL,
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -26,6 +29,18 @@ const items = (state = INIT_STATE, action) => {
       }
 
     case GET_CARS_ITEM_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      }
+
+    case GET_CARS_ITEM_BY_PROBLEM_SUCCESS:
+      return {
+        ...state,
+        carsItem: action.payload,
+      }
+
+    case GET_CARS_ITEM_BY_PROBLEM_FAIL:
       return {
         ...state,
         error: action.payload,

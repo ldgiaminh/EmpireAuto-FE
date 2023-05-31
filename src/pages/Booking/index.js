@@ -103,7 +103,7 @@ const BookingList = props => {
 
   useEffect(() => {
     dispatch(onGetBookingByDate(activeDate))
-  }, [dispatch])
+  }, [dispatch, activeDate])
 
   useEffect(() => {
     setBooking(bookings)

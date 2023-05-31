@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useRef, useState } from "react"
 import {
   Button,
   CardSubtitle,
@@ -8,6 +8,7 @@ import {
   FormGroup,
   Input,
   Label,
+  Row,
 } from "reactstrap"
 
 import { useDispatch } from "react-redux"
@@ -29,6 +30,8 @@ const AddNewCarBrand = () => {
 
   const [image, setImage] = useState("")
 
+  const fileInputRef = useRef(null)
+
   const handleChange = e => {
     const value = e.target.value
     setBrand({ ...brand, [e.target.name]: value })
@@ -37,6 +40,16 @@ const AddNewCarBrand = () => {
   const handleChangeImage = e => {
     if (e.target.files[0]) {
       setImage(e.target.files[0])
+    }
+  }
+
+  const resetForm = () => {
+    setBrand({
+      name: "",
+      photo: "",
+    })
+    if (fileInputRef.current) {
+      fileInputRef.current.value = null // Reset the file input field
     }
   }
 
@@ -51,54 +64,46 @@ const AddNewCarBrand = () => {
           photo: url,
         }
         dispatch(onAddNewCarBrand(newBrand))
-        setBrand({
-          name: "",
-          photo: "",
-        })
       })
     })
+    resetForm()
   }
   return (
     <div>
       <CardTitle>Thương hiệu xe</CardTitle>
       <CardSubtitle className="mb-3">Fill all information below</CardSubtitle>
       <Form onSubmit={saveBrand}>
-        <FormGroup className="mb-4" row>
-          <Label htmlFor="billing-name" md="2" className="col-form-label">
-            Tên hãng xe
-          </Label>
-          <Col md="10">
-            <input
-              className="form-control"
-              type="text"
-              placeholder="Nhập tên hãng"
-              name="name"
-              onChange={e => handleChange(e)}
-              value={brand.name}
-            />
+        <Row>
+          <Col md={6}>
+            <div className="mb-3">
+              <Label htmlFor="formrow-email-Input">Tên thương hiệu</Label>
+              <Input
+                type="text"
+                className="form-control"
+                placeholder="Nhập tên hãng"
+                name="name"
+                onChange={e => handleChange(e)}
+                value={brand.name}
+              />
+            </div>
           </Col>
-        </FormGroup>
-        <FormGroup className="mb-2" row>
-          <Label
-            htmlFor="billing-email-address"
-            md="2"
-            className="col-form-label"
-          >
-            Hình ảnh
-          </Label>
-          <Col md="10">
-            <Input
-              className="form-control"
-              type="file"
-              id="formFile"
-              name="image"
-              onChange={handleChangeImage}
-            />
+          <Col md={6}>
+            <div className="mb-3">
+              <Label htmlFor="formrow-password-Input">Logo</Label>
+              <Input
+                className="form-control"
+                type="file"
+                id="formFile"
+                name="image"
+                onChange={handleChangeImage}
+                ref={fileInputRef}
+              />
+            </div>
           </Col>
-        </FormGroup>
+        </Row>
         <FormGroup row>
-          <Col md="10">
-            <Button color="success" className="btn btn-success mt-3">
+          <Col md="6">
+            <Button color="primary" className="btn btn-primary mt-3">
               Xác nhận
             </Button>
           </Col>

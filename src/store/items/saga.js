@@ -6,9 +6,22 @@ import {
   getCarsItemSuccess,
   getCarsItemFail,
   addNewCarsItemSuccess,
+  addNewCarsItemFail,
+  getCarsItemByProblemSuccess,
+  getCarsItemByProblemFail,
 } from "./actions"
-import { addNewCarsItem, getCarsItem } from "helpers/fakebackend_helper"
-import { ADD_NEW_CAR_ITEM, GET_CARS_ITEM } from "./actionTypes"
+import {
+  addNewCarsItem,
+  getCarsItem,
+  getCarsItemByProblem,
+} from "helpers/fakebackend_helper"
+import {
+  ADD_NEW_CAR_ITEM,
+  GET_CARS_ITEM,
+  GET_CARS_ITEM_BY_PROBLEM,
+} from "./actionTypes"
+
+import { toast } from "react-toastify"
 
 //Include Both Helper File with needed methods
 
@@ -21,11 +34,22 @@ function* fetchCarsItem() {
   }
 }
 
+function* fetchCarsItemByProblem({ id }) {
+  try {
+    const response = yield call(getCarsItemByProblem, id)
+    yield put(getCarsItemByProblemSuccess(response))
+  } catch (error) {
+    yield put(getCarsItemByProblemFail(error))
+  }
+}
+
 function* onAddItem({ payload: carsItem }) {
   try {
     const response = yield call(addNewCarsItem, carsItem)
+    toast.success("Tạo mới thành công " + response.name)
     yield put(addNewCarsItemSuccess(response))
   } catch (error) {
+    toast.error("Đã có lỗi xảy ra")
     yield put(addNewCarsItemFail(error))
   }
 }
@@ -59,6 +83,7 @@ function* onAddItem({ payload: carsItem }) {
 
 function* itemsSaga() {
   yield takeEvery(GET_CARS_ITEM, fetchCarsItem)
+  yield takeEvery(GET_CARS_ITEM_BY_PROBLEM, fetchCarsItemByProblem)
   // yield takeEvery(GET_USER_PROFILE, fetchUserProfile)
   yield takeEvery(ADD_NEW_CAR_ITEM, onAddItem)
   // yield takeEvery(UPDATE_USER, onUpdateUser)

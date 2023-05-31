@@ -37,6 +37,9 @@ import CarModel from "../pages/Model/index"
 //Car problem
 import CarProblem from "../pages/Problem/index"
 
+//Car item
+import CarItem from "../pages/Item/index"
+
 //Symptom
 import SymptomLists from "../pages/Symptom/index"
 
@@ -83,6 +86,10 @@ const authProtectedRoutes = [
     path: "/car-brands/:id/:name/models/:id/:name/problems",
     component: CarProblem,
   },
+  {
+    path: "/car-brands/:id/:name/models/:id/:name/problems/:id/items",
+    component: CarItem,
+  },
 
   //Items
   { path: "/add-new-items", component: AddNewItems },
@@ -96,6 +103,7 @@ const authProtectedRoutes = [
   // this route should be at the end of all other routes
   // eslint-disable-next-line react/display-name
   { path: "/", exact: true, component: () => <Redirect to="/dashboard" /> },
+  { path: "*", component: () => <Redirect to="/pages-404" /> },
 ]
 
 // const recepProtectedRoutes = []

@@ -14,6 +14,9 @@ import {
   GET_CAR_ITEM_DETAIL,
   GET_CAR_ITEM_DETAIL_FAIL,
   GET_CAR_ITEM_DETAIL_SUCCESS,
+  GET_CARS_ITEM_BY_PROBLEM,
+  GET_CARS_ITEM_BY_PROBLEM_SUCCESS,
+  GET_CARS_ITEM_BY_PROBLEM_FAIL,
 } from "./actionTypes"
 
 /*
@@ -32,6 +35,26 @@ export const getCarsItemSuccess = carsItem => ({
 
 export const getCarsItemFail = error => ({
   type: GET_CARS_ITEM_FAIL,
+  payload: error,
+})
+
+/*
+================================================ 
+GET Item 
+================================================
+*/
+export const getCarsItemByProblem = id => ({
+  type: GET_CARS_ITEM_BY_PROBLEM,
+  id,
+})
+
+export const getCarsItemByProblemSuccess = carsItem => ({
+  type: GET_CARS_ITEM_BY_PROBLEM_SUCCESS,
+  payload: carsItem,
+})
+
+export const getCarsItemByProblemFail = error => ({
+  type: GET_CARS_ITEM_BY_PROBLEM_FAIL,
   payload: error,
 })
 

@@ -23,6 +23,8 @@ import {
   GET_CAR_PROBLEM_BY_MODEL,
 } from "./actionTypes"
 
+import { toast } from "react-toastify"
+
 function* fetchCarsProblem() {
   try {
     const response = yield call(getCarsProblem)
@@ -44,8 +46,10 @@ function* fetchCarsProblemByModel({ id }) {
 function* onAddProblem({ payload: carsProblem }) {
   try {
     const response = yield call(addNewCarsProblem, carsProblem)
+    toast.success("Tạo mới thành công " + response.name)
     yield put(addNewCarsProblemSuccess(response))
   } catch (error) {
+    toast.error("Đã có lỗi xảy ra")
     yield put(addNewCarsProblemFail(error))
   }
 }

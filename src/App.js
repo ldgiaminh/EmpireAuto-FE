@@ -19,6 +19,9 @@ import NonAuthLayout from "./components/NonAuthLayout"
 import "./assets/scss/theme.scss"
 import NotificationMessaging from "components/NotificationMessaging/NotificationMessaging"
 
+import { ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+
 // Import Firebase Configuration file
 //import { initFirebaseBackend } from "./helpers/firebase_helper"
 
@@ -59,6 +62,18 @@ const App = props => {
   return (
     <React.Fragment>
       <NotificationMessaging />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <Router>
         <Switch>
           {publicRoutes.map((route, idx) => (

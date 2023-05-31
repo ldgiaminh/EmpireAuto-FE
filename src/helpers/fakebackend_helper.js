@@ -313,6 +313,10 @@ CAR ITEM
 // get car item
 export const getCarsItem = () => get(url.GET_CAR_ITEM)
 
+// get car item
+export const getCarsItemByProblem = id =>
+  get(`${url.GET_CAR_ITEM_BY_PROBLEM}/items-by-problem/${id}`)
+
 // get detail car item
 export const getCarsItemDetails = id => get(`${url.GET_CAR_ITEM_DETAIL}/${id}`)
 
