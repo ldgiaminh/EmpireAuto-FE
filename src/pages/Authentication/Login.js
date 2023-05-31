@@ -70,8 +70,8 @@ const Login = props => {
 
   return (
     <React.Fragment>
-      {!loading && <Loader />}
-      {loading && (
+      {loading && <Loader />}
+      {!loading && (
         <React.Fragment>
           <div className="home-btn d-none d-sm-block">
             <Link to="/" className="text-dark">
