@@ -17,8 +17,8 @@
 }
 
 #status {
-  //   width: 40px;
-  //   height: 40px;
+  width: 300px;
+  height: 300px;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -26,8 +26,11 @@
 }
 
 .logo-load {
-  max-width: 250px;
+  max-width: 300px;
   height: auto;
+  position: absolute;
+  left: -45%;
+  top: -30%;
 }
 
 .spinner-chase {
