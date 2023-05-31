@@ -27,29 +27,6 @@ const NotificationDropdown = props => {
 
   const [notis, setNotis] = useState({})
 
-  // useEffect(() => {
-  //   get(child(ref(db), `users/${userId}/notifications/`))
-  //     .then(snapshot => {
-  //       if (snapshot.exists()) {
-  //         const fetched = snapshot.val()
-  //         setNotis(fetched)
-  //       } else {
-  //         console.log("")
-  //       }
-  //     })
-  //     .catch(error => {
-  //       console.error(error)
-  //     })
-  // }, [userId])
-
-  // const notisArray = Object.values(notis)
-
-  // // Sort the notis array by time in descending order
-  // const sortedNotis = notisArray.sort(
-  //   (a, b) => new Date(b.time) - new Date(a.time)
-  // )
-
-  //console.log(sortedNotis)
   useEffect(() => {
     const notificationsRef = ref(db, `users/${userId}/notifications`)
 
@@ -143,44 +120,62 @@ const NotificationDropdown = props => {
           </div>
 
           <SimpleBar style={{ height: "230px" }}>
-            {Object.keys(notis).map(key => {
-              const createAtDate = notis[key].time
-              const createDate = new Date(createAtDate)
-              const formattedDate1 = createDate.toLocaleDateString("vi-VN", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-              })
-              const formattedTime1 = createDate.toLocaleTimeString("vi-VN", {
-                hour: "2-digit",
-                minute: "2-digit",
-                second: "2-digit",
-                hour12: false,
-              })
-              const formattedDateTime1 = `${formattedTime1} - ${formattedDate1}`
+            {Object.keys(notis).length !== 0 ? (
+              Object.keys(notis).map(key => {
+                const createAtDate = notis[key].time
+                const createDate = new Date(createAtDate)
+                const formattedDate1 = createDate.toLocaleDateString("vi-VN", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                })
+                const formattedTime1 = createDate.toLocaleTimeString("vi-VN", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                  hour12: false,
+                })
+                const formattedDateTime1 = `${formattedTime1} - ${formattedDate1}`
 
-              return (
-                <Link to="#" key={key} className="text-reset notification-item">
-                  <div className="d-flex">
-                    <div className="avatar-xs me-3">
-                      <span className="avatar-title bg-primary rounded-circle font-size-16">
-                        <i className="bx bx-message-square-check" />
-                      </span>
-                    </div>
-                    <div className="flex-grow-1">
-                      <h6 className="mt-0 mb-1">{notis[key].title}</h6>
-                      <div className="font-size-12 text-muted">
-                        <p className="mb-1">{notis[key].message}</p>
-                        <p className="mb-0">
-                          <i className="mdi mdi-clock-outline" />{" "}
-                          {formattedDateTime1}
-                        </p>
+                return (
+                  <Link
+                    to="#"
+                    key={key}
+                    className="text-reset notification-item"
+                  >
+                    <div className="d-flex">
+                      <div className="avatar-xs me-3">
+                        <span className="avatar-title bg-primary rounded-circle font-size-16">
+                          <i className="bx bx-message-square-check" />
+                        </span>
+                      </div>
+                      <div className="flex-grow-1">
+                        <h6 className="mt-0 mb-1">{notis[key].title}</h6>
+                        <div className="font-size-12 text-muted">
+                          <p className="mb-1">{notis[key].message}</p>
+                          <p className="mb-0">
+                            <i className="mdi mdi-clock-outline" />{" "}
+                            {formattedDateTime1}
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </Link>
+                )
+              })
+            ) : (
+              <div className="p-2 d-grid " style={{ marginTop: "70px" }}>
+                <Link
+                  className="btn btn-sm btn-link font-size-14 text-center"
+                  to="#"
+                >
+                  {/* <i className="mdi mdi-arrow-right-circle me-1"></i>{" "} */}
+                  <span key="t-view-more">
+                    {props.t("Hiện chưa có thông báo mới..")}
+                  </span>
                 </Link>
-              )
-            })}
+              </div>
+            )}
 
             {/* <Link to="" className="text-reset notification-item">
               <div className="d-flex">
