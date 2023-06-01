@@ -93,7 +93,7 @@ const OrderServiceDetail = props => {
   }, [dispatch])
 
   useEffect(() => {
-    if (isShow) {
+    if (params && params.id) {
       dispatch(onGetStatusLog(params.id))
     }
   }, [isShow, dispatch])
