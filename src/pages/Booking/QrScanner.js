@@ -11,6 +11,9 @@ import { db } from "helpers/firebase"
 import { useSelector } from "react-redux"
 
 const QrScanner = props => {
+  //meta title
+  document.title = "Quét mã | Empire Garage"
+
   const { history } = props
   const dispatch = useDispatch()
   const [qrData, setQRData] = useState("")
@@ -28,7 +31,7 @@ const QrScanner = props => {
       setQRData(data)
 
       fetch(
-        `https://dev-empire-api.azurewebsites.net/api/v1/booking-qrcode/close-generation?qrcode=${encodeURIComponent(
+        `https://empire-api.azurewebsites.net/api/v1/booking-qrcode/close-generation?qrcode=${encodeURIComponent(
           data
         )}`,
         {
@@ -47,7 +50,7 @@ const QrScanner = props => {
           return response.json()
         })
         .then(data => {
-          goToCheckin(data.id, data.code, data.user.id)
+          goToCheckin(data.id)
         })
         .catch(error => {
           console.error("Error:", error)
@@ -82,7 +85,7 @@ const QrScanner = props => {
   const vietnamDate = new Date(now.getTime() + timeZoneOffset * 60 * 60 * 1000)
   const isoDateTime = vietnamDate.toISOString()
 
-  const goToCheckin = (id, code, userId) => {
+  const goToCheckin = id => {
     dispatch(checkInBooking(id, isAssign))
     // const notificationId = uuid.v4()
     // set(ref(db, `users/${userId}/notifications/${notificationId}`), {

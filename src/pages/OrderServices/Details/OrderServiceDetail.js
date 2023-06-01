@@ -84,18 +84,13 @@ const OrderServiceDetail = props => {
   useEffect(() => {
     if (isShow) {
       dispatch(onGetOrderServiceDetail(params.id, props.history))
+      dispatch(onGetStatusLog(params.id))
     }
   }, [isShow, dispatch])
 
   useEffect(() => {
     dispatch(onGetExpert())
   }, [dispatch])
-
-  useEffect(() => {
-    if (params && params.id) {
-      dispatch(onGetStatusLog(params.id))
-    }
-  }, [params, dispatch])
 
   useEffect(() => {
     if (isShow) {

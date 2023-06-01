@@ -10,6 +10,9 @@ import { ref, set } from "firebase/database"
 import { db } from "helpers/firebase"
 
 const QrCheckOut = props => {
+  //meta title
+  document.title = "Quét mã | Empire Garage"
+
   const { history } = props
   const dispatch = useDispatch()
   const [qrData, setQRData] = useState("")
@@ -22,7 +25,7 @@ const QrCheckOut = props => {
       setShowScanner(false)
       setQRData(data)
       fetch(
-        `https://dev-empire-api.azurewebsites.net/api/v1/order-services/close-checkout-qrcode-generation?qrCode=${encodeURIComponent(
+        `https://empire-api.azurewebsites.net/api/v1/order-services/close-checkout-qrcode-generation?qrCode=${encodeURIComponent(
           data
         )}`,
         {
@@ -42,13 +45,13 @@ const QrCheckOut = props => {
         })
         .then(data => {
           checkOutOrderServices(
-            data.car.id,
-            data.order.user.id,
-            data.car.carLisenceNo,
-            data.car.carBrand,
-            data.car.carModel,
-            code,
-            data.id
+            data.car.id
+            // data.order.user.id,
+            // data.car.carLisenceNo,
+            // data.car.carBrand,
+            // data.car.carModel,
+            // code,
+            // data.id
           )
         })
         .catch(error => {
@@ -98,13 +101,13 @@ const QrCheckOut = props => {
     }
     dispatch(checkOutOrder(carId, checkOut))
     const notificationId = uuid.v4()
-    set(ref(db, `users/${userId}/notifications/${notificationId}`), {
-      isRead: "false",
-      message: "Đã nhận lại phương tiện " + plate + "," + brand + " - " + model,
-      time: isoDateTime,
-      title: "Hoàn tất sử dụng dịch vụ tại Empire Garage",
-      orderServiceId: orderServiceId,
-    })
+    // set(ref(db, `users/${userId}/notifications/${notificationId}`), {
+    //   isRead: "false",
+    //   message: "Đã nhận lại phương tiện " + plate + "," + brand + " - " + model,
+    //   time: isoDateTime,
+    //   title: "Hoàn tất sử dụng dịch vụ tại Empire Garage",
+    //   orderServiceId: orderServiceId,
+    // })
     toastr.success("Check-out thành công hóa đơn " + code, "Thành công")
     history.push(`/order-services/${orderServiceId}`)
   }
