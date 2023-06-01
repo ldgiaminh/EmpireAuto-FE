@@ -350,6 +350,19 @@ span.flatpickr-weekday {
   z-index: 9999;
 }
 
+@media (max-width: 991.98px) {
+  .search-box {
+    display: block !important;
+    .search-label {
+      float: none;
+      width: 100%;
+      .form-control {
+        border-radius: 0.25rem !important;
+      }
+    }
+  }
+}
+
 // datatable
 
 .react-bs-table-sizePerPage-dropdown {
