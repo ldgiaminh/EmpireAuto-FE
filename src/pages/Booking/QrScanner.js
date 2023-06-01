@@ -9,6 +9,7 @@ import { checkinBooking as checkInBooking } from "store/actions"
 import { ref, set } from "firebase/database"
 import { db } from "helpers/firebase"
 import { useSelector } from "react-redux"
+import { Col, Container, Row } from "reactstrap"
 
 const QrScanner = props => {
   //meta title
@@ -61,24 +62,6 @@ const QrScanner = props => {
     console.error(err)
   }
 
-  toastr.options = {
-    closeButton: false,
-    debug: false,
-    newestOnTop: true,
-    progressBar: false,
-    positionClass: "toast-top-right",
-    preventDuplicates: false,
-    onclick: null,
-    showDuration: "300",
-    hideDuration: "1000",
-    timeOut: "5000",
-    extendedTimeOut: "1000",
-    showEasing: "swing",
-    hideEasing: "linear",
-    showMethod: "fadeIn",
-    hideMethod: "fadeOut",
-  }
-
   const now = new Date()
   const timeZoneOffset = 7 // Vietnam is GMT+7
 
@@ -87,32 +70,28 @@ const QrScanner = props => {
 
   const goToCheckin = id => {
     dispatch(checkInBooking(id, isAssign))
-    // const notificationId = uuid.v4()
-    // set(ref(db, `users/${userId}/notifications/${notificationId}`), {
-    //   isRead: "false",
-    //   message: "Bạn đã check-in thành công #" + code,
-    //   time: isoDateTime,
-    //   title: "Check-in thành công",
-    //   bookingId: id,
-    // })
-    //toastr.success("Check-in thành công", "Thành công")
     history.push(`/bookings/${id}`)
   }
 
   return (
-    <div>
-      <h1>Scanner page</h1>
-      {showScanner && (
-        <QrReader
-          delay={300}
-          onError={handleError}
-          onScan={handleScan}
-          style={{ width: "100%", height: "100%" }}
-        />
-      )}
-      {qrData && <p>{qrData}</p>}
-      {errorStatus && <p>{errorStatus}</p>}
-    </div>
+    <React.Fragment>
+      <Container>
+        <Row>
+          <Col lg={12}>
+            {showScanner && (
+              <QrReader
+                delay={300}
+                onError={handleError}
+                onScan={handleScan}
+                style={{ width: "80%", height: "auto", margin: "auto" }}
+              />
+            )}
+            {qrData && <p>{qrData}</p>}
+            {errorStatus && <p>{errorStatus}</p>}
+          </Col>
+        </Row>
+      </Container>
+    </React.Fragment>
   )
 }
 

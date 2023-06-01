@@ -60,8 +60,7 @@ const authProtectedRoutes = [
   //booking
   { path: "/bookings", component: Booking },
   { path: "/bookings/:id", component: BookingDetails },
-  { path: "/scanner", component: QrScanner },
-  { path: "/scanner-checkout", component: QrCheckOut },
+
 
   //order service
   { path: "/order-services", component: OrderService },
@@ -116,6 +115,8 @@ const publicRoutes = [
   { path: "/pages-404", component: Pages404 },
   { path: "/pages-403", component: Pages403 },
   { path: "/pages-500", component: Pages500 },
+  { path: "/scanner", component: QrScanner },
+  { path: "/scanner-checkout", component: QrCheckOut },
 ]
 
 export { publicRoutes, authProtectedRoutes }
