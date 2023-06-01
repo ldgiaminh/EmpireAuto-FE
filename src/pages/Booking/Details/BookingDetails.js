@@ -44,10 +44,11 @@ const BookingDetails = props => {
   ==================================================
   */
 
-  const { bookingDetail, isAssign, isLoading } = useSelector(state => ({
+  const { bookingDetail, isAssign, isLoading, isShow } = useSelector(state => ({
     bookingDetail: state.bookings.bookingDetail,
     isLoading: state.bookings.isLoading,
     isAssign: state.Layout.isAssign,
+    isShow: state.Layout.isShow,
   }))
 
   /*
@@ -61,9 +62,15 @@ const BookingDetails = props => {
 
   useEffect(() => {
     if (params && params.id) {
-      dispatch(onGetBookingDetail(params.id))
+      dispatch(onGetBookingDetail(params.id, props.history))
     }
   }, [params, onGetBookingDetail])
+
+  useEffect(() => {
+    if (isShow) {
+      dispatch(onGetBookingDetail(params.id, props.history))
+    }
+  }, [isShow, onGetBookingDetail])
 
   /*
   ==================================================
@@ -113,7 +120,7 @@ const BookingDetails = props => {
       dispatch(checkInBooking(id, isAssign))
       //toastr.success("Check-in thành công", "Thành công")
       dispatch(onGetBookingDetail(id))
-      sendNotification(bookingDetail.user.id, bookingDetail.code, id)
+      //sendNotification(bookingDetail.user.id, bookingDetail.code, id)
     }
     dispatch(onGetBookingDetail(id))
   }

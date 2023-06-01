@@ -11,6 +11,7 @@ import {
   TOGGLE_LEFTMENU,
   SHOW_SIDEBAR,
   CHANGE_AUTO_ASSIGN,
+  CHANGE_IS_SHOW,
 } from "./actionTypes"
 
 //constants
@@ -36,6 +37,7 @@ const INIT_STATE = {
   showSidebar: true,
   leftMenu: false,
   isAssign: true,
+  isShow: false,
 }
 
 const Layout = (state = INIT_STATE, action) => {
@@ -55,6 +57,12 @@ const Layout = (state = INIT_STATE, action) => {
       return {
         ...state,
         isAssign: action.payload,
+      }
+
+    case CHANGE_IS_SHOW:
+      return {
+        ...state,
+        isShow: action.payload,
       }
 
     case CHANGE_LAYOUT_WIDTH:

@@ -20,3 +20,6 @@ export const CHANGE_PRELOADER = "CHANGE_PRELOADER"
 
 // Auto Assign
 export const CHANGE_AUTO_ASSIGN = "CHANGE_AUTO_ASSIGN"
+
+// isShow
+export const CHANGE_IS_SHOW = "CHANGE_IS_SHOW"

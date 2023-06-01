@@ -162,22 +162,15 @@ const orderServices = (state = INIT_STATE, action) => {
         isLoading: true,
       }
 
-    // case POST_CHECKOUT_SERVICES_SUCCESS:
-    //   return {
-    //     ...state,
-    //     isLoading: false,
-    //     orderServicesDetail: state.orderServicesDetail.map(service =>
-    //       service.id.toString() === action.payload.id.toString()
-    //         ? { ...action.pay.load, service }
-    //         : service
-    //     ),
-    //   }
-
     case POST_CHECKOUT_SERVICES_SUCCESS:
       return {
         ...state,
         isLoading: false,
-        orderServicesDetail: { ...state.orderServicesDetail },
+        orderServicess: state.orderServicess.map(service =>
+          service.id.toString() === action.payload.id.toString()
+            ? { ...action.pay.load, service }
+            : service
+        ),
       }
 
     case POST_CHECKOUT_SERVICES_FAIL:

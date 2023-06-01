@@ -56,12 +56,13 @@ const OrderServiceDetail = props => {
   ==================================================
   */
 
-  const { orderServicesDetail, users, isLoading, orderServiceLogs } =
+  const { orderServicesDetail, users, isLoading, orderServiceLogs, isShow } =
     useSelector(state => ({
       orderServicesDetail: state.orderServices.orderServicesDetail,
       users: state.userLists.users,
       isLoading: state.orderServices.isLoading,
       orderServiceLogs: state.orderServices.orderServiceLogs,
+      isShow: state.Layout.isShow,
     }))
 
   /*
@@ -76,9 +77,15 @@ const OrderServiceDetail = props => {
 
   useEffect(() => {
     if (params && params.id) {
-      dispatch(onGetOrderServiceDetail(params.id))
+      dispatch(onGetOrderServiceDetail(params.id, props.history))
     }
   }, [params, dispatch])
+
+  useEffect(() => {
+    if (isShow) {
+      dispatch(onGetOrderServiceDetail(params.id, props.history))
+    }
+  }, [isShow, dispatch])
 
   useEffect(() => {
     dispatch(onGetExpert())
@@ -89,6 +96,22 @@ const OrderServiceDetail = props => {
       dispatch(onGetStatusLog(params.id))
     }
   }, [params, dispatch])
+
+  useEffect(() => {
+    if (isShow) {
+      dispatch(onGetStatusLog(params.id))
+    }
+  }, [isShow, dispatch])
+
+  /*
+  ==================================================
+  FORMAT PHONE NUMBER
+  ==================================================
+  */
+
+  function formatPhoneNumber(phone) {
+    return `(+${phone.slice(1, 3)}) ${phone.slice(3)}`
+  }
 
   /*
   ==================================================
@@ -287,12 +310,13 @@ const OrderServiceDetail = props => {
                                 >
                                   Số điện thoại :
                                 </th>
-                                <td>{`(+${orderServicesDetail.order.user.phone.slice(
-                                  1,
-                                  3
-                                )}) ${orderServicesDetail.order.user.phone.slice(
-                                  3
-                                )}`}</td>
+                                <td>
+                                  {orderServicesDetail.order.user.phone === null
+                                    ? ""
+                                    : formatPhoneNumber(
+                                        orderServicesDetail.order.user.phone
+                                      )}
+                                </td>
                               </tr>
                               <tr>
                                 <th

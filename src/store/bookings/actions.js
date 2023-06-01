@@ -49,9 +49,10 @@ export const getBookingListsFail = error => ({
 GET BOOKING LIST BY DATE
 ================================================
 */
-export const getBookingListsByDate = date => ({
+export const getBookingListsByDate = (date, history) => ({
   type: GET_BOOKING_LIST_BY_DATE,
   date,
+  history,
 })
 
 export const getBookingListsByDateSuccess = bookings => ({
@@ -70,9 +71,10 @@ GET BOOKING DETAIL
 ================================================
 */
 
-export const getBookingDetails = bookingId => ({
+export const getBookingDetails = (bookingId, history) => ({
   type: GET_BOOKING_DETAIL,
   bookingId,
+  history,
 })
 
 export const getBookingDetailsSuccess = bookingDetails => ({

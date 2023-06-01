@@ -57,16 +57,17 @@ const OrderServicesList = props => {
   const [activeTab, setActiveTab] = useState("0")
   const [orderService, setOrderService] = useState([])
 
-  const { orderServicess, isLoading } = useSelector(state => ({
+  const { orderServicess, isLoading, isShow } = useSelector(state => ({
     orderServicess: state.orderServices.orderServicess,
     isLoading: state.orderServices.isLoading,
+    isShow: state.Layout.isShow,
   }))
 
   //Change Tabs
   const toggleTab = tab => {
     if (activeTab !== tab) {
       setActiveTab(tab)
-      dispatch(onGetOrderServicesListByStatus(tab))
+      dispatch(onGetOrderServicesListByStatus(tab, props.history))
     }
   }
 
@@ -162,8 +163,14 @@ const OrderServicesList = props => {
   )
 
   useEffect(() => {
-    dispatch(onGetOrderServicesListByStatus(activeTab))
-  }, [dispatch])
+    dispatch(onGetOrderServicesListByStatus(activeTab, props.history))
+  }, [dispatch, activeTab])
+
+  useEffect(() => {
+    if (isShow) {
+      dispatch(onGetOrderServicesListByStatus(activeTab, props.history))
+    }
+  }, [dispatch, isShow, activeTab])
 
   useEffect(() => {
     setOrderService(orderServicess)

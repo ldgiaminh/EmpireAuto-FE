@@ -38,20 +38,32 @@ import {
 //   }
 // }
 
-function* fetchBookingsListByDate({ date }) {
+function* fetchBookingsListByDate({ date, history }) {
   try {
     const response = yield call(getBookingListsByDate, date)
     yield put(getBookingListsByDateSuccess(response))
   } catch (error) {
+    if (error.response.status === 404) {
+      history.push("/pages-404")
+    }
+    if (error.response.status === 500) {
+      history.push("/pages-500")
+    }
     yield put(getBookingListsByDateFail(error))
   }
 }
 
-function* fetchBookingsDetails({ bookingId }) {
+function* fetchBookingsDetails({ bookingId, history }) {
   try {
     const response = yield call(getBookingsDetails, bookingId)
     yield put(getBookingDetailsSuccess(response))
   } catch (error) {
+    if (error.response.status === 404) {
+      history.push("/pages-404")
+    }
+    if (error.response.status === 500) {
+      history.push("/pages-500")
+    }
     yield put(getBookingDetailsFail(error))
   }
 }

@@ -85,8 +85,6 @@ const BookingList = props => {
   const [booking, setBooking] = useState([])
   const [bookingList, setBookingList] = useState([])
 
-  const [isChecking, setIsChecking] = useState(false)
-
   /*
   ==================================================
   Call api and useEffect
@@ -94,16 +92,23 @@ const BookingList = props => {
   */
 
   //Get State from Redux
-  const { bookings, isLoading } = useSelector(state => ({
+  const { bookings, isLoading, isShow } = useSelector(state => ({
     bookings: state.bookings.bookings,
     isLoading: state.bookings.isLoading,
+    isShow: state.Layout.isShow,
   }))
 
   const activeDate = weekDays[activeTab].date
 
   useEffect(() => {
-    dispatch(onGetBookingByDate(activeDate))
+    dispatch(onGetBookingByDate(activeDate, props.history))
   }, [dispatch, activeDate])
+
+  useEffect(() => {
+    if (isShow) {
+      dispatch(onGetBookingByDate(activeDate, props.history))
+    }
+  }, [dispatch, isShow, activeDate])
 
   useEffect(() => {
     setBooking(bookings)
@@ -114,13 +119,6 @@ const BookingList = props => {
       setBooking(bookings)
     }
   }, [bookings])
-
-  useEffect(() => {
-    //const isToday = moment().isSame(today, "day")
-    if (today) {
-      setIsChecking(true)
-    }
-  }, [])
 
   /*
   ==================================================
@@ -134,7 +132,7 @@ const BookingList = props => {
       setActiveTab(index)
       setSubActiveTab(0)
       const activeDate = weekDays[index].date
-      dispatch(onGetBookingByDate(activeDate))
+      dispatch(onGetBookingByDate(activeDate, props.history))
     }
   }
 
@@ -416,7 +414,7 @@ const BookingList = props => {
                                           isGlobalFilter={true}
                                           isAddBookingOptions={false}
                                           //handleUserClick={handleUserClicks}
-                                          isCheckin={isChecking}
+                                          isCheckin={true}
                                           handleCheckInClick={
                                             handleCheckInClick
                                           }

@@ -139,7 +139,13 @@ const NotificationDropdown = props => {
 
                 return (
                   <Link
-                    to="#"
+                    to={
+                      notis[key].type === "BOOKING"
+                        ? `/bookings/${notis[key].referenceId}`
+                        : notis[key].type === "ORDER_SERVICE"
+                        ? `/order-services/${notis[key].referenceId}`
+                        : "#"
+                    }
                     key={key}
                     className="text-reset notification-item"
                   >

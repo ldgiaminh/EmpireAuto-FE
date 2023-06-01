@@ -84,14 +84,14 @@ const QrScanner = props => {
 
   const goToCheckin = (id, code, userId) => {
     dispatch(checkInBooking(id, isAssign))
-    const notificationId = uuid.v4()
-    set(ref(db, `users/${userId}/notifications/${notificationId}`), {
-      isRead: "false",
-      message: "Bạn đã check-in thành công #" + code,
-      time: isoDateTime,
-      title: "Check-in thành công",
-      bookingId: id,
-    })
+    // const notificationId = uuid.v4()
+    // set(ref(db, `users/${userId}/notifications/${notificationId}`), {
+    //   isRead: "false",
+    //   message: "Bạn đã check-in thành công #" + code,
+    //   time: isoDateTime,
+    //   title: "Check-in thành công",
+    //   bookingId: id,
+    // })
     //toastr.success("Check-in thành công", "Thành công")
     history.push(`/bookings/${id}`)
   }

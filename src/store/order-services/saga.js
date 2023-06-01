@@ -55,20 +55,32 @@ import {
 //   }
 // }
 
-function* fetchOrderServiceListByStatus({ status }) {
+function* fetchOrderServiceListByStatus({ status, history }) {
   try {
     const response = yield call(getOrderServicesListByStatus, status)
     yield put(getOrderServicesListByStatusSuccess(response))
   } catch (error) {
+    if (error.response.status === 404) {
+      history.push("/pages-404")
+    }
+    if (error.response.status === 500) {
+      history.push("/pages-500")
+    }
     yield put(getOrderServicesListByStatusFail(error))
   }
 }
 
-function* fetchOrderServicesDetails({ orderServiceId }) {
+function* fetchOrderServicesDetails({ orderServiceId, history }) {
   try {
     const response = yield call(getOrderServicesDetails, orderServiceId)
     yield put(getOrderServicesDetailsSuccess(response))
   } catch (error) {
+    if (error.response.status === 404) {
+      history.push("/pages-404")
+    }
+    if (error.response.status === 500) {
+      history.push("/pages-500")
+    }
     yield put(getOrderServicesDetailsFail(error))
   }
 }
@@ -112,7 +124,6 @@ function* onAssignExpert({ payload: { orderServiceId, exId } }) {
 function* checkOutServices({ carId, payload: checkOut }) {
   try {
     const response = yield call(postCheckOut, carId, checkOut)
-
     yield put(postCheckOutSuccess(response))
   } catch (error) {
     yield put(postCheckOutFail(error))

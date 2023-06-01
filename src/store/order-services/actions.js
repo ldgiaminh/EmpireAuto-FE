@@ -52,9 +52,10 @@ export const getOrderServicesListsFail = error => ({
 GET OrderServices List By Status
 ================================================
 */
-export const getOrderServicesListByStatus = status => ({
+export const getOrderServicesListByStatus = (status, history) => ({
   type: GET_ORDER_SERVICE_LIST_BY_STATUS,
   status,
+  history,
 })
 
 export const getOrderServicesListByStatusSuccess = orderServicess => ({
@@ -72,9 +73,10 @@ export const getOrderServicesListByStatusFail = error => ({
 GET OrderServices Detail 
 ================================================
 */
-export const getOrderServicesDetails = orderServiceId => ({
+export const getOrderServicesDetails = (orderServiceId, history) => ({
   type: GET_ORDER_SERVICE_DETAIL,
   orderServiceId,
+  history,
 })
 
 export const getOrderServicesDetailsSuccess = orderServicesDetails => ({
