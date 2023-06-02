@@ -40,8 +40,8 @@ import { getBookingListsByDate as onGetBookingByDate } from "store/actions"
 
 //redux
 import { useSelector, useDispatch } from "react-redux"
-import CheckInModal from "./CheckInModal"
 import Loading from "components/Loader/Loading"
+import QrCheckInModal from "./QrCheckIn/QrCheckInModal"
 
 const BookingList = props => {
   //meta title
@@ -165,49 +165,19 @@ const BookingList = props => {
 
   /*
   ==================================================
-  Check-in 
+  Check-in Qr-Code
   ==================================================
   */
 
-  //Notification
-  toastr.options = {
-    closeButton: false,
-    debug: false,
-    newestOnTop: true,
-    progressBar: false,
-    positionClass: "toast-top-right",
-    preventDuplicates: false,
-    onclick: null,
-    showDuration: "300",
-    hideDuration: "1000",
-    timeOut: "5000",
-    extendedTimeOut: "1000",
-    showEasing: "swing",
-    hideEasing: "linear",
-    showMethod: "fadeIn",
-    hideMethod: "fadeOut",
+  const [isOpen, setIsOpen] = useState(false)
+
+  function removeBodyCss() {
+    document.body.classList.add("no_padding")
   }
 
-  // const [checkinModal, setCheckInModal] = useState(false)
-
-  // const toggleViewModal = bookingData => {
-  //   setBooking(bookingData)
-  //   setCheckInModal(!checkinModal)
-  // }
-
-  // const handleCheckIn = () => {
-  //   if (booking.id) {
-  //     dispatch(checkInBooking(booking.id))
-  //     onPaginationPageChange(1)
-  //     setCheckInModal(false)
-  //     toastr.success("Check-in thành công", "Thành công")
-  //     dispatch(onGetBookings())
-  //     history.push(`/booking-detail/${booking.id}`)
-  //   }
-  // }
-
-  const handleCheckInClick = () => {
-    history.push("/scanner")
+  function toggle() {
+    setIsOpen(!isOpen)
+    removeBodyCss()
   }
 
   /*
@@ -290,14 +260,7 @@ const BookingList = props => {
 
   return (
     <React.Fragment>
-      {/* {isLoading && <Loader />} */}
-
-      {/* <CheckInModal
-        isOpen={checkinModal}
-        toggle={toggleViewModal}
-        data={booking}
-        handleCheckIn={handleCheckIn}
-      /> */}
+      <QrCheckInModal isOpen={isOpen} toggle={toggle} />
       <div className="page-content">
         <Container fluid>
           <Breadcrumbs title="Đặt Lịch" breadcrumbItem="Danh sách đặt lịch" />
@@ -415,9 +378,7 @@ const BookingList = props => {
                                           isAddBookingOptions={false}
                                           //handleUserClick={handleUserClicks}
                                           isCheckin={true}
-                                          handleCheckInClick={
-                                            handleCheckInClick
-                                          }
+                                          handleCheckInClick={toggle}
                                           customPageSize={10}
                                           className="custom-header-css"
                                         />
