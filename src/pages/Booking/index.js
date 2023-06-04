@@ -31,7 +31,11 @@ import img1 from "../../assets/images/small/no-data.png"
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb"
 
-import { getBookingListsByDate as onGetBookingByDate } from "store/actions"
+import {
+  getBookingListsByDate as onGetBookingByDate,
+  changeAutoAssign as onChangeAutoAssign,
+  changeAutoAssign,
+} from "store/actions"
 
 //redux
 import { useSelector, useDispatch } from "react-redux"
@@ -290,7 +294,7 @@ const BookingList = props => {
   useState
   ==================================================
   */
-  const [activeTab, setActiveTab] = useState(0)
+  const [activeTab, setActiveTab] = useState()
 
   const [subActiveTab, setSubActiveTab] = useState(0)
 
@@ -302,10 +306,11 @@ const BookingList = props => {
   ==================================================
   */
 
-  const { bookings, isLoading, isShow } = useSelector(state => ({
+  const { bookings, isLoading, isShow, isAssign } = useSelector(state => ({
     bookings: state.bookings.bookings,
     isLoading: state.bookings.isLoading,
     isShow: state.Layout.isShow,
+    isAssign: state.Layout.isAssign,
   }))
 
   /*
@@ -336,6 +341,16 @@ const BookingList = props => {
       dispatch(onGetBookingByDate(activeDate, props.history))
     }
   }, [dispatch, isShow, activeDate])
+
+  /*
+  ==================================================
+  Auto Assign
+  ==================================================
+  */
+
+  const handleAutoAssign = () => {
+    dispatch(changeAutoAssign(!isAssign))
+  }
 
   /*
   ==================================================
@@ -535,7 +550,44 @@ const BookingList = props => {
                       </FormGroup>
                     </Col>
 
-                    <Col lg={6} className="text-sm-end align-self-end">
+                    <Col sm={2} className="col-xl">
+                      <FormGroup className="mb-0">
+                        <Label>Tự động phân công</Label>
+                        <div className="square-switch">
+                          <input
+                            type="checkbox"
+                            id="square-switch1"
+                            switch="none"
+                            checked={isAssign}
+                            onChange={handleAutoAssign}
+                          />
+                          <label
+                            htmlFor="square-switch1"
+                            data-on-label="Bật"
+                            data-off-label="Tắt"
+                          />
+                        </div>
+                      </FormGroup>
+                    </Col>
+
+                    <Col sm={4} className="text-sm-end align-self-end">
+                      {/* <Label>Tự động phân công</Label> */}
+                      {/* <div className="square-switch mb-0">
+                        <input
+                          type="checkbox"
+                          id="square-switch1"
+                          switch="none"
+                          checked={sq1}
+                          onChange={() => {
+                            setsq1(!sq1)
+                          }}
+                        />
+                        <label
+                          htmlFor="square-switch1"
+                          data-on-label="Bật"
+                          data-off-label="Tắt"
+                        />
+                      </div> */}
                       <div className="mb-3">
                         <Button
                           type="button"
@@ -1042,6 +1094,7 @@ const BookingList = props => {
 
 BookingList.propTypes = {
   isLoading: PropTypes.bool,
+  isAssign: PropTypes.bool,
 }
 
 export default withRouter(BookingList)
