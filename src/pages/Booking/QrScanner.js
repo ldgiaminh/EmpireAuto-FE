@@ -62,12 +62,6 @@ const QrScanner = props => {
     console.error(err)
   }
 
-  const now = new Date()
-  const timeZoneOffset = 7 // Vietnam is GMT+7
-
-  const vietnamDate = new Date(now.getTime() + timeZoneOffset * 60 * 60 * 1000)
-  const isoDateTime = vietnamDate.toISOString()
-
   const goToCheckin = id => {
     dispatch(checkInBooking(id, isAssign))
     history.push(`/bookings/${id}`)

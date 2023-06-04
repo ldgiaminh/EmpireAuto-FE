@@ -134,7 +134,8 @@ const TableContainer = ({
   return (
     <Fragment>
       <Row className="mb-2">
-        <Col md={customPageSizeOptions ? 2 : 1}>
+        {/* <Col md={customPageSizeOptions ? 2 : 1}></Col> */}
+        <Col sm={2}>
           <select
             className="form-select"
             value={pageSize}

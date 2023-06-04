@@ -66,6 +66,7 @@ const BookingDetails = props => {
     }
   }, [params, onGetBookingDetail])
 
+  //Reload when get notification
   useEffect(() => {
     if (isShow) {
       dispatch(onGetBookingDetail(params.id, props.history))
@@ -78,51 +79,30 @@ const BookingDetails = props => {
   ==================================================
   */
 
-  /* ALERT */
-  toastr.options = {
-    closeButton: false,
-    debug: false,
-    newestOnTop: true,
-    progressBar: false,
-    positionClass: "toast-top-right",
-    preventDuplicates: false,
-    onclick: null,
-    showDuration: "300",
-    hideDuration: "1000",
-    timeOut: "5000",
-    extendedTimeOut: "1000",
-    showEasing: "swing",
-    hideEasing: "linear",
-    showMethod: "fadeIn",
-    hideMethod: "fadeOut",
-  }
+  // const now = new Date()
+  // const timeZoneOffset = 7 // Vietnam is GMT+7
 
-  const now = new Date()
-  const timeZoneOffset = 7 // Vietnam is GMT+7
+  // const vietnamDate = new Date(now.getTime() + timeZoneOffset * 60 * 60 * 1000)
+  // const isoDateTime = vietnamDate.toISOString()
 
-  const vietnamDate = new Date(now.getTime() + timeZoneOffset * 60 * 60 * 1000)
-  const isoDateTime = vietnamDate.toISOString()
+  // const sendNotification = (userId, code, bookingId) => {
+  //   const notificationId = uuid.v4()
+  //   set(ref(db, `users/${userId}/notifications/${notificationId}`), {
+  //     isRead: "false",
+  //     message: "Bạn đã check-in thành công #" + code,
+  //     time: isoDateTime,
+  //     title: "Check-in thành công",
+  //     bookingId: bookingId,
+  //   })
+  // }
 
-  const sendNotification = (userId, code, bookingId) => {
-    const notificationId = uuid.v4()
-    set(ref(db, `users/${userId}/notifications/${notificationId}`), {
-      isRead: "false",
-      message: "Bạn đã check-in thành công #" + code,
-      time: isoDateTime,
-      title: "Check-in thành công",
-      bookingId: bookingId,
-    })
-  }
+  const today = moment().format("YYYY-MM-DD") + "T00:00:00+00:00"
 
   /* HANDLE CHECK IN */
   const handleCheckIn = id => {
     if (id) {
       dispatch(checkInBooking(id, isAssign))
-      //toastr.success("Check-in thành công", "Thành công")
-      dispatch(onGetBookingDetail(id))
-      //sendNotification(bookingDetail.user.id, bookingDetail.code, id)
     }
-    dispatch(onGetBookingDetail(id))
   }
 
   /*
@@ -155,6 +135,17 @@ const BookingDetails = props => {
       hour12: false,
     })
     const formatted = `${formattedDate} - ${formattedTime}`
+    return formatted
+  }
+
+  const formattedDate = date => {
+    const createDate = new Date(date)
+    const formattedDate = createDate.toLocaleDateString("vi-VN", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    })
+    const formatted = `${formattedDate}`
     return formatted
   }
 
@@ -192,7 +183,11 @@ const BookingDetails = props => {
                                   >
                                     Tên khách:
                                   </th>
-                                  <td>{bookingDetail.user.fullname}</td>
+                                  <td>
+                                    {bookingDetail.user.fullname !== null
+                                      ? bookingDetail.user.fullname
+                                      : null}
+                                  </td>
                                 </tr>
                                 <tr>
                                   <th
@@ -250,6 +245,16 @@ const BookingDetails = props => {
                                     style={{ width: "300px" }}
                                     className={"text-capitalize"}
                                   >
+                                    Ngày đặt lịch :
+                                  </th>
+                                  <td>{formattedDate(bookingDetail.date)}</td>
+                                </tr>
+                                <tr>
+                                  <th
+                                    scope="row"
+                                    style={{ width: "300px" }}
+                                    className={"text-capitalize"}
+                                  >
                                     Thời gian check-in :
                                   </th>
                                   <td>
@@ -271,27 +276,16 @@ const BookingDetails = props => {
                                     </th>
                                     <td>
                                       {bookingDetail.transaction.total.toLocaleString()}{" "}
-                                      ₫
+                                      ₫ -{" "}
+                                      {
+                                        bookingDetail.transaction.paymentMethod
+                                          .name
+                                      }
                                     </td>
                                   </tr>
                                 ) : (
                                   ""
                                 )}
-                                <tr>
-                                  <th
-                                    scope="row"
-                                    style={{ width: "300px" }}
-                                    className={"text-capitalize"}
-                                  >
-                                    Phương thức thanh toán :
-                                  </th>
-                                  <td>
-                                    {
-                                      bookingDetail.transaction.paymentMethod
-                                        .name
-                                    }
-                                  </td>
-                                </tr>
                                 <tr>
                                   <th
                                     scope="row"
@@ -406,10 +400,7 @@ const BookingDetails = props => {
                     </Col>
                     {!bookingDetail.isArrived &&
                     bookingDetail.isActived &&
-                    moment(bookingDetail.checkInDate).isSame(
-                      moment(),
-                      "day"
-                    ) ? (
+                    bookingDetail.date === today ? (
                       <Col sm="6">
                         <div className="text-sm-end">
                           <Button

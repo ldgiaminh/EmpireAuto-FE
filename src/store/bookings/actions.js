@@ -95,10 +95,8 @@ CHECK-IN BOOKING
 
 export const checkinBooking = (bookingId, isAssign) => ({
   type: CHECKIN_BOOKING,
-  payload: {
-    bookingId,
-    isAssign,
-  },
+  bookingId,
+  isAssign,
 })
 
 export const checkinBookingSuccess = bookingDetail => ({

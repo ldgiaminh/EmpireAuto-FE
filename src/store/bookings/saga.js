@@ -29,6 +29,8 @@ import {
   checkinQRCode,
 } from "../../helpers/fakebackend_helper"
 
+import { toast } from "react-toastify"
+
 // function* fetchBookingsLists() {
 //   try {
 //     const response = yield call(getBookingsLists)
@@ -68,10 +70,13 @@ function* fetchBookingsDetails({ bookingId, history }) {
   }
 }
 
-function* checkInBookings({ payload: { bookingId, isAssign } }) {
+function* checkInBookings({ bookingId, isAssign }) {
   try {
     const response = yield call(checkinBooking, bookingId, isAssign)
     yield put(checkinBookingSuccess(response))
+    toast.success(
+      "Check-in thành công phương tiện " + response.car.carLisenceNo
+    )
   } catch (error) {
     yield put(checkinBookingFail(error))
   }
