@@ -16,8 +16,6 @@ const QrCheckInModal = props => {
 
   const dispatch = useDispatch()
 
-  const [showScanner, setShowScanner] = useState(true)
-
   const { isAssign } = useSelector(state => ({
     isAssign: state.Layout.isAssign,
   }))
@@ -28,7 +26,7 @@ const QrCheckInModal = props => {
 
   const handleScan = data => {
     if (data) {
-      setShowScanner(false)
+      toggle(false)
 
       fetch(
         `https://empire-api.azurewebsites.net/api/v1/booking-qrcode/close-generation?qrcode=${encodeURIComponent(
@@ -45,7 +43,6 @@ const QrCheckInModal = props => {
         .then(response => {
           if (!response.ok) {
             toggle(false)
-            //setShowScanner(false)
             toast.error("Không tìm thấy đặt lịch !!")
           }
         })
@@ -56,7 +53,7 @@ const QrCheckInModal = props => {
           )
         })
         .catch(error => {
-          //setShowScanner(false)
+          toggle(false)
           console.log("Error: " + error)
         })
     }
