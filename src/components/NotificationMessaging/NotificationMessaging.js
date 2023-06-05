@@ -54,12 +54,13 @@ const NotificationMessaging = props => {
     }
 
     fetchData()
-  })
+  }, [])
 
   //Listen Notification
   useEffect(() => {
     onMessageListener()
       .then(payload => {
+        console.log(payload)
         const notification = payload
         setNoti({
           title: notification.notification.title,
@@ -69,7 +70,7 @@ const NotificationMessaging = props => {
           dispatch(changeIsShow(true))
         }
 
-        //Set a timeout for 10 seconds to close the notification
+        //Set a timeout for 5 seconds to close the notification
         setTimeout(() => {
           if (notification) {
             dispatch(changeIsShow(false))

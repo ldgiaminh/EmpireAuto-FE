@@ -93,10 +93,11 @@ CHECK-IN BOOKING
 ================================================
 */
 
-export const checkinBooking = (bookingId, isAssign) => ({
+export const checkinBooking = (bookingId, isAssign, history) => ({
   type: CHECKIN_BOOKING,
   bookingId,
   isAssign,
+  history,
 })
 
 export const checkinBookingSuccess = bookingDetail => ({

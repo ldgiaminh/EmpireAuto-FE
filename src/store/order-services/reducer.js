@@ -120,23 +120,23 @@ const orderServices = (state = INIT_STATE, action) => {
     //     error: action.payload,
     //   }
 
-    // case PUT_ASSIGN_EXPERT:
-    //   return {
-    //     ...state,
-    //     isLoading: true,
-    //   }
+    case PUT_ASSIGN_EXPERT:
+      return {
+        ...state,
+        isLoading: true,
+      }
 
     case PUT_ASSIGN_EXPERT_SUCCESS:
       return {
         ...state,
-        //isLoading: false,
+        isLoading: false,
         orderServicesDetail: action.payload,
       }
 
     case PUT_ASSIGN_EXPERT_FAIL:
       return {
         ...state,
-        //isLoading: false,
+        isLoading: false,
         error: action.payload,
       }
 

@@ -153,58 +153,11 @@ const OrderServiceDetail = props => {
     value: ex.id,
   }))
 
-  // toastr.options = {
-  //   closeButton: false,
-  //   debug: false,
-  //   newestOnTop: true,
-  //   progressBar: false,
-  //   positionClass: "toast-top-right",
-  //   preventDuplicates: false,
-  //   onclick: null,
-  //   showDuration: "300",
-  //   hideDuration: "1000",
-  //   timeOut: "5000",
-  //   extendedTimeOut: "1000",
-  //   showEasing: "swing",
-  //   hideEasing: "linear",
-  //   showMethod: "fadeIn",
-  //   hideMethod: "fadeOut",
-  // }
-
-  const now = new Date()
-  const timeZoneOffset = 7 // Vietnam is GMT+7
-
-  const vietnamDate = new Date(now.getTime() + timeZoneOffset * 60 * 60 * 1000)
-  const isoDateTime = vietnamDate.toISOString()
-
-  const realTimeExpert = (exId, plate) => {
-    const notificationId = uuid.v4()
-    set(ref(db, `users/${exId}/notifications/${notificationId}`), {
-      isRead: "false",
-      message: "Vui lòng tiến hành kiểm tra và chuẩn đoán phương tiện " + plate,
-      time: isoDateTime,
-      title: "Phân công kiểm tra",
-      orderServiceId: params.id,
-    })
-  }
-
-  const realTimeCheckOut = (userId, plate, brand, model) => {
-    const notificationId = uuid.v4()
-    set(ref(db, `users/${userId}/notifications/${notificationId}`), {
-      isRead: "false",
-      message: "Đã nhận lại phương tiện " + plate + "," + brand + " - " + model,
-      time: isoDateTime,
-      title: "Hoàn tất sử dụng dịch vụ tại Empire Garage",
-      orderServiceId: params.id,
-    })
-  }
-
   const handleAssignExpert = () => {
     const id = params.id
     const exId = selectedGroup.value
     if ((id, exId)) {
       dispatch(assignExpert(id, exId))
-      realTimeExpert(exId, orderServicesDetail.car.carLisenceNo)
       setIsAssign(false)
       setSelectedGroup(null)
     }
@@ -227,13 +180,6 @@ const OrderServiceDetail = props => {
     if (carId) {
       dispatch(checkOutOrder(carId, checkOut))
     }
-    //dispatch(onGetOrderServiceDetail(params.id))
-    realTimeCheckOut(
-      orderServicesDetail.order.user.id,
-      orderServicesDetail.car.carLisenceNo,
-      orderServicesDetail.car.carBrand,
-      orderServicesDetail.car.carModel
-    )
   }
 
   /* ========================================== RENDER ==============================================*/

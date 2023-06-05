@@ -46,6 +46,8 @@ import {
   getStatusLog,
 } from "../../helpers/fakebackend_helper"
 
+import { toast } from "react-toastify"
+
 // function* fetchOrderServicessLists() {
 //   try {
 //     const response = yield call(getOrderServicesLists)
@@ -98,6 +100,7 @@ function* onAssignExpert({ payload: { orderServiceId, exId } }) {
   try {
     const response = yield call(putAssignExperts, orderServiceId, exId)
     yield put(putAssignExpertsSuccess(response))
+    toast.success("Đã phân công cho " + response.expert.fullname)
   } catch (error) {
     yield put(putAssignExpertsFail(error))
   }
