@@ -10,7 +10,7 @@ import { useSelector } from "react-redux"
 import { checkinBooking as checkInBooking } from "store/actions"
 
 const QrCheckInModal = props => {
-  const { isOpen, toggle } = props
+  const { isOpen, toggle, history } = props
 
   const obj = JSON.parse(localStorage.getItem("authUser"))
 
@@ -59,7 +59,7 @@ const QrCheckInModal = props => {
   }
 
   const goToCheckIn = id => {
-    dispatch(checkInBooking(id, isAssign, props.history))
+    dispatch(checkInBooking(id, isAssign, history))
   }
 
   return (

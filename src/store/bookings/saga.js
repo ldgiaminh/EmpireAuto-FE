@@ -73,8 +73,8 @@ function* fetchBookingsDetails({ bookingId, history }) {
 function* checkInBookings({ bookingId, isAssign, history }) {
   try {
     const response = yield call(checkinBooking, bookingId, isAssign)
+    history.push(`/order-services/${response.orderServiceId}`)
     yield put(checkinBookingSuccess(response))
-    history.push(`/order-services/${orderServiceId}`)
     toast.success(
       "Check-in thành công phương tiện " + response.car.carLisenceNo
     )

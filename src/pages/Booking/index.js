@@ -494,7 +494,7 @@ const BookingList = props => {
 
   return (
     <React.Fragment>
-      <QrCheckInModal isOpen={isOpen} toggle={toggle} />
+      <QrCheckInModal isOpen={isOpen} toggle={toggle} history={props.history} />
       <div className="page-content">
         <Container fluid>
           <Breadcrumbs title="Đặt Lịch" breadcrumbItem="Danh sách đặt lịch" />

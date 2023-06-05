@@ -101,7 +101,7 @@ const BookingDetails = props => {
   /* HANDLE CHECK IN */
   const handleCheckIn = id => {
     if (id) {
-      dispatch(checkInBooking(id, isAssign))
+      dispatch(checkInBooking(id, isAssign, props.history))
     }
   }
 
