@@ -54,7 +54,7 @@ const NotificationMessaging = props => {
     }
 
     fetchData()
-  }, [])
+  })
 
   //Listen Notification
   useEffect(() => {
