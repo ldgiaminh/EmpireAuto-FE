@@ -44,13 +44,13 @@ const QrCheckInModal = props => {
           if (!response.ok) {
             toggle(false)
             toast.error("Không tìm thấy đặt lịch !!")
+            throw new Error("Network response was not ok")
           }
+          return response.json()
         })
         .then(data => {
+          console.log(data)
           goToCheckIn(data.id)
-          toast.success(
-            "Check-in thành công phương tiện " + data.car.carLisenceNo
-          )
         })
         .catch(error => {
           toggle(false)
