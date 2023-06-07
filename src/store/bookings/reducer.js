@@ -26,6 +26,7 @@ const INIT_STATE = {
   error: {},
   dataDetail: {},
   isLoading: false,
+  isLoad: false,
 }
 
 const bookings = (state = INIT_STATE, action) => {
@@ -85,13 +86,13 @@ const bookings = (state = INIT_STATE, action) => {
     case CHECKIN_BOOKING:
       return {
         ...state,
-        isLoading: true,
+        isLoad: true,
       }
 
     case CHECKIN_BOOKING_SUCCESS:
       return {
         ...state,
-        isLoading: false,
+        isLoad: false,
         bookings: state.bookings.map(booking =>
           booking.id.toString() === action.payload.id.toString()
             ? { booking, ...action.payload }
@@ -102,7 +103,7 @@ const bookings = (state = INIT_STATE, action) => {
     case CHECKIN_BOOKING_FAIL:
       return {
         ...state,
-        isLoading: false,
+        isLoad: false,
         error: action.payload,
       }
 

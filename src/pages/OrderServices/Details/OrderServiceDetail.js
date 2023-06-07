@@ -426,7 +426,7 @@ const OrderServiceDetail = props => {
                                               onClick={handleReAssign}
                                             >
                                               <i className="mdi mdi-pencil label-icon "></i>{" "}
-                                              Phân công lại
+                                              Chỉ định
                                             </button>
                                           </div>
                                         )

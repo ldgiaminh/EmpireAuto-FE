@@ -28,6 +28,7 @@ const INIT_STATE = {
   orderServicesDetail: {},
   error: {},
   isLoading: false,
+  isLoad: false,
   orderServiceLogs: [],
   checkOut: {},
 }
@@ -159,13 +160,13 @@ const orderServices = (state = INIT_STATE, action) => {
     case POST_CHECKOUT_SERVICES:
       return {
         ...state,
-        isLoading: true,
+        isLoad: true,
       }
 
     case POST_CHECKOUT_SERVICES_SUCCESS:
       return {
         ...state,
-        isLoading: false,
+        isLoad: false,
         orderServicess: state.orderServicess.map(service =>
           service.id.toString() === action.payload.id.toString()
             ? { ...action.pay.load, service }
@@ -176,7 +177,7 @@ const orderServices = (state = INIT_STATE, action) => {
     case POST_CHECKOUT_SERVICES_FAIL:
       return {
         ...state,
-        isLoading: false,
+        isLoad: false,
         error: action.payload,
       }
 

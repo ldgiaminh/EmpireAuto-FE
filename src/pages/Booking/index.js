@@ -243,10 +243,18 @@ const BookingList = props => {
         setSelectedMonth(currentMonthObj.label)
         const weekOptions = generateWeekOptions(currentMonthObj.label)
         if (weekOptions.length > 0) {
-          setSelectedWeek(weekOptions[0].label)
-          setSelectedDates(
-            getSelectedDates(weekOptions[0].start, weekOptions[0].end)
+          const currentWeek = weekOptions.find(week =>
+            currentMoment.isBetween(week.start, week.end, undefined, "[]")
           )
+          if (currentWeek) {
+            setSelectedWeek(currentWeek.label)
+            setSelectedDates(
+              getSelectedDates(currentWeek.start, currentWeek.end)
+            )
+          } else {
+            setSelectedWeek("")
+            setSelectedDates([])
+          }
         } else {
           setSelectedWeek("")
           setSelectedDates([])
@@ -279,7 +287,7 @@ const BookingList = props => {
         setSelectedDates([])
       }
     }
-  }, [selectedYear])
+  }, [selectedYear, selectedMonth])
 
   useEffect(() => {
     const todayDate = moment().format("DD/MM")
@@ -550,55 +558,26 @@ const BookingList = props => {
                       </FormGroup>
                     </Col>
 
-                    <Col sm={2} className="col-xl">
-                      <FormGroup className="mb-0">
-                        <Label>Tự động phân công</Label>
-                        <div className="square-switch">
-                          <input
-                            type="checkbox"
-                            id="square-switch1"
-                            switch="none"
-                            checked={isAssign}
-                            onChange={handleAutoAssign}
-                          />
-                          <label
-                            htmlFor="square-switch1"
-                            data-on-label="Bật"
-                            data-off-label="Tắt"
-                          />
-                        </div>
-                      </FormGroup>
-                    </Col>
-
-                    <Col sm={4} className="text-sm-end align-self-end">
-                      {/* <Label>Tự động phân công</Label> */}
-                      {/* <div className="square-switch mb-0">
-                        <input
-                          type="checkbox"
-                          id="square-switch1"
-                          switch="none"
-                          checked={sq1}
-                          onChange={() => {
-                            setsq1(!sq1)
-                          }}
-                        />
-                        <label
-                          htmlFor="square-switch1"
-                          data-on-label="Bật"
-                          data-off-label="Tắt"
-                        />
+                    <Col sm={6} className="text-sm-end align-self-end">
+                      {/* <div className="mb-3">
+                        <FormGroup className="mb-0">
+                          <Label>Tự động phân công</Label>
+                          <div className="square-switch">
+                            <input
+                              type="checkbox"
+                              id="square-switch1"
+                              switch="none"
+                              checked={isAssign}
+                              onChange={handleAutoAssign}
+                            />
+                            <label
+                              htmlFor="square-switch1"
+                              data-on-label="Bật"
+                              data-off-label="Tắt"
+                            />
+                          </div>
+                        </FormGroup>
                       </div> */}
-                      <div className="mb-3">
-                        <Button
-                          type="button"
-                          color="success"
-                          className="w-md"
-                          onClick={toggle}
-                        >
-                          <i className="mdi mdi-qrcode-scan me-1" />
-                          Quét mã Check-in
-                        </Button>
-                      </div>
                     </Col>
                   </Row>
 

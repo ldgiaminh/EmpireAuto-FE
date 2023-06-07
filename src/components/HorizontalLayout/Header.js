@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import PropTypes from "prop-types"
 
 import { connect } from "react-redux"
@@ -34,6 +34,7 @@ import slack from "../../assets/images/brands/slack.png"
 
 //i18n
 import { withTranslation } from "react-i18next"
+import QrCode from "components/CommonForBoth/QrCode"
 
 const Header = props => {
   const [menu, setMenu] = useState(false)
@@ -66,6 +67,15 @@ const Header = props => {
       }
     }
   }
+
+  const [role, setRole] = useState("")
+
+  useEffect(() => {
+    if (localStorage.getItem("authUser")) {
+      const obj = JSON.parse(localStorage.getItem("authUser"))
+      setRole(obj.role)
+    }
+  })
   return (
     <React.Fragment>
       <header id="page-topbar">
@@ -371,11 +381,13 @@ const Header = props => {
               </button>
             </div> */}
 
+            {role === "RE" && <QrCode />}
+
             <NotificationDropdown />
 
             <ProfileMenu />
 
-            <div className="dropdown d-inline-block">
+            {/* <div className="dropdown d-inline-block">
               <button
                 onClick={() => {
                   props.showRightSidebarAction(!props.showRightSidebar)
@@ -385,7 +397,7 @@ const Header = props => {
               >
                 <i className="bx bx-cog bx-spin" />
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </header>

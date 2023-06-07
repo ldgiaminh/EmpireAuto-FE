@@ -19,16 +19,16 @@ const PreloadDetail = () => {
         <Container fluid>
           {/* <Breadcrumbs title="Đặt lịch" breadcrumbItem="#" /> */}
           <div className="d-flex mb-3 justify-content-between">
-            <span className="placeholder col-5"></span>
-            <span className="placeholder col-3"></span>
+            <span className="placeholder bg-secondary col-5"></span>
+            <span className="placeholder bg-secondary col-3"></span>
           </div>
           <Row>
             <Col>
               <Card>
                 <CardBody className="mb-2">
                   <div className="mb-3">
-                    <span className="placeholder col-8"></span>
-                    <span className="placeholder col-5"></span>
+                    <span className="placeholder bg-secondary col-8"></span>
+                    <span className="placeholder bg-secondary col-5"></span>
                   </div>
 
                   <Row>
@@ -38,34 +38,34 @@ const PreloadDetail = () => {
                           <tbody>
                             <tr>
                               <th style={{ width: "300px" }}>
-                                <span className="placeholder col-8"></span>
+                                <span className="placeholder bg-secondary col-8"></span>
                               </th>
                               <td>
-                                <span className="placeholder col-5"></span>
+                                <span className="placeholder bg-secondary col-5"></span>
                               </td>
                             </tr>
                             <tr>
                               <th style={{ width: "300px" }}>
-                                <span className="placeholder col-8"></span>
+                                <span className="placeholder bg-secondary col-8"></span>
                               </th>
                               <td>
-                                <span className="placeholder col-5"></span>
+                                <span className="placeholder bg-secondary col-5"></span>
                               </td>
                             </tr>
                             <tr>
                               <th style={{ width: "300px" }}>
-                                <span className="placeholder col-8"></span>
+                                <span className="placeholder bg-secondary col-8"></span>
                               </th>
                               <td>
-                                <span className="placeholder col-5"></span>
+                                <span className="placeholder bg-secondary col-5"></span>
                               </td>
                             </tr>
                             <tr>
                               <th style={{ width: "300px" }}>
-                                <span className="placeholder col-8"></span>
+                                <span className="placeholder bg-secondary col-8"></span>
                               </th>
                               <td>
-                                <span className="placeholder col-5"></span>
+                                <span className="placeholder bg-secondary col-5"></span>
                               </td>
                             </tr>
                           </tbody>
@@ -78,34 +78,34 @@ const PreloadDetail = () => {
                           <tbody>
                             <tr>
                               <th style={{ width: "300px" }}>
-                                <span className="placeholder col-8"></span>
+                                <span className="placeholder bg-secondary col-8"></span>
                               </th>
                               <td>
-                                <span className="placeholder col-5"></span>
+                                <span className="placeholder bg-secondary col-5"></span>
                               </td>
                             </tr>
                             <tr>
                               <th style={{ width: "300px" }}>
-                                <span className="placeholder col-8"></span>
+                                <span className="placeholder bg-secondary col-8"></span>
                               </th>
                               <td>
-                                <span className="placeholder col-5"></span>
+                                <span className="placeholder bg-secondary col-5"></span>
                               </td>
                             </tr>
                             <tr>
                               <th style={{ width: "300px" }}>
-                                <span className="placeholder col-8"></span>
+                                <span className="placeholder bg-secondary col-8"></span>
                               </th>
                               <td>
-                                <span className="placeholder col-5"></span>
+                                <span className="placeholder bg-secondary col-5"></span>
                               </td>
                             </tr>
                             <tr>
                               <th style={{ width: "300px" }}>
-                                <span className="placeholder col-8"></span>
+                                <span className="placeholder bg-secondary col-8"></span>
                               </th>
                               <td>
-                                <span className="placeholder col-5"></span>
+                                <span className="placeholder bg-secondary col-5"></span>
                               </td>
                             </tr>
                           </tbody>
@@ -116,8 +116,8 @@ const PreloadDetail = () => {
                 </CardBody>
                 <CardBody>
                   <div className="mb-3">
-                    <span className="placeholder col-8"></span>
-                    <span className="placeholder col-5"></span>
+                    <span className="placeholder bg-secondary col-8"></span>
+                    <span className="placeholder bg-secondary col-5"></span>
                   </div>
 
                   <Row>
@@ -127,34 +127,34 @@ const PreloadDetail = () => {
                           <tbody>
                             <tr>
                               <th style={{ width: "300px" }}>
-                                <span className="placeholder col-8"></span>
+                                <span className="placeholder bg-secondary col-8"></span>
                               </th>
                               <td>
-                                <span className="placeholder col-5"></span>
+                                <span className="placeholder bg-secondary col-5"></span>
                               </td>
                             </tr>
                             <tr>
                               <th style={{ width: "300px" }}>
-                                <span className="placeholder col-8"></span>
+                                <span className="placeholder bg-secondary col-8"></span>
                               </th>
                               <td>
-                                <span className="placeholder col-5"></span>
+                                <span className="placeholder bg-secondary col-5"></span>
                               </td>
                             </tr>
                             <tr>
                               <th style={{ width: "300px" }}>
-                                <span className="placeholder col-8"></span>
+                                <span className="placeholder bg-secondary col-8"></span>
                               </th>
                               <td>
-                                <span className="placeholder col-5"></span>
+                                <span className="placeholder bg-secondary col-5"></span>
                               </td>
                             </tr>
                             <tr>
                               <th style={{ width: "300px" }}>
-                                <span className="placeholder col-8"></span>
+                                <span className="placeholder bg-secondary col-8"></span>
                               </th>
                               <td>
-                                <span className="placeholder col-5"></span>
+                                <span className="placeholder bg-secondary col-5"></span>
                               </td>
                             </tr>
                           </tbody>
@@ -167,34 +167,34 @@ const PreloadDetail = () => {
                           <tbody>
                             <tr>
                               <th style={{ width: "300px" }}>
-                                <span className="placeholder col-8"></span>
+                                <span className="placeholder bg-secondary col-8"></span>
                               </th>
                               <td>
-                                <span className="placeholder col-5"></span>
+                                <span className="placeholder bg-secondary col-5"></span>
                               </td>
                             </tr>
                             <tr>
                               <th style={{ width: "300px" }}>
-                                <span className="placeholder col-8"></span>
+                                <span className="placeholder bg-secondary col-8"></span>
                               </th>
                               <td>
-                                <span className="placeholder col-5"></span>
+                                <span className="placeholder bg-secondary col-5"></span>
                               </td>
                             </tr>
                             <tr>
                               <th style={{ width: "300px" }}>
-                                <span className="placeholder col-8"></span>
+                                <span className="placeholder bg-secondary col-8"></span>
                               </th>
                               <td>
-                                <span className="placeholder col-5"></span>
+                                <span className="placeholder bg-secondary col-5"></span>
                               </td>
                             </tr>
                             <tr>
                               <th style={{ width: "300px" }}>
-                                <span className="placeholder col-8"></span>
+                                <span className="placeholder bg-secondary col-8"></span>
                               </th>
                               <td>
-                                <span className="placeholder col-5"></span>
+                                <span className="placeholder bg-secondary col-5"></span>
                               </td>
                             </tr>
                           </tbody>

@@ -76,7 +76,6 @@ const RightSidebar = props => {
                     id="checkbox_1"
                     checked={props.isAssign}
                     onChange={() => {
-                      //props.changeAutoAssign(!props.isAssign)
                       props.changeAutoAssign(!props.isAssign)
                     }}
                   />

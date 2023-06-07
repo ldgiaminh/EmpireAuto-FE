@@ -19,10 +19,10 @@ const Pages403 = () => {
                 <h1 className="display-2 font-weight-medium">
                   4<i className="bx bx-buoy bx-spin text-primary display-3" />3
                 </h1>
-                <h4 className="text-uppercase">You do not have permission</h4>
+                <h4 className="text-uppercase">Bạn không có quyền truy cập</h4>
                 <div className="mt-5 text-center">
                   <Link className="btn btn-primary " to="/login">
-                    Back to Login
+                    Trở về trang đăng nhập
                   </Link>
                 </div>
               </div>
