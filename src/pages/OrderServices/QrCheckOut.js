@@ -4,7 +4,7 @@ import QrReader from "react-qr-reader"
 import "toastr/build/toastr.min.css"
 import { useDispatch } from "react-redux"
 
-import { postCheckOut as checkOutOrder } from "store/actions"
+//import { postCheckOut as checkOutOrder } from "store/actions"
 import { Col, Container, Row } from "reactstrap"
 
 const QrCheckOut = props => {
@@ -42,7 +42,7 @@ const QrCheckOut = props => {
           return response.json()
         })
         .then(data => {
-          checkOutOrderServices(data.car.id, data.id)
+          //checkOutOrderServices(data.car.id, data.id)
         })
         .catch(error => {
           console.error("Error:", error)
@@ -57,7 +57,7 @@ const QrCheckOut = props => {
     const checkOut = {
       inGarage: false,
     }
-    dispatch(checkOutOrder(carId, checkOut))
+    //dispatch(checkOutOrder(carId, checkOut))
     history.push(`/order-services/${orderServiceId}`)
   }
 

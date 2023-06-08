@@ -5,9 +5,8 @@ import QrReader from "react-qr-reader"
 import { toast } from "react-toastify"
 
 import { useDispatch } from "react-redux"
-import { useSelector } from "react-redux"
 
-import { checkinBooking as checkInBooking } from "store/actions"
+import { checkOutService as onCheckOut } from "store/actions"
 
 const QrCheckOutModal = props => {
   const { isOpen, toggle, history } = props
@@ -39,13 +38,13 @@ const QrCheckOutModal = props => {
         .then(response => {
           if (!response.ok) {
             toggle(false)
-            toast.error("Không tìm thấy đặt lịch !!")
+            toast.error("Không tìm thấy phương tiện !!")
             throw new Error("Network response was not ok")
           }
           return response.json()
         })
         .then(data => {
-          //goToCheckIn(data.id)
+          goToCheckOut(data.id)
         })
         .catch(error => {
           toggle(false)
@@ -54,9 +53,9 @@ const QrCheckOutModal = props => {
     }
   }
 
-  //   const goToCheckIn = id => {
-  //     dispatch(checkInBooking(id, isAssign, history))
-  //   }
+  const goToCheckOut = id => {
+    dispatch(onCheckOut(id, history))
+  }
 
   return (
     <>
@@ -91,6 +90,7 @@ const QrCheckOutModal = props => {
 QrCheckOutModal.propTypes = {
   toggle: PropTypes.func,
   isOpen: PropTypes.bool,
+  history: PropTypes.any,
 }
 
 export default QrCheckOutModal

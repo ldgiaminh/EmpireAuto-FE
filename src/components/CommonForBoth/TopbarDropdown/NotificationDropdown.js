@@ -148,6 +148,7 @@ const NotificationDropdown = props => {
                     }
                     key={key}
                     className="text-reset notification-item"
+                    onClick={() => setMenu(!menu)}
                   >
                     <div className="d-flex">
                       <div className="avatar-xs me-3">

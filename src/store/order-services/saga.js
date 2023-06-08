@@ -11,39 +11,27 @@ import {
   GET_STATUS_LOG,
   PUT_CONFIRM_PAID_SERVICES,
   POST_CHECKOUT_SERVICES,
+  CHECKOUT_SERVICES,
 } from "./actionTypes"
 
 import {
-  getOrderServicesListsSuccess,
-  getOrderServicesListsFail,
   getOrderServicesDetailsFail,
   getOrderServicesDetailsSuccess,
   getOrderServicesListByStatusSuccess,
   getOrderServicesListByStatusFail,
-  putOrderServicesFail,
-  putOrderServicesSuccess,
-  putConfirmServicesFail,
-  putConfirmServicesSuccess,
-  putConfirmPaidFail,
-  putConfirmPaidSuccess,
-  postCheckOutFail,
-  postCheckOutSuccess,
-  getStatusLogFail,
   getStatusLogSuccess,
   putAssignExpertsSuccess,
   putAssignExpertsFail,
+  checkOutServiceSuccess,
+  checkOutServiceFail,
 } from "./actions"
 
 import {
-  getOrderServicesLists,
   getOrderServicesListByStatus,
   getOrderServicesDetails,
-  putOrderServices,
   putAssignExperts,
-  putConfirmServices,
-  putConfirmPaid,
-  postCheckOut,
   getStatusLog,
+  checkOutService,
 } from "../../helpers/fakebackend_helper"
 
 import { toast } from "react-toastify"
@@ -124,12 +112,23 @@ function* onAssignExpert({ payload: { orderServiceId, exId } }) {
 //   }
 // }
 
-function* checkOutServices({ carId, payload: checkOut }) {
+function* checkOutServices({ id, history }) {
   try {
-    const response = yield call(postCheckOut, carId, checkOut)
-    yield put(postCheckOutSuccess(response))
+    const response = yield call(checkOutService, id)
+    history.push(`/order-services/${response[0].id}`)
+    yield put(checkOutServiceSuccess(response))
+    toast.success(
+      "Check-out thành công phương tiện " + response[0].car.carLisenceNo
+    )
   } catch (error) {
-    yield put(postCheckOutFail(error))
+    console.log(error)
+    if (error.response.status === 500) {
+      toast.error(error.response.data.message)
+      yield put(checkOutServiceFail(error))
+    } else {
+      toast.error("Check-out thất bại")
+      yield put(checkOutServiceFail(error))
+    }
   }
 }
 
@@ -153,7 +152,7 @@ function* orderServicesSaga() {
   yield takeEvery(PUT_ASSIGN_EXPERT, onAssignExpert)
   //yield takeEvery(PUT_CONFIRM_SERVICES, onConfirmServices)
   // yield takeEvery(PUT_CONFIRM_PAID_SERVICES, onConfirmPaidServices)
-  yield takeEvery(POST_CHECKOUT_SERVICES, checkOutServices)
+  yield takeEvery(CHECKOUT_SERVICES, checkOutServices)
   yield takeEvery(GET_STATUS_LOG, fetchStatusLog)
 }
 

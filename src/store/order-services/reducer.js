@@ -15,12 +15,12 @@ import {
   PUT_CONFIRM_SERVICES_FAIL,
   PUT_CONFIRM_PAID_SERVICES_SUCCESS,
   PUT_CONFIRM_PAID_SERVICES_FAIL,
-  POST_CHECKOUT_SERVICES_SUCCESS,
-  POST_CHECKOUT_SERVICES_FAIL,
+  CHECKOUT_SERVICES_SUCCESS,
+  CHECKOUT_SERVICES_FAIL,
   GET_ORDER_SERVICE_LIST_BY_STATUS,
   GET_ORDER_SERVICE_DETAIL,
   PUT_ASSIGN_EXPERT,
-  POST_CHECKOUT_SERVICES,
+  CHECKOUT_SERVICES,
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -30,7 +30,7 @@ const INIT_STATE = {
   isLoading: false,
   isLoad: false,
   orderServiceLogs: [],
-  checkOut: {},
+  checkOut: [],
 }
 
 const orderServices = (state = INIT_STATE, action) => {
@@ -157,24 +157,25 @@ const orderServices = (state = INIT_STATE, action) => {
     //     error: action.payload,
     //   }
 
-    case POST_CHECKOUT_SERVICES:
+    case CHECKOUT_SERVICES:
       return {
         ...state,
         isLoad: true,
       }
 
-    case POST_CHECKOUT_SERVICES_SUCCESS:
+    case CHECKOUT_SERVICES_SUCCESS:
       return {
         ...state,
         isLoad: false,
+        checkOut: action.payload,
         orderServicess: state.orderServicess.map(service =>
-          service.id.toString() === action.payload.id.toString()
+          service.id.toString() === action.payload[0].id.toString()
             ? { ...action.pay.load, service }
             : service
         ),
       }
 
-    case POST_CHECKOUT_SERVICES_FAIL:
+    case CHECKOUT_SERVICES_FAIL:
       return {
         ...state,
         isLoad: false,

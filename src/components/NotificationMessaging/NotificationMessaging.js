@@ -75,7 +75,7 @@ const NotificationMessaging = props => {
         if (notification) {
           dispatch(changeIsShow(false))
         }
-      }, 5000)
+      }, 8000)
     })
     .catch(err =>
       console.log("An error occured while retrieving foreground message. ", err)

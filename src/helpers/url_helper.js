@@ -50,7 +50,7 @@ export const PUT_CONFIRM_SERVICES = "/order-services"
 export const PUT_CONFIRM_PAID_SERVICES = "/order-services"
 
 //CheckOut
-export const POST_CHECKOUT_SERVICES = "/cars"
+export const CHECKOUT_SERVICES = "/order-services"
 
 /*
 ================================================ 

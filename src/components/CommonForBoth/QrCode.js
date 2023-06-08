@@ -1,13 +1,12 @@
 import QrCheckInModal from "pages/Booking/QrCheckIn/QrCheckInModal"
 import React, { useState } from "react"
-import { Link } from "react-router-dom"
+import { withRouter } from "react-router-dom"
 
 import {
   Dropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  FormGroup,
 } from "reactstrap"
 
 import { useSelector, useDispatch } from "react-redux"
@@ -103,4 +102,4 @@ const QrCode = props => {
   )
 }
 
-export default QrCode
+export default withRouter(QrCode)

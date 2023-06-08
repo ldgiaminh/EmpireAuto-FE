@@ -79,6 +79,7 @@ function* checkInBookings({ bookingId, isAssign, history }) {
       "Check-in thành công phương tiện " + response.car.carLisenceNo
     )
   } catch (error) {
+    toast.error("Check-in thất bại")
     yield put(checkinBookingFail(error))
   }
 }

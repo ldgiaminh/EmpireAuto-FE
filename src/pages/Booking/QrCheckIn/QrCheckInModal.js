@@ -95,6 +95,7 @@ const QrCheckInModal = props => {
 QrCheckInModal.propTypes = {
   toggle: PropTypes.func,
   isOpen: PropTypes.bool,
+  history: PropTypes.any,
 }
 
 export default QrCheckInModal

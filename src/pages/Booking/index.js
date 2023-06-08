@@ -243,13 +243,15 @@ const BookingList = props => {
         setSelectedMonth(currentMonthObj.label)
         const weekOptions = generateWeekOptions(currentMonthObj.label)
         if (weekOptions.length > 0) {
-          const currentWeek = weekOptions.find(week =>
+          const currentDate = currentMoment.date()
+          const currentWeekObj = weekOptions.find(week =>
             currentMoment.isBetween(week.start, week.end, undefined, "[]")
           )
-          if (currentWeek) {
-            setSelectedWeek(currentWeek.label)
+
+          if (currentWeekObj) {
+            setSelectedWeek(currentWeekObj.label)
             setSelectedDates(
-              getSelectedDates(currentWeek.start, currentWeek.end)
+              getSelectedDates(currentWeekObj.start, currentWeekObj.end)
             )
           } else {
             setSelectedWeek("")
@@ -287,7 +289,7 @@ const BookingList = props => {
         setSelectedDates([])
       }
     }
-  }, [selectedYear, selectedMonth])
+  }, [selectedYear])
 
   useEffect(() => {
     const todayDate = moment().format("DD/MM")

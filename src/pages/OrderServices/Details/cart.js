@@ -26,7 +26,7 @@ import { useDispatch } from "react-redux"
 import {
   getOrderServicesDetails as onGetOrderServiceDetail,
   putConfirmPaid as onConfirmPaidServices,
-  postCheckOut as checkOutServices,
+  //postCheckOut as checkOutServices,
 } from "store/order-services/actions"
 
 //Lightbox

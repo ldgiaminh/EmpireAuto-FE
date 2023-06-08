@@ -160,14 +160,13 @@ export const putConfirmServices = (id, services) =>
   put(`${url.PUT_CONFIRM_SERVICES}/${id}/confirm`, services)
 
 /* CONFIRM & PAID - NOT USING*/
-export const putConfirmPaid = (id, services) => {
-  put(`${url.PUT_CONFIRM_PAID_SERVICES}/${id}/confirm-and-paid`, services)
-}
+// export const putConfirmPaid = (id, services) => {
+//   put(`${url.PUT_CONFIRM_PAID_SERVICES}/${id}/confirm-and-paid`, services)
+// }
 
 /* CHECKOUT */
-export const postCheckOut = (carId, checkOut) => {
-  post(`${url.POST_CHECKOUT_SERVICES}/${carId}/car-status-logs`, checkOut)
-}
+export const checkOutService = id =>
+  put(`${url.CHECKOUT_SERVICES}/${id}/checkout`)
 
 /*
 ================================================

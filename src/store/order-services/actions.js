@@ -20,9 +20,9 @@ import {
   PUT_CONFIRM_PAID_SERVICES,
   PUT_CONFIRM_PAID_SERVICES_SUCCESS,
   PUT_CONFIRM_PAID_SERVICES_FAIL,
-  POST_CHECKOUT_SERVICES,
-  POST_CHECKOUT_SERVICES_SUCCESS,
-  POST_CHECKOUT_SERVICES_FAIL,
+  CHECKOUT_SERVICES,
+  CHECKOUT_SERVICES_SUCCESS,
+  CHECKOUT_SERVICES_FAIL,
   GET_ORDER_SERVICE_LIST_BY_STATUS,
   GET_ORDER_SERVICE_LIST_BY_STATUS_FAIL,
   GET_ORDER_SERVICE_LIST_BY_STATUS_SUCCESS,
@@ -194,18 +194,18 @@ export const putConfirmPaidFail = error => ({
 POST Check out
 ================================================
 */
-export const postCheckOut = (carId, checkOut) => ({
-  type: POST_CHECKOUT_SERVICES,
-  carId,
-  payload: checkOut,
+export const checkOutService = (id, history) => ({
+  type: CHECKOUT_SERVICES,
+  id,
+  history,
 })
 
-export const postCheckOutSuccess = orderServicesDetails => ({
-  type: POST_CHECKOUT_SERVICES_SUCCESS,
-  payload: orderServicesDetails,
+export const checkOutServiceSuccess = orderServicesCheckOut => ({
+  type: CHECKOUT_SERVICES_SUCCESS,
+  payload: orderServicesCheckOut,
 })
 
-export const postCheckOutFail = error => ({
-  type: POST_CHECKOUT_SERVICES_FAIL,
+export const checkOutServiceFail = error => ({
+  type: CHECKOUT_SERVICES_FAIL,
   payload: error,
 })

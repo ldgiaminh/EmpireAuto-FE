@@ -26,7 +26,7 @@ import {
   getOrderServicesDetails as onGetOrderServiceDetail,
   getExperts as onGetExpert,
   putAssignExperts as assignExpert,
-  postCheckOut as checkOutOrder,
+  checkOutService as checkOutService,
   getStatusLog as onGetStatusLog,
 } from "store/actions"
 
@@ -38,8 +38,6 @@ import CarRecord from "./health-car-record"
 import Loading from "components/Loader/Loading"
 import PreloadDetail from "components/Loader/PreloadDetail"
 import Stepper from "./stepper"
-import { ref, set } from "firebase/database"
-import { db } from "helpers/firebase"
 
 const OrderServiceDetail = props => {
   //meta title
@@ -86,7 +84,7 @@ const OrderServiceDetail = props => {
       dispatch(onGetOrderServiceDetail(params.id, props.history))
       dispatch(onGetStatusLog(params.id))
     }
-  }, [isShow, dispatch])
+  }, [isShow])
 
   useEffect(() => {
     dispatch(onGetExpert())
@@ -173,12 +171,10 @@ const OrderServiceDetail = props => {
     history.push("/scanner-checkout")
   }
 
-  const handleCheckOut = carId => {
-    const checkOut = {
-      inGarage: false,
-    }
-    if (carId) {
-      dispatch(checkOutOrder(carId, checkOut))
+  const handleCheckOut = () => {
+    const id = params.id
+    if (id) {
+      dispatch(checkOutService(id, props.history))
     }
   }
 
@@ -212,7 +208,7 @@ const OrderServiceDetail = props => {
                           </CardSubtitle>
                         </div>
 
-                        {orderServicesDetail.status === 4 ? (
+                        {/* {orderServicesDetail.status === 4 ? (
                           <div className="ml-auto">
                             <Button
                               type="button"
@@ -225,7 +221,7 @@ const OrderServiceDetail = props => {
                           </div>
                         ) : (
                           " "
-                        )}
+                        )} */}
                       </div>
                       <Row>
                         <Col xl="6">
@@ -500,9 +496,7 @@ const OrderServiceDetail = props => {
                         type="button"
                         color="success"
                         className="btn btn-label w-md"
-                        onClick={() =>
-                          handleCheckOut(orderServicesDetail.car.id)
-                        }
+                        onClick={handleCheckOut}
                       >
                         <i className="bx bx-check-double label-icon"></i>
                         Check-Out
