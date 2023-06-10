@@ -103,6 +103,14 @@ const CarItem = props => {
           return <Name {...cellProps} />
         },
       },
+      {
+        Header: "Giá",
+        accessor: "presentPrice",
+        filterable: true,
+        Cell: cellProps => {
+          return <Name {...cellProps} />
+        },
+      },
       // {
       //   Header: "Các vấn đề",
       //   accessor: "view",

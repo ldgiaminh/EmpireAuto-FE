@@ -14,7 +14,7 @@ const Stepper = ({ logs }) => {
       minute: "2-digit",
       hour12: false,
     })
-    const formatted = `${formattedDate} - ${formattedTime}`
+    const formatted = `${formattedTime} - ${formattedDate}`
     return formatted
   }
   return (

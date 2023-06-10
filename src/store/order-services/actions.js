@@ -194,9 +194,10 @@ export const putConfirmPaidFail = error => ({
 POST Check out
 ================================================
 */
-export const checkOutService = (id, history) => ({
+export const checkOutService = (id, car, history) => ({
   type: CHECKOUT_SERVICES,
   id,
+  car,
   history,
 })
 

@@ -174,7 +174,9 @@ const OrderServiceDetail = props => {
   const handleCheckOut = () => {
     const id = params.id
     if (id) {
-      dispatch(checkOutService(id, props.history))
+      dispatch(
+        checkOutService(id, orderServicesDetail.car.carLisenceNo, props.history)
+      )
     }
   }
 

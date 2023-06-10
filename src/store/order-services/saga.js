@@ -112,16 +112,13 @@ function* onAssignExpert({ payload: { orderServiceId, exId } }) {
 //   }
 // }
 
-function* checkOutServices({ id, history }) {
+function* checkOutServices({ id, car, history }) {
   try {
     const response = yield call(checkOutService, id)
-    history.push(`/order-services/${response[0].id}`)
     yield put(checkOutServiceSuccess(response))
-    toast.success(
-      "Check-out thành công phương tiện " + response[0].car.carLisenceNo
-    )
+    history.push(`/order-services/${id}`)
+    toast.success("Check-out thành công phương tiện\n" + car)
   } catch (error) {
-    console.log(error)
     if (error.response.status === 500) {
       toast.error(error.response.data.message)
       yield put(checkOutServiceFail(error))

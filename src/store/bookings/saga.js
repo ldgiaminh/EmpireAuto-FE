@@ -76,7 +76,7 @@ function* checkInBookings({ bookingId, isAssign, history }) {
     history.push(`/order-services/${response.orderServiceId}`)
     yield put(checkinBookingSuccess(response))
     toast.success(
-      "Check-in thành công phương tiện " + response.car.carLisenceNo
+      "Check-in thành công phương tiện\n" + response.car.carLisenceNo
     )
   } catch (error) {
     toast.error("Check-in thất bại")

@@ -11,6 +11,10 @@ const Name = cell => {
   return cell.value ? cell.value : ""
 }
 
+const Price = cell => {
+  return cell.value ? cell.value : ""
+}
+
 const Img = cell => {
   return (
     <>
@@ -30,4 +34,4 @@ const Img = cell => {
   )
 }
 
-export { Name, Img }
+export { Name, Img, Price }

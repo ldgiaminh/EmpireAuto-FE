@@ -124,18 +124,17 @@ const NotificationDropdown = props => {
               Object.keys(notis).map(key => {
                 const createAtDate = notis[key].time
                 const createDate = new Date(createAtDate)
-                const formattedDate1 = createDate.toLocaleDateString("vi-VN", {
+                const formattedDate1 = createDate.toLocaleDateString([], {
                   day: "2-digit",
                   month: "2-digit",
                   year: "numeric",
                 })
-                const formattedTime1 = createDate.toLocaleTimeString("vi-VN", {
+                const formattedTime1 = createDate.toLocaleTimeString([], {
                   hour: "2-digit",
                   minute: "2-digit",
-                  second: "2-digit",
                   hour12: false,
                 })
-                const formattedDateTime1 = `${formattedTime1} - ${formattedDate1}`
+                const formattedDateTime = `${formattedTime1} - ${formattedDate1}`
 
                 return (
                   <Link
@@ -162,7 +161,7 @@ const NotificationDropdown = props => {
                           <p className="mb-1">{notis[key].message}</p>
                           <p className="mb-0">
                             <i className="mdi mdi-clock-outline" />{" "}
-                            {formattedDateTime1}
+                            {formattedDateTime}
                           </p>
                         </div>
                       </div>
