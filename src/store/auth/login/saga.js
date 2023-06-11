@@ -68,9 +68,11 @@ function* loginUser({ payload: { user, history } }) {
 
     yield put(loginSuccess(response))
     if (response.role === "MA") {
-      history.push("/dashboard")
+      history.push("/")
     } else if (response.role === "RE") {
-      history.push("/bookings")
+      history.push("/")
+    } else if (response.role === "AD") {
+      history.push("/")
     } else {
       localStorage.removeItem("authUser")
       history.push("/pages-403")

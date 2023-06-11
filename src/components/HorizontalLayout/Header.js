@@ -383,7 +383,7 @@ const Header = props => {
 
             {role === "RE" && <QrCode />}
 
-            <NotificationDropdown />
+            {role === "RE" && <NotificationDropdown />}
 
             <ProfileMenu />
 

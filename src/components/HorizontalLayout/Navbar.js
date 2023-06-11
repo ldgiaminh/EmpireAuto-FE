@@ -90,6 +90,12 @@ const Navbar = props => {
                       return (
                         <React.Fragment>
                           <li className="nav-item">
+                            <Link className="nav-link" to="/">
+                              <i className="bx bxs-home-circle me-2"></i>
+                              {props.t("Bảng điều khiển")}
+                            </Link>
+                          </li>
+                          <li className="nav-item">
                             <Link
                               className="nav-link"
                               to="/bookings"
