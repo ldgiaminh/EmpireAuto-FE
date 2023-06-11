@@ -72,12 +72,12 @@ const vietnameseMonthLabels = [
 
 const translateDate = date => {
   const abbreviatedDays = [
-    "Thứ 2",
-    "Thứ 3",
-    "Thứ 4",
-    "Thứ 5",
-    "Thứ 6",
-    "Thứ 7",
+    "Thứ Hai",
+    "Thứ Ba",
+    "Thứ Tư",
+    "Thứ Năm",
+    "Thứ Sáu",
+    "Thứ Bảy",
     "Chủ Nhật",
   ]
   const dayOfWeek = date.day() === 0 ? 6 : date.day() - 1
@@ -243,20 +243,19 @@ const BookingList = props => {
         setSelectedMonth(currentMonthObj.label)
         const weekOptions = generateWeekOptions(currentMonthObj.label)
         if (weekOptions.length > 0) {
-          const currentDate = currentMoment.date()
-          const currentWeekObj = weekOptions.find(week =>
-            currentMoment.isBetween(week.start, week.end, undefined, "[]")
-          )
+          // Get the current week index (1-based)
+          const currentWeekIndex = Math.ceil(currentMoment.date() / 7)
 
-          if (currentWeekObj) {
-            setSelectedWeek(currentWeekObj.label)
-            setSelectedDates(
-              getSelectedDates(currentWeekObj.start, currentWeekObj.end)
-            )
-          } else {
-            setSelectedWeek("")
-            setSelectedDates([])
-          }
+          // Set the selected week as the second week of the month
+          const selectedWeek = weekOptions[currentWeekIndex - 1].label
+          setSelectedWeek(selectedWeek)
+
+          // Set the selected dates for the second week
+          const selectedDates = getSelectedDates(
+            weekOptions[currentWeekIndex - 1].start,
+            weekOptions[currentWeekIndex - 1].end
+          )
+          setSelectedDates(selectedDates)
         } else {
           setSelectedWeek("")
           setSelectedDates([])
@@ -407,6 +406,22 @@ const BookingList = props => {
 
   /*
   ==================================================
+  Count length
+  ==================================================
+  */
+
+  const countPending = booking.filter(
+    booking => !booking.isArrived && booking.isActived
+  )
+  const countArrived = booking.filter(
+    booking => booking.isArrived && booking.isActived
+  )
+  const countCancel = booking.filter(
+    booking => !booking.isArrived && !booking.isActived
+  )
+
+  /*
+  ==================================================
   Check-in Qr-Code
   ==================================================
   */
@@ -513,7 +528,7 @@ const BookingList = props => {
               <Card>
                 <CardBody>
                   <Row className="mb-2">
-                    <Col sm={2} className="col-xl">
+                    <Col md={2} className="col-xl">
                       <FormGroup className="mb-0">
                         <Label className="form-label">Năm</Label>
                         <select
@@ -526,7 +541,7 @@ const BookingList = props => {
                       </FormGroup>
                     </Col>
 
-                    <Col sm={2} className="col-xl">
+                    <Col md={2} className="col-xl">
                       <FormGroup className="mb-0">
                         <Label>Tháng</Label>
                         <select
@@ -543,7 +558,7 @@ const BookingList = props => {
                       </FormGroup>
                     </Col>
 
-                    <Col sm={2} className="col-xl">
+                    <Col md={2} className="col-xl">
                       <FormGroup className="mb-0">
                         <Label>Tuần</Label>
                         <select
@@ -560,7 +575,7 @@ const BookingList = props => {
                       </FormGroup>
                     </Col>
 
-                    <Col sm={6} className="text-sm-end align-self-end">
+                    <Col sm={4} className="text-sm-end align-self-end">
                       {/* <div className="mb-3">
                         <FormGroup className="mb-0">
                           <Label>Tự động phân công</Label>
@@ -627,6 +642,9 @@ const BookingList = props => {
                                       }}
                                     >
                                       Chưa đến
+                                      <span className="badge bg-warning ms-1">
+                                        {countPending.length}
+                                      </span>
                                     </NavLink>
                                   </NavItem>
                                   <NavItem>
@@ -639,6 +657,9 @@ const BookingList = props => {
                                       }}
                                     >
                                       Đã đến
+                                      <span className="badge bg-success ms-1">
+                                        {countArrived.length}
+                                      </span>
                                     </NavLink>
                                   </NavItem>
                                   <NavItem>
@@ -651,6 +672,9 @@ const BookingList = props => {
                                       }}
                                     >
                                       Hủy
+                                      <span className="badge bg-danger ms-1">
+                                        {countCancel.length}
+                                      </span>
                                     </NavLink>
                                   </NavItem>
                                 </ul>

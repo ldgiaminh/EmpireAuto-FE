@@ -9,6 +9,8 @@ import { withTranslation } from "react-i18next"
 
 import { connect } from "react-redux"
 
+import { toggleLeftmenu } from "../../store/actions"
+
 const getUserName = () => {
   if (localStorage.getItem("authUser")) {
     const obj = JSON.parse(localStorage.getItem("authUser"))
@@ -17,10 +19,7 @@ const getUserName = () => {
 }
 
 const Navbar = props => {
-  const [app, setapp] = useState(false)
-  const [email, setemail] = useState(false)
   const [manage, setManage] = useState(false)
-  const [add, setadd] = useState(false)
 
   const [role, setRole] = useState("")
 
@@ -91,13 +90,25 @@ const Navbar = props => {
                       return (
                         <React.Fragment>
                           <li className="nav-item">
-                            <Link className="nav-link" to="/bookings">
+                            <Link
+                              className="nav-link"
+                              to="/bookings"
+                              onClick={() => {
+                                props.toggleLeftmenu(!props.leftMenu)
+                              }}
+                            >
                               <i className="bx bx-calendar me-2"></i>
                               {props.t("Đặt lịch")}
                             </Link>
                           </li>
                           <li className="nav-item">
-                            <Link className="nav-link" to="/order-services">
+                            <Link
+                              className="nav-link"
+                              to="/order-services"
+                              onClick={() => {
+                                props.toggleLeftmenu(!props.leftMenu)
+                              }}
+                            >
                               <i className="bx bxs-detail me-2"></i>
                               {props.t("Theo dõi tiến trình")}
                             </Link>
@@ -294,6 +305,17 @@ const Navbar = props => {
                           </li> */}
                         </React.Fragment>
                       )
+                    case "AD":
+                      return (
+                        <React.Fragment>
+                          <li className="nav-item">
+                            <Link className="nav-link" to="/config">
+                              <i className="bx bx-server me-2"></i>
+                              {props.t("Cấu hình")}
+                            </Link>
+                          </li>
+                        </React.Fragment>
+                      )
                     default:
                       return null
                   }
@@ -312,6 +334,7 @@ Navbar.propTypes = {
   location: PropTypes.any,
   menuOpen: PropTypes.any,
   t: PropTypes.any,
+  toggleLeftmenu: PropTypes.func,
 }
 
 const mapStatetoProps = state => {
@@ -320,5 +343,5 @@ const mapStatetoProps = state => {
 }
 
 export default withRouter(
-  connect(mapStatetoProps, {})(withTranslation()(Navbar))
+  connect(mapStatetoProps, { toggleLeftmenu })(withTranslation()(Navbar))
 )

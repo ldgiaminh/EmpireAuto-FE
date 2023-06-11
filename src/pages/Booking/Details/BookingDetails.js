@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react"
 import PropTypes from "prop-types"
 import { Link, withRouter } from "react-router-dom"
-import uuid from "uuid"
 import { isEmpty } from "lodash"
-import toastr from "toastr"
 import "toastr/build/toastr.min.css"
 import moment from "moment" // Import the Moment.js library
 import {
@@ -28,8 +26,6 @@ import {
 
 //redux
 import { useSelector, useDispatch } from "react-redux"
-import { ref, set } from "firebase/database"
-import { db } from "helpers/firebase"
 import PreloadDetail from "../../../components/Loader/PreloadDetail"
 
 const BookingDetails = props => {
@@ -78,23 +74,6 @@ const BookingDetails = props => {
   CHECK-IN FUNCTION
   ==================================================
   */
-
-  // const now = new Date()
-  // const timeZoneOffset = 7 // Vietnam is GMT+7
-
-  // const vietnamDate = new Date(now.getTime() + timeZoneOffset * 60 * 60 * 1000)
-  // const isoDateTime = vietnamDate.toISOString()
-
-  // const sendNotification = (userId, code, bookingId) => {
-  //   const notificationId = uuid.v4()
-  //   set(ref(db, `users/${userId}/notifications/${notificationId}`), {
-  //     isRead: "false",
-  //     message: "Bạn đã check-in thành công #" + code,
-  //     time: isoDateTime,
-  //     title: "Check-in thành công",
-  //     bookingId: bookingId,
-  //   })
-  // }
 
   const today = moment().format("YYYY-MM-DD") + "T00:00:00+00:00"
 
@@ -213,7 +192,12 @@ const BookingDetails = props => {
                                   >
                                     E-mail :
                                   </th>
-                                  <td>{bookingDetail.user.email}</td>
+                                  <td>
+                                    {" "}
+                                    {bookingDetail.user.email !== null
+                                      ? bookingDetail.user.email
+                                      : null}
+                                  </td>
                                 </tr>
                                 <tr>
                                   <th
