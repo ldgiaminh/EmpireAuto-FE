@@ -243,19 +243,20 @@ const BookingList = props => {
         setSelectedMonth(currentMonthObj.label)
         const weekOptions = generateWeekOptions(currentMonthObj.label)
         if (weekOptions.length > 0) {
-          // Get the current week index (1-based)
-          const currentWeekIndex = Math.ceil(currentMoment.date() / 7)
-
-          // Set the selected week as the second week of the month
-          const selectedWeek = weekOptions[currentWeekIndex - 1].label
-          setSelectedWeek(selectedWeek)
-
-          // Set the selected dates for the second week
-          const selectedDates = getSelectedDates(
-            weekOptions[currentWeekIndex - 1].start,
-            weekOptions[currentWeekIndex - 1].end
+          // Find the week that contains today's date
+          const currentWeekObj = weekOptions.find(week =>
+            currentMoment.isBetween(week.start, week.end, undefined, "[]")
           )
-          setSelectedDates(selectedDates)
+
+          if (currentWeekObj) {
+            setSelectedWeek(currentWeekObj.label)
+            setSelectedDates(
+              getSelectedDates(currentWeekObj.start, currentWeekObj.end)
+            )
+          } else {
+            setSelectedWeek("")
+            setSelectedDates([])
+          }
         } else {
           setSelectedWeek("")
           setSelectedDates([])
