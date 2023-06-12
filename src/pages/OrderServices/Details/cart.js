@@ -69,14 +69,20 @@ const Cart = ({ details, services }) => {
               <div className="table-responsive">
                 <Table className="table mb-0">
                   <tbody>
-                    {services.map((service, index) => (
-                      <tr key={index}>
-                        <td>{service.item.name} :</td>
-                        <td style={{ textAlign: "right" }}>
-                          {service.price.toLocaleString()}đ
-                        </td>
-                      </tr>
-                    ))}
+                    {services &&
+                      services.map((service, index) => (
+                        <tr key={index}>
+                          <td>
+                            {service.item.name !== null
+                              ? service.item.name
+                              : ""}
+                            :
+                          </td>
+                          <td style={{ textAlign: "right" }}>
+                            {service.price.toLocaleString()}đ
+                          </td>
+                        </tr>
+                      ))}
                     <tr>
                       <td>Phí kiểm tra :</td>
                       <td style={{ textAlign: "right" }}>

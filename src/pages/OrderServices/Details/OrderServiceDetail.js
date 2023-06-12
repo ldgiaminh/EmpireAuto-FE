@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react"
 import PropTypes from "prop-types"
 import { Link, withRouter } from "react-router-dom"
-import { isEmpty, map } from "lodash"
-import toastr from "toastr"
+import { isEmpty } from "lodash"
+
 import "toastr/build/toastr.min.css"
-import uuid from "uuid"
 
 import {
   Button,
@@ -35,18 +34,15 @@ import { useSelector, useDispatch } from "react-redux"
 
 import Cart from "./cart"
 import CarRecord from "./health-car-record"
-import Loading from "components/Loader/Loading"
 import PreloadDetail from "components/Loader/PreloadDetail"
 import Stepper from "./stepper"
+import ConfirmReassign from "../confirm-reassign"
 
 const OrderServiceDetail = props => {
   //meta title
   document.title = "Theo dõi tiến trình | Empire Garage"
 
-  const { history } = props
   const dispatch = useDispatch()
-
-  const [isAssign, setIsAssign] = useState(false)
 
   /*
   ==================================================
@@ -131,11 +127,20 @@ const OrderServiceDetail = props => {
 
   /*
   ==================================================
-  ASSIGN TO EXPERTS
+  RE-ASSIGN TO EXPERTS
   ==================================================
   */
 
   const [selectedGroup, setSelectedGroup] = useState(null)
+
+  const [isAssign, setIsAssign] = useState(false)
+
+  const [isOpenEx, setIsOpenEx] = useState(false)
+
+  const toggleEx = () => {
+    setIsOpenEx(!isOpenEx)
+    setIsAssign(false)
+  }
 
   const handleReAssign = () => {
     setIsAssign(!isAssign)
@@ -146,30 +151,68 @@ const OrderServiceDetail = props => {
     setSelectedGroup(selected)
   }
 
-  const optionGroup = users.map(ex => ({
-    label: ex.fullname,
-    value: ex.id,
-  }))
+  const optionGroup = [
+    {
+      label: "Còn trống",
+      options: [],
+    },
+    {
+      label: "Đã đầy",
+      options: [],
+    },
+  ]
 
-  const handleAssignExpert = () => {
-    const id = params.id
-    const exId = selectedGroup.value
-    if ((id, exId)) {
-      dispatch(assignExpert(id, exId))
-      setIsAssign(false)
-      setSelectedGroup(null)
-    }
+  optionGroup[0].options = users
+    .filter(ex => !ex.isMaxWorkloadPerDay)
+    .sort((a, b) => a.workloadTotal - b.workloadTotal)
+    .map(ex => ({
+      label: ex.fullname + " / " + ex.workloadTotal,
+      value: ex.id,
+      name: ex.fullname,
+      isMax: ex.isMaxWorkloadPerDay,
+    }))
+
+  optionGroup[1].options = users
+    .filter(ex => ex.isMaxWorkloadPerDay)
+    .map(ex => ({
+      label: ex.fullname,
+      value: ex.id,
+      name: ex.fullname,
+      isMax: ex.isMaxWorkloadPerDay,
+    }))
+
+  // Check if orderServicesDetail.expert.fullname exists in optionGroup
+  const expertFullName = orderServicesDetail.expert
+    ? orderServicesDetail.expert.fullname
+    : ""
+  const isExpertInOptions = optionGroup.some(group => {
+    return group.options.some(option => option.label.includes(expertFullName))
+  })
+
+  // Remove expertFullName from optionGroup if it exists
+  if (isExpertInOptions) {
+    optionGroup.forEach(group => {
+      group.options = group.options.filter(
+        option => !option.label.includes(expertFullName)
+      )
+    })
   }
+
+  // const handleAssignExpert = () => {
+  //   const id = params.id
+  //   const exId = selectedGroup.value
+  //   if ((id, exId)) {
+  //     dispatch(assignExpert(id, exId))
+  //     setIsAssign(false)
+  //     setSelectedGroup(null)
+  //   }
+  // }
 
   /*
   ==================================================
   SCAN QR-CODE TO CHECK-OUT
   ==================================================
   */
-
-  const handleCheckOutQr = () => {
-    history.push("/scanner-checkout")
-  }
 
   const handleCheckOut = () => {
     const id = params.id
@@ -188,6 +231,12 @@ const OrderServiceDetail = props => {
         <Container fluid={true}>
           {!isLoading && !isEmpty(orderServicesDetail) && (
             <React.Fragment>
+              <ConfirmReassign
+                isOpen={isOpenEx}
+                toggle={toggleEx}
+                expert={selectedGroup}
+                order={orderServicesDetail}
+              />
               <Breadcrumbs
                 title="Dịch vụ"
                 breadcrumbItem={
@@ -387,13 +436,13 @@ const OrderServiceDetail = props => {
                                               // menuPlacement="top"
                                             />
                                             <Button
-                                              onClick={handleAssignExpert}
+                                              onClick={toggleEx}
                                               type="button"
                                               color="primary"
                                               className="w-md mt-2 me-2"
                                               disabled={!selectedGroup}
                                             >
-                                              Phân công
+                                              Chỉ định
                                             </Button>
                                             <Button
                                               onClick={handleReAssign}

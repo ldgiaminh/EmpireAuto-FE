@@ -88,8 +88,9 @@ function* onAssignExpert({ payload: { orderServiceId, exId } }) {
   try {
     const response = yield call(putAssignExperts, orderServiceId, exId)
     yield put(putAssignExpertsSuccess(response))
-    toast.success("Đã phân công cho " + response.expert.fullname)
+    toast.success("Đã chỉ định cho " + response.expert.fullname)
   } catch (error) {
+    toast.error("Chỉ định thất bại")
     yield put(putAssignExpertsFail(error))
   }
 }
