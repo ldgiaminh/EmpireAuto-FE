@@ -118,8 +118,8 @@ CHECK-IN QR CODE
 
 export const checkinQRCode = (data, history) => ({
   type: CHECKIN_QRCODE,
-  history,
   payload: data,
+  history,
 })
 
 export const checkinQRCodeSuccess = bookingDetail => ({

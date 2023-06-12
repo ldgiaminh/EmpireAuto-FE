@@ -84,7 +84,7 @@ function* checkInBookings({ bookingId, isAssign, history }) {
   }
 }
 
-function* checkInQRCodes({ data, history }) {
+function* checkInQRCodes({ payload: data, history }) {
   try {
     const response = yield call(checkinQRCode, data)
     history.push(`/order-services/${response.orderServiceId}`)
