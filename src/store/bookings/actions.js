@@ -116,14 +116,15 @@ CHECK-IN QR CODE
 ================================================
 */
 
-export const checkinQRCode = data => ({
+export const checkinQRCode = (data, history) => ({
   type: CHECKIN_QRCODE,
+  history,
   payload: data,
 })
 
-export const checkinQRCodeSuccess = dataDetail => ({
+export const checkinQRCodeSuccess = bookingDetail => ({
   type: CHECKIN_QRCODE_SUCCESS,
-  payload: dataDetail,
+  payload: bookingDetail,
 })
 
 export const checkinQRCodeFail = error => ({

@@ -117,10 +117,7 @@ export const checkinBooking = (id, isAssign) =>
   put(`${url.CHECKIN_BOOKING}/${id}?autoAssign=${isAssign}`)
 
 //Check-in QrCode
-export const checkinQRCode = data =>
-  put(`${url.CHECKIN_QRCODE}?qrcode=${encodeURIComponent(data)}`, {
-    params: { data },
-  })
+export const checkinQRCode = data => post(url.CHECKIN_QRCODE, data)
 
 //Add New Booking
 //Update  Booking

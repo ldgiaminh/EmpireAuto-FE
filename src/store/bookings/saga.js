@@ -84,11 +84,16 @@ function* checkInBookings({ bookingId, isAssign, history }) {
   }
 }
 
-function* checkInQRCodes({ data }) {
+function* checkInQRCodes({ data, history }) {
   try {
     const response = yield call(checkinQRCode, data)
+    history.push(`/order-services/${response.orderServiceId}`)
     yield put(checkinQRCodeSuccess(response))
+    toast.success(
+      "Check-in thành công phương tiện\n" + response.car.carLisenceNo
+    )
   } catch (error) {
+    toast.error("Check-in thất bại")
     yield put(checkinQRCodeFail(error))
   }
 }

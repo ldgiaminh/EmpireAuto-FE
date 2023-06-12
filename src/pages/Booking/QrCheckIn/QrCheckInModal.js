@@ -7,12 +7,10 @@ import { toast } from "react-toastify"
 import { useDispatch } from "react-redux"
 import { useSelector } from "react-redux"
 
-import { checkinBooking as checkInBooking } from "store/actions"
+import { checkinQRCode as checkInQRCodes } from "store/actions"
 
 const QrCheckInModal = props => {
   const { isOpen, toggle, history } = props
-
-  const obj = JSON.parse(localStorage.getItem("authUser"))
 
   const dispatch = useDispatch()
 
@@ -24,43 +22,48 @@ const QrCheckInModal = props => {
     console.error(err)
   }
 
-  const handleScan = data => {
-    if (data) {
+  const handleScan = qrCode => {
+    if (qrCode) {
       toggle(false)
+      const data = {
+        qrCode: qrCode,
+        autoAssign: isAssign,
+      }
+      dispatch(checkInQRCodes(data, history))
 
-      fetch(
-        `https://empire-api.azurewebsites.net/api/v1/booking-qrcode/close-generation?qrcode=${encodeURIComponent(
-          data
-        )}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + obj.accessToken,
-          },
-        }
-      )
-        .then(response => {
-          if (!response.ok) {
-            toggle(false)
-            toast.error("Không tìm thấy đặt lịch !!")
-            throw new Error("Network response was not ok")
-          }
-          return response.json()
-        })
-        .then(data => {
-          goToCheckIn(data.id)
-        })
-        .catch(error => {
-          toggle(false)
-          console.log("Error: " + error)
-        })
+      // fetch(
+      //   `https://empire-api.azurewebsites.net/api/v1/booking-qrcode/close-generation?qrcode=${encodeURIComponent(
+      //     data
+      //   )}`,
+      //   {
+      //     method: "PUT",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //       Authorization: "Bearer " + obj.accessToken,
+      //     },
+      //   }
+      // )
+      //   .then(response => {
+      //     if (!response.ok) {
+      //       toggle(false)
+      //       toast.error("Không tìm thấy đặt lịch !!")
+      //       throw new Error("Network response was not ok")
+      //     }
+      //     return response.json()
+      //   })
+      //   .then(data => {
+      //     goToCheckIn(data.id)
+      //   })
+      //   .catch(error => {
+      //     toggle(false)
+      //     console.log("Error: " + error)
+      //   })
     }
   }
 
-  const goToCheckIn = id => {
-    dispatch(checkInBooking(id, isAssign, history))
-  }
+  // const goToCheckIn = id => {
+  //   dispatch(checkInBooking(id, isAssign, history))
+  // }
 
   return (
     <>

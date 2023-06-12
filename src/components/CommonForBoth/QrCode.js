@@ -86,7 +86,6 @@ const QrCode = props => {
             </div>
           </DropdownItem>
 
-          <div className="dropdown-divider" />
           <DropdownItem tag="button" onClick={toggleCheckIn}>
             <i className="mdi mdi-login font-size-16 align-middle me-1 text-success" />
             Check-in
