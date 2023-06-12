@@ -16,7 +16,7 @@ import {
   Row,
   Table,
 } from "reactstrap"
-import Select from "react-select"
+import Select, { components } from "react-select"
 
 //Import Breadcrumb
 import Breadcrumbs from "../../../components/Common/Breadcrumb"
@@ -166,9 +166,10 @@ const OrderServiceDetail = props => {
     .filter(ex => !ex.isMaxWorkloadPerDay)
     .sort((a, b) => a.workloadTotal - b.workloadTotal)
     .map(ex => ({
-      label: ex.fullname + " / " + ex.workloadTotal,
+      label: ex.fullname,
       value: ex.id,
       name: ex.fullname,
+      workLoad: ex.workloadTotal,
       isMax: ex.isMaxWorkloadPerDay,
     }))
 
@@ -178,6 +179,7 @@ const OrderServiceDetail = props => {
       label: ex.fullname,
       value: ex.id,
       name: ex.fullname,
+      workLoad: ex.workloadTotal,
       isMax: ex.isMaxWorkloadPerDay,
     }))
 
@@ -196,6 +198,37 @@ const OrderServiceDetail = props => {
         option => !option.label.includes(expertFullName)
       )
     })
+  }
+
+  const SingleValue = props => {
+    const { name, workLoad, isMax } = props.getValue()[0]
+
+    return (
+      <components.SingleValue {...props}>
+        <span>{name}</span>{" "}
+        {isMax == true ? (
+          <span style={{ color: "darkgray" }}>MAX</span>
+        ) : (
+          <span style={{ color: "darkgray" }}>{workLoad}</span>
+        )}
+      </components.SingleValue>
+    )
+  }
+
+  const Option = props => {
+    const { name, workLoad, isMax } = props.data
+    return (
+      <components.Option {...props}>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <span>{name}</span>{" "}
+          {isMax == true ? (
+            <span style={{ color: "darkgray" }}>MAX</span>
+          ) : (
+            <span style={{ color: "darkgray" }}>{workLoad}</span>
+          )}
+        </div>
+      </components.Option>
+    )
   }
 
   // const handleAssignExpert = () => {
@@ -433,6 +466,10 @@ const OrderServiceDetail = props => {
                                               placeholder="Chọn kỹ thuật viên"
                                               required={true}
                                               onClick={e => e.preventDefault()}
+                                              components={{
+                                                SingleValue,
+                                                Option,
+                                              }}
                                               // menuPlacement="top"
                                             />
                                             <Button
