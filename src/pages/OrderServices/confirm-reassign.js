@@ -1,15 +1,28 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import PropTypes from "prop-types"
 import { Modal } from "reactstrap"
 
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
-import { putAssignExperts as assignExpert } from "store/actions"
+import {
+  putAssignExperts as assignExpert,
+  getExpertIntendedTime as getExpertTime,
+} from "store/actions"
 
 const ConfirmReassign = props => {
   const { isOpen, toggle, expert, order } = props
 
   const dispatch = useDispatch()
+
+  const { exDetails } = useSelector(state => ({
+    exDetails: state.orderServices.exDetails,
+  }))
+
+  useEffect(() => {
+    if (expert && expert.value) {
+      dispatch(getExpertTime(expert.value))
+    }
+  }, [expert])
 
   const handleAssignExpert = () => {
     const exId = expert.value
@@ -20,14 +33,36 @@ const ConfirmReassign = props => {
     toggle(false)
   }
 
+  /*
+  ==================================================
+  FORMAT DATE & TIME
+  ==================================================
+  */
+
+  const formattedDateTime = date => {
+    const createDate = new Date(date)
+    const formattedDate = createDate.toLocaleDateString("vi-VN", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    })
+    const formattedTime = createDate.toLocaleTimeString("vi-VN", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    })
+    const formatted = `${formattedTime} - ${formattedDate}`
+    return formatted
+  }
+
   return (
     <>
       {" "}
       <Modal isOpen={isOpen} toggle={toggle} centered>
         <div className="modal-header">
-          <h5 className="modal-title mt-0" id="myModalLabel">
+          <h4 className="modal-title mt-0" id="myModalLabel">
             Chỉ định kỹ thuật viên
-          </h5>
+          </h4>
           <button
             type="button"
             onClick={toggle}
@@ -39,16 +74,33 @@ const ConfirmReassign = props => {
           </button>
         </div>
         <div className="modal-body">
-          <h5>
-            Chỉ định {expert && expert.name} cho phương tiện{" "}
-            {order.car.carLisenceNo} ?
-          </h5>
-          {expert && expert.isMax && (
-            <p>
-              Số xe mà kỹ thuật viên {expert && expert.name} nhận đã đầy. Nếu
-              "Xác nhận" chủ xe sẽ phải vào hàng chờ. Vui lòng thông báo cho chủ
-              xe để xác nhận !!!{" "}
-            </p>
+          {expert && expert.isMax === true ? (
+            <>
+              <h5>
+                Chỉ định {expert && expert.name} cho phương tiện{" "}
+                {order.car.carLisenceNo} ?
+              </h5>
+              <p>
+                Số xe mà kỹ thuật viên {expert && expert.name} nhận đã đầy. Nếu
+                "Xác nhận" chủ xe sẽ phải vào hàng chờ. Vui lòng thông báo cho
+                chủ xe để xác nhận !!!
+              </p>
+              <h6 className="text-muted">
+                *Thời gian dự kiến kết thúc:{" "}
+                {formattedDateTime(exDetails.intendedFinishTime)}
+              </h6>
+            </>
+          ) : (
+            <>
+              <h5>
+                Chỉ định {expert && expert.name} cho phương tiện{" "}
+                {order.car.carLisenceNo} ?
+              </h5>
+              <h6 className="text-muted">
+                *Thời gian dự kiến kết thúc:{" "}
+                {formattedDateTime(exDetails.intendedFinishTime)}
+              </h6>
+            </>
           )}
         </div>
         <div className="modal-footer">

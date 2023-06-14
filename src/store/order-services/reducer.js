@@ -21,6 +21,8 @@ import {
   GET_ORDER_SERVICE_DETAIL,
   PUT_ASSIGN_EXPERT,
   CHECKOUT_SERVICES,
+  GET_EXPERTS_INTENDED_TIME_SUCCESS,
+  GET_EXPERTS_INTENDED_TIME_FAIL,
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -31,6 +33,7 @@ const INIT_STATE = {
   isLoad: false,
   orderServiceLogs: [],
   checkOut: [],
+  exDetails: {},
 }
 
 const orderServices = (state = INIT_STATE, action) => {
@@ -138,6 +141,18 @@ const orderServices = (state = INIT_STATE, action) => {
       return {
         ...state,
         isLoading: false,
+        error: action.payload,
+      }
+
+    case GET_EXPERTS_INTENDED_TIME_SUCCESS:
+      return {
+        ...state,
+        exDetails: action.payload,
+      }
+
+    case GET_EXPERTS_INTENDED_TIME_FAIL:
+      return {
+        ...state,
         error: action.payload,
       }
 

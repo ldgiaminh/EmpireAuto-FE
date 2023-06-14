@@ -40,6 +40,9 @@ export const PUT_ORDER_SERVICE = "/order-services"
 //Assign Expert
 export const PUT_ASSIGN_EXPERT = "/order-services"
 
+//Get Expert Intended Time
+export const GET_EXPERTS_INTENDED_TIME = "/workloads/expected-finish-time"
+
 //Status Log
 export const GET_STATUS_LOG = "/order-services"
 

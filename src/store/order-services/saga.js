@@ -12,6 +12,7 @@ import {
   PUT_CONFIRM_PAID_SERVICES,
   POST_CHECKOUT_SERVICES,
   CHECKOUT_SERVICES,
+  GET_EXPERTS_INTENDED_TIME,
 } from "./actionTypes"
 
 import {
@@ -24,6 +25,7 @@ import {
   putAssignExpertsFail,
   checkOutServiceSuccess,
   checkOutServiceFail,
+  getExpertIntendedTimeSuccess,
 } from "./actions"
 
 import {
@@ -32,6 +34,7 @@ import {
   putAssignExperts,
   getStatusLog,
   checkOutService,
+  getExpertIntendedTime,
 } from "../../helpers/fakebackend_helper"
 
 import { toast } from "react-toastify"
@@ -95,6 +98,15 @@ function* onAssignExpert({ payload: { orderServiceId, exId } }) {
   }
 }
 
+function* onGetExpertIntendedTime({ exId }) {
+  try {
+    const response = yield call(getExpertIntendedTime, exId)
+    yield put(getExpertIntendedTimeSuccess(response))
+  } catch (error) {
+    yield put(getExpertIntendedTime(error))
+  }
+}
+
 // function* onConfirmServices({ payload: { orderServiceId, services } }) {
 //   try {
 //     const response = yield call(putConfirmServices, orderServiceId, services)
@@ -148,6 +160,7 @@ function* orderServicesSaga() {
   yield takeEvery(GET_ORDER_SERVICE_DETAIL, fetchOrderServicesDetails)
   // yield takeEvery(PUT_ORDER_SERVICE, onRecommendService)
   yield takeEvery(PUT_ASSIGN_EXPERT, onAssignExpert)
+  yield takeEvery(GET_EXPERTS_INTENDED_TIME, onGetExpertIntendedTime)
   //yield takeEvery(PUT_CONFIRM_SERVICES, onConfirmServices)
   // yield takeEvery(PUT_CONFIRM_PAID_SERVICES, onConfirmPaidServices)
   yield takeEvery(CHECKOUT_SERVICES, checkOutServices)

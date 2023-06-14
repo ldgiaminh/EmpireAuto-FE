@@ -127,13 +127,9 @@ const Cart = ({ details, services }) => {
                   <Table className="table align-middle mb-0 table-nowrap">
                     <thead className="table-light">
                       <tr>
-                        {services.some(
-                          service => service.images.length > 0
-                        ) && <th>Hình ảnh</th>}
+                        <th>Hình ảnh</th>
                         <th>Dịch vụ</th>
-                        {services.some(service => service.note !== null) && (
-                          <th>Ghi chú</th>
-                        )}
+                        <th>Ghi chú</th>
                       </tr>
                     </thead>
                     <tbody>

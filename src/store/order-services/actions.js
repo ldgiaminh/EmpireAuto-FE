@@ -26,6 +26,9 @@ import {
   GET_ORDER_SERVICE_LIST_BY_STATUS,
   GET_ORDER_SERVICE_LIST_BY_STATUS_FAIL,
   GET_ORDER_SERVICE_LIST_BY_STATUS_SUCCESS,
+  GET_EXPERTS_INTENDED_TIME,
+  GET_EXPERTS_INTENDED_TIME_SUCCESS,
+  GET_EXPERTS_INTENDED_TIME_FAIL,
 } from "./actionTypes"
 
 /*
@@ -126,6 +129,26 @@ export const putAssignExpertsSuccess = orderServicesDetails => ({
 
 export const putAssignExpertsFail = error => ({
   type: PUT_ASSIGN_EXPERT_FAIL,
+  payload: error,
+})
+
+/*
+================================================ 
+GET Expert Intende Time 
+================================================
+*/
+export const getExpertIntendedTime = exId => ({
+  type: GET_EXPERTS_INTENDED_TIME,
+  exId,
+})
+
+export const getExpertIntendedTimeSuccess = exDetail => ({
+  type: GET_EXPERTS_INTENDED_TIME_SUCCESS,
+  payload: exDetail,
+})
+
+export const getExpertIntendedTimeFail = error => ({
+  type: GET_EXPERTS_INTENDED_TIME_FAIL,
   payload: error,
 })
 

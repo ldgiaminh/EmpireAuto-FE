@@ -141,20 +141,24 @@ export const getOrderServicesDetails = id =>
   get(`${url.GET_ORDER_SERVICE_DETAIL}/${id}`)
 
 /* PUT ORDER SERVICE - NOT USING */
-export const putOrderServices = (id, services) =>
-  put(`${url.PUT_ORDER_SERVICE}/${id}/diagnosed-result`, services)
+// export const putOrderServices = (id, services) =>
+//   put(`${url.PUT_ORDER_SERVICE}/${id}/diagnosed-result`, services)
 
 /* PUT ASSIGN EXPERT */
 export const putAssignExperts = (orderServiceId, exId) =>
   put(`${url.PUT_ASSIGN_EXPERT}/${orderServiceId}/assign-expert/${exId}`)
+
+/* GET EXPERT INTENDED TIME*/
+export const getExpertIntendedTime = id =>
+  get(`${url.GET_EXPERTS_INTENDED_TIME}?expertId=${id}`)
 
 /* GET STATUS LOG */
 export const getStatusLog = id =>
   get(`${url.GET_STATUS_LOG}/${id}/order-service-status-logs`)
 
 /* CONFIRM SERVICES - NOT USING */
-export const putConfirmServices = (id, services) =>
-  put(`${url.PUT_CONFIRM_SERVICES}/${id}/confirm`, services)
+// export const putConfirmServices = (id, services) =>
+//   put(`${url.PUT_CONFIRM_SERVICES}/${id}/confirm`, services)
 
 /* CONFIRM & PAID - NOT USING*/
 // export const putConfirmPaid = (id, services) => {
