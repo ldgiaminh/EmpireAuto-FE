@@ -43,8 +43,8 @@ const QrCheckOutModal = props => {
           }
           return response.json()
         })
-        .then(data => {
-          goToCheckOut(data.id, data.car.carLisenceNo)
+        .then(response => {
+          goToCheckOut(response.id, response.car.carLisenceNo)
         })
         .catch(error => {
           toggle(false)

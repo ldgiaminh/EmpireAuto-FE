@@ -86,7 +86,7 @@ const ConfirmReassign = props => {
                 chủ xe để xác nhận !!!
               </p>
               <h6 className="text-muted">
-                *Thời gian dự kiến kết thúc:{" "}
+                *Thời gian bắt đầu dự kiến:{" "}
                 {formattedDateTime(exDetails.intendedFinishTime)}
               </h6>
             </>
@@ -97,7 +97,7 @@ const ConfirmReassign = props => {
                 {order.car.carLisenceNo} ?
               </h5>
               <h6 className="text-muted">
-                *Thời gian dự kiến kết thúc:{" "}
+                *Thời gian bắt đầu dự kiến:{" "}
                 {formattedDateTime(exDetails.intendedFinishTime)}
               </h6>
             </>

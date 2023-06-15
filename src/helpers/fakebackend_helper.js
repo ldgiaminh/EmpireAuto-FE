@@ -152,6 +152,12 @@ export const putAssignExperts = (orderServiceId, exId) =>
 export const getExpertIntendedTime = id =>
   get(`${url.GET_EXPERTS_INTENDED_TIME}?expertId=${id}`)
 
+/* GET EXPERT INTENDED TIME BY SERVICE*/
+export const getExpertIntendedTimeByService = (id, orId) =>
+  get(
+    `${url.GET_EXPERTS_INTENDED_TIME_BY_SERVICE}?expertId=${id}&orderServiceId=${orId}`
+  )
+
 /* GET STATUS LOG */
 export const getStatusLog = id =>
   get(`${url.GET_STATUS_LOG}/${id}/order-service-status-logs`)
@@ -164,6 +170,10 @@ export const getStatusLog = id =>
 // export const putConfirmPaid = (id, services) => {
 //   put(`${url.PUT_CONFIRM_PAID_SERVICES}/${id}/confirm-and-paid`, services)
 // }
+
+/* PRIORITY */
+export const priorityService = (exId, orId) =>
+  put(`${url.PUT_PRIORITY_SERVICES}?expertId=${exId}&orderServiceId=${orId}`)
 
 /* CHECKOUT */
 export const checkOutService = id =>

@@ -41,7 +41,11 @@ export const PUT_ORDER_SERVICE = "/order-services"
 export const PUT_ASSIGN_EXPERT = "/order-services"
 
 //Get Expert Intended Time
-export const GET_EXPERTS_INTENDED_TIME = "/workloads/expected-finish-time"
+export const GET_EXPERTS_INTENDED_TIME = "/workloads"
+
+//Get Expert Intended Time By Service
+export const GET_EXPERTS_INTENDED_TIME_BY_SERVICE =
+  "/workloads/by-order-service"
 
 //Status Log
 export const GET_STATUS_LOG = "/order-services"
@@ -51,6 +55,9 @@ export const PUT_CONFIRM_SERVICES = "/order-services"
 
 //Confirm & Paid
 export const PUT_CONFIRM_PAID_SERVICES = "/order-services"
+
+//Priority
+export const PUT_PRIORITY_SERVICES = "/workloads/priority"
 
 //CheckOut
 export const CHECKOUT_SERVICES = "/order-services"

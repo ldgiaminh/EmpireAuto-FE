@@ -29,6 +29,12 @@ import {
   GET_EXPERTS_INTENDED_TIME,
   GET_EXPERTS_INTENDED_TIME_SUCCESS,
   GET_EXPERTS_INTENDED_TIME_FAIL,
+  PUT_PRIORITY_SERVICES_SUCCESS,
+  PUT_PRIORITY_SERVICES_FAIL,
+  PUT_PRIORITY_SERVICES,
+  GET_EXPERTS_INTENDED_TIME_BY_SERVICE_TIME_SUCCESS,
+  GET_EXPERTS_INTENDED_TIME_BY_SERVICE_TIME_FAIL,
+  GET_EXPERTS_INTENDED_TIME_BY_SERVICE_TIME,
 } from "./actionTypes"
 
 /*
@@ -154,6 +160,26 @@ export const getExpertIntendedTimeFail = error => ({
 
 /*
 ================================================ 
+GET Expert Intended Time By Service
+================================================
+*/
+export const getExpertIntendedTimeByService = (exId, orId) => ({
+  type: GET_EXPERTS_INTENDED_TIME_BY_SERVICE_TIME,
+  payload: { exId, orId },
+})
+
+export const getExpertIntendedTimeByServiceSuccess = exDetailService => ({
+  type: GET_EXPERTS_INTENDED_TIME_BY_SERVICE_TIME_SUCCESS,
+  payload: exDetailService,
+})
+
+export const getExpertIntendedTimeByServiceFail = error => ({
+  type: GET_EXPERTS_INTENDED_TIME_BY_SERVICE_TIME_FAIL,
+  payload: error,
+})
+
+/*
+================================================ 
 GET Status Log
 ================================================
 */
@@ -214,14 +240,32 @@ export const putConfirmPaidFail = error => ({
 
 /*
 ================================================ 
-POST Check out
+PUT Priority Service
+================================================
+*/
+export const putPriorityService = (exId, orderServiceId, car) => ({
+  type: PUT_PRIORITY_SERVICES,
+  payload: { exId, orderServiceId, car },
+})
+
+export const putPriorityServiceSuccess = orderServicesDetails => ({
+  type: PUT_PRIORITY_SERVICES_SUCCESS,
+  payload: orderServicesDetails,
+})
+
+export const putPriorityServiceFail = error => ({
+  type: PUT_PRIORITY_SERVICES_FAIL,
+  payload: error,
+})
+
+/*
+================================================ 
+PUT Check out
 ================================================
 */
 export const checkOutService = (id, car, history) => ({
   type: CHECKOUT_SERVICES,
-  id,
-  car,
-  history,
+  payload: { id, car, history },
 })
 
 export const checkOutServiceSuccess = orderServicesCheckOut => ({

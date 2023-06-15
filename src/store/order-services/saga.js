@@ -13,6 +13,8 @@ import {
   POST_CHECKOUT_SERVICES,
   CHECKOUT_SERVICES,
   GET_EXPERTS_INTENDED_TIME,
+  PUT_PRIORITY_SERVICES,
+  GET_EXPERTS_INTENDED_TIME_BY_SERVICE_TIME,
 } from "./actionTypes"
 
 import {
@@ -26,6 +28,11 @@ import {
   checkOutServiceSuccess,
   checkOutServiceFail,
   getExpertIntendedTimeSuccess,
+  putPriorityServiceSuccess,
+  putPriorityServiceFail,
+  getExpertIntendedTimeByServiceSuccess,
+  getExpertIntendedTimeFail,
+  getExpertIntendedTimeByServiceFail,
 } from "./actions"
 
 import {
@@ -35,6 +42,8 @@ import {
   getStatusLog,
   checkOutService,
   getExpertIntendedTime,
+  priorityService,
+  getExpertIntendedTimeByService,
 } from "../../helpers/fakebackend_helper"
 
 import { toast } from "react-toastify"
@@ -103,7 +112,16 @@ function* onGetExpertIntendedTime({ exId }) {
     const response = yield call(getExpertIntendedTime, exId)
     yield put(getExpertIntendedTimeSuccess(response))
   } catch (error) {
-    yield put(getExpertIntendedTime(error))
+    yield put(getExpertIntendedTimeFail(error))
+  }
+}
+
+function* onGetExpertIntendedTimeByServices({ payload: { exId, orId } }) {
+  try {
+    const response = yield call(getExpertIntendedTimeByService, exId, orId)
+    yield put(getExpertIntendedTimeByServiceSuccess(response))
+  } catch (error) {
+    yield put(getExpertIntendedTimeByServiceFail(error))
   }
 }
 
@@ -125,20 +143,26 @@ function* onGetExpertIntendedTime({ exId }) {
 //   }
 // }
 
-function* checkOutServices({ id, car, history }) {
+function* priorityServices({ payload: { exId, orderServiceId, car } }) {
+  try {
+    const response = yield call(priorityService, exId, orderServiceId)
+    toast.success("Phương tiện " + car + " đã được ưu tiên")
+    yield put(putPriorityServiceSuccess(response))
+  } catch (error) {
+    toast.error("Ưu tiên phương tiện " + car + " thất bại")
+    yield put(putPriorityServiceFail(error))
+  }
+}
+
+function* checkOutServices({ payload: { id, car, history } }) {
   try {
     const response = yield call(checkOutService, id)
-    yield put(checkOutServiceSuccess(response))
     history.push(`/order-services/${id}`)
     toast.success("Check-out thành công phương tiện\n" + car)
+    yield put(checkOutServiceSuccess(response))
   } catch (error) {
-    if (error.response.status === 500) {
-      toast.error(error.response.data.message)
-      yield put(checkOutServiceFail(error))
-    } else {
-      toast.error("Check-out thất bại")
-      yield put(checkOutServiceFail(error))
-    }
+    toast.error("Check-out thất bại")
+    yield put(checkOutServiceFail(error))
   }
 }
 
@@ -161,8 +185,13 @@ function* orderServicesSaga() {
   // yield takeEvery(PUT_ORDER_SERVICE, onRecommendService)
   yield takeEvery(PUT_ASSIGN_EXPERT, onAssignExpert)
   yield takeEvery(GET_EXPERTS_INTENDED_TIME, onGetExpertIntendedTime)
+  yield takeEvery(
+    GET_EXPERTS_INTENDED_TIME_BY_SERVICE_TIME,
+    onGetExpertIntendedTimeByServices
+  )
   //yield takeEvery(PUT_CONFIRM_SERVICES, onConfirmServices)
   // yield takeEvery(PUT_CONFIRM_PAID_SERVICES, onConfirmPaidServices)
+  yield takeEvery(PUT_PRIORITY_SERVICES, priorityServices)
   yield takeEvery(CHECKOUT_SERVICES, checkOutServices)
   yield takeEvery(GET_STATUS_LOG, fetchStatusLog)
 }

@@ -89,7 +89,7 @@ const Cart = ({ details, services }) => {
                         {details.prepaidFromBooking.toLocaleString()}đ
                       </td>
                     </tr>
-                    <tr>
+                    {/* <tr>
                       <th>Tạm tính :</th>
                       <th style={{ textAlign: "right" }}>
                         {provisional.toLocaleString()}đ
@@ -103,11 +103,11 @@ const Cart = ({ details, services }) => {
                       >
                         - {details.prepaidFromBooking.toLocaleString()}đ
                       </td>
-                    </tr>
+                    </tr> */}
                     <tr>
                       <th>Tổng cộng :</th>
                       <th style={{ textAlign: "right" }}>
-                        {total.toLocaleString()}đ
+                        {provisional.toLocaleString()}đ
                       </th>
                     </tr>
                   </tbody>

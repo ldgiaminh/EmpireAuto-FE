@@ -23,6 +23,11 @@ import {
   CHECKOUT_SERVICES,
   GET_EXPERTS_INTENDED_TIME_SUCCESS,
   GET_EXPERTS_INTENDED_TIME_FAIL,
+  PUT_PRIORITY_SERVICES,
+  PUT_PRIORITY_SERVICES_SUCCESS,
+  PUT_PRIORITY_SERVICES_FAIL,
+  GET_EXPERTS_INTENDED_TIME_BY_SERVICE_TIME_SUCCESS,
+  GET_EXPERTS_INTENDED_TIME_BY_SERVICE_TIME_FAIL,
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -32,12 +37,15 @@ const INIT_STATE = {
   isLoading: false,
   isLoad: false,
   orderServiceLogs: [],
-  checkOut: [],
+  orderServicesCheckOut: [],
   exDetails: {},
+  exDetailsService: {},
+  isLoadPriority: false,
 }
 
 const orderServices = (state = INIT_STATE, action) => {
   switch (action.type) {
+    /* LIST ALL */
     case GET_ORDER_SERVICE_LIST_SUCCESS:
       return {
         ...state,
@@ -49,6 +57,8 @@ const orderServices = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       }
+
+    /* LIST BY STATUS */
 
     case GET_ORDER_SERVICE_LIST_BY_STATUS:
       return {
@@ -70,6 +80,8 @@ const orderServices = (state = INIT_STATE, action) => {
         error: action.payload,
       }
 
+    /* LIST DETAIL */
+
     case GET_ORDER_SERVICE_DETAIL:
       return {
         ...state,
@@ -89,6 +101,8 @@ const orderServices = (state = INIT_STATE, action) => {
         isLoading: false,
         error: action.payload,
       }
+
+    /* STATUS LOG */
 
     case GET_STATUS_LOG_SUCCESS:
       return {
@@ -124,6 +138,8 @@ const orderServices = (state = INIT_STATE, action) => {
     //     error: action.payload,
     //   }
 
+    /* ASSIGN EXPERT */
+
     case PUT_ASSIGN_EXPERT:
       return {
         ...state,
@@ -144,6 +160,8 @@ const orderServices = (state = INIT_STATE, action) => {
         error: action.payload,
       }
 
+    /* INTENDED TIME EXPERT */
+
     case GET_EXPERTS_INTENDED_TIME_SUCCESS:
       return {
         ...state,
@@ -151,6 +169,20 @@ const orderServices = (state = INIT_STATE, action) => {
       }
 
     case GET_EXPERTS_INTENDED_TIME_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      }
+
+    /* INTENDED TIME EXPERT BY SERVICE */
+
+    case GET_EXPERTS_INTENDED_TIME_BY_SERVICE_TIME_SUCCESS:
+      return {
+        ...state,
+        exDetailsService: action.payload,
+      }
+
+    case GET_EXPERTS_INTENDED_TIME_BY_SERVICE_TIME_FAIL:
       return {
         ...state,
         error: action.payload,
@@ -172,6 +204,28 @@ const orderServices = (state = INIT_STATE, action) => {
     //     error: action.payload,
     //   }
 
+    /* PRIORITY */
+
+    case PUT_PRIORITY_SERVICES:
+      return {
+        ...state,
+        isLoadPriority: true,
+      }
+
+    case PUT_PRIORITY_SERVICES_SUCCESS:
+      return {
+        ...state,
+        isLoadPriority: false,
+      }
+
+    case PUT_PRIORITY_SERVICES_FAIL:
+      return {
+        ...state,
+        isLoadPriority: false,
+      }
+
+    /* CHECK OUT */
+
     case CHECKOUT_SERVICES:
       return {
         ...state,
@@ -182,12 +236,7 @@ const orderServices = (state = INIT_STATE, action) => {
       return {
         ...state,
         isLoad: false,
-        checkOut: action.payload,
-        orderServicess: state.orderServicess.map(service =>
-          service.id.toString() === action.payload[0].id.toString()
-            ? { ...action.pay.load, service }
-            : service
-        ),
+        orderServicesCheckOut: action.payload,
       }
 
     case CHECKOUT_SERVICES_FAIL:

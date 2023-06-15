@@ -291,9 +291,9 @@ const TableContainer = ({
           </div>
         </Col>
         <Col className="col-md-auto d-none d-md-block">
-          Page{" "}
+          Trang{" "}
           <strong>
-            {pageIndex + 1} of {pageOptions.length}
+            {pageIndex + 1} trên {pageOptions.length}
           </strong>
         </Col>
         <Col className="col-md-auto">

@@ -299,7 +299,7 @@ const OrderServicesList = props => {
                       <TabContent activeTab={activeTab} className="p-3">
                         <TabPane tabId="0" id="diagnosing">
                           <TableContainer
-                            columns={columns}
+                            columns={columnsDone}
                             data={orderService}
                             isGlobalFilter={true}
                             customPageSize={10}
@@ -308,7 +308,7 @@ const OrderServicesList = props => {
                         </TabPane>
                         <TabPane tabId="1" id="confirmPrice">
                           <TableContainer
-                            columns={columns}
+                            columns={columnsDone}
                             data={orderService}
                             isGlobalFilter={true}
                             customPageSize={10}
@@ -317,7 +317,7 @@ const OrderServicesList = props => {
                         </TabPane>
                         <TabPane tabId="2" id="confirmPaid">
                           <TableContainer
-                            columns={columns}
+                            columns={columnsDone}
                             data={orderService}
                             isGlobalFilter={true}
                             customPageSize={10}
@@ -326,7 +326,7 @@ const OrderServicesList = props => {
                         </TabPane>
                         <TabPane tabId="3" id="done">
                           <TableContainer
-                            columns={columns}
+                            columns={columnsDone}
                             data={orderService}
                             isGlobalFilter={true}
                             customPageSize={10}
@@ -335,7 +335,7 @@ const OrderServicesList = props => {
                         </TabPane>
                         <TabPane tabId="4" id="checkout">
                           <TableContainer
-                            columns={columns}
+                            columns={columnsDone}
                             data={orderService}
                             isGlobalFilter={true}
                             customPageSize={10}
@@ -353,7 +353,7 @@ const OrderServicesList = props => {
                         </TabPane>
                         <TabPane tabId="-1" id="cancel">
                           <TableContainer
-                            columns={columns}
+                            columns={columnsDone}
                             data={orderService}
                             isGlobalFilter={true}
                             customPageSize={10}

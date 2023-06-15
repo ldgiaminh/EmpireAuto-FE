@@ -13,6 +13,10 @@ import {
   CardTitle,
   Col,
   Container,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
   Row,
   Table,
 } from "reactstrap"
@@ -27,6 +31,8 @@ import {
   putAssignExperts as assignExpert,
   checkOutService as checkOutService,
   getStatusLog as onGetStatusLog,
+  putPriorityService as priorityService,
+  getExpertIntendedTimeByService as getExpertIntendedTimeByService,
 } from "store/actions"
 
 //redux
@@ -50,14 +56,23 @@ const OrderServiceDetail = props => {
   ==================================================
   */
 
-  const { orderServicesDetail, users, isLoading, orderServiceLogs, isShow } =
-    useSelector(state => ({
-      orderServicesDetail: state.orderServices.orderServicesDetail,
-      users: state.userLists.users,
-      isLoading: state.orderServices.isLoading,
-      orderServiceLogs: state.orderServices.orderServiceLogs,
-      isShow: state.Layout.isShow,
-    }))
+  const {
+    orderServicesDetail,
+    users,
+    isLoading,
+    orderServiceLogs,
+    isShow,
+    isLoadPriority,
+    exDetailsService,
+  } = useSelector(state => ({
+    orderServicesDetail: state.orderServices.orderServicesDetail,
+    users: state.userLists.users,
+    isLoading: state.orderServices.isLoading,
+    orderServiceLogs: state.orderServices.orderServiceLogs,
+    isShow: state.Layout.isShow,
+    isLoadPriority: state.orderServices.isLoadPriority,
+    exDetailsService: state.orderServices.exDetailsService,
+  }))
 
   /*
   ==================================================
@@ -76,21 +91,28 @@ const OrderServiceDetail = props => {
   }, [params, dispatch])
 
   useEffect(() => {
-    if (isShow) {
-      dispatch(onGetOrderServiceDetail(params.id, props.history))
+    if (params && params.id) {
       dispatch(onGetStatusLog(params.id))
     }
-  }, [isShow])
+  }, [params, isShow, dispatch])
 
   useEffect(() => {
     dispatch(onGetExpert())
   }, [dispatch])
 
+  /* RELOAD */
+
   useEffect(() => {
-    if (params && params.id) {
-      dispatch(onGetStatusLog(params.id))
+    if (isShow) {
+      dispatch(onGetOrderServiceDetail(params.id, props.history))
     }
-  }, [isShow, dispatch])
+  }, [isShow])
+
+  useEffect(() => {
+    if (isLoadPriority) {
+      dispatch(onGetOrderServiceDetail(params.id, props.history))
+    }
+  }, [isLoadPriority])
 
   /*
   ==================================================
@@ -118,10 +140,9 @@ const OrderServiceDetail = props => {
     const formattedTime = createDate.toLocaleTimeString("vi-VN", {
       hour: "2-digit",
       minute: "2-digit",
-      second: "2-digit",
       hour12: false,
     })
-    const formatted = `${formattedDate} - ${formattedTime}`
+    const formatted = `${formattedTime} - ${formattedDate}`
     return formatted
   }
 
@@ -174,6 +195,38 @@ const OrderServiceDetail = props => {
     }))
 
   optionGroup[1].options = users
+    .filter(ex => ex.isMaxWorkloadPerDay)
+    .map(ex => ({
+      label: ex.fullname,
+      value: ex.id,
+      name: ex.fullname,
+      workLoad: ex.workloadTotal,
+      isMax: ex.isMaxWorkloadPerDay,
+    }))
+
+  const optionGroup1 = [
+    {
+      label: "Còn trống",
+      options: [],
+    },
+    {
+      label: "Đã đầy",
+      options: [],
+    },
+  ]
+
+  optionGroup1[0].options = users
+    .filter(ex => !ex.isMaxWorkloadPerDay)
+    .sort((a, b) => a.workloadTotal - b.workloadTotal)
+    .map(ex => ({
+      label: ex.fullname,
+      value: ex.id,
+      name: ex.fullname,
+      workLoad: ex.workloadTotal,
+      isMax: ex.isMaxWorkloadPerDay,
+    }))
+
+  optionGroup1[1].options = users
     .filter(ex => ex.isMaxWorkloadPerDay)
     .map(ex => ({
       label: ex.fullname,
@@ -243,13 +296,59 @@ const OrderServiceDetail = props => {
 
   /*
   ==================================================
+  GET INTENDED TIME EXPERT
+  ==================================================
+  */
+
+  useEffect(() => {
+    if (
+      orderServicesDetail &&
+      orderServicesDetail.expert &&
+      orderServicesDetail.expert.id
+    ) {
+      const exId = orderServicesDetail.expert.id
+      const orId = orderServicesDetail.id
+      dispatch(getExpertIntendedTimeByService(exId, orId))
+    }
+  }, [dispatch, orderServicesDetail])
+
+  /*
+  ==================================================
+  PRIORITY
+  ==================================================
+  */
+
+  const [priority, setPriority] = useState(false)
+
+  const handlePriority = () => {
+    if (
+      orderServicesDetail &&
+      orderServicesDetail.expert &&
+      orderServicesDetail.expert.id &&
+      orderServicesDetail.car &&
+      orderServicesDetail.car.carLisenceNo
+    ) {
+      const id = orderServicesDetail.id
+      const exId = orderServicesDetail.expert.id
+      const car = orderServicesDetail.car.carLisenceNo
+      dispatch(priorityService(exId, id, car))
+    }
+  }
+
+  /*
+  ==================================================
   SCAN QR-CODE TO CHECK-OUT
   ==================================================
   */
 
   const handleCheckOut = () => {
     const id = params.id
-    if (id) {
+    if (
+      (id,
+      orderServicesDetail &&
+        orderServicesDetail.car &&
+        orderServicesDetail.car.carLisenceNo)
+    ) {
       dispatch(
         checkOutService(id, orderServicesDetail.car.carLisenceNo, props.history)
       )
@@ -288,24 +387,37 @@ const OrderServiceDetail = props => {
                         <div>
                           <CardTitle>THÔNG TIN TỔNG</CardTitle>
                           <CardSubtitle className="mb-3">
-                            Chi tiết về đơn hàng và thông tin khách hàng
+                            Chi tiết về tiến trình, đơn hàng và thông tin khách
+                            hàng
                           </CardSubtitle>
                         </div>
 
-                        {/* {orderServicesDetail.status === 4 ? (
+                        {orderServicesDetail.status === 1 ||
+                        orderServicesDetail.status === 3 ? (
                           <div className="ml-auto">
-                            <Button
-                              type="button"
-                              color="primary"
-                              onClick={handleCheckOutQr}
+                            <Dropdown
+                              isOpen={priority}
+                              toggle={() => {
+                                setPriority(!priority)
+                              }}
                             >
-                              <i className="mdi mdi-qrcode-scan me-1" />
-                              Quét mã nhận xe
-                            </Button>
+                              <DropdownToggle
+                                tag="i"
+                                className="btn nav-btn"
+                                type="button"
+                              >
+                                <i className="fa fa-fw fa-bars" />
+                              </DropdownToggle>
+                              <DropdownMenu className="dropdown-menu-end">
+                                <DropdownItem onClick={handlePriority}>
+                                  Ưu tiên
+                                </DropdownItem>
+                              </DropdownMenu>
+                            </Dropdown>
                           </div>
                         ) : (
                           " "
-                        )} */}
+                        )}
                       </div>
                       <Row>
                         <Col xl="6">
@@ -524,25 +636,49 @@ const OrderServiceDetail = props => {
                                         <Select
                                           value={selectedGroup}
                                           onChange={handleSelectGroup}
-                                          options={optionGroup}
+                                          options={optionGroup1}
                                           classNamePrefix="select2-selection"
                                           placeholder="Chọn kỹ thuật viên"
                                           required={true}
-                                          //onClick={e => e.preventDefault()}
+                                          onClick={e => e.preventDefault()}
+                                          components={{
+                                            SingleValue,
+                                            Option,
+                                          }}
+                                          // menuPlacement="top"
                                         />
                                         <Button
-                                          onClick={handleAssignExpert}
+                                          onClick={toggleEx}
                                           type="button"
                                           color="primary"
-                                          className="w-md mt-2"
+                                          className="w-md mt-2 me-2"
                                           disabled={!selectedGroup}
                                         >
-                                          Phân công
+                                          Chỉ định
                                         </Button>
                                       </>
                                     )}
                                   </td>
                                 </tr>
+                                {orderServicesDetail.status === 1 ||
+                                orderServicesDetail.status === 3 ? (
+                                  <tr>
+                                    <th
+                                      scope="row"
+                                      style={{ width: "300px" }}
+                                      className={"text-capitalize"}
+                                    >
+                                      Dự kiến hoàn thành:
+                                    </th>
+                                    <td>
+                                      {formattedDateTime(
+                                        exDetailsService.intendedFinishTime
+                                      )}
+                                    </td>
+                                  </tr>
+                                ) : (
+                                  ""
+                                )}
                               </tbody>
                             </Table>
                           </div>
