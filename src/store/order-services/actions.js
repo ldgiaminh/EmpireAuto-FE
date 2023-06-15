@@ -265,7 +265,9 @@ PUT Check out
 */
 export const checkOutService = (id, car, history) => ({
   type: CHECKOUT_SERVICES,
-  payload: { id, car, history },
+  id,
+  car,
+  history,
 })
 
 export const checkOutServiceSuccess = orderServicesCheckOut => ({
