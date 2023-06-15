@@ -33,7 +33,6 @@ import {
   getExpertIntendedTimeByServiceSuccess,
   getExpertIntendedTimeFail,
   getExpertIntendedTimeByServiceFail,
-  getStatusLogFail,
 } from "./actions"
 
 import {
@@ -155,7 +154,7 @@ function* priorityServices({ payload: { exId, orderServiceId, car } }) {
   }
 }
 
-function* checkOutServices({ id, car, history }) {
+function* checkOutServices({ payload: { id, car, history } }) {
   try {
     const response = yield call(checkOutService, id)
     history.push(`/order-services/${id}`)
