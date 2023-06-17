@@ -51,8 +51,19 @@ import QrCheckOut from "pages/OrderServices/QrCheckOut"
 import Pages404 from "pages/Authentication/pages-404"
 import Pages500 from "pages/Authentication/pages-500"
 import Pages403 from "pages/Authentication/pages-403"
+
+//Manager
 import AddNewItems from "pages/Item/AddNewItems"
 import CreateNew from "pages/Action/Create"
+
+//Config
+import ConfigGarage from "pages/Config/ConfigGarage"
+
+//History
+import OrderServiceHistory from "pages/History/OrderServices"
+import BookingHistory from "pages/History/Booking"
+
+//Config Garage
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
@@ -60,7 +71,6 @@ const authProtectedRoutes = [
   //booking
   { path: "/bookings", component: Booking },
   { path: "/bookings/:id", component: BookingDetails },
-
 
   //order service
   { path: "/order-services", component: OrderService },
@@ -79,14 +89,14 @@ const authProtectedRoutes = [
   { path: "/users", component: UserLists },
 
   //Vehicle
-  { path: "/car-brands", component: CarBrand },
-  { path: "/car-brands/:id/:name/models", component: CarModel },
+  { path: "/brands", component: CarBrand },
+  { path: "/brands/:id/:slug", component: CarModel },
   {
-    path: "/car-brands/:id/:name/models/:id/:name/problems",
+    path: "/brands/:id/:slug/models/:id/:slug/problems",
     component: CarProblem,
   },
   {
-    path: "/car-brands/:id/:name/models/:id/:name/problems/:id/items",
+    path: "/brands/:id/:slug/models/:id/:slug/problems/:id/:slug/items",
     component: CarItem,
   },
 
@@ -98,6 +108,13 @@ const authProtectedRoutes = [
 
   //Create
   { path: "/create-new", component: CreateNew },
+
+  //History
+  { path: "/history/bookings", component: BookingHistory },
+  { path: "/history/order-services", component: OrderServiceHistory },
+
+  //Config
+  { path: "/config", component: ConfigGarage },
 
   // this route should be at the end of all other routes
   // eslint-disable-next-line react/display-name
