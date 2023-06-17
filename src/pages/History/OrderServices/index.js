@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef, useMemo } from "react"
-import { withRouter } from "react-router-dom"
-import TableContainer from "../../components/Common/TableContainer"
+import { withRouter, Link } from "react-router-dom"
+import TableContainer from "../../../components/Common/TableContainer"
 import classnames from "classnames"
-import img1 from "../../assets/images/small/no-data.png"
+import img1 from "../../../assets/images/small/no-data.png"
 import PropTypes from "prop-types"
 import {
   Card,
@@ -36,16 +36,11 @@ import { isEmpty } from "lodash"
 import { useSelector, useDispatch } from "react-redux"
 import Loading from "components/Loader/Loading"
 
-const OrderServicesList = props => {
+const OrderServicesHistory = props => {
   //meta title
-  document.title = "Theo dõi tiến trình | Empire Garage"
+  document.title = "Lịch sử hóa đơn | Empire Garage"
 
   const statusServices = [
-    { id: "0", title: "Phân công" },
-    { id: "1", title: "Chẩn đoán" },
-    { id: "2", title: "Xác nhận thanh toán" },
-    { id: "3", title: "Thực hiện" },
-    { id: "4", title: "Nhận xe" },
     { id: "5", title: "Hoàn thành" },
     { id: "-1", title: "Đã Hủy" },
   ]
@@ -54,7 +49,7 @@ const OrderServicesList = props => {
 
   const dispatch = useDispatch()
 
-  const [activeTab, setActiveTab] = useState("0")
+  const [activeTab, setActiveTab] = useState("5")
   const [orderService, setOrderService] = useState([])
 
   const { orderServicess, isLoading, isShow } = useSelector(state => ({
@@ -269,15 +264,12 @@ const OrderServicesList = props => {
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <Breadcrumbs title="Theo dõi tiến trình" breadcrumbItem="Danh sách" />
+          <Breadcrumbs title="Lịch sử" breadcrumbItem="Danh sách hóa đơn" />
           <Row>
             <Col lg="12">
               <Card>
                 <CardBody>
-                  <ul
-                    className="nav nav-tabs nav-tabs-custom nav-justified"
-                    role="tablist"
-                  >
+                  <ul className="nav nav-tabs nav-tabs-custom" role="tablist">
                     {statusServices.map(tab => (
                       <NavItem key={tab.id}>
                         <NavLink
@@ -297,51 +289,6 @@ const OrderServicesList = props => {
                   {!isLoading &&
                     (orderService.length ? (
                       <TabContent activeTab={activeTab} className="p-3">
-                        <TabPane tabId="0" id="diagnosing">
-                          <TableContainer
-                            columns={columnsDone}
-                            data={orderService}
-                            isGlobalFilter={true}
-                            customPageSize={10}
-                            className="custom-header-css"
-                          />
-                        </TabPane>
-                        <TabPane tabId="1" id="confirmPrice">
-                          <TableContainer
-                            columns={columnsDone}
-                            data={orderService}
-                            isGlobalFilter={true}
-                            customPageSize={10}
-                            className="custom-header-css"
-                          />
-                        </TabPane>
-                        <TabPane tabId="2" id="confirmPaid">
-                          <TableContainer
-                            columns={columnsDone}
-                            data={orderService}
-                            isGlobalFilter={true}
-                            customPageSize={10}
-                            className="custom-header-css"
-                          />
-                        </TabPane>
-                        <TabPane tabId="3" id="done">
-                          <TableContainer
-                            columns={columnsDone}
-                            data={orderService}
-                            isGlobalFilter={true}
-                            customPageSize={10}
-                            className="custom-header-css"
-                          />
-                        </TabPane>
-                        <TabPane tabId="4" id="checkout">
-                          <TableContainer
-                            columns={columnsDone}
-                            data={orderService}
-                            isGlobalFilter={true}
-                            customPageSize={10}
-                            className="custom-header-css"
-                          />
-                        </TabPane>
                         <TabPane tabId="5" id="checkout">
                           <TableContainer
                             columns={columnsDone}
@@ -393,8 +340,8 @@ const OrderServicesList = props => {
   )
 }
 
-OrderServicesList.propTypes = {
+OrderServicesHistory.propTypes = {
   isLoading: PropTypes.bool,
 }
 
-export default withRouter(OrderServicesList)
+export default withRouter(OrderServicesHistory)

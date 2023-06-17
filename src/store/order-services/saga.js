@@ -158,7 +158,7 @@ function* checkOutServices({ payload: { id, car, history } }) {
   try {
     const response = yield call(checkOutService, id)
     history.push(`/order-services/${id}`)
-    toast.success("Check-out thành công phương tiện" + car)
+    toast.success("Check-out thành công phương tiện " + car)
     yield put(checkOutServiceSuccess(response))
   } catch (error) {
     toast.error("Check-out thất bại")

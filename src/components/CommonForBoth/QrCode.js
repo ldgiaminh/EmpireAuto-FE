@@ -67,7 +67,7 @@ const QrCode = props => {
           id="page-header-notifications-dropdown"
           tag="button"
         >
-          <i className="mdi mdi-qrcode-scan"></i>
+          <i className="mdi mdi-qrcode-scan bx-burst-hover"></i>
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu-end">
           <DropdownItem tag="button">

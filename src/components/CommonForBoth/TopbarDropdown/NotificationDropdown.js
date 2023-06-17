@@ -98,7 +98,12 @@ const NotificationDropdown = props => {
           id="page-header-notifications-dropdown"
           onClick={markAllAsRead}
         >
-          <i className="bx bx-bell bx-tada" />
+          <i
+            className={`bx bx-bell bx-tada-hover ${
+              unreadCount > 0 ? "bx-tada" : ""
+            }`}
+          />
+
           {unreadCount > 0 && (
             <span className="badge bg-danger rounded-pill">{unreadCount}</span>
           )}

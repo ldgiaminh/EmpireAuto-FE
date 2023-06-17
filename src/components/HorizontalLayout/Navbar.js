@@ -20,6 +20,7 @@ const getUserName = () => {
 
 const Navbar = props => {
   const [manage, setManage] = useState(false)
+  const [history, setHistory] = useState(false)
 
   const [role, setRole] = useState("")
 
@@ -118,6 +119,38 @@ const Navbar = props => {
                               <i className="bx bxs-detail me-2"></i>
                               {props.t("Theo dõi tiến trình")}
                             </Link>
+                          </li>
+                          <li className="nav-item dropdown">
+                            <Link
+                              to="/#"
+                              onClick={e => {
+                                e.preventDefault()
+                                setHistory(!history)
+                              }}
+                              className="nav-link dropdown-togglez arrow-none"
+                            >
+                              <i className="bx bx-history me-2"></i>
+                              {props.t("Lịch sử")}{" "}
+                              <div className="arrow-down"></div>
+                            </Link>
+                            <div
+                              className={classname("dropdown-menu", {
+                                show: history,
+                              })}
+                            >
+                              <Link
+                                to="/history/bookings"
+                                className="dropdown-item"
+                              >
+                                {props.t("Đặt lịch")}
+                              </Link>
+                              <Link
+                                to="/history/order-services"
+                                className="dropdown-item"
+                              >
+                                {props.t("Hóa đơn")}
+                              </Link>
+                            </div>
                           </li>
                         </React.Fragment>
                       )
@@ -243,7 +276,7 @@ const Navbar = props => {
                               <Link to="/symptoms" className="dropdown-item">
                                 {props.t("Triệu chứng")}
                               </Link>
-                              <Link to="/car-brands" className="dropdown-item">
+                              <Link to="/brands" className="dropdown-item">
                                 {props.t("Hãng xe")}
                               </Link>
                             </div>
