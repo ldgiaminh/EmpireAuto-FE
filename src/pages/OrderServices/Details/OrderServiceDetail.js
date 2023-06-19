@@ -28,7 +28,7 @@ import Breadcrumbs from "../../../components/Common/Breadcrumb"
 import {
   getOrderServicesDetails as onGetOrderServiceDetail,
   getExperts as onGetExpert,
-  putAssignExperts as assignExpert,
+  putAutoAssignExpert as onAutoAssignExpert,
   checkOutService as checkOutService,
   getStatusLog as onGetStatusLog,
   putPriorityService as priorityService,
@@ -42,7 +42,8 @@ import Cart from "./cart"
 import CarRecord from "./health-car-record"
 import PreloadDetail from "components/Loader/PreloadDetail"
 import Stepper from "./stepper"
-import ConfirmReassign from "../confirm-reassign"
+import ConfirmReAssign from "./confirm-reassign"
+import ConfirmAutoAssign from "./confirm-autoassign"
 
 const OrderServiceDetail = props => {
   //meta title
@@ -284,15 +285,26 @@ const OrderServiceDetail = props => {
     )
   }
 
-  // const handleAssignExpert = () => {
-  //   const id = params.id
-  //   const exId = selectedGroup.value
-  //   if ((id, exId)) {
-  //     dispatch(assignExpert(id, exId))
-  //     setIsAssign(false)
-  //     setSelectedGroup(null)
-  //   }
-  // }
+  /*
+  ==================================================
+  PUT AUTO ASSIGN EXPERT
+  ==================================================
+  */
+
+  const [isOpenExAuto, setIsOpenExAuto] = useState(false)
+
+  const toggleExAuto = () => {
+    setIsOpenExAuto(!isOpenExAuto)
+  }
+
+  const handleAutoAssignExpert = () => {
+    const id = params.id
+    const exId = orderServicesDetail.expert.id
+    if ((id, exId)) {
+      dispatch(onAutoAssignExpert(id, exId))
+      setIsOpenExAuto(!isOpenExAuto)
+    }
+  }
 
   /*
   ==================================================
@@ -337,7 +349,7 @@ const OrderServiceDetail = props => {
 
   /*
   ==================================================
-  SCAN QR-CODE TO CHECK-OUT
+  CHECK-OUT
   ==================================================
   */
 
@@ -363,11 +375,17 @@ const OrderServiceDetail = props => {
         <Container fluid={true}>
           {!isLoading && !isEmpty(orderServicesDetail) && (
             <React.Fragment>
-              <ConfirmReassign
+              <ConfirmReAssign
                 isOpen={isOpenEx}
                 toggle={toggleEx}
                 expert={selectedGroup}
                 order={orderServicesDetail}
+              />
+              <ConfirmAutoAssign
+                isOpen={isOpenExAuto}
+                toggle={toggleExAuto}
+                order={orderServicesDetail}
+                handleAutoAssignExpert={handleAutoAssignExpert}
               />
               <Breadcrumbs
                 title="Dịch vụ"
@@ -479,7 +497,10 @@ const OrderServiceDetail = props => {
                                 >
                                   Thương hiệu xe:
                                 </th>
-                                <td>{orderServicesDetail.car.carBrand}</td>
+                                <td>
+                                  {orderServicesDetail.car.carBrand} |{" "}
+                                  {orderServicesDetail.car.carModel}
+                                </td>
                               </tr>
                               <tr>
                                 <th
@@ -487,10 +508,29 @@ const OrderServiceDetail = props => {
                                   style={{ width: "300px" }}
                                   className={"text-capitalize"}
                                 >
-                                  Dòng xe:
+                                  Tình trạng khách mô tả :
                                 </th>
-                                <td>{orderServicesDetail.car.carModel}</td>
+                                <td>{orderServicesDetail.receivingStatus}</td>
                               </tr>
+                              {orderServicesDetail.considerProblems.length ===
+                              0 ? (
+                                ""
+                              ) : (
+                                <tr>
+                                  <th
+                                    scope="row"
+                                    style={{ width: "300px" }}
+                                    className={"text-capitalize"}
+                                  >
+                                    Vấn đề tái sửa chữa :
+                                  </th>
+                                  <td>
+                                    {orderServicesDetail.considerProblems
+                                      .map(consider => consider.name)
+                                      .join(", ")}
+                                  </td>
+                                </tr>
+                              )}
                             </tbody>
                           </Table>
                         </Col>
@@ -525,35 +565,7 @@ const OrderServiceDetail = props => {
                                     ₫
                                   </td>
                                 </tr>
-                                <tr>
-                                  <th
-                                    scope="row"
-                                    style={{ width: "300px" }}
-                                    className={"text-capitalize"}
-                                  >
-                                    Tình trạng khách mô tả :
-                                  </th>
-                                  <td>{orderServicesDetail.receivingStatus}</td>
-                                </tr>
-                                {orderServicesDetail.considerProblems.length ===
-                                0 ? (
-                                  ""
-                                ) : (
-                                  <tr>
-                                    <th
-                                      scope="row"
-                                      style={{ width: "300px" }}
-                                      className={"text-capitalize"}
-                                    >
-                                      Vấn đề tái sửa chữa :
-                                    </th>
-                                    <td>
-                                      {orderServicesDetail.considerProblems
-                                        .map(consider => consider.name)
-                                        .join(", ")}
-                                    </td>
-                                  </tr>
-                                )}
+
                                 <tr>
                                   <th
                                     scope="row"
@@ -567,7 +579,8 @@ const OrderServiceDetail = props => {
                                   </th>
                                   <td>
                                     {orderServicesDetail.expert !== null ? (
-                                      orderServicesDetail.status === 1 ? (
+                                      orderServicesDetail.status === 1 &&
+                                      orderServicesDetail.startTime === null ? (
                                         isAssign ? (
                                           <>
                                             <Select
@@ -615,15 +628,27 @@ const OrderServiceDetail = props => {
                                               orderServicesDetail.expert
                                                 .fullname
                                             }
-
-                                            <button
-                                              type="button"
-                                              className="btn btn-light btn-label"
-                                              onClick={handleReAssign}
-                                            >
-                                              <i className="mdi mdi-pencil label-icon "></i>{" "}
-                                              Chỉ định
-                                            </button>
+                                            <div>
+                                              <div
+                                                className="btn-group"
+                                                role="group"
+                                              >
+                                                <button
+                                                  type="button"
+                                                  className="btn btn-light"
+                                                  onClick={toggleExAuto}
+                                                >
+                                                  Chỉ định
+                                                </button>
+                                                <button
+                                                  type="button"
+                                                  className="btn btn-light"
+                                                  onClick={handleReAssign}
+                                                >
+                                                  Phân công
+                                                </button>
+                                              </div>
+                                            </div>
                                           </div>
                                         )
                                       ) : (
@@ -631,7 +656,7 @@ const OrderServiceDetail = props => {
                                           {orderServicesDetail.expert.fullname}
                                         </>
                                       )
-                                    ) : (
+                                    ) : isAssign ? (
                                       <>
                                         <Select
                                           value={selectedGroup}
@@ -656,12 +681,80 @@ const OrderServiceDetail = props => {
                                         >
                                           Chỉ định
                                         </Button>
+                                        <Button
+                                          onClick={handleReAssign}
+                                          type="button"
+                                          color="light"
+                                          className="w-md mt-2"
+                                        >
+                                          Hủy
+                                        </Button>
+                                      </>
+                                    ) : (
+                                      <>
+                                        <div
+                                          style={{
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                            alignItems: "baseline",
+                                            verticalAlign: "middle",
+                                          }}
+                                        >
+                                          <mark>Chọn kỹ thuật viên</mark>
+                                          <div>
+                                            <div
+                                              className="btn-group"
+                                              role="group"
+                                            >
+                                              <button
+                                                type="button"
+                                                className="btn btn-light"
+                                              >
+                                                Chỉ định
+                                              </button>
+                                              <button
+                                                type="button"
+                                                className="btn btn-light"
+                                                onClick={handleReAssign}
+                                              >
+                                                Lựa chọn
+                                              </button>
+                                            </div>
+                                          </div>
+                                        </div>
                                       </>
                                     )}
                                   </td>
                                 </tr>
-                                {orderServicesDetail.status === 1 ||
-                                orderServicesDetail.status === 3 ? (
+                                {(orderServicesDetail.startTime !== null &&
+                                  orderServicesDetail.status === 1) ||
+                                (orderServicesDetail.startTime !== null &&
+                                  orderServicesDetail.status === 3) ? (
+                                  <tr>
+                                    <th
+                                      scope="row"
+                                      style={{ width: "300px" }}
+                                      className={"text-capitalize"}
+                                    >
+                                      Bắt đầu:
+                                    </th>
+                                    <td>
+                                      {formattedDateTime(
+                                        orderServicesDetail.startTime
+                                      )}
+                                    </td>
+                                  </tr>
+                                ) : (
+                                  ""
+                                )}
+                                {(orderServicesDetail.status === 1 &&
+                                  orderServicesDetail.startTime !== null &&
+                                  exDetailsService.intendedFinishTime !==
+                                    null) ||
+                                (orderServicesDetail.status === 3 &&
+                                  orderServicesDetail.startTime !== null &&
+                                  exDetailsService.intendedFinishTime !==
+                                    null) ? (
                                   <tr>
                                     <th
                                       scope="row"
@@ -685,12 +778,6 @@ const OrderServiceDetail = props => {
                         </Col>
                       </Row>
                     </CardBody>
-
-                    {orderServicesDetail.healthCarRecord != null ? (
-                      <CarRecord record={orderServicesDetail.healthCarRecord} />
-                    ) : (
-                      ""
-                    )}
                   </Card>
                 </Col>
               </Row>
@@ -703,6 +790,13 @@ const OrderServiceDetail = props => {
               ) : (
                 ""
               )}
+
+              {orderServicesDetail.status === 2 ||
+              (orderServicesDetail.status === 5 &&
+                orderServicesDetail.healthCarRecord != null) ? (
+                <CarRecord record={orderServicesDetail.healthCarRecord} />
+              ) : null}
+
               <Row className="mt-2 mb-5">
                 <Col sm="6">
                   <Link

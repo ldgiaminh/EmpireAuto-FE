@@ -31,10 +31,7 @@ import img1 from "../../../assets/images/small/no-data.png"
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb"
 
-import {
-  getBookingListsByDate as onGetBookingByDate,
-  changeAutoAssign,
-} from "store/actions"
+import { getBookingListsByDate as onGetBookingByDate } from "store/actions"
 
 //redux
 import { useSelector, useDispatch } from "react-redux"

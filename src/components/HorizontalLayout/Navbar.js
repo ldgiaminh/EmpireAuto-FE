@@ -120,6 +120,18 @@ const Navbar = props => {
                               {props.t("Theo dõi tiến trình")}
                             </Link>
                           </li>
+                          <li className="nav-item">
+                            <Link
+                              className="nav-link"
+                              to="/users"
+                              onClick={() => {
+                                props.toggleLeftmenu(!props.leftMenu)
+                              }}
+                            >
+                              <i className="bx bxs-user me-2"></i>
+                              {props.t("Khách hàng")}
+                            </Link>
+                          </li>
                           <li className="nav-item dropdown">
                             <Link
                               to="/#"

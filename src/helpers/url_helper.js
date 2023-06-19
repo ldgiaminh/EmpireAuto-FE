@@ -40,6 +40,9 @@ export const PUT_ORDER_SERVICE = "/order-services"
 //Assign Expert
 export const PUT_ASSIGN_EXPERT = "/order-services"
 
+//Auto Assign Expert
+export const PUT_AUTO_ASSIGN_EXPERT = "/order-services"
+
 //Get Expert Intended Time
 export const GET_EXPERTS_INTENDED_TIME = "/workloads"
 
@@ -151,6 +154,16 @@ FCM TOKEN
 ================================================
 */
 export const POST_FCM_TOKEN = "/notifications/fcmtoken/add"
+
+/*
+================================================ 
+RUN SCRIPT
+================================================
+*/
+
+export const RUN_SCRIPT_CUSTOMER = "/script/customers"
+export const RUN_SCRIPT_BOOKING = "/script/bookings"
+export const RUN_REMOVE_SCRIPT_BOOKING = "/script/bookings"
 
 /*
 ==========================================================================

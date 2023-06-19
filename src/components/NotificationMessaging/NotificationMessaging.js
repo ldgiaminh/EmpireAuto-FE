@@ -9,8 +9,6 @@ import { useDispatch } from "react-redux"
 import { getToken } from "firebase/messaging"
 import { postFcmToken } from "store/actions"
 
-import { withRouter } from "react-router-dom"
-
 import { changeIsShow } from "store/actions"
 
 const NotificationMessaging = props => {
@@ -75,7 +73,7 @@ const NotificationMessaging = props => {
         if (notification) {
           dispatch(changeIsShow(false))
         }
-      }, 8000)
+      }, 5000)
     })
     .catch(err =>
       console.log("An error occured while retrieving foreground message. ", err)

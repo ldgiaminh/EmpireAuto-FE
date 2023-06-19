@@ -24,63 +24,58 @@ import { Name, Email, Phone, Gender } from "./userlistCol"
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb"
 
-import {
-  getUsers as onGetUsers,
-  addNewUser as onAddNewUser,
-  updateUser as onUpdateUser,
-  deleteUser as onDeleteUser,
-} from "store/users/actions"
+import { getUsers as onGetUsers } from "store/users/actions"
 import { isEmpty } from "lodash"
 
 //redux
 import { useSelector, useDispatch } from "react-redux"
+import Loading from "components/Loader/Loading"
 
 const UserLists = props => {
   //meta title
   document.title = "Danh sách các khách hàng | Empire Garage"
 
   const dispatch = useDispatch()
-  const [user, setUser] = useState()
 
-  const { users } = useSelector(state => ({
+  const { users, isShow, isLoading } = useSelector(state => ({
     users: state.userLists.users,
+    isLoading: state.userLists.isLoading,
+    isShow: state.Layout.isShow,
   }))
-
-  const [userList, setUserList] = useState([])
 
   const columns = useMemo(
     () => [
-      {
-        Header: "#",
-        Cell: () => {
-          return <input type="checkbox" />
-        },
-      },
-      {
-        Header: "Avatar",
-        accessor: "img",
-        disableFilters: true,
-        filterable: true,
-        accessor: cellProps => (
-          <>
-            {!cellProps.img ? (
-              <div className="avatar-xs">
-                <span className="avatar-title rounded-circle">
-                  {cellProps.fullname}
-                </span>
-              </div>
-            ) : (
-              <div>
-                <img
-                  className="rounded-circle avatar-xs"
-                  src={cellProps.img}
-                  alt=""
-                />
-              </div>
-            )}
-          </>
-        ),
-      },
+      // {
+      //   Header: "#",
+      //   Cell: () => {
+      //     return <input type="checkbox" />
+      //   },
+      // },
+      // {
+      //   Header: "Avatar",
+      //   accessor: "img",
+      //   disableFilters: true,
+      //   filterable: true,
+      //   accessor: cellProps => (
+      //     <>
+      //       {!cellProps.img ? (
+      //         <div className="avatar-xs">
+      //           <span className="avatar-title rounded-circle">
+      //             {cellProps.fullname}
+      //           </span>
+      //         </div>
+      //       ) : (
+      //         <div>
+      //           <img
+      //             className="rounded-circle avatar-xs"
+      //             src={cellProps.img}
+      //             alt=""
+      //           />
+      //         </div>
+      //       )}
+      //     </>
+      //   ),
+      // },
       {
         Header: "Tên khách hàng",
         accessor: "fullname",
@@ -118,41 +113,41 @@ const UserLists = props => {
           )
         },
       },
-      {
-        Header: "Action",
-        Cell: cellProps => {
-          return (
-            <div className="d-flex gap-3">
-              <Link
-                to="#"
-                className="text-success"
-                // onClick={() => {
-                //   const userData = cellProps.row.original
-                //   handleUserClick(userData)
-                // }}
-              >
-                <i className="mdi mdi-pencil font-size-18" id="edittooltip" />
-                <UncontrolledTooltip placement="top" target="edittooltip">
-                  Edit
-                </UncontrolledTooltip>
-              </Link>
-              <Link
-                to="#"
-                className="text-danger"
-                // onClick={() => {
-                //   const userData = cellProps.row.original
-                //   onClickDelete(userData)
-                // }}
-              >
-                <i className="mdi mdi-delete font-size-18" id="deletetooltip" />
-                <UncontrolledTooltip placement="top" target="deletetooltip">
-                  Delete
-                </UncontrolledTooltip>
-              </Link>
-            </div>
-          )
-        },
-      },
+      // {
+      //   Header: "Action",
+      //   Cell: cellProps => {
+      //     return (
+      //       <div className="d-flex gap-3">
+      //         <Link
+      //           to="#"
+      //           className="text-success"
+      //           // onClick={() => {
+      //           //   const userData = cellProps.row.original
+      //           //   handleUserClick(userData)
+      //           // }}
+      //         >
+      //           <i className="mdi mdi-pencil font-size-18" id="edittooltip" />
+      //           <UncontrolledTooltip placement="top" target="edittooltip">
+      //             Edit
+      //           </UncontrolledTooltip>
+      //         </Link>
+      //         <Link
+      //           to="#"
+      //           className="text-danger"
+      //           // onClick={() => {
+      //           //   const userData = cellProps.row.original
+      //           //   onClickDelete(userData)
+      //           // }}
+      //         >
+      //           <i className="mdi mdi-delete font-size-18" id="deletetooltip" />
+      //           <UncontrolledTooltip placement="top" target="deletetooltip">
+      //             Delete
+      //           </UncontrolledTooltip>
+      //         </Link>
+      //       </div>
+      //     )
+      //   },
+      // },
     ],
     []
   )
@@ -162,16 +157,18 @@ const UserLists = props => {
   }, [dispatch])
 
   useEffect(() => {
-    setUser(users)
-  }, [users])
-
-  useEffect(() => {
-    if (!isEmpty(users)) {
-      setUser(users)
+    if (isShow) {
+      dispatch(onGetUsers())
     }
-  }, [users])
+  }, [dispatch, isShow])
 
   const customers = users.filter(c => c.roleId === "US")
+  const sortedCustomers = [
+    ...customers.filter(c => c.id >= 100),
+    ...customers.filter(c => c.id < 100),
+  ]
+
+  // sortedCustomers will contain the filtered customers array with entries where c.id >= 100 moved to the top.
 
   return (
     <React.Fragment>
@@ -179,21 +176,24 @@ const UserLists = props => {
         <Container fluid>
           {/* Render Breadcrumbs */}
           <Breadcrumbs
-            title="Khách h"
+            title="Khách hàng"
             breadcrumbItem="Danh sách cách khách hàng"
           />
           <Row>
             <Col lg="12">
               <Card>
                 <CardBody>
-                  <TableContainer
-                    columns={columns}
-                    data={customers}
-                    isGlobalFilter={true}
-                    isAddUserList={false}
-                    customPageSize={10}
-                    className="custom-header-css"
-                  />
+                  {isLoading && <Loading />}
+                  {!isLoading && (
+                    <TableContainer
+                      columns={columns}
+                      data={sortedCustomers}
+                      isGlobalFilter={true}
+                      isAddUserList={false}
+                      customPageSize={10}
+                      className="custom-header-css"
+                    />
+                  )}
                 </CardBody>
               </Card>
             </Col>

@@ -14,7 +14,7 @@ const WelcomeComp = () => {
       const obj = JSON.parse(localStorage.getItem("authUser"))
       setInfo(obj)
     }
-  })
+  }, [])
 
   return (
     <React.Fragment>

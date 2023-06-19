@@ -57,7 +57,7 @@ import AddNewItems from "pages/Item/AddNewItems"
 import CreateNew from "pages/Action/Create"
 
 //Config
-import ConfigGarage from "pages/Config/ConfigGarage"
+import ConfigScriptGarage from "pages/Config"
 
 //History
 import OrderServiceHistory from "pages/History/OrderServices"
@@ -114,7 +114,7 @@ const authProtectedRoutes = [
   { path: "/history/order-services", component: OrderServiceHistory },
 
   //Config
-  { path: "/config", component: ConfigGarage },
+  { path: "/config", component: ConfigScriptGarage },
 
   // this route should be at the end of all other routes
   // eslint-disable-next-line react/display-name

@@ -33,6 +33,9 @@ export * from "./problem/actions"
 //Fcm Token
 export * from "./fcm-token/actions"
 
+//Script
+export * from "./script/actions"
+
 //Ecommerce
 export * from "./e-commerce/actions"
 

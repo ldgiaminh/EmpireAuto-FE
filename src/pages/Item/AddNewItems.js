@@ -47,6 +47,7 @@ const AddNewCarItem = () => {
     photo: "",
     problemId: "",
     price: "",
+    warranty: "",
   })
 
   const { carsBrand, carsModel, carsProblem, groupService } = useSelector(
@@ -178,6 +179,21 @@ const AddNewCarItem = () => {
               name="price"
               onChange={e => handleChange(e)}
               value={item.price}
+            />
+          </Col>
+        </FormGroup>
+        <FormGroup className="mb-4" row>
+          <Label htmlFor="billing-name" md="2" className="col-form-label">
+            Thời gian bảo hành (tháng)
+          </Label>
+          <Col md="10">
+            <input
+              className="form-control"
+              type="text"
+              placeholder="Nhập thời gian"
+              name="warranty"
+              onChange={e => handleChange(e)}
+              value={item.warranty}
             />
           </Col>
         </FormGroup>

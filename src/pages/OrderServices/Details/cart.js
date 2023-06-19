@@ -78,14 +78,14 @@ const Cart = ({ details, services }) => {
                               : ""}
                             :
                           </td>
-                          <td style={{ textAlign: "right" }}>
+                          <td className="text-end">
                             {service.price.toLocaleString()}đ
                           </td>
                         </tr>
                       ))}
                     <tr>
                       <td>Phí kiểm tra :</td>
-                      <td style={{ textAlign: "right" }}>
+                      <td className="text-end">
                         {details.prepaidFromBooking.toLocaleString()}đ
                       </td>
                     </tr>

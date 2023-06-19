@@ -9,7 +9,7 @@ import {
   getExpertIntendedTime as getExpertTime,
 } from "store/actions"
 
-const ConfirmReassign = props => {
+const ConfirmReAssign = props => {
   const { isOpen, toggle, expert, order } = props
 
   const dispatch = useDispatch()
@@ -125,11 +125,11 @@ const ConfirmReassign = props => {
   )
 }
 
-ConfirmReassign.propTypes = {
+ConfirmReAssign.propTypes = {
   toggle: PropTypes.func,
   isOpen: PropTypes.bool,
   expert: PropTypes.object,
   order: PropTypes.object,
 }
 
-export default ConfirmReassign
+export default ConfirmReAssign

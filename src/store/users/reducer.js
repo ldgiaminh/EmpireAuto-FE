@@ -11,6 +11,7 @@ import {
   GET_USER_PROFILE_FAIL,
   GET_EXPERTS_FAIL,
   GET_EXPERTS_SUCCESS,
+  GET_USERS,
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -22,15 +23,23 @@ const INIT_STATE = {
 
 const userLists = (state = INIT_STATE, action) => {
   switch (action.type) {
+    case GET_USERS:
+      return {
+        ...state,
+        isLoading: true,
+      }
+
     case GET_USERS_SUCCESS:
       return {
         ...state,
+        isLoading: false,
         users: action.payload,
       }
 
     case GET_USERS_FAIL:
       return {
         ...state,
+        isLoading: false,
         error: action.payload,
       }
 

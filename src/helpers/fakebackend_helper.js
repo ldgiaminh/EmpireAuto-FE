@@ -1,5 +1,5 @@
 import axios from "axios"
-import { del, get, post, put } from "./api_helper"
+import { del, del2, get, post, put } from "./api_helper"
 import * as url from "./url_helper"
 
 /*
@@ -140,13 +140,15 @@ export const getOrderServicesListByStatus = status =>
 export const getOrderServicesDetails = id =>
   get(`${url.GET_ORDER_SERVICE_DETAIL}/${id}`)
 
-/* PUT ORDER SERVICE - NOT USING */
-// export const putOrderServices = (id, services) =>
-//   put(`${url.PUT_ORDER_SERVICE}/${id}/diagnosed-result`, services)
-
 /* PUT ASSIGN EXPERT */
 export const putAssignExperts = (orderServiceId, exId) =>
   put(`${url.PUT_ASSIGN_EXPERT}/${orderServiceId}/assign-expert/${exId}`)
+
+/* PUT AUTO ASSIGN EXPERT */
+export const putAutoAssignExperts = (orderServiceId, exId) =>
+  put(
+    `${url.PUT_ASSIGN_EXPERT}/${orderServiceId}/auto-assign-expert?oldExpertId=${exId}`
+  )
 
 /* GET EXPERT INTENDED TIME*/
 export const getExpertIntendedTime = id =>
@@ -161,15 +163,6 @@ export const getExpertIntendedTimeByService = (id, orId) =>
 /* GET STATUS LOG */
 export const getStatusLog = id =>
   get(`${url.GET_STATUS_LOG}/${id}/order-service-status-logs`)
-
-/* CONFIRM SERVICES - NOT USING */
-// export const putConfirmServices = (id, services) =>
-//   put(`${url.PUT_CONFIRM_SERVICES}/${id}/confirm`, services)
-
-/* CONFIRM & PAID - NOT USING*/
-// export const putConfirmPaid = (id, services) => {
-//   put(`${url.PUT_CONFIRM_PAID_SERVICES}/${id}/confirm-and-paid`, services)
-// }
 
 /* PRIORITY */
 export const priorityService = (exId, orId) =>
@@ -346,6 +339,21 @@ FCM TOKEN
 
 export const addNewFcmToken = (uuid, fcmToken) =>
   post(`${url.POST_FCM_TOKEN}?userId=${uuid}&fcmToken=${fcmToken}`)
+
+/*
+================================================
+RUN SCRIPT
+================================================
+*/
+
+export const runScriptCustomers = number =>
+  post(`${url.RUN_SCRIPT_CUSTOMER}?numberOfCustomer=${number}`)
+
+export const runScriptBookings = number =>
+  post(`${url.RUN_SCRIPT_BOOKING}?numberOfBooking=${number}`)
+
+export const runRemoveScriptBookings = numberId =>
+  del(url.RUN_REMOVE_SCRIPT_BOOKING, { headers: { numberId } })
 
 /*
 ================================================

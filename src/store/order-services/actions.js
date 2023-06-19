@@ -35,6 +35,9 @@ import {
   GET_EXPERTS_INTENDED_TIME_BY_SERVICE_TIME_SUCCESS,
   GET_EXPERTS_INTENDED_TIME_BY_SERVICE_TIME_FAIL,
   GET_EXPERTS_INTENDED_TIME_BY_SERVICE_TIME,
+  PUT_AUTO_ASSIGN_EXPERT,
+  PUT_AUTO_ASSIGN_EXPERT_SUCCESS,
+  PUT_AUTO_ASSIGN_EXPERT_FAIL,
 } from "./actionTypes"
 
 /*
@@ -120,7 +123,7 @@ export const putOrderServicesFail = error => ({
 
 /*
 ================================================ 
-PUT OrderServices Assign 
+PUT Assign Expert 
 ================================================
 */
 export const putAssignExperts = (orderServiceId, exId) => ({
@@ -135,6 +138,26 @@ export const putAssignExpertsSuccess = orderServicesDetails => ({
 
 export const putAssignExpertsFail = error => ({
   type: PUT_ASSIGN_EXPERT_FAIL,
+  payload: error,
+})
+
+/*
+================================================ 
+PUT Auto Assign Expert 
+================================================
+*/
+export const putAutoAssignExpert = (orderServiceId, exId) => ({
+  type: PUT_AUTO_ASSIGN_EXPERT,
+  payload: { orderServiceId, exId },
+})
+
+export const putAutoAssignExpertsSuccess = orderServicesDetails => ({
+  type: PUT_AUTO_ASSIGN_EXPERT_SUCCESS,
+  payload: orderServicesDetails,
+})
+
+export const putAutoAssignExpertsFail = error => ({
+  type: PUT_AUTO_ASSIGN_EXPERT_FAIL,
   payload: error,
 })
 
@@ -195,46 +218,6 @@ export const getStatusLogSuccess = orderServiceLog => ({
 
 export const getStatusLogFail = error => ({
   type: GET_STATUS_LOG_FAIL,
-  payload: error,
-})
-
-/*
-================================================ 
-PUT Confirm Service
-================================================
-*/
-export const putConfirmServices = (orderServiceId, services) => ({
-  type: PUT_CONFIRM_SERVICES,
-  payload: { orderServiceId, services },
-})
-
-export const putConfirmServicesSuccess = orderServicesDetails => ({
-  type: PUT_CONFIRM_SERVICES_SUCCESS,
-  payload: orderServicesDetails,
-})
-
-export const putConfirmServicesFail = error => ({
-  type: PUT_CONFIRM_SERVICES_FAIL,
-  payload: error,
-})
-
-/*
-================================================ 
-PUT Confirm & Paid
-================================================
-*/
-export const putConfirmPaid = (orderServiceId, services) => ({
-  type: PUT_CONFIRM_PAID_SERVICES,
-  payload: { orderServiceId, services },
-})
-
-export const putConfirmPaidSuccess = orderServicesDetails => ({
-  type: PUT_CONFIRM_PAID_SERVICES_SUCCESS,
-  payload: orderServicesDetails,
-})
-
-export const putConfirmPaidFail = error => ({
-  type: PUT_CONFIRM_PAID_SERVICES_FAIL,
   payload: error,
 })
 

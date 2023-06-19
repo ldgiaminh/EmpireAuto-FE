@@ -58,13 +58,15 @@ const App = props => {
     return layoutCls
   }
 
+  const obj = JSON.parse(localStorage.getItem("authUser"))
+
   const Layout = getLayout()
   return (
     <React.Fragment>
-      <NotificationMessaging />
+      {obj.role === "RE" && <NotificationMessaging />}
       <ToastContainer
         position="top-right"
-        autoClose={8000}
+        autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick

@@ -5,16 +5,10 @@ import {
   GET_ORDER_SERVICE_DETAIL_SUCCESS,
   GET_ORDER_SERVICE_LIST_BY_STATUS_FAIL,
   GET_ORDER_SERVICE_LIST_BY_STATUS_SUCCESS,
-  PUT_ORDER_SERVICE_FAIL,
-  PUT_ORDER_SERVICE_SUCCESS,
   PUT_ASSIGN_EXPERT_FAIL,
   PUT_ASSIGN_EXPERT_SUCCESS,
   GET_STATUS_LOG_SUCCESS,
   GET_STATUS_LOG_FAIL,
-  PUT_CONFIRM_SERVICES_SUCCESS,
-  PUT_CONFIRM_SERVICES_FAIL,
-  PUT_CONFIRM_PAID_SERVICES_SUCCESS,
-  PUT_CONFIRM_PAID_SERVICES_FAIL,
   CHECKOUT_SERVICES_SUCCESS,
   CHECKOUT_SERVICES_FAIL,
   GET_ORDER_SERVICE_LIST_BY_STATUS,
@@ -28,6 +22,9 @@ import {
   PUT_PRIORITY_SERVICES_FAIL,
   GET_EXPERTS_INTENDED_TIME_BY_SERVICE_TIME_SUCCESS,
   GET_EXPERTS_INTENDED_TIME_BY_SERVICE_TIME_FAIL,
+  PUT_AUTO_ASSIGN_EXPERT,
+  PUT_AUTO_ASSIGN_EXPERT_SUCCESS,
+  PUT_AUTO_ASSIGN_EXPERT_FAIL,
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -116,28 +113,6 @@ const orderServices = (state = INIT_STATE, action) => {
         error: action.payload,
       }
 
-    // case PUT_ORDER_SERVICE_SUCCESS:
-    //   return {
-    //     ...state,
-    //     orderServicess: state.orderServicess.map(service =>
-    //       service.id.toString() === action.payload.id.toString()
-    //         ? { ...action.payload, service }
-    //         : service
-    //     ),
-    //   }
-
-    // case PUT_ORDER_SERVICE_SUCCESS:
-    //   return {
-    //     ...state,
-    //     orderServicesDetail: action.payload,
-    //   }
-
-    // case PUT_ORDER_SERVICE_FAIL:
-    //   return {
-    //     ...state,
-    //     error: action.payload,
-    //   }
-
     /* ASSIGN EXPERT */
 
     case PUT_ASSIGN_EXPERT:
@@ -154,6 +129,28 @@ const orderServices = (state = INIT_STATE, action) => {
       }
 
     case PUT_ASSIGN_EXPERT_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload,
+      }
+
+    /* AUTO ASSIGN EXPERT */
+
+    case PUT_AUTO_ASSIGN_EXPERT:
+      return {
+        ...state,
+        isLoading: true,
+      }
+
+    case PUT_AUTO_ASSIGN_EXPERT_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        orderServicesDetail: action.payload,
+      }
+
+    case PUT_AUTO_ASSIGN_EXPERT_FAIL:
       return {
         ...state,
         isLoading: false,
@@ -187,22 +184,6 @@ const orderServices = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       }
-
-    // case PUT_CONFIRM_PAID_SERVICES_SUCCESS:
-    //   return {
-    //     ...state,
-    //     orderServicesDetail: state.orderServicesDetail.map(service =>
-    //       service.id.toString() === action.payload.id.toString()
-    //         ? { ...action.pay.load, service }
-    //         : service
-    //     ),
-    //   }
-
-    // case PUT_CONFIRM_PAID_SERVICES_FAIL:
-    //   return {
-    //     ...state,
-    //     error: action.payload,
-    //   }
 
     /* PRIORITY */
 

@@ -8,8 +8,13 @@ const Email = cell => {
   return cell.value ? cell.value : ""
 }
 
-const Phone = cell => {
-  return cell.value ? cell.value : ""
+const Phone = ({ value }) => {
+  if (!value) {
+    return ""
+  }
+
+  const formattedPhone = `(+${value.slice(1, 3)}) ${value.slice(3)}`
+  return formattedPhone
 }
 
 const Address = cell => {

@@ -17,7 +17,7 @@ import {
 } from "reactstrap"
 import { isEmpty, map } from "lodash"
 import TableContainer from "components/Common/TableContainer"
-import { Link, withRouter } from "react-router-dom"
+import { Link, withRouter, useParams } from "react-router-dom"
 
 import { Name } from "./CarModellistCol"
 
@@ -46,7 +46,7 @@ const CarModel = props => {
     match: { params },
   } = props
 
-  console.log(params)
+  const { slug } = useParams()
 
   useEffect(() => {
     if (params && params.id) {
@@ -93,7 +93,7 @@ const CarModel = props => {
               className="btn-sm btn-rounded"
               onClick={() =>
                 history.push(
-                  `/car-brands/${params.id}/${params.name}/models/${cellProps.row.original.id}/${cellProps.row.original.name}/problems`
+                  `/brands/${params.id}/${slug}/models/${cellProps.row.original.id}/${cellProps.row.original.name}/problems`
                 )
               }
             >
@@ -149,7 +149,7 @@ const CarModel = props => {
         <Container fluid={true}>
           <Breadcrumbs
             title="Quản lý"
-            breadcrumbItem={`Danh sách các dòng xe - ${params.name}`}
+            breadcrumbItem={`Danh sách các dòng xe - ${slug}`}
           />
           <Row>
             <Col lg="12">

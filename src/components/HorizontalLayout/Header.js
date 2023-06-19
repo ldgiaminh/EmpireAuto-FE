@@ -35,6 +35,7 @@ import slack from "../../assets/images/brands/slack.png"
 //i18n
 import { withTranslation } from "react-i18next"
 import QrCode from "components/CommonForBoth/QrCode"
+import SearchAll from "components/CommonForBoth/SearchAll"
 
 const Header = props => {
   const [menu, setMenu] = useState(false)
@@ -113,16 +114,7 @@ const Header = props => {
               <i className="fa fa-fw fa-bars" />
             </button>
 
-            {/* <form className="app-search d-none d-lg-block">
-              <div className="position-relative">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Search..."
-                />
-                <span className="bx bx-search-alt" />
-              </div>
-            </form> */}
+            <SearchAll />
 
             {/* <Dropdown
               className="dropdown-mega d-none d-lg-block ms-2"

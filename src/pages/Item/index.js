@@ -17,7 +17,7 @@ import {
 } from "reactstrap"
 import { isEmpty, map } from "lodash"
 import TableContainer from "components/Common/TableContainer"
-import { Link, withRouter } from "react-router-dom"
+import { Link, withRouter, useParams } from "react-router-dom"
 
 import { Name, Img } from "./CarItemlistCol"
 
@@ -45,6 +45,8 @@ const CarItem = props => {
   const {
     match: { params },
   } = props
+
+  const { slug } = useParams()
 
   useEffect(() => {
     if (params && params.id) {
@@ -179,7 +181,7 @@ const CarItem = props => {
         <Container fluid={true}>
           <Breadcrumbs
             title="Quản lý"
-            breadcrumbItem={`Danh sách các dịch vụ xe - ${params.name}`}
+            breadcrumbItem={`Danh sách các dịch vụ xe - ${slug}`}
           />
           <Row>
             <Col lg="12">
