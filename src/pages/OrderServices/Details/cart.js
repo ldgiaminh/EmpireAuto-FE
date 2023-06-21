@@ -18,7 +18,16 @@ const Cart = ({ details, services }) => {
     services.reduce((acc, service) => acc + service.price, 0) +
     details.prepaidFromBooking
 
-  const total = services.reduce((acc, service) => acc + service.price, 0)
+  const formattedDate = date => {
+    const createDate = new Date(date)
+    const formattedDate = createDate.toLocaleDateString("vi-VN", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    })
+    const formatted = `${formattedDate}`
+    return formatted
+  }
 
   return (
     <React.Fragment>
@@ -121,9 +130,24 @@ const Cart = ({ details, services }) => {
             <Card>
               <CardBody>
                 <div className="table-responsive">
-                  <CardTitle className="mb-3">
-                    Ghi chú từ kỹ thuật viên
-                  </CardTitle>
+                  <div className="d-flex justify-content-between">
+                    <CardTitle className="mb-3">
+                      Ghi chú từ kỹ thuật viên
+                    </CardTitle>
+
+                    {details.maintenanceSchedule !== null ? (
+                      <>
+                        <p className="fw-semibold">
+                          <strong>Bảo trì: </strong>
+                          {formattedDate(
+                            details.maintenanceSchedule.maintenanceDate
+                          )}
+                        </p>
+                      </>
+                    ) : (
+                      ""
+                    )}
+                  </div>
                   <Table className="table align-middle mb-0 table-nowrap">
                     <thead className="table-light">
                       <tr>
@@ -160,11 +184,13 @@ const Cart = ({ details, services }) => {
                           )}
                           <td>
                             <h5 className="font-size-14 text-truncate">
-                              <Link to="#" className="text-dark">
+                              <strong to="#" className="text-dark">
                                 {service.item.name}
-                              </Link>
+                              </strong>
                             </h5>
-                            <p className="mb-0">{service.item.problem.name}</p>
+                            <p className="mb-0 text-muted">
+                              {service.item.problem.name}
+                            </p>
                           </td>
                           {/* <td>{service.price.toLocaleString()}đ</td> */}
                           {service.note !== null ? (

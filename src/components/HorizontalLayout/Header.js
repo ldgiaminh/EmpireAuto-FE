@@ -36,6 +36,7 @@ import slack from "../../assets/images/brands/slack.png"
 import { withTranslation } from "react-i18next"
 import QrCode from "components/CommonForBoth/QrCode"
 import SearchAll from "components/CommonForBoth/SearchAll"
+import LiveClock from "components/CommonForBoth/LiveClock"
 
 const Header = props => {
   const [menu, setMenu] = useState(false)
@@ -372,6 +373,8 @@ const Header = props => {
                 <i className="bx bx-fullscreen" />
               </button>
             </div> */}
+
+            {role === "RE" && <LiveClock />}
 
             {role === "RE" && <QrCode />}
 

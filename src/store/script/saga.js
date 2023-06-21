@@ -30,7 +30,7 @@ function* onRunScriptCustomers({ number }) {
     const response = yield call(runScriptCustomers, number)
     yield put(runScriptCustomerSuccess(response))
     toast.success("Tạo mới thành công " + number + " khách hàng")
-    sessionStorage.setItem("scriptCustomer", JSON.stringify(response))
+    localStorage.setItem("scriptCustomer", JSON.stringify(response))
   } catch (error) {
     yield put(runScriptCustomerFail(error))
     toast.error("Đã có lỗi xảy ra")
@@ -42,7 +42,7 @@ function* onRunScriptBookings({ number }) {
     const response = yield call(runScriptBookings, number)
     yield put(runScriptBookingSuccess(response))
     toast.success("Tạo mới thành công " + number + " đặt lịch")
-    sessionStorage.setItem("scriptBooking", JSON.stringify(response))
+    localStorage.setItem("scriptBooking", JSON.stringify(response))
   } catch (error) {
     toast.error("Đã có lỗi xảy ra")
     yield put(runScriptBookingFail(error))

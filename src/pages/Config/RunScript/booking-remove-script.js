@@ -24,8 +24,7 @@ import axios from "axios"
 const BookingRemoveScript = () => {
   const dispatch = useDispatch()
 
-  const { scriptRemoveBooking, isLoadScript } = useSelector(state => ({
-    scriptRemoveBooking: state.scripts.scriptRemoveBooking,
+  const { isLoadScript } = useSelector(state => ({
     isLoadScript: state.scripts.isLoadScript,
   }))
 
