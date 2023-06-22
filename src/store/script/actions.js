@@ -5,9 +5,24 @@ import {
   RUN_SCRIPT_BOOKING,
   RUN_SCRIPT_BOOKING_FAIL,
   RUN_SCRIPT_BOOKING_SUCCESS,
+  RUN_SCRIPT_CHECKIN,
+  RUN_SCRIPT_CHECKIN_FAIL,
+  RUN_SCRIPT_CHECKIN_SUCCESS,
+  RUN_SCRIPT_CHECKOUT_ORDER,
+  RUN_SCRIPT_CHECKOUT_ORDER_FAIL,
+  RUN_SCRIPT_CHECKOUT_ORDER_SUCCESS,
+  RUN_SCRIPT_CONFIRM_PAID_ORDER,
+  RUN_SCRIPT_CONFIRM_PAID_ORDER_FAIL,
+  RUN_SCRIPT_CONFIRM_PAID_ORDER_SUCCESS,
   RUN_SCRIPT_CUSTOMER,
   RUN_SCRIPT_CUSTOMER_FAIL,
   RUN_SCRIPT_CUSTOMER_SUCCESS,
+  RUN_SCRIPT_DIAGNOSE_ORDER,
+  RUN_SCRIPT_DIAGNOSE_ORDER_FAIL,
+  RUN_SCRIPT_DIAGNOSE_ORDER_SUCCESS,
+  RUN_SCRIPT_DONE_ORDER,
+  RUN_SCRIPT_DONE_ORDER_FAIL,
+  RUN_SCRIPT_DONE_ORDER_SUCCESS,
 } from "./actionTypes"
 
 /*
@@ -67,5 +82,105 @@ export const runRemoveScriptBookingSuccess = scriptRemoveBooking => ({
 
 export const runRemoveScriptBookingFail = error => ({
   type: RUN_REMOVE_SCRIPT_BOOKING_FAIL,
+  payload: error,
+})
+
+/*
+================================================ 
+POST Script CheckIn 
+================================================
+*/
+export const runScriptCheckIn = number => ({
+  type: RUN_SCRIPT_CHECKIN,
+  number,
+})
+
+export const runScriptCheckInSuccess = scriptCheckIn => ({
+  type: RUN_SCRIPT_CHECKIN_SUCCESS,
+  payload: scriptCheckIn,
+})
+
+export const runScriptCheckInFail = error => ({
+  type: RUN_SCRIPT_CHECKIN_FAIL,
+  payload: error,
+})
+
+/*
+================================================ 
+POST Script Diagnose 
+================================================
+*/
+export const runScriptDiagnose = number => ({
+  type: RUN_SCRIPT_DIAGNOSE_ORDER,
+  number,
+})
+
+export const runScriptDiagnoseSuccess = scriptDiagnose => ({
+  type: RUN_SCRIPT_DIAGNOSE_ORDER_SUCCESS,
+  payload: scriptDiagnose,
+})
+
+export const runScriptDiagnoseFail = error => ({
+  type: RUN_SCRIPT_DIAGNOSE_ORDER_FAIL,
+  payload: error,
+})
+
+/*
+================================================ 
+POST Script Confirm Paid 
+================================================
+*/
+export const runScriptConfirmPaid = data => ({
+  type: RUN_SCRIPT_CONFIRM_PAID_ORDER,
+  payload: { data },
+})
+
+export const runScriptConfirmPaidSuccess = scriptConfirmPaid => ({
+  type: RUN_SCRIPT_CONFIRM_PAID_ORDER_SUCCESS,
+  payload: scriptConfirmPaid,
+})
+
+export const runScriptConfirmPaidFail = error => ({
+  type: RUN_SCRIPT_CONFIRM_PAID_ORDER_FAIL,
+  payload: error,
+})
+
+/*
+================================================ 
+POST Script Done 
+================================================
+*/
+export const runScriptDone = data => ({
+  type: RUN_SCRIPT_DONE_ORDER,
+  payload: data,
+})
+
+export const runScriptDoneSuccess = scriptDone => ({
+  type: RUN_SCRIPT_DONE_ORDER_SUCCESS,
+  payload: scriptDone,
+})
+
+export const runScriptDoneFail = error => ({
+  type: RUN_SCRIPT_DONE_ORDER_FAIL,
+  payload: error,
+})
+
+/*
+================================================ 
+POST Script CheckOut 
+================================================
+*/
+export const runScriptCheckOut = data => ({
+  type: RUN_SCRIPT_CHECKOUT_ORDER,
+  payload: data,
+})
+
+export const runScriptCheckOutSuccess = scriptDone => ({
+  type: RUN_SCRIPT_CHECKOUT_ORDER_SUCCESS,
+  payload: scriptDone,
+})
+
+export const runScriptCheckOutFail = error => ({
+  type: RUN_SCRIPT_CHECKOUT_ORDER_FAIL,
   payload: error,
 })

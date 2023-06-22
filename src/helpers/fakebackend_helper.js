@@ -1,5 +1,5 @@
 import axios from "axios"
-import { del, del2, get, post, put } from "./api_helper"
+import { del, del2, get, post, post2, put } from "./api_helper"
 import * as url from "./url_helper"
 
 /*
@@ -354,6 +354,21 @@ export const runScriptBookings = number =>
 
 export const runRemoveScriptBookings = numberId =>
   del(url.RUN_REMOVE_SCRIPT_BOOKING, { headers: { numberId } })
+
+export const runScriptCheckIn = number =>
+  post(`${url.RUN_SCRIPT_CHECKIN_BOOKING}?numberOfCheckin=${number}`)
+
+export const runScriptDiagnose = number =>
+  post(`${url.RUN_SCRIPT_DIAGNOSE_ORDER}?numberOfOrderService=${number}`)
+
+export const runScriptConfirmPaid = data =>
+  post(url.RUN_SCRIPT_CONFIRM_PAID_SCRIPT_ORDER, data)
+
+export const runScriptDone = data =>
+  post2(url.RUN_SCRIPT_DONE_SCRIPT_ORDER, data)
+
+export const runScriptCheckOut = data =>
+  post2(url.RUN_SCRIPT_CHECKOUT_SCRIPT_ORDER, data)
 
 /*
 ================================================

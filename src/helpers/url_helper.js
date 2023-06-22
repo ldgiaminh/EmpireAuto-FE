@@ -164,6 +164,13 @@ RUN SCRIPT
 export const RUN_SCRIPT_CUSTOMER = "/script/customers"
 export const RUN_SCRIPT_BOOKING = "/script/bookings"
 export const RUN_REMOVE_SCRIPT_BOOKING = "/script/bookings"
+export const RUN_SCRIPT_CHECKIN_BOOKING = "/script/check-in"
+
+export const RUN_SCRIPT_DIAGNOSE_ORDER = "/script/diagnose"
+
+export const RUN_SCRIPT_CONFIRM_PAID_SCRIPT_ORDER = "/script/confirm-and-pay"
+export const RUN_SCRIPT_DONE_SCRIPT_ORDER = "/script/done-repair"
+export const RUN_SCRIPT_CHECKOUT_SCRIPT_ORDER = "/script/checkout"
 
 /*
 ==========================================================================

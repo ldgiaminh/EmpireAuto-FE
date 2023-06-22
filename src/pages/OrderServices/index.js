@@ -40,16 +40,6 @@ const OrderServicesList = props => {
   //meta title
   document.title = "Theo dõi tiến trình | Empire Garage"
 
-  const statusServices = [
-    { id: "0", title: "Phân công" },
-    { id: "1", title: "Chẩn đoán" },
-    { id: "2", title: "Xác nhận thanh toán" },
-    { id: "3", title: "Thực hiện" },
-    { id: "4", title: "Nhận xe" },
-    { id: "5", title: "Hoàn thành" },
-    { id: "-1", title: "Đã Hủy" },
-  ]
-
   const { history } = props
 
   const dispatch = useDispatch()
@@ -265,6 +255,71 @@ const OrderServicesList = props => {
     }
   }, [orderServicess])
 
+  /*
+  ==================================================
+  Count length
+  ==================================================
+  */
+
+  const countAssign = useMemo(() => {
+    if (orderService.length > 0) {
+      return orderService.filter(order => order.status === 0).length
+    }
+    return 0
+  }, [orderService])
+
+  const countDiagnose = useMemo(() => {
+    if (orderService.length > 0) {
+      return orderService.filter(order => order.status === 1).length
+    }
+    return 0
+  }, [orderService])
+
+  const countConfirmPaid = useMemo(() => {
+    if (orderService.length > 0) {
+      return orderService.filter(order => order.status === 2).length
+    }
+    return 0
+  }, [orderService])
+
+  const countDoing = useMemo(() => {
+    if (orderService.length > 0) {
+      return orderService.filter(order => order.status === 3).length
+    }
+    return 0
+  }, [orderService])
+
+  const countDone = useMemo(() => {
+    if (orderService.length > 0) {
+      return orderService.filter(order => order.status === 4).length
+    }
+    return 0
+  }, [orderService])
+
+  const countCheckOut = useMemo(() => {
+    if (orderService.length > 0) {
+      return orderService.filter(order => order.status === 5).length
+    }
+    return 0
+  }, [orderService])
+
+  const countCancel = useMemo(() => {
+    if (orderService.length > 0) {
+      return orderService.filter(order => order.status === -1).length
+    }
+    return 0
+  }, [orderService])
+
+  const statusServices = [
+    { id: "0", title: "Phân công", count: countAssign },
+    { id: "1", title: "Chẩn đoán", count: countDiagnose },
+    { id: "2", title: "Thanh toán", count: countConfirmPaid },
+    { id: "3", title: "Thực hiện", count: countDoing },
+    { id: "4", title: "Nhận xe", count: countDone },
+    { id: "5", title: "Hoàn thành", count: countCheckOut },
+    { id: "-1", title: "Đã Hủy", count: countCancel },
+  ]
+
   return (
     <React.Fragment>
       <div className="page-content">
@@ -289,6 +344,9 @@ const OrderServicesList = props => {
                           }}
                         >
                           {tab.title}
+                          <span className="badge bg-primary ms-1">
+                            {tab.count}
+                          </span>
                         </NavLink>
                       </NavItem>
                     ))}

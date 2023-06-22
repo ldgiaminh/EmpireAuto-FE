@@ -100,9 +100,9 @@ const CustomerScript = () => {
             <button
               disabled={isSubmitting}
               type="submit"
-              className="btn btn-primary w-md"
+              className="btn btn-primary btn-label"
             >
-              Chạy script
+              <i className="bx bx-user-plus label-icon"></i> Khởi tạo
             </button>
           </div>
         </Form>

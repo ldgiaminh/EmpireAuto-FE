@@ -5,20 +5,41 @@ import {
   RUN_SCRIPT_BOOKING,
   RUN_SCRIPT_BOOKING_FAIL,
   RUN_SCRIPT_BOOKING_SUCCESS,
+  RUN_SCRIPT_CHECKIN,
+  RUN_SCRIPT_CHECKIN_FAIL,
+  RUN_SCRIPT_CHECKIN_SUCCESS,
+  RUN_SCRIPT_CHECKOUT_ORDER,
+  RUN_SCRIPT_CHECKOUT_ORDER_FAIL,
+  RUN_SCRIPT_CHECKOUT_ORDER_SUCCESS,
+  RUN_SCRIPT_CONFIRM_PAID_ORDER,
+  RUN_SCRIPT_CONFIRM_PAID_ORDER_FAIL,
+  RUN_SCRIPT_CONFIRM_PAID_ORDER_SUCCESS,
   RUN_SCRIPT_CUSTOMER,
   RUN_SCRIPT_CUSTOMER_FAIL,
   RUN_SCRIPT_CUSTOMER_SUCCESS,
+  RUN_SCRIPT_DIAGNOSE_ORDER,
+  RUN_SCRIPT_DIAGNOSE_ORDER_FAIL,
+  RUN_SCRIPT_DIAGNOSE_ORDER_SUCCESS,
+  RUN_SCRIPT_DONE_ORDER,
+  RUN_SCRIPT_DONE_ORDER_FAIL,
+  RUN_SCRIPT_DONE_ORDER_SUCCESS,
 } from "./actionTypes"
 
 const INIT_STATE = {
   scriptBooking: [],
   scriptCustomer: [],
   scriptRemoveBooking: [],
+  scriptCheckIn: [],
+  scriptDiagnose: [],
+  scriptConfirmPaid: [],
+  scriptDone: [],
+  scriptCheckOut: [],
   isLoadScript: false,
 }
 
 const scripts = (state = INIT_STATE, action) => {
   switch (action.type) {
+    /* CUSTOMER */
     case RUN_SCRIPT_CUSTOMER:
       return {
         ...state,
@@ -37,6 +58,8 @@ const scripts = (state = INIT_STATE, action) => {
         isLoadScript: false,
         error: action.payload,
       }
+
+    /* BOOKING */
     case RUN_SCRIPT_BOOKING:
       return {
         ...state,
@@ -56,6 +79,8 @@ const scripts = (state = INIT_STATE, action) => {
         error: action.payload,
       }
 
+    /* REMOVE BOOKING */
+
     case RUN_REMOVE_SCRIPT_BOOKING:
       return {
         ...state,
@@ -72,6 +97,113 @@ const scripts = (state = INIT_STATE, action) => {
       return {
         ...state,
         isLoadScriptBooking: true,
+        error: action.payload,
+      }
+
+    /* CHECK-IN */
+
+    case RUN_SCRIPT_CHECKIN:
+      return {
+        ...state,
+        isLoadScript: true,
+      }
+    case RUN_SCRIPT_CHECKIN_SUCCESS:
+      return {
+        ...state,
+        isLoadScript: false,
+        scriptCheckIn: action.payload,
+      }
+
+    case RUN_SCRIPT_CHECKIN_FAIL:
+      return {
+        ...state,
+        isLoadScript: false,
+        error: action.payload,
+      }
+
+    /*================================================*/
+
+    /* DIAGNOSE */
+
+    case RUN_SCRIPT_DIAGNOSE_ORDER:
+      return {
+        ...state,
+        isLoadScript: true,
+      }
+    case RUN_SCRIPT_DIAGNOSE_ORDER_SUCCESS:
+      return {
+        ...state,
+        isLoadScript: false,
+        scriptDiagnose: action.payload,
+      }
+
+    case RUN_SCRIPT_DIAGNOSE_ORDER_FAIL:
+      return {
+        ...state,
+        isLoadScript: false,
+        error: action.payload,
+      }
+
+    /* CONFIRM - PAID */
+
+    case RUN_SCRIPT_CONFIRM_PAID_ORDER:
+      return {
+        ...state,
+        isLoadScript: true,
+      }
+    case RUN_SCRIPT_CONFIRM_PAID_ORDER_SUCCESS:
+      return {
+        ...state,
+        isLoadScript: false,
+        scriptConfirmPaid: action.payload,
+      }
+
+    case RUN_SCRIPT_CONFIRM_PAID_ORDER_FAIL:
+      return {
+        ...state,
+        isLoadScript: false,
+        error: action.payload,
+      }
+
+    /* DONE */
+
+    case RUN_SCRIPT_DONE_ORDER:
+      return {
+        ...state,
+        isLoadScript: true,
+      }
+    case RUN_SCRIPT_DONE_ORDER_SUCCESS:
+      return {
+        ...state,
+        isLoadScript: false,
+        scriptDone: action.payload,
+      }
+
+    case RUN_SCRIPT_DONE_ORDER_FAIL:
+      return {
+        ...state,
+        isLoadScript: false,
+        error: action.payload,
+      }
+
+    /* CHECK-OUT */
+
+    case RUN_SCRIPT_CHECKOUT_ORDER:
+      return {
+        ...state,
+        isLoadScript: true,
+      }
+    case RUN_SCRIPT_CHECKOUT_ORDER_SUCCESS:
+      return {
+        ...state,
+        isLoadScript: false,
+        scriptCheckOut: action.payload,
+      }
+
+    case RUN_SCRIPT_CHECKOUT_ORDER_FAIL:
+      return {
+        ...state,
+        isLoadScript: false,
         error: action.payload,
       }
 

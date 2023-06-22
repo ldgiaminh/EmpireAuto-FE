@@ -28,6 +28,11 @@ import classnames from "classnames"
 import BookingScript from "./RunScript/booking-script"
 import BookingRemoveScript from "./RunScript/booking-remove-script"
 import CustomerScript from "./RunScript/customer-script"
+import BookingCheckInScript from "./RunScript/booking-checkin"
+import OrderDiagnose from "./RunScript/order-diagnose"
+import OrderConfirmPaid from "./RunScript/order-confirmpaid"
+import OrderDone from "./RunScript/order-done"
+import OrderCheckOut from "./RunScript/order-checkout"
 
 const ConfigScriptGarage = props => {
   //meta title
@@ -45,16 +50,6 @@ const ConfigScriptGarage = props => {
           <Row>
             <Col xl="3">
               <Card style={{ padding: "20px", borderRadius: "5px" }}>
-                {/* <Button
-                  type="button"
-                  color="danger"
-                  onClick={() => {
-                    setmodal(!modal)
-                  }}
-                  block
-                >
-                  Compose
-                </Button> */}
                 <h6>Chạy script</h6>
                 <div className="mail-list">
                   <Nav tabs className="nav-tabs-custom" vertical role="tablist">
@@ -67,9 +62,8 @@ const ConfigScriptGarage = props => {
                           setactiveTab("1")
                         }}
                       >
-                        <i className="mdi font-size-15 mdi-account-circle me-2"></i>{" "}
+                        <i className="mdi font-size-16 mdi-account-circle me-2"></i>{" "}
                         Tạo khách hàng{" "}
-                        {/* <span className="ml-1 float-end">(18)</span> */}
                       </NavLink>
                     </NavItem>
 
@@ -113,37 +107,15 @@ const ConfigScriptGarage = props => {
                           setactiveTab("4")
                         }}
                       >
-                        <i className="mdi font-size-15 mdi-calendar-check me-2"></i>
+                        <i className="bx font-size-15 bx-log-in-circle me-2"></i>
                         Check-in
                       </NavLink>
                     </NavItem>
+                  </Nav>
+                </div>
 
-                    {/* <NavItem>
-                      <NavLink
-                        className={classnames({
-                          active: activeTab === "3",
-                        })}
-                        onClick={() => {
-                          setactiveTab("3")
-                        }}
-                      >
-                        <i className="mdi mdi-diamond-stone me-2"></i>Important
-                      </NavLink>
-                    </NavItem>
-
-                    <NavItem>
-                      <NavLink
-                        className={classnames({
-                          active: activeTab === "4",
-                        })}
-                        onClick={() => {
-                          setactiveTab("4")
-                        }}
-                      >
-                        <i className="mdi mdi-file-outline me-2"></i>Draft
-                      </NavLink>
-                    </NavItem>
-
+                <div className="mail-list">
+                  <Nav tabs className="nav-tabs-custom" vertical role="tablist">
                     <NavItem>
                       <NavLink
                         className={classnames({
@@ -153,34 +125,62 @@ const ConfigScriptGarage = props => {
                           setactiveTab("5")
                         }}
                       >
-                        <i className="mdi mdi-email-check-outline me-2"></i>Sent
-                        Mail
+                        <i className="bx font-size-15 bx bx-pencil me-2"></i>{" "}
+                        Chẩn đoán{" "}
+                      </NavLink>
+                    </NavItem>
+
+                    <NavItem>
+                      <NavLink
+                        className={
+                          (`font-size-15`,
+                          classnames({
+                            active: activeTab === "6",
+                          }))
+                        }
+                        onClick={() => {
+                          setactiveTab("6")
+                        }}
+                      >
+                        <i className="fas font-size-14 fa-money-bill-wave me-2"></i>
+                        Xác nhận & Thanh toán
                       </NavLink>
                     </NavItem>
 
                     <NavItem>
                       <NavLink
                         className={classnames({
-                          active: activeTab === "6",
+                          active: activeTab === "7",
                         })}
                         onClick={() => {
-                          setactiveTab("6")
+                          setactiveTab("7")
                         }}
                       >
-                        <i className="mdi mdi-trash-can-outline me-2"></i>Trash
+                        <i className="bx font-size-18 bx-badge-check me-2"></i>
+                        Hoàn tất dịch vụ
                       </NavLink>
-                    </NavItem> */}
+                    </NavItem>
+
+                    <NavItem>
+                      <NavLink
+                        className={classnames({
+                          active: activeTab === "8",
+                        })}
+                        onClick={() => {
+                          setactiveTab("8")
+                        }}
+                      >
+                        <i className="font-size-15 bx bx-log-out-circle me-2"></i>
+                        Check-out
+                      </NavLink>
+                    </NavItem>
                   </Nav>
                 </div>
-
-                {/* <h6 className="mt-4">Cấu hình</h6> */}
               </Card>
             </Col>
             <Col xl="9">
               <div className="mb-3">
                 <Card>
-                  {/* Render Email Top Tool Bar */}
-
                   <TabContent activeTab={activeTab}>
                     <TabPane tabId="1">
                       <CustomerScript />
@@ -191,9 +191,21 @@ const ConfigScriptGarage = props => {
                     <TabPane tabId="3">
                       <BookingRemoveScript />
                     </TabPane>
-                    <TabPane tabId="4"></TabPane>
-                    <TabPane tabId="5"></TabPane>
-                    <TabPane tabId="6"></TabPane>
+                    <TabPane tabId="4">
+                      <BookingCheckInScript />
+                    </TabPane>
+                    <TabPane tabId="5">
+                      <OrderDiagnose />
+                    </TabPane>
+                    <TabPane tabId="6">
+                      <OrderConfirmPaid />
+                    </TabPane>
+                    <TabPane tabId="7">
+                      <OrderDone />
+                    </TabPane>
+                    <TabPane tabId="8">
+                      <OrderCheckOut />
+                    </TabPane>
                   </TabContent>
                 </Card>
               </div>

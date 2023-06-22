@@ -24,21 +24,18 @@ import axios from "axios"
 const BookingRemoveScript = () => {
   const dispatch = useDispatch()
 
-  const { isLoadScript } = useSelector(state => ({
-    isLoadScript: state.scripts.isLoadScript,
-  }))
-
   const [bookings, setBookings] = useState([])
   const [removes, setRemoves] = useState([])
+  const [isLoad, setIsload] = useState(false)
 
   const obj = JSON.parse(localStorage.getItem("authUser"))
 
   useEffect(() => {
-    if (sessionStorage.getItem("scriptBooking")) {
-      const obj = JSON.parse(sessionStorage.getItem("scriptBooking"))
+    if (localStorage.getItem("scriptBooking")) {
+      const obj = JSON.parse(localStorage.getItem("scriptBooking"))
       setBookings(obj)
     }
-  }, [sessionStorage.getItem("scriptBooking")])
+  }, [localStorage.getItem("scriptBooking")])
 
   const numberId = bookings.map(booking => booking.result.id)
 
@@ -53,6 +50,7 @@ const BookingRemoveScript = () => {
   }
 
   const handleRemove = () => {
+    setIsload(true)
     // dispatch(onRemoveScriptBooking(numberId))
     // console.log(dispatch(onRemoveScriptBooking(numberId)))
     axios
@@ -63,10 +61,12 @@ const BookingRemoveScript = () => {
       .then(response => {
         // Handle success
         setRemoves(response.data)
+        setIsload(false)
         toast.success("Hủy thành công " + response.data.length + " đặt lịch")
       })
       .catch(error => {
         // Handle error
+        setIsload(false)
         toast.success("Hủy thành công thất bại")
         console.log(error)
       })
@@ -79,24 +79,24 @@ const BookingRemoveScript = () => {
         <button
           onClick={handleRemove}
           type="button"
-          className="btn btn-danger  btn-label"
+          className="btn btn-danger btn-label"
         >
-          <i className="bx bx-block label-icon "></i> Hủy
+          <i className="mdi mdi-calendar-remove label-icon "></i> Hủy
         </button>
         <hr className="my-4" />
-        {isLoadScript && (
+        {isLoad && (
           <Row>
             <Col xs="12">
               <div className="text-center my-3">
                 <h5 className="text-danger">
                   <i className="bx bx-hourglass bx-spin me-2" />
-                  Đang hủy {bookings.length} đặt lịch
+                  Đang hủy {removes.length} đặt lịch
                 </h5>
               </div>
             </Col>
           </Row>
         )}
-        {!isLoadScript && (
+        {!isLoad && (
           <div className="table-responsive">
             <Table className="table-nowrap table-borderless">
               {/* <thead>

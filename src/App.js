@@ -1,5 +1,5 @@
 import PropTypes from "prop-types"
-import React from "react"
+import React, { useState, useEffect } from "react"
 
 import { Switch, BrowserRouter as Router } from "react-router-dom"
 import { connect } from "react-redux"
@@ -58,12 +58,19 @@ const App = props => {
     return layoutCls
   }
 
-  const obj = JSON.parse(localStorage.getItem("authUser"))
+  const [role, setRole] = useState("")
+
+  useEffect(() => {
+    if (localStorage.getItem("authUser")) {
+      const obj = JSON.parse(localStorage.getItem("authUser"))
+      setRole(obj.role)
+    }
+  }, [])
 
   const Layout = getLayout()
   return (
     <React.Fragment>
-      {obj.role === "RE" && <NotificationMessaging />}
+      {role === "RE" && <NotificationMessaging />}
       <ToastContainer
         position="top-right"
         autoClose={5000}

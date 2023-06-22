@@ -29,6 +29,12 @@ export async function post(url, data, config = {}) {
     .then(response => response.data)
 }
 
+export async function post2(url, data, config = {}) {
+  return axiosApi
+    .post(url, [...data], { ...config })
+    .then(response => response.data)
+}
+
 export async function put(url, data, config = {}) {
   return axiosApi
     .put(url, { ...data }, { ...config })

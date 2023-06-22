@@ -17,13 +17,13 @@ import {
 //redux
 import { useSelector, useDispatch } from "react-redux"
 
-import { runScriptBooking as onRunScriptBooking } from "store/actions"
+import { runScriptCheckIn as onRunScriptCheckIn } from "store/actions"
 
-const BookingScript = () => {
+const BookingCheckInScript = () => {
   const dispatch = useDispatch()
 
-  const { scriptBooking, isLoadScript } = useSelector(state => ({
-    scriptBooking: state.scripts.scriptBooking,
+  const { scriptCheckIn, isLoadScript } = useSelector(state => ({
+    scriptCheckIn: state.scripts.scriptCheckIn,
     isLoadScript: state.scripts.isLoadScript,
   }))
 
@@ -45,26 +45,25 @@ const BookingScript = () => {
       number: Yup.number().required("Chỉ nhập số"),
     }),
     onSubmit: values => {
-      dispatch(onRunScriptBooking(values.number))
+      dispatch(onRunScriptCheckIn(values.number))
       setIsSubmitting(false)
     },
   })
 
   useEffect(() => {
-    setBookings(scriptBooking)
+    setBookings(scriptCheckIn)
 
-    // Count the number of successes and failures
-    const successCount = scriptBooking.filter(b => b.statusCode === 201).length
-    const failCount = scriptBooking.filter(b => b.statusCode === 500).length
+    const successCount = scriptCheckIn.filter(o => o.statusCode === 200).length
+    const failCount = scriptCheckIn.filter(o => o.statusCode === 500).length
 
     setCountSuccess(successCount)
     setCountFail(failCount)
-  }, [scriptBooking])
+  }, [scriptCheckIn])
 
   return (
     <React.Fragment>
       <CardBody>
-        <CardTitle className="mb-2">TẠO ĐẶT LỊCH</CardTitle>
+        <CardTitle className="mb-2">CHECK-IN ĐẶT LỊCH</CardTitle>
 
         <Form
           className="row gy-2 gx-3 align-items-center mt-3"
@@ -108,7 +107,7 @@ const BookingScript = () => {
               type="submit"
               className="btn btn-primary btn-label"
             >
-              <i className="mdi mdi-calendar-plus label-icon"></i> Khởi tạo
+              <i className="bx bx-log-in-circle label-icon"></i> Check-In
             </button>
           </div>
         </Form>
@@ -120,7 +119,7 @@ const BookingScript = () => {
               <div className="text-center my-3">
                 <h5 className="text-primary">
                   <i className="bx bx-hourglass bx-spin me-2" />
-                  Đang khởi tạo {validationType.values.number} đặt lịch
+                  Đang check-in {validationType.values.number} đặt lịch
                 </h5>
               </div>
             </Col>
@@ -133,25 +132,23 @@ const BookingScript = () => {
                 Có {countSuccess} thành công và {countFail} thất bại
               </strong>
             )}
-
-            <div className="table-responsive mt-3">
+            <div className="table-responsive">
               <Table className="table-nowrap table-borderless">
                 <tbody>
                   {bookings.map((booking, index) => (
                     <tr key={index}>
                       <td className="font-size-14 text-center">{index + 1}</td>
-                      {booking.statusCode === 201 ? (
+                      {booking.statusCode === 200 ? (
                         <td className="font-size-14">
-                          Đặt lịch thành công với mã #{booking.result.code}
+                          Check-in thành công với mã #{booking.result.code}
                         </td>
                       ) : (
                         <td className="font-size-14">
-                          {booking.result.relativeObject?.carLisenceNo} |{" "}
                           {booking.result.error.message}
                         </td>
                       )}
                       <td className="text-end">
-                        {booking.statusCode === 201 ? (
+                        {booking.statusCode === 200 ? (
                           <span className="badge badge-soft-success rounded-pill font-size-13">
                             Thành công
                           </span>
@@ -173,4 +170,4 @@ const BookingScript = () => {
   )
 }
 
-export default BookingScript
+export default BookingCheckInScript
