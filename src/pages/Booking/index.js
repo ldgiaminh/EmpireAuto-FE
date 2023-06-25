@@ -281,10 +281,13 @@ const BookingList = props => {
             <Col lg="12">
               <Card>
                 <CardBody>
-                  <div className="bg-light" style={{ overflowX: "auto" }}>
+                  <div
+                    className="bg-light table-scroll"
+                    // style={{ overflowX: "auto" }}
+                  >
                     <Nav
                       pills
-                      className="nav  rounded nav-justified"
+                      className="nav rounded nav-justified"
                       role="tablist"
                       style={{ display: "flex", flexWrap: "nowrap" }}
                     >

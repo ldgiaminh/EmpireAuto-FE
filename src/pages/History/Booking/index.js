@@ -123,23 +123,15 @@ const BookingHistory = props => {
   const generateWeekOptions = selectedMonth => {
     const year = parseInt(selectedYear)
     const monthIndex = moment.months().indexOf(selectedMonth)
-    const startDate = moment()
-      .year(year)
-      .month(monthIndex)
-      .startOf("month")
-      .isoWeekday(1)
-    const endDate = moment()
-      .year(year)
-      .month(monthIndex)
-      .endOf("month")
-      .isoWeekday(7)
+    const startDate = moment().year(year).month(monthIndex).startOf("month")
+    const endDate = moment().year(year).month(monthIndex).endOf("month")
     const weeks = []
 
-    let currentDate = startDate.clone()
+    let currentDate = startDate.clone().startOf("isoWeek") // Start from the first day of the ISO week
     while (currentDate.isSameOrBefore(endDate)) {
       const weekStart = currentDate.clone()
-      const weekEnd = currentDate.clone().add(6, "days")
-      const weekLabel = `${weekStart.format("DD/MM")} đến ${weekEnd.format(
+      const weekEnd = currentDate.clone().endOf("isoWeek") // End at the last day of the ISO week (Sunday)
+      const weekLabel = `${weekStart.format("DD/MM")} to ${weekEnd.format(
         "DD/MM"
       )}`
       weeks.push({ start: weekStart, end: weekEnd, label: weekLabel })
