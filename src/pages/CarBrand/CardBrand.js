@@ -1,5 +1,6 @@
 import PropTypes from "prop-types"
 import React from "react"
+import slugify from "slugify"
 import { Link } from "react-router-dom"
 import {
   Card,
@@ -8,10 +9,11 @@ import {
   Col,
   UncontrolledTooltip,
 } from "reactstrap"
-import { isEmpty, size, map } from "lodash"
 
 const CardBrand = props => {
   const { brand } = props
+
+  const slugName = slugify(brand.name, { lower: true })
 
   return (
     <React.Fragment>
@@ -40,7 +42,7 @@ const CardBrand = props => {
 
             <h5 className="font-size-15 mb-1">
               <Link
-                to={`/brands/${brand.id}/${brand.name}`}
+                to={`/brands/${brand.id}/${slugName}`}
                 className="text-dark"
               >
                 {brand.name}
@@ -52,7 +54,7 @@ const CardBrand = props => {
             <div className="contact-links d-flex font-size-20">
               <div className="flex-fill">
                 <Link
-                  to={`/brands/${brand.id}/${brand.name}`}
+                  to={`/brands/${brand.id}/${slugName}`}
                   id={"brand" + brand.id}
                 >
                   <i className="mdi mdi-eye-circle-outline" />

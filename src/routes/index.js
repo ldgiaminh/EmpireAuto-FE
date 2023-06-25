@@ -90,13 +90,13 @@ const authProtectedRoutes = [
 
   //Vehicle
   { path: "/brands", component: CarBrand },
-  { path: "/brands/:id/:slug", component: CarModel },
+  { path: "/brands/:id/:name", component: CarModel },
   {
-    path: "/brands/:id/:slug/models/:id/:slug/problems",
+    path: "/brands/:id/:name/models/:id/:name",
     component: CarProblem,
   },
   {
-    path: "/brands/:id/:slug/models/:id/:slug/problems/:id/:slug/items",
+    path: "/brands/:id/:name/models/:id/:name/problems/:id/:name/items",
     component: CarItem,
   },
 

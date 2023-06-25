@@ -1,14 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useEffect } from "react"
 import PropTypes from "prop-types"
-import {
-  Button,
-  Card,
-  CardBody,
-  Col,
-  Container,
-  Row,
-  UncontrolledTooltip,
-} from "reactstrap"
+import { Container, Row } from "reactstrap"
 import { isEmpty, map } from "lodash"
 
 import { Name } from "./CarBrandCol"
@@ -51,17 +43,6 @@ const CarBrand = props => {
             {map(carsBrand, (brand, key) => (
               <CardBrand brand={brand} key={"_brand_" + key} />
             ))}
-          </Row>
-
-          <Row>
-            {/* <Col xs="12">
-              <div className="text-center my-3">
-                <Link to="#" className="text-success">
-                  <i className="bx bx-hourglass bx-spin me-2" />
-                  Load more
-                </Link>
-              </div>
-            </Col> */}
           </Row>
         </Container>
         {/* <Container fluid={true}>

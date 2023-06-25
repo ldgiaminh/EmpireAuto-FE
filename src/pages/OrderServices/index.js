@@ -85,97 +85,14 @@ const OrderServicesList = props => {
           return <Name {...cellProps} />
         },
       },
-      {
-        Header: "Thời gian check-in",
-        accessor: "order.createdAt",
-        disableFilters: true,
-        Cell: cellProps => {
-          return <DateCell {...cellProps} />
-        },
-      },
-      {
-        Header: "Hãng xe",
-        accessor: "car.carBrand",
-        disableFilters: true,
-        Cell: cellProps => {
-          return <ModalCar {...cellProps} />
-        },
-      },
-      {
-        Header: "Dòng xe",
-        accessor: "car.carModel",
-        disableFilters: true,
-        Cell: cellProps => {
-          return <ModalCar {...cellProps} />
-        },
-      },
-      {
-        Header: "Biển số xe",
-        accessor: "car.carLisenceNo",
-        disableFilters: true,
-        Cell: cellProps => {
-          return <Plate {...cellProps} />
-        },
-      },
-      {
-        Header: "Kỹ thuật viên",
-        accessor: "expert.fullname",
-        disableFilters: true,
-        Cell: cellProps => {
-          return <Expert {...cellProps} />
-        },
-      },
-      {
-        Header: "Chi tiết",
-        accessor: "action",
-        disableFilters: true,
-        Cell: cellProps => {
-          return (
-            <Button
-              type="button"
-              color={
-                cellProps.row.original.expert !== null ? "primary" : "warning"
-              }
-              className="btn-sm btn-rounded"
-              onClick={() =>
-                history.push(`/order-services/${cellProps.row.original.id}`)
-              }
-            >
-              {cellProps.row.original.expert !== null
-                ? "Xem chi tiết"
-                : "Phân công"}
-            </Button>
-          )
-        },
-      },
-    ],
-    []
-  )
-
-  const columnsDone = useMemo(
-    () => [
-      {
-        Header: "Mã đơn hàng",
-        accessor: "code",
-        width: "150px",
-        style: {
-          textAlign: "center",
-          width: "10%",
-          background: "#0000",
-        },
-        filterable: true,
-        Cell: cellProps => {
-          return <OrderCode {...cellProps} />
-        },
-      },
-      {
-        Header: "Tên khách hàng",
-        accessor: "order.user.fullname",
-        disableFilters: true,
-        Cell: cellProps => {
-          return <Name {...cellProps} />
-        },
-      },
+      // {
+      //   Header: "Thời gian check-in",
+      //   accessor: "order.createdAt",
+      //   disableFilters: true,
+      //   Cell: cellProps => {
+      //     return <DateCell {...cellProps} />
+      //   },
+      // },
       {
         Header: "Hãng xe",
         accessor: "car.carBrand",
@@ -261,63 +178,42 @@ const OrderServicesList = props => {
   ==================================================
   */
 
-  const countAssign = useMemo(() => {
-    if (orderService.length > 0) {
-      return orderService.filter(order => order.status === 0).length
-    }
-    return 0
-  }, [orderService])
-
-  const countDiagnose = useMemo(() => {
-    if (orderService.length > 0) {
-      return orderService.filter(order => order.status === 1).length
-    }
-    return 0
-  }, [orderService])
-
-  const countConfirmPaid = useMemo(() => {
-    if (orderService.length > 0) {
-      return orderService.filter(order => order.status === 2).length
-    }
-    return 0
-  }, [orderService])
-
-  const countDoing = useMemo(() => {
-    if (orderService.length > 0) {
-      return orderService.filter(order => order.status === 3).length
-    }
-    return 0
-  }, [orderService])
-
-  const countDone = useMemo(() => {
-    if (orderService.length > 0) {
-      return orderService.filter(order => order.status === 4).length
-    }
-    return 0
-  }, [orderService])
-
-  const countCheckOut = useMemo(() => {
-    if (orderService.length > 0) {
-      return orderService.filter(order => order.status === 5).length
-    }
-    return 0
-  }, [orderService])
-
-  const countCancel = useMemo(() => {
-    if (orderService.length > 0) {
-      return orderService.filter(order => order.status === -1).length
-    }
-    return 0
-  }, [orderService])
-
   const statusServices = [
-    { id: "0", title: "Phân công", count: countAssign },
-    { id: "1", title: "Chẩn đoán", count: countDiagnose },
-    { id: "2", title: "Thanh toán", count: countConfirmPaid },
-    { id: "3", title: "Thực hiện", count: countDoing },
-    { id: "4", title: "Nhận xe", count: countDone },
-    { id: "5", title: "Hoàn thành", count: countCheckOut },
-    { id: "-1", title: "Đã Hủy", count: countCancel },
+    {
+      id: "0",
+      title: "Phân công",
+      count: orderService.filter(item => item.status === 0).length,
+    },
+    {
+      id: "1",
+      title: "Chẩn đoán",
+      count: orderService.filter(item => item.status === 1).length,
+    },
+    {
+      id: "2",
+      title: "Thanh toán",
+      count: orderService.filter(item => item.status === 2).length,
+    },
+    {
+      id: "3",
+      title: "Thực hiện",
+      count: orderService.filter(item => item.status === 3).length,
+    },
+    {
+      id: "4",
+      title: "Nhận xe",
+      count: orderService.filter(item => item.status === 4).length,
+    },
+    {
+      id: "5",
+      title: "Hoàn thành",
+      count: orderService.filter(item => item.status === 5).length,
+    },
+    {
+      id: "-1",
+      title: "Đã Hủy",
+      count: orderService.filter(item => item.status === 6).length,
+    },
   ]
 
   return (
@@ -329,35 +225,40 @@ const OrderServicesList = props => {
             <Col lg="12">
               <Card>
                 <CardBody>
-                  <ul
-                    className="nav nav-tabs nav-tabs-custom nav-justified"
-                    role="tablist"
-                  >
-                    {statusServices.map(tab => (
-                      <NavItem key={tab.id}>
-                        <NavLink
-                          className={classnames({
-                            active: activeTab === tab.id,
-                          })}
-                          onClick={() => {
-                            toggleTab(tab.id)
-                          }}
-                        >
-                          {tab.title}
-                          <span className="badge bg-primary ms-1">
-                            {tab.count}
-                          </span>
-                        </NavLink>
-                      </NavItem>
-                    ))}
-                  </ul>
+                  <div style={{ overflowX: "auto" }}>
+                    <ul
+                      className="nav nav-tabs nav-tabs-custom nav-justified"
+                      role="tablist"
+                      style={{ display: "flex", flexWrap: "nowrap" }}
+                    >
+                      {statusServices.map(tab => (
+                        <NavItem key={tab.id}>
+                          <NavLink
+                            className={classnames({
+                              active: activeTab === tab.id,
+                            })}
+                            onClick={() => {
+                              toggleTab(tab.id)
+                            }}
+                          >
+                            {tab.title}
+                            {orderService.length > 0 && (
+                              <span className="badge bg-primary ms-1">
+                                {tab.count}
+                              </span>
+                            )}
+                          </NavLink>
+                        </NavItem>
+                      ))}
+                    </ul>
+                  </div>
                   {isLoading && <Loading />}
                   {!isLoading &&
                     (orderService.length ? (
                       <TabContent activeTab={activeTab} className="p-3">
                         <TabPane tabId="0" id="diagnosing">
                           <TableContainer
-                            columns={columnsDone}
+                            columns={columns}
                             data={orderService}
                             isGlobalFilter={true}
                             customPageSize={10}
@@ -366,7 +267,7 @@ const OrderServicesList = props => {
                         </TabPane>
                         <TabPane tabId="1" id="confirmPrice">
                           <TableContainer
-                            columns={columnsDone}
+                            columns={columns}
                             data={orderService}
                             isGlobalFilter={true}
                             customPageSize={10}
@@ -375,7 +276,7 @@ const OrderServicesList = props => {
                         </TabPane>
                         <TabPane tabId="2" id="confirmPaid">
                           <TableContainer
-                            columns={columnsDone}
+                            columns={columns}
                             data={orderService}
                             isGlobalFilter={true}
                             customPageSize={10}
@@ -384,7 +285,7 @@ const OrderServicesList = props => {
                         </TabPane>
                         <TabPane tabId="3" id="done">
                           <TableContainer
-                            columns={columnsDone}
+                            columns={columns}
                             data={orderService}
                             isGlobalFilter={true}
                             customPageSize={10}
@@ -393,7 +294,7 @@ const OrderServicesList = props => {
                         </TabPane>
                         <TabPane tabId="4" id="checkout">
                           <TableContainer
-                            columns={columnsDone}
+                            columns={columns}
                             data={orderService}
                             isGlobalFilter={true}
                             customPageSize={10}
@@ -402,7 +303,7 @@ const OrderServicesList = props => {
                         </TabPane>
                         <TabPane tabId="5" id="checkout">
                           <TableContainer
-                            columns={columnsDone}
+                            columns={columns}
                             data={orderService}
                             isGlobalFilter={true}
                             customPageSize={10}
@@ -411,7 +312,7 @@ const OrderServicesList = props => {
                         </TabPane>
                         <TabPane tabId="-1" id="cancel">
                           <TableContainer
-                            columns={columnsDone}
+                            columns={columns}
                             data={orderService}
                             isGlobalFilter={true}
                             customPageSize={10}
@@ -433,7 +334,7 @@ const OrderServicesList = props => {
                                   src={img1}
                                   alt=""
                                   className="mx-auto d-block"
-                                  style={{ height: 400 }}
+                                  style={{ maxWidth: "100%", height: 400 }}
                                 />
                               </div>
                             </div>

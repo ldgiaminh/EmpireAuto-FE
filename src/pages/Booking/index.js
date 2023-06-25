@@ -20,8 +20,6 @@ import {
   TabContent,
   TabPane,
   Nav,
-  Label,
-  FormGroup,
 } from "reactstrap"
 
 import { BookingCode, ModalCar, Name, Phone, Plate } from "./BookingUserListCol"
@@ -283,27 +281,30 @@ const BookingList = props => {
             <Col lg="12">
               <Card>
                 <CardBody>
-                  <Nav
-                    pills
-                    className="nav bg-light rounded nav-justified"
-                    role="tablist"
-                  >
-                    {weekDays.map((day, index) => (
-                      <NavItem key={index}>
-                        <NavLink
-                          style={{ cursor: "pointer" }}
-                          className={classnames({
-                            active: activeTab === index,
-                          })}
-                          onClick={() => {
-                            toggleTab(index)
-                          }}
-                        >
-                          {day.day} ({day.dateFormat})
-                        </NavLink>
-                      </NavItem>
-                    ))}
-                  </Nav>
+                  <div className="bg-light" style={{ overflowX: "auto" }}>
+                    <Nav
+                      pills
+                      className="nav  rounded nav-justified"
+                      role="tablist"
+                      style={{ display: "flex", flexWrap: "nowrap" }}
+                    >
+                      {weekDays.map((day, index) => (
+                        <NavItem key={index}>
+                          <NavLink
+                            style={{ cursor: "pointer", width: "100px" }}
+                            className={classnames({
+                              active: activeTab === index,
+                            })}
+                            onClick={() => {
+                              toggleTab(index)
+                            }}
+                          >
+                            {day.day} ({day.dateFormat})
+                          </NavLink>
+                        </NavItem>
+                      ))}
+                    </Nav>
+                  </div>
 
                   {isLoading && <Loading />}
                   {!isLoading &&
@@ -327,9 +328,11 @@ const BookingList = props => {
                                       }}
                                     >
                                       Chưa đến
-                                      <span className="badge bg-warning ms-1">
-                                        {countPending.length}
-                                      </span>
+                                      {countPending.length > 0 && (
+                                        <span className="badge bg-warning ms-1">
+                                          {countPending.length}
+                                        </span>
+                                      )}
                                     </NavLink>
                                   </NavItem>
                                   <NavItem>
@@ -342,9 +345,11 @@ const BookingList = props => {
                                       }}
                                     >
                                       Đã đến
-                                      <span className="badge bg-success ms-1">
-                                        {countArrived.length}
-                                      </span>
+                                      {countArrived.length > 0 && (
+                                        <span className="badge bg-success ms-1">
+                                          {countArrived.length}
+                                        </span>
+                                      )}
                                     </NavLink>
                                   </NavItem>
                                   <NavItem>
@@ -357,9 +362,11 @@ const BookingList = props => {
                                       }}
                                     >
                                       Hủy
-                                      <span className="badge bg-danger ms-1">
-                                        {countCancel.length}
-                                      </span>
+                                      {countCancel.length > 0 && (
+                                        <span className="badge bg-danger ms-1">
+                                          {countCancel.length}
+                                        </span>
+                                      )}
                                     </NavLink>
                                   </NavItem>
                                 </ul>
@@ -388,7 +395,7 @@ const BookingList = props => {
                                               <img
                                                 src={img1}
                                                 alt=""
-                                                className="mx-auto d-block"
+                                                className="img-thumbnail mx-auto d-block"
                                                 style={{ height: 400 }}
                                               />
                                             </div>
@@ -524,7 +531,7 @@ const BookingList = props => {
                                   src={img1}
                                   alt=""
                                   className="mx-auto d-block"
-                                  style={{ height: 400 }}
+                                  style={{ maxWidth: "100%", height: 350 }}
                                 />
                               </div>
                             </div>

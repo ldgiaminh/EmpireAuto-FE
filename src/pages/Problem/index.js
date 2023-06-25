@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react"
 import PropTypes from "prop-types"
+import slugify from "slugify"
 import {
   Badge,
   Button,
@@ -86,6 +87,8 @@ const CarProblem = props => {
         accessor: "view",
         disableFilters: true,
         Cell: cellProps => {
+          const { id, name } = cellProps.row.original
+          const formattedName = slugify(name, { lower: true })
           return (
             <Button
               type="button"
@@ -93,7 +96,7 @@ const CarProblem = props => {
               className="btn-sm btn-rounded"
               onClick={() =>
                 history.push(
-                  `/brands/${params.id}/${slug}/models/${params.id}/${slug}/problems/${cellProps.row.original.id}/${cellProps.row.original.name}/items`
+                  `/brands/${params.id}/${slug}/models/${params.id}/${slug}/problems/${id}/${formattedName}/items`
                 )
               }
             >
@@ -149,7 +152,7 @@ const CarProblem = props => {
         <Container fluid={true}>
           <Breadcrumbs
             title="Quản lý"
-            breadcrumbItem={`Danh sách các vấn đề xe - ${slug}`}
+            breadcrumbItem={`Các vấn đề xe - ${params.name}`}
           />
           <Row>
             <Col lg="12">

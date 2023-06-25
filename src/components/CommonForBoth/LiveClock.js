@@ -53,7 +53,7 @@ const LiveClock = () => {
     <React.Fragment>
       <button
         type="button"
-        className="btn btn-md px-3 font-size-14 header-item"
+        className="btn btn-md px-3 font-size-14 header-item d-none d-sm-block"
         disabled={true}
       >
         {/* <i className="bx bx-calendar" /> */}

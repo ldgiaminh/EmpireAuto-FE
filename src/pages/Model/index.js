@@ -28,6 +28,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb"
 import { useSelector, useDispatch } from "react-redux"
 
 import { getCarsModelByBrand as onGetCarsModelByBrand } from "store/actions"
+import ModelGrid from "./ModelGrid"
 
 const CarModel = props => {
   //meta title
@@ -149,10 +150,11 @@ const CarModel = props => {
         <Container fluid={true}>
           <Breadcrumbs
             title="Quản lý"
-            breadcrumbItem={`Danh sách các dòng xe - ${slug}`}
+            breadcrumbItem={`Các dòng xe - ${params.name}`}
           />
           <Row>
-            <Col lg="12">
+            <ModelGrid models={models} brand={params} />
+            {/* <Col lg="12">
               <Card>
                 <CardBody>
                   <TableContainer
@@ -166,7 +168,7 @@ const CarModel = props => {
                   />
                 </CardBody>
               </Card>
-            </Col>
+            </Col> */}
           </Row>
         </Container>
       </div>
