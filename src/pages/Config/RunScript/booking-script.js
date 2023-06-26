@@ -31,8 +31,17 @@ const BookingScript = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false)
 
+  const [idList, setIdList] = useState([])
+
   const [countSuccess, setCountSuccess] = useState(0)
   const [countFail, setCountFail] = useState(0)
+
+  useEffect(() => {
+    if (localStorage.getItem("scriptCustomer")) {
+      const obj = JSON.parse(localStorage.getItem("scriptCustomer"))
+      setIdList(obj)
+    }
+  }, [localStorage.getItem("scriptCustomer")])
 
   const validationType = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
@@ -45,7 +54,8 @@ const BookingScript = () => {
       number: Yup.number().required("Chỉ nhập số"),
     }),
     onSubmit: values => {
-      dispatch(onRunScriptBooking(values.number))
+      const data = idList.map(il => il.result.id)
+      dispatch(onRunScriptBooking(values.number, data))
       setIsSubmitting(false)
     },
   })

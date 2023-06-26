@@ -57,9 +57,9 @@ function* onRunScriptCustomers({ number }) {
   }
 }
 
-function* onRunScriptBookings({ number }) {
+function* onRunScriptBookings({ number, payload: { data } }) {
   try {
-    const response = yield call(runScriptBookings, number)
+    const response = yield call(runScriptBookings, number, data)
     yield put(runScriptBookingSuccess(response))
     toast.success("Tạo mới thành công " + number + " đặt lịch")
     localStorage.setItem("scriptBooking", JSON.stringify(response))
@@ -80,11 +80,13 @@ function* onRemoveRunScriptBookings({ payload: numberId }) {
   }
 }
 
-function* onRunScriptCheckIns({ number }) {
+function* onRunScriptCheckIns({ number1, number2, payload: { data } }) {
   try {
-    const response = yield call(runScriptCheckIn, number)
+    const response = yield call(runScriptCheckIn, number1, number2, data)
     yield put(runScriptCheckInSuccess(response))
-    toast.success("Checkin thành công " + number + " đặt lịch")
+    toast.success(
+      "Checkin thành công " + number1 + " đặt lịch và hủy " + number2
+    )
     localStorage.setItem("scriptCheckIn", JSON.stringify(response))
   } catch (error) {
     toast.error("Đã có lỗi xảy ra")
@@ -92,9 +94,9 @@ function* onRunScriptCheckIns({ number }) {
   }
 }
 
-function* onRunScriptDiagnoses({ number }) {
+function* onRunScriptDiagnoses({ number, payload: { data } }) {
   try {
-    const response = yield call(runScriptDiagnose, number)
+    const response = yield call(runScriptDiagnose, number, data)
     yield put(runScriptDiagnoseSuccess(response))
     toast.success("Chẩn đoán thành công " + number + " đặt lịch")
     localStorage.setItem("scriptDiagnose", JSON.stringify(response))

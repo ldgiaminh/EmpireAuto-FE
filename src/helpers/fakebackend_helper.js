@@ -172,6 +172,9 @@ export const priorityService = (exId, orId) =>
 export const checkOutService = id =>
   put(`${url.CHECKOUT_SERVICES}/${id}/checkout`)
 
+/* COUNT */
+
+export const countService = () => get(url.COUNT_SERVICES)
 /*
 ================================================
 GROUP SERVICE
@@ -349,17 +352,20 @@ RUN SCRIPT
 export const runScriptCustomers = number =>
   post(`${url.RUN_SCRIPT_CUSTOMER}?numberOfCustomer=${number}`)
 
-export const runScriptBookings = number =>
-  post(`${url.RUN_SCRIPT_BOOKING}?numberOfBooking=${number}`)
+export const runScriptBookings = (number, data) =>
+  post2(`${url.RUN_SCRIPT_BOOKING}?numberOfBooking=${number}`, data)
 
 export const runRemoveScriptBookings = numberId =>
   del(url.RUN_REMOVE_SCRIPT_BOOKING, { headers: { numberId } })
 
-export const runScriptCheckIn = number =>
-  post(`${url.RUN_SCRIPT_CHECKIN_BOOKING}?numberOfCheckin=${number}`)
+export const runScriptCheckIn = (number1, number2, data) =>
+  post2(
+    `${url.RUN_SCRIPT_CHECKIN_BOOKING}?numberOfCheckin=${number1}&numberOfCancel=${number2}`,
+    data
+  )
 
-export const runScriptDiagnose = number =>
-  post(`${url.RUN_SCRIPT_DIAGNOSE_ORDER}?numberOfOrderService=${number}`)
+export const runScriptDiagnose = (number, data) =>
+  post2(`${url.RUN_SCRIPT_DIAGNOSE_ORDER}?numberOfOrderService=${number}`, data)
 
 export const runScriptConfirmPaid = data =>
   post(url.RUN_SCRIPT_CONFIRM_PAID_SCRIPT_ORDER, data)

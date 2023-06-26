@@ -65,6 +65,9 @@ export const PUT_PRIORITY_SERVICES = "/workloads/priority"
 //CheckOut
 export const CHECKOUT_SERVICES = "/order-services"
 
+//Count length
+export const COUNT_SERVICES = "/order-services/count"
+
 /*
 ================================================ 
 GROUP SERVICE
@@ -164,7 +167,7 @@ RUN SCRIPT
 export const RUN_SCRIPT_CUSTOMER = "/script/customers"
 export const RUN_SCRIPT_BOOKING = "/script/bookings"
 export const RUN_REMOVE_SCRIPT_BOOKING = "/script/bookings"
-export const RUN_SCRIPT_CHECKIN_BOOKING = "/script/check-in"
+export const RUN_SCRIPT_CHECKIN_BOOKING = "/script/check-in-and-cancel"
 
 export const RUN_SCRIPT_DIAGNOSE_ORDER = "/script/diagnose"
 

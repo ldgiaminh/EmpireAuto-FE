@@ -29,7 +29,10 @@ import {
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb"
 
-import { getOrderServicesListByStatus as onGetOrderServicesListByStatus } from "store/order-services/actions"
+import {
+  getOrderServicesListByStatus as onGetOrderServicesListByStatus,
+  countService as onCountServices,
+} from "store/order-services/actions"
 import { isEmpty } from "lodash"
 
 //redux
@@ -47,11 +50,14 @@ const OrderServicesList = props => {
   const [activeTab, setActiveTab] = useState("0")
   const [orderService, setOrderService] = useState([])
 
-  const { orderServicess, isLoading, isShow } = useSelector(state => ({
-    orderServicess: state.orderServices.orderServicess,
-    isLoading: state.orderServices.isLoading,
-    isShow: state.Layout.isShow,
-  }))
+  const { orderServicess, isLoading, isShow, countService } = useSelector(
+    state => ({
+      orderServicess: state.orderServices.orderServicess,
+      isLoading: state.orderServices.isLoading,
+      isShow: state.Layout.isShow,
+      countService: state.orderServices.countService,
+    })
+  )
 
   //Change Tabs
   const toggleTab = tab => {
@@ -152,13 +158,17 @@ const OrderServicesList = props => {
     []
   )
 
+  /* Get Order List */
   useEffect(() => {
     dispatch(onGetOrderServicesListByStatus(activeTab, props.history))
+    dispatch(onCountServices())
   }, [dispatch, activeTab])
 
+  /* Reload when Notification */
   useEffect(() => {
     if (isShow) {
       dispatch(onGetOrderServicesListByStatus(activeTab, props.history))
+      dispatch(onCountServices())
     }
   }, [dispatch, isShow, activeTab])
 
@@ -172,6 +182,11 @@ const OrderServicesList = props => {
     }
   }, [orderServicess])
 
+  useEffect(() => {
+    dispatch(onCountServices())
+  }, [dispatch])
+
+  console.log(countService)
   /*
   ==================================================
   Count length
@@ -179,41 +194,13 @@ const OrderServicesList = props => {
   */
 
   const statusServices = [
-    {
-      id: "0",
-      title: "Phân công",
-      count: orderService.filter(item => item.status === 0).length,
-    },
-    {
-      id: "1",
-      title: "Chẩn đoán",
-      count: orderService.filter(item => item.status === 1).length,
-    },
-    {
-      id: "2",
-      title: "Thanh toán",
-      count: orderService.filter(item => item.status === 2).length,
-    },
-    {
-      id: "3",
-      title: "Thực hiện",
-      count: orderService.filter(item => item.status === 3).length,
-    },
-    {
-      id: "4",
-      title: "Nhận xe",
-      count: orderService.filter(item => item.status === 4).length,
-    },
-    {
-      id: "5",
-      title: "Hoàn thành",
-      count: orderService.filter(item => item.status === 5).length,
-    },
-    {
-      id: "-1",
-      title: "Đã Hủy",
-      count: orderService.filter(item => item.status === 6).length,
-    },
+    { id: "0", title: "Phân công", count: countService.START },
+    { id: "1", title: "Chẩn đoán", count: countService.ASSIGNED },
+    { id: "2", title: "Thanh toán", count: countService.DIAGNOSED },
+    { id: "3", title: "Thực hiện", count: countService.CONFIRMED_AND_PAID },
+    { id: "4", title: "Nhận xe", count: countService.DONE },
+    { id: "5", title: "Hoàn thành", count: countService.CHECKOUT },
+    { id: "-1", title: "Đã Hủy", count: countService.CANCELLED },
   ]
 
   return (
@@ -242,7 +229,7 @@ const OrderServicesList = props => {
                             }}
                           >
                             {tab.title}
-                            {orderService.length > 0 && (
+                            {tab.count > 0 && (
                               <span className="badge bg-primary ms-1">
                                 {tab.count}
                               </span>

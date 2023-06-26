@@ -31,21 +31,33 @@ const BookingCheckInScript = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false)
 
+  const [idList, setIdList] = useState([])
+
   const [countSuccess, setCountSuccess] = useState(0)
   const [countFail, setCountFail] = useState(0)
+
+  useEffect(() => {
+    if (localStorage.getItem("scriptCustomer")) {
+      const obj = JSON.parse(localStorage.getItem("scriptCustomer"))
+      setIdList(obj)
+    }
+  }, [localStorage.getItem("scriptCustomer")])
 
   const validationType = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
 
     initialValues: {
-      number: "",
+      number1: "",
+      number2: "",
     },
     validationSchema: Yup.object().shape({
-      number: Yup.number().required("Chỉ nhập số"),
+      number1: Yup.number().required("Chỉ nhập số"),
+      number2: Yup.number().required("Chỉ nhập số"),
     }),
     onSubmit: values => {
-      dispatch(onRunScriptCheckIn(values.number))
+      const data = idList.map(il => il.result.user.id)
+      dispatch(onRunScriptCheckIn(values.number1, values.number2, data))
       setIsSubmitting(false)
     },
   })
@@ -73,35 +85,67 @@ const BookingCheckInScript = () => {
             return false
           }}
         >
-          <div className="col-sm-5">
+          <div className="col-sm-4">
             <Label
               className="visually-hidden"
               htmlFor="autoSizingInputGroup"
             ></Label>
             <InputGroup>
-              <div className="input-group-text">Số đặt lịch</div>
+              <div className="input-group-text">Số đặt lịch thành công</div>
               <Input
                 type="number"
                 className="form-control"
                 id="autoSizingInputGroup"
-                name="number"
+                name="number1"
                 onChange={validationType.handleChange}
                 onBlur={validationType.handleBlur}
-                value={validationType.values.number || ""}
+                value={validationType.values.number1 || ""}
                 invalid={
-                  validationType.touched.number && validationType.errors.number
+                  validationType.touched.number1 &&
+                  validationType.errors.number1
                     ? true
                     : false
                 }
               />
-              {validationType.touched.number && validationType.errors.number ? (
+              {validationType.touched.number1 &&
+              validationType.errors.number1 ? (
                 <FormFeedback type="invalid">
-                  {validationType.errors.number}
+                  {validationType.errors.number1}
                 </FormFeedback>
               ) : null}
             </InputGroup>
           </div>
-          <div className="col-sm-5">
+          <div className="col-sm-4">
+            <Label
+              className="visually-hidden"
+              htmlFor="autoSizingInputGroup"
+            ></Label>
+            <InputGroup>
+              <div className="input-group-text">Số đặt lịch hủy</div>
+              <Input
+                type="number"
+                className="form-control"
+                id="autoSizingInputGroup"
+                name="number2"
+                onChange={validationType.handleChange}
+                onBlur={validationType.handleBlur}
+                value={validationType.values.number2 || ""}
+                invalid={
+                  validationType.touched.number2 &&
+                  validationType.errors.number2
+                    ? true
+                    : false
+                }
+              />
+              {validationType.touched.number2 &&
+              validationType.errors.number2 ? (
+                <FormFeedback type="invalid">
+                  {validationType.errors.number2}
+                </FormFeedback>
+              ) : null}
+            </InputGroup>
+          </div>
+          <div className="col-sm-4">
             <button
               disabled={isSubmitting}
               type="submit"
@@ -119,7 +163,8 @@ const BookingCheckInScript = () => {
               <div className="text-center my-3">
                 <h5 className="text-primary">
                   <i className="bx bx-hourglass bx-spin me-2" />
-                  Đang check-in {validationType.values.number} đặt lịch
+                  Đang check-in {validationType.values.number1} đặt lịch và hủy{" "}
+                  {validationType.values.number2} đặt lịch
                 </h5>
               </div>
             </Col>
@@ -139,9 +184,16 @@ const BookingCheckInScript = () => {
                     <tr key={index}>
                       <td className="font-size-14 text-center">{index + 1}</td>
                       {booking.statusCode === 200 ? (
-                        <td className="font-size-14">
-                          Check-in thành công với mã #{booking.result.code}
-                        </td>
+                        booking.result.isArrived &&
+                        booking.result.isActived === true ? (
+                          <td className="font-size-14">
+                            Check-in thành công với mã #{booking.result.code}
+                          </td>
+                        ) : (
+                          <td className="font-size-14">
+                            <u>Hủy thành công với mã #{booking.result.code}</u>
+                          </td>
+                        )
                       ) : (
                         <td className="font-size-14">
                           {booking.result.error.message}

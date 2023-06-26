@@ -12,6 +12,7 @@ import {
   PUT_PRIORITY_SERVICES,
   GET_EXPERTS_INTENDED_TIME_BY_SERVICE_TIME,
   PUT_AUTO_ASSIGN_EXPERT,
+  COUNT_SERVICES,
 } from "./actionTypes"
 
 import {
@@ -32,6 +33,9 @@ import {
   getExpertIntendedTimeByServiceFail,
   putAutoAssignExpertsSuccess,
   putAutoAssignExpertsFail,
+  countServiceSuccess,
+  countServiceFail,
+  getStatusLogFail,
 } from "./actions"
 
 import {
@@ -44,6 +48,7 @@ import {
   priorityService,
   getExpertIntendedTimeByService,
   putAutoAssignExperts,
+  countService,
 } from "../../helpers/fakebackend_helper"
 
 import { toast } from "react-toastify"
@@ -159,6 +164,15 @@ function* fetchStatusLog({ orderServiceId }) {
   }
 }
 
+function* onCountServices() {
+  try {
+    const response = yield call(countService)
+    yield put(countServiceSuccess(response))
+  } catch (error) {
+    yield put(countServiceFail(error))
+  }
+}
+
 function* orderServicesSaga() {
   //yield takeEvery(GET_ORDER_SERVICE_LIST, fetchOrderServicessLists)
   yield takeEvery(
@@ -176,6 +190,7 @@ function* orderServicesSaga() {
   yield takeEvery(PUT_PRIORITY_SERVICES, priorityServices)
   yield takeEvery(CHECKOUT_SERVICES, checkOutServices)
   yield takeEvery(GET_STATUS_LOG, fetchStatusLog)
+  yield takeEvery(COUNT_SERVICES, onCountServices)
 }
 
 export default orderServicesSaga

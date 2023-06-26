@@ -25,18 +25,22 @@ import {
   PUT_AUTO_ASSIGN_EXPERT,
   PUT_AUTO_ASSIGN_EXPERT_SUCCESS,
   PUT_AUTO_ASSIGN_EXPERT_FAIL,
+  COUNT_SERVICES,
+  COUNT_SERVICES_SUCCESS,
+  COUNT_SERVICES_FAIL,
 } from "./actionTypes"
 
 const INIT_STATE = {
   orderServicess: [],
   orderServicesDetail: {},
   error: {},
-  isLoading: false,
-  isLoad: false,
   orderServiceLogs: [],
   orderServicesCheckOut: [],
   exDetails: {},
   exDetailsService: {},
+  countService: {},
+  isLoading: false,
+  isLoad: false,
   isLoadPriority: false,
 }
 
@@ -224,6 +228,20 @@ const orderServices = (state = INIT_STATE, action) => {
       return {
         ...state,
         isLoad: false,
+        error: action.payload,
+      }
+
+    /* COUNT SERVICE */
+
+    case COUNT_SERVICES_SUCCESS:
+      return {
+        ...state,
+        countService: action.payload,
+      }
+
+    case COUNT_SERVICES_FAIL:
+      return {
+        ...state,
         error: action.payload,
       }
 

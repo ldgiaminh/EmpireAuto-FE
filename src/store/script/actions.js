@@ -50,9 +50,10 @@ export const runScriptCustomerFail = error => ({
 POST Script Booking 
 ================================================
 */
-export const runScriptBooking = number => ({
+export const runScriptBooking = (number, data) => ({
   type: RUN_SCRIPT_BOOKING,
   number,
+  payload: { data },
 })
 
 export const runScriptBookingSuccess = scriptBooking => ({
@@ -90,9 +91,11 @@ export const runRemoveScriptBookingFail = error => ({
 POST Script CheckIn 
 ================================================
 */
-export const runScriptCheckIn = number => ({
+export const runScriptCheckIn = (number1, number2, data) => ({
   type: RUN_SCRIPT_CHECKIN,
-  number,
+  number1,
+  number2,
+  payload: { data },
 })
 
 export const runScriptCheckInSuccess = scriptCheckIn => ({
@@ -110,9 +113,10 @@ export const runScriptCheckInFail = error => ({
 POST Script Diagnose 
 ================================================
 */
-export const runScriptDiagnose = number => ({
+export const runScriptDiagnose = (number, data) => ({
   type: RUN_SCRIPT_DIAGNOSE_ORDER,
   number,
+  payload: { data },
 })
 
 export const runScriptDiagnoseSuccess = scriptDiagnose => ({

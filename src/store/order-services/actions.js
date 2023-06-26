@@ -38,6 +38,9 @@ import {
   PUT_AUTO_ASSIGN_EXPERT,
   PUT_AUTO_ASSIGN_EXPERT_SUCCESS,
   PUT_AUTO_ASSIGN_EXPERT_FAIL,
+  COUNT_SERVICES,
+  COUNT_SERVICES_SUCCESS,
+  COUNT_SERVICES_FAIL,
 } from "./actionTypes"
 
 /*
@@ -258,5 +261,24 @@ export const checkOutServiceSuccess = orderServicesCheckOut => ({
 
 export const checkOutServiceFail = error => ({
   type: CHECKOUT_SERVICES_FAIL,
+  payload: error,
+})
+
+/*
+================================================ 
+GET Count Services
+================================================
+*/
+export const countService = () => ({
+  type: COUNT_SERVICES,
+})
+
+export const countServiceSuccess = countServices => ({
+  type: COUNT_SERVICES_SUCCESS,
+  payload: countServices,
+})
+
+export const countServiceFail = error => ({
+  type: COUNT_SERVICES_FAIL,
   payload: error,
 })
