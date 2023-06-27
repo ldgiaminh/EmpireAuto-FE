@@ -364,8 +364,8 @@ export const runScriptCheckIn = (number1, number2, data) =>
     data
   )
 
-export const runScriptDiagnose = (number, data) =>
-  post2(`${url.RUN_SCRIPT_DIAGNOSE_ORDER}?numberOfOrderService=${number}`, data)
+export const runScriptDiagnose = data =>
+  post2(url.RUN_SCRIPT_DIAGNOSE_ORDER, data)
 
 export const runScriptConfirmPaid = data =>
   post(url.RUN_SCRIPT_CONFIRM_PAID_SCRIPT_ORDER, data)

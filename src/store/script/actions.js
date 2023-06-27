@@ -113,9 +113,8 @@ export const runScriptCheckInFail = error => ({
 POST Script Diagnose 
 ================================================
 */
-export const runScriptDiagnose = (number, data) => ({
+export const runScriptDiagnose = data => ({
   type: RUN_SCRIPT_DIAGNOSE_ORDER,
-  number,
   payload: { data },
 })
 

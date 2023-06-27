@@ -29,9 +29,10 @@ const OrderDiagnose = () => {
 
   const [orders, setOrders] = useState([])
 
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  // const [isSubmitting, setIsSubmitting] = useState(false)
 
   const [idList, setIdList] = useState([])
+  const [carList, setCarList] = useState([])
 
   const [countSuccess, setCountSuccess] = useState(0)
   const [countFail, setCountFail] = useState(0)
@@ -43,22 +44,18 @@ const OrderDiagnose = () => {
     }
   }, [localStorage.getItem("scriptCustomer")])
 
-  const validationType = useFormik({
-    // enableReinitialize : use this flag when initial values needs to be changed
-    enableReinitialize: true,
+  useEffect(() => {
+    if (localStorage.getItem("scriptBooking")) {
+      const obj = JSON.parse(localStorage.getItem("scriptBooking"))
+      setCarList(obj)
+    }
+  }, [localStorage.getItem("scriptBooking")])
 
-    initialValues: {
-      number: "",
-    },
-    validationSchema: Yup.object().shape({
-      number: Yup.number().required("Chỉ nhập số"),
-    }),
-    onSubmit: values => {
-      const data = idList.map(il => il.result.id)
-      dispatch(onRunScriptDiagnose(values.number, data))
-      setIsSubmitting(false)
-    },
-  })
+  const handleDiagnose = () => {
+    const data = idList.map(il => il.result.id)
+    dispatch(onRunScriptDiagnose(data))
+    // setIsSubmitting(true)
+  }
 
   useEffect(() => {
     setOrders(scriptDiagnose)
@@ -76,8 +73,8 @@ const OrderDiagnose = () => {
       <CardBody>
         <CardTitle className="mb-2">CHẨN ĐOÁN</CardTitle>
 
-        <Form
-          className="row gy-2 gx-3 align-items-center mt-3"
+        {/* <Form
+          className="row gy-2 gx-3 mt-3"
           onSubmit={e => {
             e.preventDefault()
             validationType.handleSubmit()
@@ -121,7 +118,18 @@ const OrderDiagnose = () => {
               <i className="bx bx bx-pencil label-icon"></i> Chẩn đoán
             </button>
           </div>
-        </Form>
+        </Form> */}
+
+        <div className="col-sm-5">
+          <button
+            // disabled={isSubmitting}
+            type="button"
+            className="btn btn-primary btn-label"
+            onClick={handleDiagnose}
+          >
+            <i className="bx bx-pencil font-size-12 label-icon"></i> Chẩn đoán
+          </button>
+        </div>
 
         <hr className="my-4" />
         {isLoadScript && (
@@ -129,8 +137,8 @@ const OrderDiagnose = () => {
             <Col xs="12">
               <div className="text-center my-3">
                 <h5 className="text-primary">
-                  <i className="bx bx-hourglass bx-spin me-2" />
-                  Đang chẩn đoán {validationType.values.number} phương tiện
+                  <i className="bx bx-loader bx-spin me-2" />
+                  Đang chẩn đoán {carList.length} phương tiện
                 </h5>
               </div>
             </Col>

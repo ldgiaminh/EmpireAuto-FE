@@ -19,7 +19,7 @@ const CarRecord = ({ record }) => {
               <CardTitle>CHUẨN ĐOÁN TỪ KỸ THUẬT VIÊN</CardTitle>
               <CardSubtitle className="text-muted">
                 Thông tin chi tiết ghi nhận các tình trạng xe kèm chuẩn đoán của
-                kỹ thuật viên dịch vụ
+                kỹ thuật viên
               </CardSubtitle>
 
               <h6 className="font-size-16 fw-medium mt-4">

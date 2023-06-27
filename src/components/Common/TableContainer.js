@@ -271,8 +271,8 @@ const TableContainer = ({
         </Table>
       </div>
 
-      <Row className="justify-content-md-end justify-content-center align-items-center">
-        <Col className="col-md-auto">
+      <Row className="justify-content-sm-end justify-content-center align-items-center">
+        <Col className="col-sm-auto">
           <div className="d-flex gap-1">
             <Button
               color="primary"
@@ -290,13 +290,13 @@ const TableContainer = ({
             </Button>
           </div>
         </Col>
-        <Col className="col-md-auto d-none d-md-block">
+        <Col className="col-sm-auto d-none d-sm-block">
           Trang{" "}
           <strong>
             {pageIndex + 1} trên {pageOptions.length}
           </strong>
         </Col>
-        <Col className="col-md-auto">
+        <Col className="col-sm-auto">
           <Input
             type="number"
             min={1}
@@ -307,7 +307,7 @@ const TableContainer = ({
           />
         </Col>
 
-        <Col className="col-md-auto">
+        <Col className="col-sm-auto">
           <div className="d-flex gap-1">
             <Button color="primary" onClick={nextPage} disabled={!canNextPage}>
               {">"}

@@ -77,7 +77,7 @@ const BookingScript = () => {
         <CardTitle className="mb-2">TẠO ĐẶT LỊCH</CardTitle>
 
         <Form
-          className="row gy-2 gx-3 align-items-center mt-3"
+          className="row gy-2 gx-3 mt-3"
           onSubmit={e => {
             e.preventDefault()
             validationType.handleSubmit()
@@ -129,7 +129,7 @@ const BookingScript = () => {
             <Col xs="12">
               <div className="text-center my-3">
                 <h5 className="text-primary">
-                  <i className="bx bx-hourglass bx-spin me-2" />
+                  <i className="bx bx-loader bx-spin me-2" />
                   Đang khởi tạo {validationType.values.number} đặt lịch
                 </h5>
               </div>
@@ -156,7 +156,7 @@ const BookingScript = () => {
                         </td>
                       ) : (
                         <td className="font-size-14">
-                          {booking.result.relativeObject?.carLisenceNo} |{" "}
+                          {booking.result.information.carLisenceNo} |{" "}
                           {booking.result.error.message}
                         </td>
                       )}

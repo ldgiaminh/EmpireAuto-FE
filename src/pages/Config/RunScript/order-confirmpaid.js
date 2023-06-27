@@ -72,7 +72,7 @@ const OrderConfirmPaid = () => {
       <CardBody>
         <CardTitle className="mb-2">XÁC NHẬN & THANH TOÁN</CardTitle>
 
-        <div className="row gy-2 gx-3 align-items-center mt-3">
+        <div className="row gy-2 gx-3 mt-3">
           <div className="col-sm-2">
             <Input
               type="checkbox"
@@ -107,7 +107,7 @@ const OrderConfirmPaid = () => {
             <Col xs="12">
               <div className="text-center my-3">
                 <h5 className="text-primary">
-                  <i className="bx bx-hourglass bx-spin me-2" />
+                  <i className="bx bx-loader bx-spin me-2" />
                   Đang xác nhận & thanh toán các hóa đơn
                 </h5>
               </div>

@@ -89,8 +89,8 @@ const BookingRemoveScript = () => {
             <Col xs="12">
               <div className="text-center my-3">
                 <h5 className="text-danger">
-                  <i className="bx bx-hourglass bx-spin me-2" />
-                  Đang hủy {removes.length} đặt lịch
+                  <i className="bx bx-loader bx-spin me-2" />
+                  Đang hủy {bookings.length} đặt lịch
                 </h5>
               </div>
             </Col>

@@ -56,7 +56,7 @@ const BookingCheckInScript = () => {
       number2: Yup.number().required("Chỉ nhập số"),
     }),
     onSubmit: values => {
-      const data = idList.map(il => il.result.user.id)
+      const data = idList.map(il => il.result.id)
       dispatch(onRunScriptCheckIn(values.number1, values.number2, data))
       setIsSubmitting(false)
     },
@@ -65,8 +65,12 @@ const BookingCheckInScript = () => {
   useEffect(() => {
     setBookings(scriptCheckIn)
 
-    const successCount = scriptCheckIn.filter(o => o.statusCode === 200).length
-    const failCount = scriptCheckIn.filter(o => o.statusCode === 500).length
+    const successCount = scriptCheckIn.filter(
+      o => o.result.isArrived && o.result.isActived
+    ).length
+    const failCount = scriptCheckIn.filter(
+      o => !o.result.isArrived && !o.result.isActived
+    ).length
 
     setCountSuccess(successCount)
     setCountFail(failCount)
@@ -78,7 +82,7 @@ const BookingCheckInScript = () => {
         <CardTitle className="mb-2">CHECK-IN ĐẶT LỊCH</CardTitle>
 
         <Form
-          className="row gy-2 gx-3 align-items-center mt-3"
+          className="row gy-2 gx-3 mt-3"
           onSubmit={e => {
             e.preventDefault()
             validationType.handleSubmit()
@@ -91,7 +95,7 @@ const BookingCheckInScript = () => {
               htmlFor="autoSizingInputGroup"
             ></Label>
             <InputGroup>
-              <div className="input-group-text">Số đặt lịch thành công</div>
+              <div className="input-group-text">Thành công</div>
               <Input
                 type="number"
                 className="form-control"
@@ -115,13 +119,13 @@ const BookingCheckInScript = () => {
               ) : null}
             </InputGroup>
           </div>
-          <div className="col-sm-4">
+          <div className="col-sm-3">
             <Label
               className="visually-hidden"
               htmlFor="autoSizingInputGroup"
             ></Label>
             <InputGroup>
-              <div className="input-group-text">Số đặt lịch hủy</div>
+              <div className="input-group-text">Hủy</div>
               <Input
                 type="number"
                 className="form-control"
@@ -162,7 +166,7 @@ const BookingCheckInScript = () => {
             <Col xs="12">
               <div className="text-center my-3">
                 <h5 className="text-primary">
-                  <i className="bx bx-hourglass bx-spin me-2" />
+                  <i className="bx bx-loader bx-spin me-2" />
                   Đang check-in {validationType.values.number1} đặt lịch và hủy{" "}
                   {validationType.values.number2} đặt lịch
                 </h5>
@@ -174,7 +178,7 @@ const BookingCheckInScript = () => {
           <>
             {bookings.length > 0 && (
               <strong>
-                Có {countSuccess} thành công và {countFail} thất bại
+                Có {countSuccess} thành công và {countFail} hủy
               </strong>
             )}
             <div className="table-responsive">

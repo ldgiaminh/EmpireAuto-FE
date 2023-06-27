@@ -1,23 +1,7 @@
 import React, { useEffect, useState, useRef, useMemo } from "react"
-import { withRouter, Link } from "react-router-dom"
+import { withRouter, Li } from "react-router-dom"
 import TableContainer from "../../components/Common/TableContainer"
-import {
-  Card,
-  CardBody,
-  Col,
-  Container,
-  Row,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  Label,
-  FormFeedback,
-  UncontrolledTooltip,
-  Input,
-  Form,
-} from "reactstrap"
-import * as Yup from "yup"
-import { useFormik } from "formik"
+import { Card, CardBody, Col, Container, Row } from "reactstrap"
 
 import { Name, Email, Phone, Gender } from "./userlistCol"
 
@@ -163,12 +147,18 @@ const UserLists = props => {
   }, [dispatch, isShow])
 
   const customers = users.filter(c => c.roleId === "US")
+
+  // Count customers created today
+  const today = new Date().toISOString().split("T")[0]
+  const customersCreatedToday = customers.filter(
+    c => c.createdAt.split("T")[0] === today
+  )
+
+  // sortedCustomers will contain the filtered customers array with entries where c.id >= 100 moved to the top.
   const sortedCustomers = [
     ...customers.filter(c => c.id >= 100),
     ...customers.filter(c => c.id < 100),
   ]
-
-  // sortedCustomers will contain the filtered customers array with entries where c.id >= 100 moved to the top.
 
   return (
     <React.Fragment>
@@ -179,6 +169,17 @@ const UserLists = props => {
             title="Khách hàng"
             breadcrumbItem="Danh sách cách khách hàng"
           />
+          <div className="mb-3 mt-2 d-flex justify-content-between">
+            <div className="me-5">
+              <i className="fas fa-user-friends me-2" />
+              <strong>{customers.length}</strong>
+            </div>
+            {customersCreatedToday.length > 0 && (
+              <em>
+                Hôm nay có thêm {customersCreatedToday.length} khách hàng mới
+              </em>
+            )}
+          </div>
           <Row>
             <Col lg="12">
               <Card>
