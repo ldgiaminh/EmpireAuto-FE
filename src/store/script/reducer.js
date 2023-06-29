@@ -26,14 +26,29 @@ import {
 } from "./actionTypes"
 
 const INIT_STATE = {
-  scriptBooking: [],
   scriptCustomer: [],
+  errorCustomer: "",
+
+  scriptBooking: [],
+  errorBooking: "",
+
   scriptRemoveBooking: [],
+
   scriptCheckIn: [],
+  errorCheckIn: "",
+
   scriptDiagnose: [],
+  errorDiagnose: "",
+
   scriptConfirmPaid: [],
+  errorConfirmPaid: "",
+
   scriptDone: [],
+  errorDone: "",
+
   scriptCheckOut: [],
+  errorCheckOut: "",
+
   isLoadScript: false,
 }
 
@@ -118,7 +133,7 @@ const scripts = (state = INIT_STATE, action) => {
       return {
         ...state,
         isLoadScript: false,
-        error: action.payload,
+        errorCheckIn: action.payload,
       }
 
     /*================================================*/
@@ -162,7 +177,7 @@ const scripts = (state = INIT_STATE, action) => {
       return {
         ...state,
         isLoadScript: false,
-        error: action.payload,
+        errorConfirmPaid: action.payload,
       }
 
     /* DONE */

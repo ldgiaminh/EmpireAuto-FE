@@ -345,34 +345,55 @@ export const addNewFcmToken = (uuid, fcmToken) =>
 
 /*
 ================================================
+SYSTEM
+================================================
+*/
+
+export const getBookingSlot = () => get(url.GET_BOOKING_SLOT)
+
+export const getCarInGarage = () => get(url.GET_CAR_IN_GARAGE)
+
+/*
+================================================
 RUN SCRIPT
 ================================================
 */
 
+//Customer
 export const runScriptCustomers = number =>
   post(`${url.RUN_SCRIPT_CUSTOMER}?numberOfCustomer=${number}`)
 
+//Booking
 export const runScriptBookings = (number, data) =>
   post2(`${url.RUN_SCRIPT_BOOKING}?numberOfBooking=${number}`, data)
 
+//Remove booking
 export const runRemoveScriptBookings = numberId =>
   del(url.RUN_REMOVE_SCRIPT_BOOKING, { headers: { numberId } })
 
+//Check-in
 export const runScriptCheckIn = (number1, number2, data) =>
   post2(
     `${url.RUN_SCRIPT_CHECKIN_BOOKING}?numberOfCheckin=${number1}&numberOfCancel=${number2}`,
     data
   )
 
+//Diagnose
 export const runScriptDiagnose = data =>
   post2(url.RUN_SCRIPT_DIAGNOSE_ORDER, data)
 
-export const runScriptConfirmPaid = data =>
-  post(url.RUN_SCRIPT_CONFIRM_PAID_SCRIPT_ORDER, data)
+//Confirm & Paid
+export const runScriptConfirmPaid = (number1, number2, data) =>
+  post2(
+    `${url.RUN_SCRIPT_CONFIRM_PAID_SCRIPT_ORDER}?numberOfConfirmAll=${number1}&numberOfNoConfirmAtAll=${number2}`,
+    data
+  )
 
+//Done
 export const runScriptDone = data =>
   post2(url.RUN_SCRIPT_DONE_SCRIPT_ORDER, data)
 
+//Check-out
 export const runScriptCheckOut = data =>
   post2(url.RUN_SCRIPT_CHECKOUT_SCRIPT_ORDER, data)
 

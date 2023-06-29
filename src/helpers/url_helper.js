@@ -160,6 +160,16 @@ export const POST_FCM_TOKEN = "/notifications/fcmtoken/add"
 
 /*
 ================================================ 
+SYSTEM
+================================================
+*/
+
+export const GET_BOOKING_SLOT = "/system-configurations/booking-slot"
+
+export const GET_CAR_IN_GARAGE = "/system-configurations/car-count"
+
+/*
+================================================ 
 RUN SCRIPT
 ================================================
 */
@@ -171,9 +181,10 @@ export const RUN_SCRIPT_CHECKIN_BOOKING = "/script/check-in-and-cancel"
 
 export const RUN_SCRIPT_DIAGNOSE_ORDER = "/script/diagnose"
 
-export const RUN_SCRIPT_CONFIRM_PAID_SCRIPT_ORDER = "/script/confirm-and-pay"
-export const RUN_SCRIPT_DONE_SCRIPT_ORDER = "/script/done-repair"
-export const RUN_SCRIPT_CHECKOUT_SCRIPT_ORDER = "/script/checkout"
+export const RUN_SCRIPT_CONFIRM_PAID_SCRIPT_ORDER =
+  "/script/confirm-and-pay-new"
+export const RUN_SCRIPT_DONE_SCRIPT_ORDER = "/script/done-repair-new"
+export const RUN_SCRIPT_CHECKOUT_SCRIPT_ORDER = "/script/checkout-new"
 
 /*
 ==========================================================================

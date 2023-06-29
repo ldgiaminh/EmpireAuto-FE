@@ -186,7 +186,6 @@ const OrderServicesList = props => {
     dispatch(onCountServices())
   }, [dispatch])
 
-  console.log(countService)
   /*
   ==================================================
   Count length

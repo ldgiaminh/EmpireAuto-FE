@@ -22,7 +22,10 @@ import classNames from "classnames"
 import StackedColumnChart from "./StackedColumnChart"
 
 //import action
-import { getChartsData as onGetChartsData } from "../../store/actions"
+import {
+  getBookingSlot as onGetBookingSlot,
+  getCarInGarage as onGetCarInGarage,
+} from "../../store/actions"
 
 import modalimage1 from "../../assets/images/product/img-7.png"
 import modalimage2 from "../../assets/images/product/img-4.png"
@@ -44,48 +47,41 @@ import { withTranslation } from "react-i18next"
 import { useSelector, useDispatch } from "react-redux"
 
 const Dashboard = props => {
-  const [modal, setmodal] = useState(false)
-  const [subscribemodal, setSubscribemodal] = useState(false)
-
-  const { chartsData } = useSelector(state => ({
-    chartsData: state.Dashboard.chartsData,
+  const { bookingSlot, carInGarage } = useSelector(state => ({
+    bookingSlot: state.systems.bookingSlot,
+    carInGarage: state.systems.carInGarage,
   }))
 
   const reports = [
-    { title: "Đặt lịch", iconClass: "bx-copy-alt", description: "1,235" },
-    { title: "Hóa đơn", iconClass: "bx-archive-in", description: "$35, 723" },
     {
-      title: "Số xe",
-      iconClass: "bx-purchase-tag-alt",
-      description: "$16.2",
+      title: "Đặt lịch trong tuần",
+      iconClass: "bx-calendar",
+      description: bookingSlot.currentBooking + " / " + bookingSlot.bookingSlot,
+    },
+    // {
+    //   title: "Hóa đơn",
+    //   iconClass: "bx-archive-in",
+    //   description: bookingSlot.bookingSlot,
+    // },
+    {
+      title: "Xe tại garage",
+      iconClass: "bx-car",
+      description: carInGarage.value,
     },
   ]
 
-  useEffect(() => {
-    setTimeout(() => {
-      setSubscribemodal(true)
-    }, 2000)
-  }, [])
-
-  const [periodData, setPeriodData] = useState([])
-  const [periodType, setPeriodType] = useState("yearly")
-
-  useEffect(() => {
-    setPeriodData(chartsData)
-  }, [chartsData])
-
-  const onChangeChartPeriod = pType => {
-    setPeriodType(pType)
-    dispatch(onGetChartsData(pType))
-  }
-
   const dispatch = useDispatch()
+
   useEffect(() => {
-    dispatch(onGetChartsData("yearly"))
+    dispatch(onGetBookingSlot())
+  }, [dispatch])
+
+  useEffect(() => {
+    dispatch(onGetCarInGarage())
   }, [dispatch])
 
   //meta title
-  document.title = "Bảng điều khiển | Empire Garage"
+  document.title = "Trang chủ | Empire Garage"
 
   return (
     <React.Fragment>
@@ -93,15 +89,14 @@ const Dashboard = props => {
         <Container fluid>
           {/* Render Breadcrumb */}
           <Breadcrumbs
-            title={props.t("Bảng điều khiển")}
-            breadcrumbItem={props.t("Bảng điều khiển")}
+            title={props.t("Trang chủ")}
+            breadcrumbItem={props.t("Trang chủ")}
           />
 
           <Row>
-            <Col xl="4">
+            {/* <Col xl="4">
               <WelcomeComp />
-              {/* <MonthlyEarning /> */}
-            </Col>
+            </Col> */}
             <Col xl="8">
               <Row>
                 {reports.map((report, key) => (

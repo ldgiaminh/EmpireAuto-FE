@@ -133,8 +133,10 @@ export const runScriptDiagnoseFail = error => ({
 POST Script Confirm Paid 
 ================================================
 */
-export const runScriptConfirmPaid = data => ({
+export const runScriptConfirmPaid = (number1, number2, data) => ({
   type: RUN_SCRIPT_CONFIRM_PAID_ORDER,
+  number1,
+  number2,
   payload: { data },
 })
 

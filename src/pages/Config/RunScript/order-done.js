@@ -32,16 +32,30 @@ const OrderDone = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const [idList, setIdList] = useState([])
+  const [count, setCount] = useState([])
 
   const [countSuccess, setCountSuccess] = useState(0)
   const [countFail, setCountFail] = useState(0)
 
   useEffect(() => {
-    if (localStorage.getItem("scriptConfirmPaid")) {
-      const obj = JSON.parse(localStorage.getItem("scriptConfirmPaid"))
+    if (localStorage.getItem("scriptCustomer")) {
+      const obj = JSON.parse(localStorage.getItem("scriptCustomer"))
       setIdList(obj)
     }
+  }, [localStorage.getItem("scriptCustomer")])
+
+  useEffect(() => {
+    if (localStorage.getItem("scriptConfirmPaid")) {
+      const obj = JSON.parse(localStorage.getItem("scriptConfirmPaid"))
+      setCount(obj)
+    }
   }, [localStorage.getItem("scriptConfirmPaid")])
+
+  const countDone = count.filter(
+    c =>
+      Array.isArray(c.result.orderServiceDetails) &&
+      c.result.orderServiceDetails.length !== 0
+  )
 
   useEffect(() => {
     setOrders(scriptDone)
@@ -55,15 +69,21 @@ const OrderDone = () => {
   }, [scriptDone])
 
   const handleDone = () => {
-    const data = idList.map(il => il.orderServiceId)
+    const data = idList.map(il => il.result.id)
     dispatch(onRunScriptDone(data))
-    setIsSubmitting(true)
+    // setIsSubmitting(true)
   }
 
   return (
     <React.Fragment>
       <CardBody>
         <CardTitle className="mb-2">HOÀN TẤT DỊCH VỤ</CardTitle>
+
+        {!isLoadScript && orders.length === 0 && (
+          <em className="mt-3">
+            Đang có {countDone.length} hóa đơn đang sửa chữa{" "}
+          </em>
+        )}
 
         <div className="row gy-2 gx-3 mt-3">
           <div className="col-sm-5">
@@ -86,7 +106,7 @@ const OrderDone = () => {
               <div className="text-center my-3">
                 <h5 className="text-primary">
                   <i className="bx bx-loader bx-spin me-2" />
-                  Đang hoàn tất các dịch vụ
+                  Đang hoàn tất {countDone.length} hóa đơn
                 </h5>
               </div>
             </Col>
@@ -107,11 +127,12 @@ const OrderDone = () => {
                       <td className="font-size-14 text-center">{index + 1}</td>
                       {o.statusCode === 200 ? (
                         <td className="font-size-14">
-                          Hoàn tất thành công {o.information.car.carLisenceNo} |{" "}
-                          {o.information.car.carBrand}
+                          Hoàn tất thành công #{o.result.code}
                         </td>
                       ) : (
-                        <td className="font-size-14">{o.result.message}</td>
+                        <td className="font-size-14">
+                          {o.result.error.message}
+                        </td>
                       )}
                       <td className="text-end">
                         {o.statusCode === 200 ? (

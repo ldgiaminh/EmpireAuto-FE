@@ -45,6 +45,8 @@ import {
 
 import { toast } from "react-toastify"
 
+/* CUSTOMER */
+
 function* onRunScriptCustomers({ number }) {
   try {
     const response = yield call(runScriptCustomers, number)
@@ -56,6 +58,8 @@ function* onRunScriptCustomers({ number }) {
     toast.error("Đã có lỗi xảy ra")
   }
 }
+
+/* BOOKING */
 
 function* onRunScriptBookings({ number, payload: { data } }) {
   try {
@@ -76,6 +80,8 @@ function* onRunScriptBookings({ number, payload: { data } }) {
   }
 }
 
+/* REMOVE BOOKING */
+
 function* onRemoveRunScriptBookings({ payload: numberId }) {
   try {
     const response = yield call(runRemoveScriptBookings, numberId)
@@ -87,12 +93,18 @@ function* onRemoveRunScriptBookings({ payload: numberId }) {
   }
 }
 
+/* CHECK-IN */
+
 function* onRunScriptCheckIns({ number1, number2, payload: { data } }) {
   try {
     const response = yield call(runScriptCheckIn, number1, number2, data)
     yield put(runScriptCheckInSuccess(response))
-    const countSuccess = response.filter(b => b.statusCode === 200).length
-    const countFail = response.filter(b => b.statusCode === 500).length
+    const countSuccess = response.filter(
+      b => b.isArrived === true && b.isActived === true
+    ).length
+    const countFail = response.filter(
+      b => b.isArrived === false && b.isActived === false
+    ).length
 
     if (countSuccess > 0) {
       toast.success("Check-in thành công " + countSuccess + " đặt lịch")
@@ -102,9 +114,11 @@ function* onRunScriptCheckIns({ number1, number2, payload: { data } }) {
     localStorage.setItem("scriptCheckIn", JSON.stringify(response))
   } catch (error) {
     toast.error("Đã có lỗi xảy ra")
-    yield put(runScriptCheckInFail(error))
+    yield put(runScriptCheckInFail(error.response.data.message))
   }
 }
+
+/* DIAGNOSE */
 
 function* onRunScriptDiagnoses({ payload: { data } }) {
   try {
@@ -124,25 +138,41 @@ function* onRunScriptDiagnoses({ payload: { data } }) {
   }
 }
 
-function* onRunScriptConfirmPaids({ payload: { data } }) {
+/* CONFIRM & PAID */
+
+function* onRunScriptConfirmPaids({ number1, number2, payload: { data } }) {
   try {
-    const response = yield call(runScriptConfirmPaid, data)
+    const response = yield call(runScriptConfirmPaid, number1, number2, data)
     yield put(runScriptConfirmPaidSuccess(response))
-    toast.success(
-      "Xác nhận & Thanh toán thành công " + response.length + " hóa đơn"
-    )
+    const countSuccess = response.filter(o => o.statusCode === 200).length
+    const countFail = response.filter(b => b.statusCode === 500).length
+    if (countSuccess > 0) {
+      toast.success(
+        "Xác nhận & Thanh toán thành công " + countSuccess + " hóa đơn"
+      )
+    } else {
+      toast.error("Xác nhận & Thanh toán thất bại " + countFail + " hóa đơn")
+    }
     localStorage.setItem("scriptConfirmPaid", JSON.stringify(response))
   } catch (error) {
     toast.error("Đã có lỗi xảy ra")
-    yield put(runScriptConfirmPaidFail(error))
+    yield put(runScriptConfirmPaidFail(error.response.data))
   }
 }
+
+/* DONE */
 
 function* onRunScriptDones({ payload: data }) {
   try {
     const response = yield call(runScriptDone, data)
     yield put(runScriptDoneSuccess(response))
-    toast.success("Hoàn tất thành công " + data.length + " dịch vụ")
+    const countSuccess = response.filter(o => o.statusCode === 200).length
+    const countFail = response.filter(b => b.statusCode === 500).length
+    if (countSuccess > 0) {
+      toast.success("Hoàn tất thành công " + countSuccess + " hóa đơn")
+    } else {
+      toast.error("Hoàn tất thất bại " + countFail + " hóa đơn")
+    }
     localStorage.setItem("scriptDone", JSON.stringify(response))
   } catch (error) {
     toast.error("Đã có lỗi xảy ra")
@@ -150,11 +180,19 @@ function* onRunScriptDones({ payload: data }) {
   }
 }
 
+/* CHECK-OUT */
+
 function* onRunScriptCheckOuts({ payload: data }) {
   try {
     const response = yield call(runScriptCheckOut, data)
     yield put(runScriptCheckOutSuccess(response))
-    toast.success("Check-out thành công " + data.length + " phương tiện")
+    const countSuccess = response.filter(o => o.statusCode === 200).length
+    const countFail = response.filter(b => b.statusCode === 500).length
+    if (countSuccess > 0) {
+      toast.success("Check-out thành công " + countSuccess + " phương tiện")
+    } else {
+      toast.error("Check-out thất bại " + countFail + " phương tiện")
+    }
     localStorage.setItem("scriptCheckOut", JSON.stringify(response))
   } catch (error) {
     toast.error("Đã có lỗi xảy ra")

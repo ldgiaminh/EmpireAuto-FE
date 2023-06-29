@@ -26,7 +26,7 @@ function GlobalFilter({
 
   return (
     <Col sm={4}>
-      <div className="search-box me-2 mb-2 d-inline-block">
+      <div className="search-box me-2 mb-2 d-inline-block search-table">
         <div className="position-relative">
           <label htmlFor="search-bar-0" className="search-label">
             <span id="search-bar-0-label" className="sr-only">
@@ -290,13 +290,13 @@ const TableContainer = ({
             </Button>
           </div>
         </Col>
-        <Col className="col-sm-auto d-none d-sm-block">
+        <Col className="col-sm-auto">
           Trang{" "}
           <strong>
-            {pageIndex + 1} trên {pageOptions.length}
+            {pageIndex + 1} / {pageOptions.length}
           </strong>
         </Col>
-        <Col className="col-sm-auto">
+        {/* <Col className="col-sm-auto">
           <Input
             type="number"
             min={1}
@@ -305,7 +305,7 @@ const TableContainer = ({
             defaultValue={pageIndex + 1}
             onChange={onChangeInInput}
           />
-        </Col>
+        </Col> */}
 
         <Col className="col-sm-auto">
           <div className="d-flex gap-1">

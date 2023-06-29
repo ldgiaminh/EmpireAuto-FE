@@ -93,7 +93,7 @@ const Navbar = props => {
                           <li className="nav-item">
                             <Link className="nav-link" to="/">
                               <i className="bx bxs-home-circle me-2"></i>
-                              {props.t("Bảng điều khiển")}
+                              {props.t("Trang chủ")}
                             </Link>
                           </li>
                           <li className="nav-item">
@@ -172,7 +172,7 @@ const Navbar = props => {
                           <li className="nav-item">
                             <Link className="nav-link" to="/">
                               <i className="bx bxs-home-circle me-2"></i>
-                              {props.t("Bảng điều khiển")}
+                              {props.t("Trang chủ")}
                             </Link>
                           </li>
 

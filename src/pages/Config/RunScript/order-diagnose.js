@@ -45,11 +45,15 @@ const OrderDiagnose = () => {
   }, [localStorage.getItem("scriptCustomer")])
 
   useEffect(() => {
-    if (localStorage.getItem("scriptBooking")) {
-      const obj = JSON.parse(localStorage.getItem("scriptBooking"))
+    if (localStorage.getItem("scriptCheckIn")) {
+      const obj = JSON.parse(localStorage.getItem("scriptCheckIn"))
       setCarList(obj)
     }
-  }, [localStorage.getItem("scriptBooking")])
+  }, [localStorage.getItem("scriptCheckIn")])
+
+  const countCheckIn = carList.filter(
+    c => c.result.isArrived && c.result.isActived
+  )
 
   const handleDiagnose = () => {
     const data = idList.map(il => il.result.id)
@@ -120,7 +124,13 @@ const OrderDiagnose = () => {
           </div>
         </Form> */}
 
-        <div className="col-sm-5">
+        {!isLoadScript && orders.length === 0 && (
+          <em className="mt-3">
+            Đang có {countCheckIn.length} phương tiện chờ chẩn đoán{" "}
+          </em>
+        )}
+
+        <div className="col-sm-5 mt-3">
           <button
             // disabled={isSubmitting}
             type="button"
@@ -138,7 +148,7 @@ const OrderDiagnose = () => {
               <div className="text-center my-3">
                 <h5 className="text-primary">
                   <i className="bx bx-loader bx-spin me-2" />
-                  Đang chẩn đoán {carList.length} phương tiện
+                  Đang chẩn đoán {countCheckIn.length} phương tiện
                 </h5>
               </div>
             </Col>

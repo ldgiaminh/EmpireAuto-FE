@@ -22,12 +22,14 @@ import { runScriptCheckIn as onRunScriptCheckIn } from "store/actions"
 const BookingCheckInScript = () => {
   const dispatch = useDispatch()
 
-  const { scriptCheckIn, isLoadScript } = useSelector(state => ({
+  const { scriptCheckIn, isLoadScript, errorCheckIn } = useSelector(state => ({
     scriptCheckIn: state.scripts.scriptCheckIn,
     isLoadScript: state.scripts.isLoadScript,
+    errorCheckIn: state.scripts.errorCheckIn,
   }))
 
   const [bookings, setBookings] = useState([])
+  const [count, setCount] = useState([])
 
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -42,6 +44,15 @@ const BookingCheckInScript = () => {
       setIdList(obj)
     }
   }, [localStorage.getItem("scriptCustomer")])
+
+  useEffect(() => {
+    if (localStorage.getItem("scriptBooking")) {
+      const obj = JSON.parse(localStorage.getItem("scriptBooking"))
+      setCount(obj)
+    }
+  }, [localStorage.getItem("scriptBooking")])
+
+  const countBooking = count.filter(c => c.statusCode === 201)
 
   const validationType = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
@@ -76,10 +87,18 @@ const BookingCheckInScript = () => {
     setCountFail(failCount)
   }, [scriptCheckIn])
 
+  console.log(errorCheckIn)
+
   return (
     <React.Fragment>
       <CardBody>
         <CardTitle className="mb-2">CHECK-IN ĐẶT LỊCH</CardTitle>
+
+        {!isLoadScript && bookings.length === 0 && (
+          <em className="mt-3">
+            Đang có {countBooking.length} đặt lịch chờ check-in{" "}
+          </em>
+        )}
 
         <Form
           className="row gy-2 gx-3 mt-3"
@@ -167,7 +186,7 @@ const BookingCheckInScript = () => {
               <div className="text-center my-3">
                 <h5 className="text-primary">
                   <i className="bx bx-loader bx-spin me-2" />
-                  Đang check-in {validationType.values.number1} đặt lịch và hủy{" "}
+                  Đang check-in {validationType.values.number1} và hủy{" "}
                   {validationType.values.number2} đặt lịch
                 </h5>
               </div>
@@ -180,6 +199,17 @@ const BookingCheckInScript = () => {
               <strong>
                 Có {countSuccess} thành công và {countFail} hủy
               </strong>
+            )}
+            {errorCheckIn !== null && bookings.length === 0 ? (
+              <Row>
+                <div className="text-center mt-3">
+                  <strong className="mt-3 text-danger font-size-14">
+                    {errorCheckIn}
+                  </strong>
+                </div>
+              </Row>
+            ) : (
+              ""
             )}
             <div className="table-responsive">
               <Table className="table-nowrap table-borderless">
