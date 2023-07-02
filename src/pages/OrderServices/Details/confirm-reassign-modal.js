@@ -76,10 +76,10 @@ const ConfirmReAssign = props => {
         <div className="modal-body">
           {expert && expert.isMax === true ? (
             <>
-              <h5>
+              <strong className="font-size-15">
                 Chỉ định {expert && expert.name} cho phương tiện{" "}
                 {order.car.carLisenceNo} ?
-              </h5>
+              </strong>
               <p>
                 Số xe mà kỹ thuật viên {expert && expert.name} nhận đã đầy. Nếu
                 "Xác nhận" chủ xe sẽ phải vào hàng chờ. Vui lòng thông báo cho
@@ -92,10 +92,10 @@ const ConfirmReAssign = props => {
             </>
           ) : (
             <>
-              <h5>
+              <strong className="font-size-15">
                 Chỉ định {expert && expert.name} cho phương tiện{" "}
                 {order.car.carLisenceNo} ?
-              </h5>
+              </strong>
               <h6 className="text-muted">
                 *Thời gian bắt đầu dự kiến:{" "}
                 {formattedDateTime(exDetails.intendedFinishTime)}

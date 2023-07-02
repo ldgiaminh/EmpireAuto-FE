@@ -64,6 +64,7 @@ const OrderServicesList = props => {
     if (activeTab !== tab) {
       setActiveTab(tab)
       dispatch(onGetOrderServicesListByStatus(tab, props.history))
+      dispatch(onCountServices())
     }
   }
 
@@ -164,13 +165,23 @@ const OrderServicesList = props => {
     dispatch(onCountServices())
   }, [dispatch, activeTab])
 
+  /* Count Service */
+  useEffect(() => {
+    dispatch(onCountServices())
+  }, [dispatch])
+
   /* Reload when Notification */
   useEffect(() => {
     if (isShow) {
       dispatch(onGetOrderServicesListByStatus(activeTab, props.history))
-      dispatch(onCountServices())
     }
   }, [dispatch, isShow, activeTab])
+
+  useEffect(() => {
+    if (isShow) {
+      dispatch(onCountServices())
+    }
+  }, [dispatch, isShow])
 
   useEffect(() => {
     setOrderService(orderServicess)
@@ -181,10 +192,6 @@ const OrderServicesList = props => {
       setOrderService(orderServicess)
     }
   }, [orderServicess])
-
-  useEffect(() => {
-    dispatch(onCountServices())
-  }, [dispatch])
 
   /*
   ==================================================

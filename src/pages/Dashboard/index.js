@@ -47,9 +47,10 @@ import { withTranslation } from "react-i18next"
 import { useSelector, useDispatch } from "react-redux"
 
 const Dashboard = props => {
-  const { bookingSlot, carInGarage } = useSelector(state => ({
+  const { bookingSlot, carInGarage, isLoad } = useSelector(state => ({
     bookingSlot: state.systems.bookingSlot,
     carInGarage: state.systems.carInGarage,
+    isLoad: state.systems.isLoad,
   }))
 
   const reports = [
@@ -108,7 +109,17 @@ const Dashboard = props => {
                             <p className="text-muted fw-medium">
                               {report.title}
                             </p>
-                            <h4 className="mb-0">{report.description}</h4>
+                            {isLoad && (
+                              <p className="placeholder-glow">
+                                <span
+                                  className="placeholder"
+                                  style={{ width: "40px" }}
+                                ></span>
+                              </p>
+                            )}
+                            {!isLoad && (
+                              <h4 className="mb-0">{report.description}</h4>
+                            )}
                           </div>
                           <div className="avatar-sm rounded-circle bg-primary align-self-center mini-stat-icon">
                             <span className="avatar-title rounded-circle bg-primary">

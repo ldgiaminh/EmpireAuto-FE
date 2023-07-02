@@ -181,7 +181,7 @@ const CarItem = props => {
         <Container fluid={true}>
           <Breadcrumbs
             title="Quản lý"
-            breadcrumbItem={`Danh sách các dịch vụ xe - ${slug}`}
+            breadcrumbItem={`Danh sách các dịch vụ xe - ${params.name}`}
           />
           <Row>
             <Col lg="12">

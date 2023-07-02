@@ -398,8 +398,11 @@ const BookingList = props => {
                                               <img
                                                 src={img1}
                                                 alt=""
-                                                className="img-thumbnail mx-auto d-block"
-                                                style={{ height: 400 }}
+                                                className="mx-auto d-block"
+                                                style={{
+                                                  maxWidth: "100%",
+                                                  height: 350,
+                                                }}
                                               />
                                             </div>
                                           </div>
@@ -445,7 +448,10 @@ const BookingList = props => {
                                                 src={img1}
                                                 alt=""
                                                 className="mx-auto d-block"
-                                                style={{ height: 400 }}
+                                                style={{
+                                                  maxWidth: "100%",
+                                                  height: 350,
+                                                }}
                                               />
                                             </div>
                                           </div>
@@ -488,7 +494,10 @@ const BookingList = props => {
                                                 src={img1}
                                                 alt=""
                                                 className="mx-auto d-block"
-                                                style={{ height: 400 }}
+                                                style={{
+                                                  maxWidth: "100%",
+                                                  height: 350,
+                                                }}
                                               />
                                             </div>
                                           </div>

@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 import PropTypes from "prop-types"
 import { Modal } from "reactstrap"
 
-import { useDispatch } from "react-redux"
-
 const ConfirmAutoAssign = props => {
   const { isOpen, toggle, order, handleAutoAssignExpert } = props
-
-  const dispatch = useDispatch()
 
   return (
     <>
@@ -30,17 +26,17 @@ const ConfirmAutoAssign = props => {
         <div className="modal-body">
           {order.expert !== null ? (
             <>
-              <h5>
+              <p className="font-size-14">
                 Chỉ định kỹ thuật viên khác ngoài {order.expert.fullname} cho
                 phương tiện {order.car.carLisenceNo} ?
-              </h5>
+              </p>
             </>
           ) : (
             <>
-              <h5>
+              <p className="font-size-14">
                 Chỉ định kỹ thuật viên cho phương tiện {order.car.carLisenceNo}{" "}
                 ?
-              </h5>
+              </p>
             </>
           )}
         </div>

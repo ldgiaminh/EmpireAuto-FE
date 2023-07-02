@@ -27,6 +27,8 @@ const UserLists = props => {
     isShow: state.Layout.isShow,
   }))
 
+  const customers = users.filter(c => c.roleId === "US")
+
   const columns = useMemo(
     () => [
       // {
@@ -146,8 +148,6 @@ const UserLists = props => {
     }
   }, [dispatch, isShow])
 
-  const customers = users.filter(c => c.roleId === "US")
-
   // Count customers created today
   const today = new Date().toISOString().split("T")[0]
   const customersCreatedToday = customers.filter(
@@ -167,19 +167,36 @@ const UserLists = props => {
           {/* Render Breadcrumbs */}
           <Breadcrumbs
             title="Khách hàng"
-            breadcrumbItem="Danh sách cách khách hàng"
+            breadcrumbItem="Danh sách các khách hàng"
           />
+
           <div className="mb-3 mt-2 d-flex justify-content-between">
-            <div className="me-5">
-              <i className="fas fa-user-friends me-2" />
-              <strong>{customers.length}</strong>
+            <div className="me-5 d-flex">
+              <div>
+                <i className="fas fa-user-friends me-2" />
+              </div>
+              {isLoading && (
+                <p className="placeholder-glow">
+                  <span
+                    className="placeholder"
+                    style={{ width: "15px" }}
+                  ></span>
+                </p>
+              )}
+              {!isLoading && <strong>{customers.length}</strong>}
             </div>
-            {customersCreatedToday.length > 0 && (
+            {customersCreatedToday.length > 0 && isLoading && (
+              <p className="placeholder-glow">
+                <span className="placeholder" style={{ width: "250px" }}></span>
+              </p>
+            )}
+            {customersCreatedToday.length > 0 && !isLoading && (
               <em>
                 Hôm nay có thêm {customersCreatedToday.length} khách hàng mới
               </em>
             )}
           </div>
+
           <Row>
             <Col lg="12">
               <Card>

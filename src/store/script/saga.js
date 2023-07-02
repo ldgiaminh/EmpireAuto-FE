@@ -99,18 +99,21 @@ function* onRunScriptCheckIns({ number1, number2, payload: { data } }) {
   try {
     const response = yield call(runScriptCheckIn, number1, number2, data)
     yield put(runScriptCheckInSuccess(response))
+
     const countSuccess = response.filter(
       b => b.isArrived === true && b.isActived === true
     ).length
+
     const countFail = response.filter(
-      b => b.isArrived === false && b.isActived === false
+      b => b.isArrived === false || b.isActived === false
     ).length
 
     if (countSuccess > 0) {
-      toast.success("Check-in thành công " + countSuccess + " đặt lịch")
+      toast.success(`Check-in thành công ${countSuccess} đặt lịch`)
     } else {
-      toast.error("Check-in thất bại " + countFail + " đặt lịch")
+      toast.error(`Check-in thất bại ${countFail} đặt lịch`)
     }
+
     localStorage.setItem("scriptCheckIn", JSON.stringify(response))
   } catch (error) {
     toast.error("Đã có lỗi xảy ra")

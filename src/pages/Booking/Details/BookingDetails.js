@@ -393,7 +393,7 @@ const BookingDetails = props => {
                             className="btn btn-label w-md"
                             onClick={() => handleCheckIn(bookingDetail.id)}
                           >
-                            <i className="bx bx-check-double label-icon"></i>
+                            <i className="mdi mdi-login label-icon"></i>
                             Check-In
                           </Button>
                         </div>

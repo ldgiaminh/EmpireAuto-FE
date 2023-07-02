@@ -322,7 +322,7 @@ const OrderServicesHistory = props => {
                                   src={img1}
                                   alt=""
                                   className="mx-auto d-block"
-                                  style={{ height: 400 }}
+                                  style={{ maxWidth: "100%", height: 350 }}
                                 />
                               </div>
                             </div>

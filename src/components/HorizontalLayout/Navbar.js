@@ -91,7 +91,13 @@ const Navbar = props => {
                       return (
                         <React.Fragment>
                           <li className="nav-item">
-                            <Link className="nav-link" to="/">
+                            <Link
+                              className="nav-link"
+                              to="/"
+                              onClick={() => {
+                                props.toggleLeftmenu(!props.leftMenu)
+                              }}
+                            >
                               <i className="bx bxs-home-circle me-2"></i>
                               {props.t("Trang chủ")}
                             </Link>
@@ -153,12 +159,18 @@ const Navbar = props => {
                               <Link
                                 to="/history/bookings"
                                 className="dropdown-item"
+                                onClick={() => {
+                                  props.toggleLeftmenu(!props.leftMenu)
+                                }}
                               >
                                 {props.t("Đặt lịch")}
                               </Link>
                               <Link
                                 to="/history/order-services"
                                 className="dropdown-item"
+                                onClick={() => {
+                                  props.toggleLeftmenu(!props.leftMenu)
+                                }}
                               >
                                 {props.t("Hóa đơn")}
                               </Link>
@@ -170,7 +182,13 @@ const Navbar = props => {
                       return (
                         <React.Fragment>
                           <li className="nav-item">
-                            <Link className="nav-link" to="/">
+                            <Link
+                              className="nav-link"
+                              to="/"
+                              onClick={() => {
+                                props.toggleLeftmenu(!props.leftMenu)
+                              }}
+                            >
                               <i className="bx bxs-home-circle me-2"></i>
                               {props.t("Trang chủ")}
                             </Link>
@@ -285,10 +303,22 @@ const Navbar = props => {
                                 show: manage,
                               })}
                             >
-                              <Link to="/symptoms" className="dropdown-item">
+                              <Link
+                                to="/symptoms"
+                                className="dropdown-item"
+                                onClick={() => {
+                                  props.toggleLeftmenu(!props.leftMenu)
+                                }}
+                              >
                                 {props.t("Triệu chứng")}
                               </Link>
-                              <Link to="/brands" className="dropdown-item">
+                              <Link
+                                to="/brands"
+                                className="dropdown-item"
+                                onClick={() => {
+                                  props.toggleLeftmenu(!props.leftMenu)
+                                }}
+                              >
                                 {props.t("Hãng xe")}
                               </Link>
                             </div>
@@ -309,14 +339,26 @@ const Navbar = props => {
                           </li> */}
 
                           <li className="nav-item">
-                            <Link className="nav-link" to="/users">
+                            <Link
+                              className="nav-link"
+                              to="/users"
+                              onClick={() => {
+                                props.toggleLeftmenu(!props.leftMenu)
+                              }}
+                            >
                               <i className="bx bxs-user me-2"></i>
                               {props.t("Khách hàng")}
                             </Link>
                           </li>
 
                           <li className="nav-item">
-                            <Link className="nav-link" to="/create-new">
+                            <Link
+                              className="nav-link"
+                              to="/create-new"
+                              onClick={() => {
+                                props.toggleLeftmenu(!props.leftMenu)
+                              }}
+                            >
                               <i className="bx bx-customize me-2"></i>
                               {props.t("Tạo mới")}
                             </Link>
@@ -360,7 +402,13 @@ const Navbar = props => {
                       return (
                         <React.Fragment>
                           <li className="nav-item">
-                            <Link className="nav-link" to="/config">
+                            <Link
+                              className="nav-link"
+                              to="/config"
+                              onClick={() => {
+                                props.toggleLeftmenu(!props.leftMenu)
+                              }}
+                            >
                               <i className="bx bx-server me-2"></i>
                               {props.t("Cấu hình")}
                             </Link>

@@ -42,8 +42,9 @@ import Cart from "./cart"
 import CarRecord from "./health-car-record"
 import PreloadDetail from "components/Loader/PreloadDetail"
 import Stepper from "./stepper"
-import ConfirmReAssign from "./confirm-reassign"
-import ConfirmAutoAssign from "./confirm-autoassign"
+import ConfirmReAssign from "./confirm-reassign-modal"
+import ConfirmAutoAssign from "./confirm-autoassign-modal"
+import ConfirmCheckOut from "./confirm-checkout-modal"
 
 const OrderServiceDetail = props => {
   //meta title
@@ -85,17 +86,23 @@ const OrderServiceDetail = props => {
     match: { params },
   } = props
 
+  /* Get OrderService Detail */
+
   useEffect(() => {
     if (params && params.id) {
       dispatch(onGetOrderServiceDetail(params.id, props.history))
     }
   }, [params, dispatch])
 
+  /* Get Status Log */
+
   useEffect(() => {
     if (params && params.id) {
       dispatch(onGetStatusLog(params.id))
     }
-  }, [params, isShow, dispatch])
+  }, [params, dispatch])
+
+  /* Get Expert */
 
   useEffect(() => {
     dispatch(onGetExpert())
@@ -106,6 +113,7 @@ const OrderServiceDetail = props => {
   useEffect(() => {
     if (isShow) {
       dispatch(onGetOrderServiceDetail(params.id, props.history))
+      dispatch(onGetStatusLog(params.id, props.history))
     }
   }, [isShow])
 
@@ -353,6 +361,12 @@ const OrderServiceDetail = props => {
   ==================================================
   */
 
+  const [isOpenCheckOut, setIsOpenCheckOut] = useState(false)
+
+  const toggleCheckOut = () => {
+    setIsOpenCheckOut(!isOpenCheckOut)
+  }
+
   const handleCheckOut = () => {
     const id = params.id
     if (
@@ -365,6 +379,7 @@ const OrderServiceDetail = props => {
         checkOutService(id, orderServicesDetail.car.carLisenceNo, props.history)
       )
     }
+    setIsOpenCheckOut(!isOpenCheckOut)
   }
 
   /* ========================================== RENDER ==============================================*/
@@ -386,6 +401,12 @@ const OrderServiceDetail = props => {
                 toggle={toggleExAuto}
                 order={orderServicesDetail}
                 handleAutoAssignExpert={handleAutoAssignExpert}
+              />
+              <ConfirmCheckOut
+                isOpen={isOpenCheckOut}
+                toggle={toggleCheckOut}
+                order={orderServicesDetail}
+                handleCheckOut={handleCheckOut}
               />
               <Breadcrumbs
                 title="Dịch vụ"
@@ -604,7 +625,7 @@ const OrderServiceDetail = props => {
                                               className="w-md mt-2 me-2"
                                               disabled={!selectedGroup}
                                             >
-                                              Chỉ định
+                                              Phân công
                                             </Button>
                                             <Button
                                               onClick={handleReAssign}
@@ -679,7 +700,7 @@ const OrderServiceDetail = props => {
                                           className="w-md mt-2 me-2"
                                           disabled={!selectedGroup}
                                         >
-                                          Chỉ định
+                                          Phân công
                                         </Button>
                                         <Button
                                           onClick={handleReAssign}
@@ -707,6 +728,7 @@ const OrderServiceDetail = props => {
                                               role="group"
                                             >
                                               <button
+                                                onClick={toggleExAuto}
                                                 type="button"
                                                 className="btn btn-light"
                                               >
@@ -807,23 +829,23 @@ const OrderServiceDetail = props => {
                     sách{" "}
                   </Link>
                 </Col>
-                {orderServicesDetail.status === 4 ? (
+
+                {orderServicesDetail.status >= 0 &&
+                orderServicesDetail.status < 5 ? (
                   <Col sm="6">
                     <div className="text-sm-end">
                       <Button
                         type="button"
                         color="success"
                         className="btn btn-label w-md"
-                        onClick={handleCheckOut}
+                        onClick={toggleCheckOut}
                       >
-                        <i className="bx bx-check-double label-icon"></i>
+                        <i className="mdi mdi-logout label-icon"></i>
                         Check-Out
                       </Button>
                     </div>
                   </Col>
-                ) : (
-                  ""
-                )}
+                ) : null}
               </Row>
             </React.Fragment>
           )}
