@@ -11,7 +11,7 @@ const ConfirmAutoAssign = props => {
       <Modal isOpen={isOpen} toggle={toggle} centered>
         <div className="modal-header">
           <h4 className="modal-title mt-0" id="myModalLabel">
-            Chỉ định kỹ thuật viên
+            Phân công kỹ thuật viên
           </h4>
           <button
             type="button"
@@ -27,15 +27,16 @@ const ConfirmAutoAssign = props => {
           {order.expert !== null ? (
             <>
               <p className="font-size-14">
-                Chỉ định kỹ thuật viên khác ngoài {order.expert.fullname} cho
-                phương tiện {order.car.carLisenceNo} ?
+                Phân công ngẫu nhiên kỹ thuật viên phụ trách khác{" "}
+                <strong>{order.expert.fullname}</strong> cho phương tiện{" "}
+                <strong>{order.car.carLisenceNo}</strong> ?
               </p>
             </>
           ) : (
             <>
               <p className="font-size-14">
-                Chỉ định kỹ thuật viên cho phương tiện {order.car.carLisenceNo}{" "}
-                ?
+                Phân công ngẫu nhiên kỹ thuật viên phụ trách cho phương tiện{" "}
+                <strong>{order.car.carLisenceNo}</strong> ?
               </p>
             </>
           )}

@@ -42,9 +42,12 @@ import Cart from "./cart"
 import CarRecord from "./health-car-record"
 import PreloadDetail from "components/Loader/PreloadDetail"
 import Stepper from "./stepper"
-import ConfirmReAssign from "./confirm-reassign-modal"
-import ConfirmAutoAssign from "./confirm-autoassign-modal"
-import ConfirmCheckOut from "./confirm-checkout-modal"
+
+//Modals
+import ConfirmReAssign from "./Modals/confirm-reassign-modal"
+import ConfirmAutoAssign from "./Modals/confirm-autoassign-modal"
+import ConfirmCheckOut from "./Modals/confirm-checkout-modal"
+import ConfirmPriority from "./Modals/confirm-priority-modal"
 
 const OrderServiceDetail = props => {
   //meta title
@@ -338,7 +341,13 @@ const OrderServiceDetail = props => {
   ==================================================
   */
 
-  const [priority, setPriority] = useState(false)
+  const [options, setOptions] = useState(false)
+
+  const [isOpenPriority, setIsOpenPriority] = useState(false)
+
+  const togglePriority = () => {
+    setIsOpenPriority(!isOpenPriority)
+  }
 
   const handlePriority = () => {
     if (
@@ -352,6 +361,7 @@ const OrderServiceDetail = props => {
       const exId = orderServicesDetail.expert.id
       const car = orderServicesDetail.car.carLisenceNo
       dispatch(priorityService(exId, id, car))
+      setIsOpenPriority(!isOpenPriority)
     }
   }
 
@@ -402,6 +412,12 @@ const OrderServiceDetail = props => {
                 order={orderServicesDetail}
                 handleAutoAssignExpert={handleAutoAssignExpert}
               />
+              <ConfirmPriority
+                isOpen={isOpenPriority}
+                toggle={togglePriority}
+                order={orderServicesDetail}
+                handlePriority={handlePriority}
+              />
               <ConfirmCheckOut
                 isOpen={isOpenCheckOut}
                 toggle={toggleCheckOut}
@@ -435,9 +451,9 @@ const OrderServiceDetail = props => {
                         orderServicesDetail.status === 3 ? (
                           <div className="ml-auto">
                             <Dropdown
-                              isOpen={priority}
+                              isOpen={options}
                               toggle={() => {
-                                setPriority(!priority)
+                                setOptions(!options)
                               }}
                             >
                               <DropdownToggle
@@ -448,7 +464,7 @@ const OrderServiceDetail = props => {
                                 <i className="fa fa-fw fa-bars" />
                               </DropdownToggle>
                               <DropdownMenu className="dropdown-menu-end">
-                                <DropdownItem onClick={handlePriority}>
+                                <DropdownItem onClick={togglePriority}>
                                   Ưu tiên
                                 </DropdownItem>
                               </DropdownMenu>
@@ -596,7 +612,7 @@ const OrderServiceDetail = props => {
                                     }}
                                     className={"text-capitalize"}
                                   >
-                                    Kỹ thuật viên chính :
+                                    Người phụ trách :
                                   </th>
                                   <td>
                                     {orderServicesDetail.expert !== null ? (
@@ -625,7 +641,7 @@ const OrderServiceDetail = props => {
                                               className="w-md mt-2 me-2"
                                               disabled={!selectedGroup}
                                             >
-                                              Phân công
+                                              Chỉ định
                                             </Button>
                                             <Button
                                               onClick={handleReAssign}
@@ -659,14 +675,14 @@ const OrderServiceDetail = props => {
                                                   className="btn btn-light"
                                                   onClick={toggleExAuto}
                                                 >
-                                                  Chỉ định
+                                                  Phân công
                                                 </button>
                                                 <button
                                                   type="button"
                                                   className="btn btn-light"
                                                   onClick={handleReAssign}
                                                 >
-                                                  Phân công
+                                                  Chỉ định
                                                 </button>
                                               </div>
                                             </div>
@@ -700,7 +716,7 @@ const OrderServiceDetail = props => {
                                           className="w-md mt-2 me-2"
                                           disabled={!selectedGroup}
                                         >
-                                          Phân công
+                                          Chỉ định
                                         </Button>
                                         <Button
                                           onClick={handleReAssign}
@@ -732,14 +748,14 @@ const OrderServiceDetail = props => {
                                                 type="button"
                                                 className="btn btn-light"
                                               >
-                                                Chỉ định
+                                                Phân công
                                               </button>
                                               <button
                                                 type="button"
                                                 className="btn btn-light"
                                                 onClick={handleReAssign}
                                               >
-                                                Lựa chọn
+                                                Chỉ định
                                               </button>
                                             </div>
                                           </div>
