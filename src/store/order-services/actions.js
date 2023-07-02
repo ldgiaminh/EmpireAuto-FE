@@ -249,9 +249,9 @@ export const putPriorityServiceFail = error => ({
 PUT Check out
 ================================================
 */
-export const checkOutService = (id, car, history) => ({
+export const checkOutService = (carId, data, id, car, history) => ({
   type: CHECKOUT_SERVICES,
-  payload: { id, car, history },
+  payload: { carId, data, id, car, history },
 })
 
 export const checkOutServiceSuccess = orderServicesCheckOut => ({

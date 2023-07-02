@@ -1,9 +1,35 @@
-import React from "react"
+import React, { useState } from "react"
 import PropTypes from "prop-types"
-import { Modal } from "reactstrap"
+import { Form, InputGroup, Label, Modal } from "reactstrap"
+import "flatpickr/dist/themes/material_blue.css"
+import Flatpickr from "react-flatpickr"
+import { Vietnamese } from "flatpickr/dist/l10n/vn.js"
+
+import { useDispatch } from "react-redux"
+
+import { checkOutService as checkOutService } from "store/actions"
 
 const ConfirmCheckOut = props => {
-  const { isOpen, toggle, order, handleCheckOut } = props
+  const { isOpen, toggle, order, history } = props
+
+  const dispatch = useDispatch()
+
+  const [date, setDate] = useState("")
+
+  const handleCheckOut = () => {
+    const carId = order.car.id
+    const id = order.id
+    const car = order.car
+    const licence = order.car.carLisenceNo
+    if ((carId, order && id && car && licence)) {
+      const data = {}
+      if (date) {
+        data.maintenanceDate = date
+      }
+      dispatch(checkOutService(carId, data, id, licence, history))
+    }
+    toggle(false)
+  }
 
   return (
     <>
@@ -78,6 +104,42 @@ const ConfirmCheckOut = props => {
                 return null // Return null or fallback JSX for other status values
             }
           })()}
+
+          <Label>Ngày bảo trì</Label>
+          <InputGroup>
+            <Flatpickr
+              className="form-control d-block"
+              placeholder="Chọn ngày bảo trì"
+              options={{
+                altInput: false,
+                dateFormat: "d-m-Y",
+                locale: Vietnamese,
+                minDate: new Date().fp_incr(1), // Set minimum date to tomorrow
+                disable: [
+                  function (date) {
+                    return date <= new Date()
+                  },
+                ], // Disable past and today's dates
+              }}
+              onChange={selectedDates => {
+                const formattedDate = selectedDates[0].toLocaleDateString(
+                  "en-GB",
+                  {
+                    day: "numeric",
+                    month: "numeric",
+                    year: "numeric",
+                  }
+                )
+
+                const reversedDate = formattedDate
+                  .split("/")
+                  .reverse()
+                  .join("-")
+
+                setDate(reversedDate) // Log the reversed formatted value
+              }}
+            />
+          </InputGroup>
         </div>
 
         <div className="modal-footer">

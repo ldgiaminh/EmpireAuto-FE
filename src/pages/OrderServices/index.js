@@ -93,13 +93,104 @@ const OrderServicesList = props => {
         },
       },
       // {
-      //   Header: "Thời gian check-in",
+      //   Header: "Ngày bảo trì",
       //   accessor: "order.createdAt",
       //   disableFilters: true,
       //   Cell: cellProps => {
       //     return <DateCell {...cellProps} />
       //   },
       // },
+      {
+        Header: "Hãng xe",
+        accessor: "car.carBrand",
+        disableFilters: true,
+        Cell: cellProps => {
+          return <ModalCar {...cellProps} />
+        },
+      },
+      {
+        Header: "Dòng xe",
+        accessor: "car.carModel",
+        disableFilters: true,
+        Cell: cellProps => {
+          return <ModalCar {...cellProps} />
+        },
+      },
+      {
+        Header: "Biển số xe",
+        accessor: "car.carLisenceNo",
+        disableFilters: true,
+        Cell: cellProps => {
+          return <Plate {...cellProps} />
+        },
+      },
+      {
+        Header: "Kỹ thuật viên",
+        accessor: "expert.fullname",
+        disableFilters: true,
+        Cell: cellProps => {
+          return <Expert {...cellProps} />
+        },
+      },
+      {
+        Header: "Chi tiết",
+        accessor: "action",
+        disableFilters: true,
+        Cell: cellProps => {
+          return (
+            <Button
+              type="button"
+              color={
+                cellProps.row.original.expert !== null ? "primary" : "warning"
+              }
+              className="btn-sm btn-rounded"
+              onClick={() =>
+                history.push(`/order-services/${cellProps.row.original.id}`)
+              }
+            >
+              {cellProps.row.original.expert !== null
+                ? "Xem chi tiết"
+                : "Phân công"}
+            </Button>
+          )
+        },
+      },
+    ],
+    []
+  )
+
+  const columnsMaintenance = useMemo(
+    () => [
+      {
+        Header: "Mã đơn hàng",
+        accessor: "code",
+        width: "150px",
+        style: {
+          textAlign: "center",
+          width: "10%",
+          background: "#0000",
+        },
+        filterable: true,
+        Cell: cellProps => {
+          return <OrderCode {...cellProps} />
+        },
+      },
+      {
+        Header: "Tên khách hàng",
+        accessor: "order.user.fullname",
+        disableFilters: true,
+        Cell: cellProps => {
+          return <Name {...cellProps} />
+        },
+      },
+      {
+        Header: "Ngày bảo trì",
+        accessor: "maintenanceSchedule.maintenanceDate",
+        disableFilters: true,
+        Cell: cellProps => {
+          return <DateCell {...cellProps} />
+        },
+      },
       {
         Header: "Hãng xe",
         accessor: "car.carBrand",
@@ -298,6 +389,15 @@ const OrderServicesList = props => {
                         <TabPane tabId="5" id="checkout">
                           <TableContainer
                             columns={columns}
+                            data={orderService}
+                            isGlobalFilter={true}
+                            customPageSize={10}
+                            className="custom-header-css"
+                          />
+                        </TabPane>
+                        <TabPane tabId="6" id="checkout">
+                          <TableContainer
+                            columns={columnsMaintenance}
                             data={orderService}
                             isGlobalFilter={true}
                             customPageSize={10}

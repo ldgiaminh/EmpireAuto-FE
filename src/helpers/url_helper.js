@@ -63,7 +63,8 @@ export const PUT_CONFIRM_PAID_SERVICES = "/order-services"
 export const PUT_PRIORITY_SERVICES = "/workloads/priority"
 
 //CheckOut
-export const CHECKOUT_SERVICES = "/order-services"
+//export const CHECKOUT_SERVICES = "/order-services"
+export const CHECKOUT_SERVICES = "/cars"
 
 //Count length
 export const COUNT_SERVICES = "/order-services/count"

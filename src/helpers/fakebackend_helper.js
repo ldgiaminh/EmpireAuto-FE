@@ -169,8 +169,8 @@ export const priorityService = (exId, orId) =>
   put(`${url.PUT_PRIORITY_SERVICES}?expertId=${exId}&orderServiceId=${orId}`)
 
 /* CHECKOUT */
-export const checkOutService = id =>
-  put(`${url.CHECKOUT_SERVICES}/${id}/checkout`)
+export const checkOutService = (id, data) =>
+  post(`${url.CHECKOUT_SERVICES}/${id}/car-status-logs`, data)
 
 /* COUNT */
 

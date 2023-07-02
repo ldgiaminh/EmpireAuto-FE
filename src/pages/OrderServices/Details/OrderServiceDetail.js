@@ -117,6 +117,7 @@ const OrderServiceDetail = props => {
     if (isShow) {
       dispatch(onGetOrderServiceDetail(params.id, props.history))
       dispatch(onGetStatusLog(params.id, props.history))
+      dispatch(onGetExpert())
     }
   }, [isShow])
 
@@ -422,7 +423,8 @@ const OrderServiceDetail = props => {
                 isOpen={isOpenCheckOut}
                 toggle={toggleCheckOut}
                 order={orderServicesDetail}
-                handleCheckOut={handleCheckOut}
+                history={props.history}
+                //handleCheckOut={handleCheckOut}
               />
               <Breadcrumbs
                 title="Dịch vụ"
