@@ -206,6 +206,7 @@ const OrderServicesList = props => {
     { id: "3", title: "Thực hiện", count: countService.CONFIRMED_AND_PAID },
     { id: "4", title: "Nhận xe", count: countService.DONE },
     { id: "5", title: "Hoàn thành", count: countService.CHECKOUT },
+    { id: "6", title: "Bảo trì", count: countService.MAINTENANCE },
     { id: "-1", title: "Đã Hủy", count: countService.CANCELLED },
   ]
 
