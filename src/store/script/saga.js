@@ -10,6 +10,7 @@ import {
   RUN_SCRIPT_CUSTOMER,
   RUN_SCRIPT_DIAGNOSE_ORDER,
   RUN_SCRIPT_DONE_ORDER,
+  RUN_SCRIPT_REMOVE_CUSTOMER,
 } from "./actionTypes"
 
 import {
@@ -29,11 +30,14 @@ import {
   runScriptDiagnoseSuccess,
   runScriptDoneFail,
   runScriptDoneSuccess,
+  runScriptRemoveCustomerFail,
+  runScriptRemoveCustomerSuccess,
 } from "./actions"
 
 //Include Both Helper File with needed methods
 import {
   runRemoveScriptBookings,
+  runRemoveScriptCustomers,
   runScriptBookings,
   runScriptCheckIn,
   runScriptCheckOut,
@@ -53,8 +57,25 @@ function* onRunScriptCustomers({ number }) {
     yield put(runScriptCustomerSuccess(response))
     toast.success("Tạo mới thành công " + number + " khách hàng")
     localStorage.setItem("scriptCustomer", JSON.stringify(response))
+
+    setTimeout(() => {
+      localStorage.removeItem("scriptCustomer")
+    }, 6 * 60 * 60 * 1000)
   } catch (error) {
     yield put(runScriptCustomerFail(error))
+    toast.error("Đã có lỗi xảy ra")
+  }
+}
+
+/* REMOVE CUSTOMER */
+
+function* onRunScriptRemoveCustomers({ data }) {
+  try {
+    const response = yield call(runRemoveScriptCustomers, data)
+    yield put(runScriptRemoveCustomerSuccess(response))
+    toast.success("Xóa thành công " + response.length + " khách hàng")
+  } catch (error) {
+    yield put(runScriptRemoveCustomerFail(error))
     toast.error("Đã có lỗi xảy ra")
   }
 }
@@ -74,6 +95,10 @@ function* onRunScriptBookings({ number, payload: { data } }) {
       toast.error("Tạo thất bại " + countFail + " đặt lịch")
     }
     localStorage.setItem("scriptBooking", JSON.stringify(response))
+
+    setTimeout(() => {
+      localStorage.removeItem("scriptBooking")
+    }, 6 * 60 * 60 * 1000)
   } catch (error) {
     toast.error("Đã có lỗi xảy ra")
     yield put(runScriptBookingFail(error))
@@ -101,11 +126,11 @@ function* onRunScriptCheckIns({ number1, number2, payload: { data } }) {
     yield put(runScriptCheckInSuccess(response))
 
     const countSuccess = response.filter(
-      b => b.isArrived === true && b.isActived === true
+      b => b.result.isArrived && b.result.isActived
     ).length
 
     const countFail = response.filter(
-      b => b.isArrived === false || b.isActived === false
+      b => !b.result.isArrived || !b.result.isActived
     ).length
 
     if (countSuccess > 0) {
@@ -115,6 +140,10 @@ function* onRunScriptCheckIns({ number1, number2, payload: { data } }) {
     }
 
     localStorage.setItem("scriptCheckIn", JSON.stringify(response))
+
+    setTimeout(() => {
+      localStorage.removeItem("scriptCheckIn")
+    }, 6 * 60 * 60 * 1000)
   } catch (error) {
     toast.error("Đã có lỗi xảy ra")
     yield put(runScriptCheckInFail(error.response.data.message))
@@ -135,6 +164,10 @@ function* onRunScriptDiagnoses({ payload: { data } }) {
       toast.error("Chẩn đoán thất bại " + countFail + " phương tiện")
     }
     localStorage.setItem("scriptDiagnose", JSON.stringify(response))
+
+    setTimeout(() => {
+      localStorage.removeItem("scriptDiagnose")
+    }, 6 * 60 * 60 * 1000)
   } catch (error) {
     toast.error("Đã có lỗi xảy ra")
     yield put(runScriptDiagnoseFail(error))
@@ -157,6 +190,10 @@ function* onRunScriptConfirmPaids({ number1, number2, payload: { data } }) {
       toast.error("Xác nhận & Thanh toán thất bại " + countFail + " hóa đơn")
     }
     localStorage.setItem("scriptConfirmPaid", JSON.stringify(response))
+
+    setTimeout(() => {
+      localStorage.removeItem("scriptConfirmPaid")
+    }, 6 * 60 * 60 * 1000)
   } catch (error) {
     toast.error("Đã có lỗi xảy ra")
     yield put(runScriptConfirmPaidFail(error.response.data))
@@ -177,6 +214,10 @@ function* onRunScriptDones({ payload: data }) {
       toast.error("Hoàn tất thất bại " + countFail + " hóa đơn")
     }
     localStorage.setItem("scriptDone", JSON.stringify(response))
+
+    setTimeout(() => {
+      localStorage.removeItem("scriptDone")
+    }, 6 * 60 * 60 * 1000)
   } catch (error) {
     toast.error("Đã có lỗi xảy ra")
     yield put(runScriptDoneFail(error))
@@ -197,6 +238,10 @@ function* onRunScriptCheckOuts({ payload: data }) {
       toast.error("Check-out thất bại " + countFail + " phương tiện")
     }
     localStorage.setItem("scriptCheckOut", JSON.stringify(response))
+
+    setTimeout(() => {
+      localStorage.removeItem("scriptCheckOut")
+    }, 6 * 60 * 60 * 1000)
   } catch (error) {
     toast.error("Đã có lỗi xảy ra")
     yield put(runScriptCheckOutFail(error))
@@ -205,6 +250,7 @@ function* onRunScriptCheckOuts({ payload: data }) {
 
 function* scriptSaga() {
   yield takeEvery(RUN_SCRIPT_CUSTOMER, onRunScriptCustomers)
+  yield takeEvery(RUN_SCRIPT_REMOVE_CUSTOMER, onRunScriptRemoveCustomers)
   yield takeEvery(RUN_SCRIPT_BOOKING, onRunScriptBookings)
   yield takeEvery(RUN_REMOVE_SCRIPT_BOOKING, onRemoveRunScriptBookings)
   yield takeEvery(RUN_SCRIPT_DIAGNOSE_ORDER, onRunScriptDiagnoses)

@@ -15,6 +15,10 @@ const Logout = props => {
     dispatch(logoutUser(props.history))
   }, [dispatch])
 
+  setTimeout(() => {
+    dispatch(logoutUser(props.history))
+  }, 6 * 60 * 60 * 1000)
+
   return <></>
 }
 

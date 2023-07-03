@@ -363,6 +363,10 @@ RUN SCRIPT
 export const runScriptCustomers = number =>
   post(`${url.RUN_SCRIPT_CUSTOMER}?numberOfCustomer=${number}`)
 
+//Remove Customer
+export const runRemoveScriptCustomers = data =>
+  del2(url.RUN_REMOVE_SCRIPT_CUSTOMER, data)
+
 //Booking
 export const runScriptBookings = (number, data) =>
   post2(`${url.RUN_SCRIPT_BOOKING}?numberOfBooking=${number}`, data)

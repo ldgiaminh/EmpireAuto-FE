@@ -33,6 +33,7 @@ import OrderDiagnose from "./RunScript/order-diagnose"
 import OrderConfirmPaid from "./RunScript/order-confirmpaid"
 import OrderDone from "./RunScript/order-done"
 import OrderCheckOut from "./RunScript/order-checkout"
+import CustomerRemoveScript from "./RunScript/customer-remove-script"
 
 const ConfigScriptGarage = props => {
   //meta title
@@ -93,20 +94,6 @@ const ConfigScriptGarage = props => {
                           setactiveTab("3")
                         }}
                       >
-                        <i className="mdi font-size-15 mdi-calendar-remove me-2"></i>
-                        Hủy đặt lịch
-                      </NavLink>
-                    </NavItem>
-
-                    <NavItem>
-                      <NavLink
-                        className={classnames({
-                          active: activeTab === "4",
-                        })}
-                        onClick={() => {
-                          setactiveTab("4")
-                        }}
-                      >
                         <i className="bx font-size-15 bx-log-in-circle me-2"></i>
                         Check-in
                       </NavLink>
@@ -119,10 +106,10 @@ const ConfigScriptGarage = props => {
                     <NavItem>
                       <NavLink
                         className={classnames({
-                          active: activeTab === "5",
+                          active: activeTab === "4",
                         })}
                         onClick={() => {
-                          setactiveTab("5")
+                          setactiveTab("4")
                         }}
                       >
                         <i className="bx font-size-15 bx bx-pencil me-2"></i>{" "}
@@ -135,15 +122,29 @@ const ConfigScriptGarage = props => {
                         className={
                           (`font-size-15`,
                           classnames({
-                            active: activeTab === "6",
+                            active: activeTab === "5",
                           }))
                         }
                         onClick={() => {
-                          setactiveTab("6")
+                          setactiveTab("5")
                         }}
                       >
                         <i className="fas font-size-14 fa-money-bill-wave me-2"></i>
                         Xác nhận & Thanh toán
+                      </NavLink>
+                    </NavItem>
+
+                    <NavItem>
+                      <NavLink
+                        className={classnames({
+                          active: activeTab === "6",
+                        })}
+                        onClick={() => {
+                          setactiveTab("6")
+                        }}
+                      >
+                        <i className="bx font-size-18 bx-badge-check me-2"></i>
+                        Hoàn tất dịch vụ
                       </NavLink>
                     </NavItem>
 
@@ -156,11 +157,15 @@ const ConfigScriptGarage = props => {
                           setactiveTab("7")
                         }}
                       >
-                        <i className="bx font-size-18 bx-badge-check me-2"></i>
-                        Hoàn tất dịch vụ
+                        <i className="font-size-15 bx bx-log-out-circle me-2"></i>
+                        Check-out
                       </NavLink>
                     </NavItem>
+                  </Nav>
+                </div>
 
+                <div className="mail-list">
+                  <Nav tabs className="nav-tabs-custom" vertical role="tablist">
                     <NavItem>
                       <NavLink
                         className={classnames({
@@ -170,10 +175,24 @@ const ConfigScriptGarage = props => {
                           setactiveTab("8")
                         }}
                       >
-                        <i className="font-size-15 bx bx-log-out-circle me-2"></i>
-                        Check-out
+                        <i className="font-size-15 bx bx-user-x me-2"></i> Xóa
+                        khách hàng{" "}
                       </NavLink>
                     </NavItem>
+
+                    {/* <NavItem>
+                      <NavLink
+                        className={classnames({
+                          active: activeTab === "9",
+                        })}
+                        onClick={() => {
+                          setactiveTab("9")
+                        }}
+                      >
+                        <i className="mdi font-size-15 mdi-calendar-remove me-2"></i>
+                        Hủy đặt lịch
+                      </NavLink>
+                    </NavItem> */}
                   </Nav>
                 </div>
               </Card>
@@ -189,22 +208,25 @@ const ConfigScriptGarage = props => {
                       <BookingScript />
                     </TabPane>
                     <TabPane tabId="3">
-                      <BookingRemoveScript />
-                    </TabPane>
-                    <TabPane tabId="4">
                       <BookingCheckInScript />
                     </TabPane>
-                    <TabPane tabId="5">
+                    <TabPane tabId="4">
                       <OrderDiagnose />
                     </TabPane>
-                    <TabPane tabId="6">
+                    <TabPane tabId="5">
                       <OrderConfirmPaid />
                     </TabPane>
-                    <TabPane tabId="7">
+                    <TabPane tabId="6">
                       <OrderDone />
                     </TabPane>
-                    <TabPane tabId="8">
+                    <TabPane tabId="7">
                       <OrderCheckOut />
+                    </TabPane>
+                    <TabPane tabId="8">
+                      <CustomerRemoveScript />
+                    </TabPane>
+                    <TabPane tabId="9">
+                      <BookingRemoveScript />
                     </TabPane>
                   </TabContent>
                 </Card>

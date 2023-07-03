@@ -47,8 +47,7 @@ export async function del(url, config = {}) {
     .then(response => response.data)
 }
 
-export async function del2(url, data, config = {}) {
-  return await axiosApi
-    .delete(url, { ...data }, { ...config })
-    .then(response => response.data)
+export async function del2(url, data = [], config = {}) {
+  const axiosConfig = { ...config, data: data }
+  return await axiosApi.delete(url, axiosConfig).then(response => response.data)
 }

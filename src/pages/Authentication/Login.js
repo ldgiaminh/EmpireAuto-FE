@@ -42,7 +42,7 @@ import Loader from "components/Loader/Loader"
 
 const Login = props => {
   //meta title
-  document.title = "Login | Empire Garage"
+  document.title = "Đăng nhập | Empire Garage"
 
   const dispatch = useDispatch()
 

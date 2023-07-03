@@ -23,6 +23,9 @@ import {
   RUN_SCRIPT_DONE_ORDER,
   RUN_SCRIPT_DONE_ORDER_FAIL,
   RUN_SCRIPT_DONE_ORDER_SUCCESS,
+  RUN_SCRIPT_REMOVE_CUSTOMER,
+  RUN_SCRIPT_REMOVE_CUSTOMER_FAIL,
+  RUN_SCRIPT_REMOVE_CUSTOMER_SUCCESS,
 } from "./actionTypes"
 
 /*
@@ -42,6 +45,26 @@ export const runScriptCustomerSuccess = scriptCustomer => ({
 
 export const runScriptCustomerFail = error => ({
   type: RUN_SCRIPT_CUSTOMER_FAIL,
+  payload: error,
+})
+
+/*
+================================================ 
+DELETE Script Customer 
+================================================
+*/
+export const runScriptRemoveCustomer = data => ({
+  type: RUN_SCRIPT_REMOVE_CUSTOMER,
+  data,
+})
+
+export const runScriptRemoveCustomerSuccess = scriptCustomer => ({
+  type: RUN_SCRIPT_REMOVE_CUSTOMER_SUCCESS,
+  payload: scriptCustomer,
+})
+
+export const runScriptRemoveCustomerFail = error => ({
+  type: RUN_SCRIPT_REMOVE_CUSTOMER_FAIL,
   payload: error,
 })
 

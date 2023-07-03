@@ -23,11 +23,17 @@ import {
   RUN_SCRIPT_DONE_ORDER,
   RUN_SCRIPT_DONE_ORDER_FAIL,
   RUN_SCRIPT_DONE_ORDER_SUCCESS,
+  RUN_SCRIPT_REMOVE_CUSTOMER,
+  RUN_SCRIPT_REMOVE_CUSTOMER_FAIL,
+  RUN_SCRIPT_REMOVE_CUSTOMER_SUCCESS,
 } from "./actionTypes"
 
 const INIT_STATE = {
   scriptCustomer: [],
   errorCustomer: "",
+
+  scriptRemoveCustomer: [],
+  errorRemoveCustomer: "",
 
   scriptBooking: [],
   errorBooking: "",
@@ -71,6 +77,26 @@ const scripts = (state = INIT_STATE, action) => {
       return {
         ...state,
         isLoadScript: false,
+        errorCustomer: action.payload,
+      }
+
+    /* REMOVE CUSTOMER */
+    case RUN_SCRIPT_REMOVE_CUSTOMER:
+      return {
+        ...state,
+        isLoadScript: true,
+      }
+    case RUN_SCRIPT_REMOVE_CUSTOMER_SUCCESS:
+      return {
+        ...state,
+        isLoadScript: false,
+        scriptRemoveCustomer: action.payload,
+      }
+
+    case RUN_SCRIPT_REMOVE_CUSTOMER_FAIL:
+      return {
+        ...state,
+        isLoadScript: false,
         error: action.payload,
       }
 
@@ -91,7 +117,7 @@ const scripts = (state = INIT_STATE, action) => {
       return {
         ...state,
         isLoadScript: false,
-        error: action.payload,
+        errorBooking: action.payload,
       }
 
     /* REMOVE BOOKING */

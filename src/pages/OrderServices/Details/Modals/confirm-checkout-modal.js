@@ -105,41 +105,45 @@ const ConfirmCheckOut = props => {
             }
           })()}
 
-          <Label>Ngày bảo trì</Label>
-          <InputGroup>
-            <Flatpickr
-              className="form-control d-block"
-              placeholder="Chọn ngày bảo trì"
-              options={{
-                altInput: false,
-                dateFormat: "d-m-Y",
-                locale: Vietnamese,
-                minDate: new Date().fp_incr(1), // Set minimum date to tomorrow
-                disable: [
-                  function (date) {
-                    return date <= new Date()
-                  },
-                ], // Disable past and today's dates
-              }}
-              onChange={selectedDates => {
-                const formattedDate = selectedDates[0].toLocaleDateString(
-                  "en-GB",
-                  {
-                    day: "numeric",
-                    month: "numeric",
-                    year: "numeric",
-                  }
-                )
+          {order.status !== 4 && (
+            <>
+              <Label>Ngày bảo trì</Label>
+              <InputGroup>
+                <Flatpickr
+                  className="form-control d-block"
+                  placeholder="Chọn ngày bảo trì"
+                  options={{
+                    altInput: false,
+                    dateFormat: "d-m-Y",
+                    locale: Vietnamese,
+                    minDate: new Date().fp_incr(1), // Set minimum date to tomorrow
+                    disable: [
+                      function (date) {
+                        return date <= new Date()
+                      },
+                    ], // Disable past and today's dates
+                  }}
+                  onChange={selectedDates => {
+                    const formattedDate = selectedDates[0].toLocaleDateString(
+                      "en-GB",
+                      {
+                        day: "numeric",
+                        month: "numeric",
+                        year: "numeric",
+                      }
+                    )
 
-                const reversedDate = formattedDate
-                  .split("/")
-                  .reverse()
-                  .join("-")
+                    const reversedDate = formattedDate
+                      .split("/")
+                      .reverse()
+                      .join("-")
 
-                setDate(reversedDate) // Log the reversed formatted value
-              }}
-            />
-          </InputGroup>
+                    setDate(reversedDate) // Log the reversed formatted value
+                  }}
+                />
+              </InputGroup>
+            </>
+          )}
         </div>
 
         <div className="modal-footer">
