@@ -55,11 +55,24 @@ const OrderDiagnose = () => {
     c => c.result.isArrived && c.result.isActived
   )
 
-  const handleDiagnose = () => {
-    const data = idList.map(il => il.result.id)
-    dispatch(onRunScriptDiagnose(data))
-    // setIsSubmitting(true)
-  }
+  const validationType = useFormik({
+    // enableReinitialize : use this flag when initial values needs to be changed
+    enableReinitialize: true,
+
+    initialValues: {
+      number1: "",
+      number2: "",
+    },
+    validationSchema: Yup.object().shape({
+      number1: Yup.number().required("Chỉ nhập số"),
+      number2: Yup.number().required("Chỉ nhập số"),
+    }),
+    onSubmit: values => {
+      const data = idList.map(il => il.result.id)
+      dispatch(onRunScriptDiagnose(values.number1, values.number2, data))
+      // setIsSubmitting(false)
+    },
+  })
 
   useEffect(() => {
     setOrders(scriptDiagnose)
@@ -77,7 +90,7 @@ const OrderDiagnose = () => {
       <CardBody>
         <CardTitle className="mb-2">CHẨN ĐOÁN</CardTitle>
 
-        {/* <Form
+        <Form
           className="row gy-2 gx-3 mt-3"
           onSubmit={e => {
             e.preventDefault()
@@ -85,61 +98,83 @@ const OrderDiagnose = () => {
             return false
           }}
         >
-          <div className="col-sm-5">
+          <div className="col-sm-4">
             <Label
               className="visually-hidden"
               htmlFor="autoSizingInputGroup"
             ></Label>
             <InputGroup>
-              <div className="input-group-text">Số phương tiện</div>
+              <div className="input-group-text">Phương tiện</div>
               <Input
                 type="number"
                 className="form-control"
                 id="autoSizingInputGroup"
-                name="number"
+                name="number1"
                 onChange={validationType.handleChange}
                 onBlur={validationType.handleBlur}
-                value={validationType.values.number || ""}
+                value={validationType.values.number1 || ""}
                 invalid={
-                  validationType.touched.number && validationType.errors.number
+                  validationType.touched.number1 &&
+                  validationType.errors.number1
                     ? true
                     : false
                 }
               />
-              {validationType.touched.number && validationType.errors.number ? (
+              {validationType.touched.number1 &&
+              validationType.errors.number1 ? (
                 <FormFeedback type="invalid">
-                  {validationType.errors.number}
+                  {validationType.errors.number1}
                 </FormFeedback>
               ) : null}
             </InputGroup>
           </div>
-          <div className="col-sm-5">
+          <div className="col-sm-4">
+            <Label
+              className="visually-hidden"
+              htmlFor="autoSizingInputGroup"
+            ></Label>
+            <InputGroup>
+              <div className="input-group-text">Check-out</div>
+              <Input
+                type="number"
+                className="form-control"
+                id="autoSizingInputGroup"
+                name="number2"
+                onChange={validationType.handleChange}
+                onBlur={validationType.handleBlur}
+                value={validationType.values.number2 || ""}
+                invalid={
+                  validationType.touched.number2 &&
+                  validationType.errors.number2
+                    ? true
+                    : false
+                }
+              />
+              {validationType.touched.number2 &&
+              validationType.errors.number2 ? (
+                <FormFeedback type="invalid">
+                  {validationType.errors.number2}
+                </FormFeedback>
+              ) : null}
+            </InputGroup>
+          </div>
+          <div className="col-sm-4">
             <button
-              disabled={isSubmitting}
+              // disabled={isSubmitting}
               type="submit"
               className="btn btn-primary btn-label"
             >
-              <i className="bx bx bx-pencil label-icon"></i> Chẩn đoán
+              <i className="bx bx bx-pencil font-size-12 label-icon"></i> Chẩn
+              đoán
             </button>
           </div>
-        </Form> */}
+        </Form>
 
-        {!isLoadScript && orders.length === 0 && (
+        {/* {!isLoadScript && orders.length === 0 && (
           <em className="mt-3">
             Đang có {countCheckIn.length} phương tiện chờ chẩn đoán{" "}
           </em>
-        )}
-
-        <div className="col-sm-5 mt-3">
-          <button
-            // disabled={isSubmitting}
-            type="button"
-            className="btn btn-primary btn-label"
-            onClick={handleDiagnose}
-          >
-            <i className="bx bx-pencil font-size-12 label-icon"></i> Chẩn đoán
-          </button>
-        </div>
+        )} */}
 
         <hr className="my-4" />
         {isLoadScript && (
@@ -148,7 +183,8 @@ const OrderDiagnose = () => {
               <div className="text-center my-3">
                 <h5 className="text-primary">
                   <i className="bx bx-loader bx-spin me-2" />
-                  Đang chẩn đoán {countCheckIn.length} phương tiện
+                  Đang chẩn đoán {validationType.values.number1} và check-out{" "}
+                  {validationType.values.number2}
                 </h5>
               </div>
             </Col>
@@ -167,13 +203,17 @@ const OrderDiagnose = () => {
                   {orders.map((o, index) => (
                     <tr key={index}>
                       <td className="font-size-14 text-center">{index + 1}</td>
-                      {o.statusCode === 200 ? (
+                      {o.statusCode === 200 && !o.result.carLog ? (
                         <td className="font-size-14">
                           Chẩn đoán thành công {o.result.car.carLisenceNo}
                         </td>
+                      ) : o.statusCode === 200 ? (
+                        <td className="font-size-14">
+                          Checkout thành công {o.result.car.carLisenceNo}
+                        </td>
                       ) : (
                         <td className="font-size-14">
-                          Chẩn đoán thất bại {o.result.car.carLisenceNo}
+                          {o.result.error.message}
                         </td>
                       )}
                       <td className="text-end">

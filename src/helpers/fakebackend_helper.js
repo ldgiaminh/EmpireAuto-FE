@@ -383,13 +383,16 @@ export const runScriptCheckIn = (number1, number2, data) =>
   )
 
 //Diagnose
-export const runScriptDiagnose = data =>
-  post2(url.RUN_SCRIPT_DIAGNOSE_ORDER, data)
+export const runScriptDiagnose = (number1, number2, data) =>
+  post2(
+    `${url.RUN_SCRIPT_DIAGNOSE_ORDER}?numberOfDiagnose=${number1}&numberOfCheckout=${number2}`,
+    data
+  )
 
 //Confirm & Paid
-export const runScriptConfirmPaid = (number1, number2, data) =>
+export const runScriptConfirmPaid = (number1, number2, number3, data) =>
   post2(
-    `${url.RUN_SCRIPT_CONFIRM_PAID_SCRIPT_ORDER}?numberOfConfirmAll=${number1}&numberOfNoConfirmAtAll=${number2}`,
+    `${url.RUN_SCRIPT_CONFIRM_PAID_SCRIPT_ORDER}?numberOfConfirmAll=${number1}&numberOfConfirmApart=${number2}&numberOfNoConfirmAtAll=${number3}`,
     data
   )
 

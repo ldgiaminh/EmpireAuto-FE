@@ -61,14 +61,23 @@ const OrderConfirmPaid = () => {
     initialValues: {
       number1: "",
       number2: "",
+      number3: "",
     },
     validationSchema: Yup.object().shape({
       number1: Yup.number().required("Chỉ nhập số"),
       number2: Yup.number().required("Chỉ nhập số"),
+      number3: Yup.number().required("Chỉ nhập số"),
     }),
     onSubmit: values => {
       const data = idList.map(il => il.result.id)
-      dispatch(onRunScriptConfirmPaid(values.number1, values.number2, data))
+      dispatch(
+        onRunScriptConfirmPaid(
+          values.number1,
+          values.number2,
+          values.number3,
+          data
+        )
+      )
       setIsSubmitting(false)
     },
   })
@@ -91,11 +100,11 @@ const OrderConfirmPaid = () => {
       <CardBody>
         <CardTitle className="mb-2">XÁC NHẬN & THANH TOÁN</CardTitle>
 
-        {!isLoadScript && orders.length === 0 && (
+        {/* {!isLoadScript && orders.length === 0 && (
           <em className="mt-3">
             Đang có {count.length} hóa đơn chờ thanh toán{" "}
           </em>
-        )}
+        )} */}
 
         <Form
           className="row gy-2 gx-3 mt-3"
@@ -141,7 +150,7 @@ const OrderConfirmPaid = () => {
               htmlFor="autoSizingInputGroup"
             ></Label>
             <InputGroup>
-              <div className="input-group-text">Không thanh toán</div>
+              <div className="input-group-text">Thanh toán một phần</div>
               <Input
                 type="number"
                 className="form-control"
@@ -166,6 +175,36 @@ const OrderConfirmPaid = () => {
             </InputGroup>
           </div>
           <div className="col-sm-4">
+            <Label
+              className="visually-hidden"
+              htmlFor="autoSizingInputGroup"
+            ></Label>
+            <InputGroup>
+              <div className="input-group-text">Không thanh toán</div>
+              <Input
+                type="number"
+                className="form-control"
+                id="autoSizingInputGroup"
+                name="number3"
+                onChange={validationType.handleChange}
+                onBlur={validationType.handleBlur}
+                value={validationType.values.number3 || ""}
+                invalid={
+                  validationType.touched.number3 &&
+                  validationType.errors.number3
+                    ? true
+                    : false
+                }
+              />
+              {validationType.touched.number3 &&
+              validationType.errors.number3 ? (
+                <FormFeedback type="invalid">
+                  {validationType.errors.number3}
+                </FormFeedback>
+              ) : null}
+            </InputGroup>
+          </div>
+          <div className="col-sm-4">
             <button
               disabled={isSubmitting}
               type="submit"
@@ -184,8 +223,9 @@ const OrderConfirmPaid = () => {
               <div className="text-center my-3">
                 <h5 className="text-primary">
                   <i className="bx bx-loader bx-spin me-2" />
-                  Đang thanh toán {validationType.values.number1} và không thanh
-                  toán {validationType.values.number2} hóa đơn
+                  Đang thanh toán tất cả {validationType.values.number1}, một
+                  phần {validationType.values.number2} và không thanh toán{" "}
+                  {validationType.values.number3} hóa đơn
                 </h5>
               </div>
             </Col>
@@ -215,9 +255,16 @@ const OrderConfirmPaid = () => {
                   {orders.map((o, index) => (
                     <tr key={index}>
                       <td className="font-size-14 text-center">{index + 1}</td>
-                      {o.statusCode === 200 ? (
+                      {o.statusCode === 200 &&
+                      o.result.orderServiceDetails.length ? (
                         <td className="font-size-14">
-                          Xác nhận & Thánh toán thành công #{o.result.code}
+                          Xác nhận & Thanh toán tất cả thành công #
+                          {o.result.code}
+                        </td>
+                      ) : o.statusCode === 200 &&
+                        !o.result.orderServiceDetails.length ? (
+                        <td className="font-size-14">
+                          Không thanh toán #{o.result.code}
                         </td>
                       ) : (
                         <td className="font-size-14">

@@ -152,11 +152,13 @@ function* onRunScriptCheckIns({ number1, number2, payload: { data } }) {
 
 /* DIAGNOSE */
 
-function* onRunScriptDiagnoses({ payload: { data } }) {
+function* onRunScriptDiagnoses({ number1, number2, payload: { data } }) {
   try {
-    const response = yield call(runScriptDiagnose, data)
+    const response = yield call(runScriptDiagnose, number1, number2, data)
     yield put(runScriptDiagnoseSuccess(response))
-    const countSuccess = response.filter(o => o.statusCode === 200).length
+    const countSuccess = response.filter(
+      o => o.statusCode === 200 && !o.result.carLog
+    ).length
     const countFail = response.filter(b => b.statusCode === 500).length
     if (countSuccess > 0) {
       toast.success("Chẩn đoán thành công " + countSuccess + " phương tiện")
@@ -176,9 +178,20 @@ function* onRunScriptDiagnoses({ payload: { data } }) {
 
 /* CONFIRM & PAID */
 
-function* onRunScriptConfirmPaids({ number1, number2, payload: { data } }) {
+function* onRunScriptConfirmPaids({
+  number1,
+  number2,
+  number3,
+  payload: { data },
+}) {
   try {
-    const response = yield call(runScriptConfirmPaid, number1, number2, data)
+    const response = yield call(
+      runScriptConfirmPaid,
+      number1,
+      number2,
+      number3,
+      data
+    )
     yield put(runScriptConfirmPaidSuccess(response))
     const countSuccess = response.filter(o => o.statusCode === 200).length
     const countFail = response.filter(b => b.statusCode === 500).length

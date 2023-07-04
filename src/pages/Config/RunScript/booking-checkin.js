@@ -87,18 +87,16 @@ const BookingCheckInScript = () => {
     setCountFail(failCount)
   }, [scriptCheckIn])
 
-  console.log(errorCheckIn)
-
   return (
     <React.Fragment>
       <CardBody>
         <CardTitle className="mb-2">CHECK-IN ĐẶT LỊCH</CardTitle>
 
-        {!isLoadScript && bookings.length === 0 && (
+        {/* {!isLoadScript && bookings.length === 0 && (
           <em className="mt-3">
             Đang có {countBooking.length} đặt lịch chờ check-in{" "}
           </em>
-        )}
+        )} */}
 
         <Form
           className="row gy-2 gx-3 mt-3"
@@ -225,7 +223,9 @@ const BookingCheckInScript = () => {
                           </td>
                         ) : (
                           <td className="font-size-14">
-                            <u>Hủy thành công với mã #{booking.result.code}</u>
+                            <ins>
+                              Hủy thành công với mã #{booking.result.code}
+                            </ins>
                           </td>
                         )
                       ) : (
