@@ -181,8 +181,12 @@ export const runScriptConfirmPaidFail = error => ({
 POST Script Done 
 ================================================
 */
-export const runScriptDone = data => ({
+export const runScriptDone = (number1, number2, number3, number4, data) => ({
   type: RUN_SCRIPT_DONE_ORDER,
+  number1,
+  number2,
+  number3,
+  number4,
   payload: data,
 })
 

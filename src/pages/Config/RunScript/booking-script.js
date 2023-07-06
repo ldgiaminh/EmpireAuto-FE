@@ -92,7 +92,7 @@ const BookingScript = () => {
             <InputGroup>
               <div className="input-group-text">Số đặt lịch</div>
               <Input
-                type="number"
+                type="text"
                 className="form-control"
                 id="autoSizingInputGroup"
                 name="number"

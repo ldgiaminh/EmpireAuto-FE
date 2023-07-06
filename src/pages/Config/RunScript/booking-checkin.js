@@ -114,7 +114,7 @@ const BookingCheckInScript = () => {
             <InputGroup>
               <div className="input-group-text">Thành công</div>
               <Input
-                type="number"
+                type="text"
                 className="form-control"
                 id="autoSizingInputGroup"
                 name="number1"
@@ -144,7 +144,7 @@ const BookingCheckInScript = () => {
             <InputGroup>
               <div className="input-group-text">Hủy</div>
               <Input
-                type="number"
+                type="text"
                 className="form-control"
                 id="autoSizingInputGroup"
                 name="number2"

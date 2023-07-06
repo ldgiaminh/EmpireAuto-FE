@@ -1,21 +1,39 @@
 import {
-    API_SUCCESS,
-    API_FAIL,
-    GET_CHARTS_DATA
-} from "./actionTypes";
+  API_SUCCESS,
+  API_FAIL,
+  GET_CHARTS_DATA,
+  SEARCH_ALL,
+  SEARCH_ALL_SUCCESS,
+  SEARCH_ALL_FAIL,
+} from "./actionTypes"
 
 export const apiSuccess = (actionType, data) => ({
-    type: API_SUCCESS,
-    payload: { actionType, data },
-});
+  type: API_SUCCESS,
+  payload: { actionType, data },
+})
 
 export const apiFail = (actionType, error) => ({
-    type: API_FAIL,
-    payload: { actionType, error },
-});
+  type: API_FAIL,
+  payload: { actionType, error },
+})
 
 // charts data
-export const getChartsData = (periodType) => ({
-    type: GET_CHARTS_DATA,
-    payload: periodType
-});
+export const getChartsData = periodType => ({
+  type: GET_CHARTS_DATA,
+  payload: periodType,
+})
+
+/* SEARCH ALL */
+export const onSearchAll = () => ({
+  type: SEARCH_ALL,
+})
+
+export const onSearchAllSuccess = users => ({
+  type: SEARCH_ALL_SUCCESS,
+  payload: users,
+})
+
+export const onSearchAllFail = error => ({
+  type: SEARCH_ALL_FAIL,
+  payload: error,
+})

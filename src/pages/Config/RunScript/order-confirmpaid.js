@@ -122,7 +122,7 @@ const OrderConfirmPaid = () => {
             <InputGroup>
               <div className="input-group-text">Thanh toán tất cả</div>
               <Input
-                type="number"
+                type="text"
                 className="form-control"
                 id="autoSizingInputGroup"
                 name="number1"
@@ -152,7 +152,7 @@ const OrderConfirmPaid = () => {
             <InputGroup>
               <div className="input-group-text">Thanh toán một phần</div>
               <Input
-                type="number"
+                type="text"
                 className="form-control"
                 id="autoSizingInputGroup"
                 name="number2"
@@ -182,7 +182,7 @@ const OrderConfirmPaid = () => {
             <InputGroup>
               <div className="input-group-text">Không thanh toán</div>
               <Input
-                type="number"
+                type="text"
                 className="form-control"
                 id="autoSizingInputGroup"
                 name="number3"
@@ -264,7 +264,7 @@ const OrderConfirmPaid = () => {
                       ) : o.statusCode === 200 &&
                         !o.result.orderServiceDetails.length ? (
                         <td className="font-size-14">
-                          Không thanh toán #{o.result.code}
+                          <u>Không thanh toán #{o.result.code}</u>
                         </td>
                       ) : (
                         <td className="font-size-14">

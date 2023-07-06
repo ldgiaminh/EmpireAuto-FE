@@ -76,7 +76,7 @@ const CustomerScript = () => {
             <InputGroup>
               <div className="input-group-text">Số khách hàng</div>
               <Input
-                type="number"
+                type="text"
                 className="form-control"
                 id="autoSizingInputGroup"
                 name="number"

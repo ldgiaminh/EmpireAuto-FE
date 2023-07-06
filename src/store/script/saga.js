@@ -215,9 +215,22 @@ function* onRunScriptConfirmPaids({
 
 /* DONE */
 
-function* onRunScriptDones({ payload: data }) {
+function* onRunScriptDones({
+  number1,
+  number2,
+  number3,
+  number4,
+  payload: data,
+}) {
   try {
-    const response = yield call(runScriptDone, data)
+    const response = yield call(
+      runScriptDone,
+      number1,
+      number2,
+      number3,
+      number4,
+      data
+    )
     yield put(runScriptDoneSuccess(response))
     const countSuccess = response.filter(o => o.statusCode === 200).length
     const countFail = response.filter(b => b.statusCode === 500).length

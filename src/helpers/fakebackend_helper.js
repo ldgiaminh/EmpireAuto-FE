@@ -98,6 +98,15 @@ const postJwtLogin = data => post(url.POST_FAKE_JWT_LOGIN, data)
 
 /*
 ================================================
+SEARCH
+================================================
+*/
+
+export const onSearchAll = string =>
+  get(`${url.SEARCH_ALL}?searchString=${string}`)
+
+/*
+================================================
 BOOKING
 ================================================
 */
@@ -397,8 +406,11 @@ export const runScriptConfirmPaid = (number1, number2, number3, data) =>
   )
 
 //Done
-export const runScriptDone = data =>
-  post2(url.RUN_SCRIPT_DONE_SCRIPT_ORDER, data)
+export const runScriptDone = (number1, number2, number3, number4, data) =>
+  post2(
+    `${url.RUN_SCRIPT_DONE_SCRIPT_ORDER}?numberOfDoneAllNoMaintenance=${number1}&numberOfDoneAllHaveMaintenance=${number2}&numberOfDoneApartHaveMaintenance=${number3}&numberOfNothingDoneHaveMaintenance=${number4}`,
+    data
+  )
 
 //Check-out
 export const runScriptCheckOut = data =>

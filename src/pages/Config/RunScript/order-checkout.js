@@ -89,12 +89,12 @@ const OrderCheckOut = () => {
       <CardBody>
         <CardTitle className="mb-2">CHECK-OUT PHƯƠNG TIỆN</CardTitle>
 
-        {!isLoadScript && orders.length === 0 && (
+        {/* {!isLoadScript && orders.length === 0 && (
           <em className="mt-3">
             Đang có {countDone.length + countConfirmPaid.length} phương tiện
             nhận xe{" "}
           </em>
-        )}
+        )} */}
 
         <div className="row gy-2 gx-3 mt-3">
           <div className="col-sm-5">
@@ -118,9 +118,7 @@ const OrderCheckOut = () => {
               <div className="text-center my-3">
                 <h5 className="text-primary">
                   <i className="bx bx-loader bx-spin me-2" />
-                  Đang check-out {countDone.length +
-                    countConfirmPaid.length}{" "}
-                  phương tiện
+                  Đang check-out phương tiện
                 </h5>
               </div>
             </Col>
