@@ -124,7 +124,7 @@ const Stepper = ({ logs }) => {
         <div
           className={
             (logs.done && logs.done.logDateTime !== null) ||
-            logs.checkout.logDateTime !== null
+            (logs.checkout && logs.checkout.logDateTime !== null)
               ? "md-step active"
               : "md-step"
           }
