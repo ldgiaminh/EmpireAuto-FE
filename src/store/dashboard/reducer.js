@@ -47,8 +47,8 @@ const Dashboard = (state = INIT_STATE, action) => {
     case SEARCH_ALL_SUCCESS:
       return {
         ...state,
-        searchResults: false,
-        users: action.payload,
+        isLoadSearch: false,
+        searchResults: action.payload,
       }
 
     case SEARCH_ALL_FAIL:

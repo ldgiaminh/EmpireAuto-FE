@@ -62,11 +62,15 @@ import ConfigScriptGarage from "pages/Config"
 //History
 import OrderServiceHistory from "pages/History/OrderServices"
 import BookingHistory from "pages/History/Booking"
+import Search from "pages/Search"
 
 //Config Garage
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
+
+  //search
+  { path: "/search/:string", component: Search },
 
   //booking
   { path: "/bookings", component: Booking },

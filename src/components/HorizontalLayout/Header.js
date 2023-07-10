@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import PropTypes from "prop-types"
 
 import { connect } from "react-redux"
@@ -31,6 +31,8 @@ import dribbble from "../../assets/images/brands/dribbble.png"
 import dropbox from "../../assets/images/brands/dropbox.png"
 import mail_chimp from "../../assets/images/brands/mail_chimp.png"
 import slack from "../../assets/images/brands/slack.png"
+
+import { withRouter } from "react-router-dom"
 
 //i18n
 import { withTranslation } from "react-i18next"
@@ -78,6 +80,18 @@ const Header = props => {
       setRole(obj.role)
     }
   })
+
+  const searchInput = useRef(null)
+
+  const handleSearch = e => {
+    e.preventDefault() // Prevent form submission from refreshing the page
+    const searchString = searchInput.current.value.trim() // Get the search input value
+
+    if (searchString) {
+      props.history.push(`/search/${searchString}`) // Redirect to the search URL with the value
+    }
+  }
+
   return (
     <React.Fragment>
       <header id="page-topbar">
@@ -115,7 +129,22 @@ const Header = props => {
               <i className="fa fa-fw fa-bars" />
             </button>
 
-            <SearchAll />
+            <form
+              className="app-search d-none d-lg-block"
+              onSubmit={handleSearch}
+            >
+              <div className="position-relative">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Search..."
+                  ref={searchInput}
+                />
+                <span className="bx bx-search-alt" />
+              </div>
+            </form>
+
+            {/* <SearchAll /> */}
 
             {/* <Dropdown
               className="dropdown-mega d-none d-lg-block ms-2"
@@ -262,43 +291,6 @@ const Header = props => {
           </div>
 
           <div className="d-flex">
-            {/* <div className="dropdown d-inline-block d-lg-none ms-2">
-              <button
-                type="button"
-                className="btn header-item noti-icon "
-                id="page-header-search-dropdown"
-                onClick={() => setSearch(!isSearch)}
-              >
-                <i className="mdi mdi-magnify" />
-              </button>
-              <div
-                className={
-                  isSearch
-                    ? "dropdown-menu dropdown-menu-lg dropdown-menu-end p-0 show"
-                    : "dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
-                }
-                aria-labelledby="page-header-search-dropdown"
-              >
-                <form className="p-3">
-                  <div className="form-group m-0">
-                    <div className="input-group">
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder={props.t("Search") + "..."}
-                        aria-label="Recipient's username"
-                      />
-                      <div className="input-group-append">
-                        <button className="btn btn-primary" type="submit">
-                          <i className="mdi mdi-magnify" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </div> */}
-
             {/* <LanguageDropdown /> */}
 
             {/* <Dropdown
@@ -376,6 +368,43 @@ const Header = props => {
 
             {role === "RE" && <LiveClock />}
 
+            <div className="dropdown d-inline-block d-lg-none">
+              <button
+                type="button"
+                className="btn header-item noti-icon font-size-10"
+                id="page-header-search-dropdown"
+                onClick={() => setSearch(!isSearch)}
+              >
+                <i className="bx bx-search-alt" />
+              </button>
+              <div
+                className={
+                  isSearch
+                    ? "dropdown-menu dropdown-menu-lg dropdown-menu-end p-0 show"
+                    : "dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
+                }
+                aria-labelledby="page-header-search-dropdown"
+              >
+                <form className="p-3">
+                  <div className="form-group m-0">
+                    <div className="input-group">
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder={props.t("Search") + "..."}
+                        aria-label="Recipient's username"
+                      />
+                      <div className="input-group-append">
+                        <button className="btn btn-primary" type="submit">
+                          <i className="mdi mdi-magnify" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+
             {role === "RE" && <QrCode />}
 
             {role === "RE" && <NotificationDropdown />}
@@ -406,6 +435,7 @@ Header.propTypes = {
   showRightSidebarAction: PropTypes.func,
   t: PropTypes.any,
   toggleLeftmenu: PropTypes.func,
+  history: PropTypes.any,
 }
 
 const mapStatetoProps = state => {
@@ -416,4 +446,4 @@ const mapStatetoProps = state => {
 export default connect(mapStatetoProps, {
   showRightSidebarAction,
   toggleLeftmenu,
-})(withTranslation()(Header))
+})(withTranslation()(withRouter(Header)))

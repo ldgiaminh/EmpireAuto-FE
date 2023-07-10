@@ -24,13 +24,14 @@ export const getChartsData = periodType => ({
 })
 
 /* SEARCH ALL */
-export const onSearchAll = () => ({
+export const onSearchAll = string => ({
   type: SEARCH_ALL,
+  string,
 })
 
-export const onSearchAllSuccess = users => ({
+export const onSearchAllSuccess = searchResult => ({
   type: SEARCH_ALL_SUCCESS,
-  payload: users,
+  payload: searchResult,
 })
 
 export const onSearchAllFail = error => ({
