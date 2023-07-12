@@ -163,6 +163,17 @@ const OrderServiceDetail = props => {
     return formatted
   }
 
+  const formattedDate = date => {
+    const createDate = new Date(date)
+    const formattedDate = createDate.toLocaleDateString("vi-VN", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    })
+    const formatted = `${formattedDate}`
+    return formatted
+  }
+
   /*
   ==================================================
   RE-ASSIGN TO EXPERTS
@@ -476,6 +487,16 @@ const OrderServiceDetail = props => {
                               </DropdownMenu>
                             </Dropdown>
                           </div>
+                        ) : orderServicesDetail.status === 6 ? (
+                          <>
+                            <p className="fw-semibold">
+                              <strong>Bảo trì: </strong>
+                              {formattedDate(
+                                orderServicesDetail.maintenanceSchedule
+                                  .maintenanceDate
+                              )}
+                            </p>
+                          </>
                         ) : (
                           " "
                         )}

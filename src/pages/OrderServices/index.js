@@ -296,9 +296,6 @@ const OrderServicesList = props => {
     { id: "2", title: "Thanh toán", count: countService.DIAGNOSED },
     { id: "3", title: "Thực hiện", count: countService.CONFIRMED_AND_PAID },
     { id: "4", title: "Nhận xe", count: countService.DONE },
-    { id: "5", title: "Hoàn thành", count: countService.CHECKOUT },
-    { id: "6", title: "Bảo trì", count: countService.MAINTENANCE },
-    { id: "-1", title: "Đã Hủy", count: countService.CANCELLED },
   ]
 
   return (
@@ -319,7 +316,7 @@ const OrderServicesList = props => {
                       {statusServices.map(tab => (
                         <NavItem key={tab.id}>
                           <NavLink
-                            className={classnames("count-order", {
+                            className={classnames({
                               active: activeTab === tab.id,
                             })}
                             onClick={() => {

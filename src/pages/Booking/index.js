@@ -123,10 +123,10 @@ const BookingList = props => {
 
   //Father Tabs
   const toggleTab = index => {
+    const activeDate = weekDays[activeTab].date
     if (activeTab !== index) {
       setActiveTab(index)
       setSubActiveTab(0)
-      const activeDate = weekDays[activeTab].date
       dispatch(onGetBookingByDate(activeDate, props.history))
     }
   }

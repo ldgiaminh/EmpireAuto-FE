@@ -27,9 +27,10 @@ const DateCell = cell => {
   if (!cell.value) {
     return ""
   }
-  const formattedDateTime = formatDate(cell.value, "DD/MM/YYYY H:mm:ss")
-  const formattedTime = formattedDateTime.split(" - ")[1] // get the formatted time from the formatted date and time
-  return `${formattedDateTime.split(" ")[0]} ${formattedTime}` // return the formatted date and time in the desired format
+  //const formattedDateTime = formatDate(cell.value, "DD/MM/YYYY H:mm:ss")
+  const formattedDateTime = formatDate(cell.value, "DD/MM/YYYY")
+  //const formattedTime = formattedDateTime.split(" - ")[1] // get the formatted time from the formatted date and time
+  return `${formattedDateTime.split(" ")[0]}` // return the formatted date and time in the desired format
 }
 
 const ModalCar = cell => {
