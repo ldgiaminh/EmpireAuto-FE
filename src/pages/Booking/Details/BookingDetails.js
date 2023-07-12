@@ -30,7 +30,11 @@ import PreloadDetail from "../../../components/Loader/PreloadDetail"
 
 const BookingDetails = props => {
   //meta title
-  document.title = "Chi Tiết Đặt Lịch | Empire Garage"
+  useEffect(() => {
+    if (bookingDetail) {
+      document.title = `#${bookingDetail.code} | Empire Garage`
+    }
+  })
 
   const dispatch = useDispatch()
 

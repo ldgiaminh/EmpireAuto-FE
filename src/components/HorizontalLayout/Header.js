@@ -36,8 +36,8 @@ import { withRouter } from "react-router-dom"
 
 //i18n
 import { withTranslation } from "react-i18next"
+
 import QrCode from "components/CommonForBoth/QrCode"
-import SearchAll from "components/CommonForBoth/SearchAll"
 import LiveClock from "components/CommonForBoth/LiveClock"
 
 const Header = props => {
@@ -82,10 +82,20 @@ const Header = props => {
   })
 
   const searchInput = useRef(null)
+  const searchInputMobile = useRef(null)
 
   const handleSearch = e => {
     e.preventDefault() // Prevent form submission from refreshing the page
     const searchString = searchInput.current.value.trim() // Get the search input value
+
+    if (searchString) {
+      props.history.push(`/search/${searchString}`) // Redirect to the search URL with the value
+    }
+  }
+
+  const handleSearchMobile = e => {
+    e.preventDefault() // Prevent form submission from refreshing the page
+    const searchString = searchInputMobile.current.value.trim() // Get the search input value
 
     if (searchString) {
       props.history.push(`/search/${searchString}`) // Redirect to the search URL with the value
@@ -137,7 +147,7 @@ const Header = props => {
                 <input
                   type="text"
                   className="form-control"
-                  placeholder="Search..."
+                  placeholder="Tìm kiếm..."
                   ref={searchInput}
                 />
                 <span className="bx bx-search-alt" />
@@ -385,14 +395,14 @@ const Header = props => {
                 }
                 aria-labelledby="page-header-search-dropdown"
               >
-                <form className="p-3">
+                <form className="p-3" onSubmit={handleSearchMobile}>
                   <div className="form-group m-0">
                     <div className="input-group">
                       <input
                         type="text"
                         className="form-control"
-                        placeholder={props.t("Search") + "..."}
-                        aria-label="Recipient's username"
+                        placeholder={props.t("Tìm kiếm") + "..."}
+                        ref={searchInputMobile}
                       />
                       <div className="input-group-append">
                         <button className="btn btn-primary" type="submit">

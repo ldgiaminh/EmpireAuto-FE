@@ -37,12 +37,12 @@ const Layout = props => {
   /*
   document title
   */
-  useEffect(() => {
-    const title = props.location.pathname
-    let currentage = title.charAt(1).toUpperCase() + title.slice(2)
+  // useEffect(() => {
+  //   const title = props.location.pathname
+  //   let currentage = title.charAt(1).toUpperCase() + title.slice(2)
 
-    document.title = currentage + " | Skote - React Admin & Dashboard Template"
-  }, [props.location.pathname])
+  //   document.title = currentage + " | Empire Garage"
+  // }, [props.location.pathname])
 
   useEffect(() => {
     window.scrollTo(0, 0)

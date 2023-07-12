@@ -319,7 +319,7 @@ const OrderServicesList = props => {
                       {statusServices.map(tab => (
                         <NavItem key={tab.id}>
                           <NavLink
-                            className={classnames({
+                            className={classnames("count-order", {
                               active: activeTab === tab.id,
                             })}
                             onClick={() => {
