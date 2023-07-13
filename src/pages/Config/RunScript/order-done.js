@@ -22,9 +22,10 @@ import { runScriptDone as onRunScriptDone } from "store/actions"
 const OrderDone = () => {
   const dispatch = useDispatch()
 
-  const { scriptDone, isLoadScript } = useSelector(state => ({
+  const { scriptDone, isLoadScript, errorDone } = useSelector(state => ({
     scriptDone: state.scripts.scriptDone,
     isLoadScript: state.scripts.isLoadScript,
+    errorDone: state.scripts.errorDone,
   }))
 
   const [orders, setOrders] = useState([])
@@ -80,8 +81,7 @@ const OrderDone = () => {
           values.number1,
           values.number2,
           values.number3,
-          values.number4,
-          data
+          values.number4
         )
       )
       // setIsSubmitting(false)
@@ -272,6 +272,17 @@ const OrderDone = () => {
               <strong>
                 Có {countSuccess} thành công và {countFail} thất bại
               </strong>
+            )}
+            {errorDone !== null && orders.length === 0 ? (
+              <Row>
+                <div className="text-center mt-3">
+                  <strong className="mt-3 text-danger font-size-14">
+                    {errorDone}
+                  </strong>
+                </div>
+              </Row>
+            ) : (
+              ""
             )}
             <div className="table-responsive mt-3">
               <Table className="table-nowrap table-borderless">

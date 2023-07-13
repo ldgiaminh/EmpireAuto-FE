@@ -182,7 +182,7 @@ const scripts = (state = INIT_STATE, action) => {
       return {
         ...state,
         isLoadScript: false,
-        error: action.payload,
+        errorDiagnose: action.payload,
       }
 
     /* CONFIRM - PAID */
@@ -224,7 +224,7 @@ const scripts = (state = INIT_STATE, action) => {
       return {
         ...state,
         isLoadScript: false,
-        error: action.payload,
+        errorDone: action.payload,
       }
 
     /* CHECK-OUT */

@@ -71,12 +71,7 @@ const OrderConfirmPaid = () => {
     onSubmit: values => {
       const data = idList.map(il => il.result.id)
       dispatch(
-        onRunScriptConfirmPaid(
-          values.number1,
-          values.number2,
-          values.number3,
-          data
-        )
+        onRunScriptConfirmPaid(values.number1, values.number2, values.number3)
       )
       setIsSubmitting(false)
     },

@@ -135,7 +135,7 @@ const Cart = ({ details, services }) => {
                       Ghi chú từ kỹ thuật viên
                     </CardTitle>
 
-                    {details.maintenanceSchedule !== null ? (
+                    {/* {details.maintenanceSchedule !== null ? (
                       <>
                         <p className="fw-semibold">
                           <strong>Bảo trì: </strong>
@@ -146,7 +146,7 @@ const Cart = ({ details, services }) => {
                       </>
                     ) : (
                       ""
-                    )}
+                    )} */}
                   </div>
                   <Table className="table align-middle mb-0 table-nowrap">
                     <thead className="table-light">

@@ -22,10 +22,13 @@ import { runScriptDiagnose as onRunScriptDiagnose } from "store/actions"
 const OrderDiagnose = () => {
   const dispatch = useDispatch()
 
-  const { scriptDiagnose, isLoadScript } = useSelector(state => ({
-    scriptDiagnose: state.scripts.scriptDiagnose,
-    isLoadScript: state.scripts.isLoadScript,
-  }))
+  const { scriptDiagnose, isLoadScript, errorDiagnose } = useSelector(
+    state => ({
+      scriptDiagnose: state.scripts.scriptDiagnose,
+      isLoadScript: state.scripts.isLoadScript,
+      errorDiagnose: state.scripts.errorDiagnose,
+    })
+  )
 
   const [orders, setOrders] = useState([])
 
@@ -69,7 +72,7 @@ const OrderDiagnose = () => {
     }),
     onSubmit: values => {
       const data = idList.map(il => il.result.id)
-      dispatch(onRunScriptDiagnose(values.number1, values.number2, data))
+      dispatch(onRunScriptDiagnose(values.number1, values.number2))
       // setIsSubmitting(false)
     },
   })
@@ -196,6 +199,17 @@ const OrderDiagnose = () => {
               <strong>
                 Có {countSuccess} thành công và {countFail} thất bại
               </strong>
+            )}
+            {errorDiagnose !== null && orders.length === 0 ? (
+              <Row>
+                <div className="text-center mt-3">
+                  <strong className="mt-3 text-danger font-size-14">
+                    {errorDiagnose}
+                  </strong>
+                </div>
+              </Row>
+            ) : (
+              ""
             )}
             <div className="table-responsive mt-3">
               <Table className="table-nowrap table-borderless">

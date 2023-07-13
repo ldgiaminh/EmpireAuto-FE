@@ -82,9 +82,9 @@ function* onRunScriptRemoveCustomers({ data }) {
 
 /* BOOKING */
 
-function* onRunScriptBookings({ number, payload: { data } }) {
+function* onRunScriptBookings({ number1, number2 }) {
   try {
-    const response = yield call(runScriptBookings, number, data)
+    const response = yield call(runScriptBookings, number1, number2)
     yield put(runScriptBookingSuccess(response))
     const countSuccess = response.filter(b => b.statusCode === 201).length
     const countFail = response.filter(b => b.statusCode === 500).length
@@ -120,9 +120,9 @@ function* onRemoveRunScriptBookings({ payload: numberId }) {
 
 /* CHECK-IN */
 
-function* onRunScriptCheckIns({ number1, number2, payload: { data } }) {
+function* onRunScriptCheckIns({ number1, number2 }) {
   try {
-    const response = yield call(runScriptCheckIn, number1, number2, data)
+    const response = yield call(runScriptCheckIn, number1, number2)
     yield put(runScriptCheckInSuccess(response))
 
     const countSuccess = response.filter(
@@ -152,9 +152,9 @@ function* onRunScriptCheckIns({ number1, number2, payload: { data } }) {
 
 /* DIAGNOSE */
 
-function* onRunScriptDiagnoses({ number1, number2, payload: { data } }) {
+function* onRunScriptDiagnoses({ number1, number2 }) {
   try {
-    const response = yield call(runScriptDiagnose, number1, number2, data)
+    const response = yield call(runScriptDiagnose, number1, number2)
     yield put(runScriptDiagnoseSuccess(response))
     const countSuccess = response.filter(
       o => o.statusCode === 200 && !o.result.carLog
@@ -172,26 +172,15 @@ function* onRunScriptDiagnoses({ number1, number2, payload: { data } }) {
     }, 6 * 60 * 60 * 1000)
   } catch (error) {
     toast.error("Đã có lỗi xảy ra")
-    yield put(runScriptDiagnoseFail(error))
+    yield put(runScriptDiagnoseFail(error.response.data))
   }
 }
 
 /* CONFIRM & PAID */
 
-function* onRunScriptConfirmPaids({
-  number1,
-  number2,
-  number3,
-  payload: { data },
-}) {
+function* onRunScriptConfirmPaids({ number1, number2, number3 }) {
   try {
-    const response = yield call(
-      runScriptConfirmPaid,
-      number1,
-      number2,
-      number3,
-      data
-    )
+    const response = yield call(runScriptConfirmPaid, number1, number2, number3)
     yield put(runScriptConfirmPaidSuccess(response))
     const countSuccess = response.filter(o => o.statusCode === 200).length
     const countFail = response.filter(b => b.statusCode === 500).length
@@ -215,21 +204,14 @@ function* onRunScriptConfirmPaids({
 
 /* DONE */
 
-function* onRunScriptDones({
-  number1,
-  number2,
-  number3,
-  number4,
-  payload: data,
-}) {
+function* onRunScriptDones({ number1, number2, number3, number4 }) {
   try {
     const response = yield call(
       runScriptDone,
       number1,
       number2,
       number3,
-      number4,
-      data
+      number4
     )
     yield put(runScriptDoneSuccess(response))
     const countSuccess = response.filter(o => o.statusCode === 200).length
@@ -246,7 +228,7 @@ function* onRunScriptDones({
     }, 6 * 60 * 60 * 1000)
   } catch (error) {
     toast.error("Đã có lỗi xảy ra")
-    yield put(runScriptDoneFail(error))
+    yield put(runScriptDoneFail(error.response.data))
   }
 }
 

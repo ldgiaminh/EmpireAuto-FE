@@ -48,14 +48,16 @@ const BookingScript = () => {
     enableReinitialize: true,
 
     initialValues: {
-      number: "",
+      number1: "",
+      number2: "",
     },
     validationSchema: Yup.object().shape({
-      number: Yup.number().required("Chỉ nhập số"),
+      number1: Yup.number().required("Chỉ nhập số"),
+      number2: Yup.number().required("Chỉ nhập số"),
     }),
     onSubmit: values => {
       const data = idList.map(il => il.result.id)
-      dispatch(onRunScriptBooking(values.number, data))
+      dispatch(onRunScriptBooking(values.number1, values.number2))
       setIsSubmitting(false)
     },
   })
@@ -71,6 +73,18 @@ const BookingScript = () => {
     setCountFail(failCount)
   }, [scriptBooking])
 
+  //Format Date
+  const formattedDate = date => {
+    const createDate = new Date(date)
+    const formattedDate = createDate.toLocaleDateString("vi-VN", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    })
+    const formatted = `${formattedDate}`
+    return formatted
+  }
+
   return (
     <React.Fragment>
       <CardBody>
@@ -84,35 +98,67 @@ const BookingScript = () => {
             return false
           }}
         >
-          <div className="col-sm-5">
+          <div className="col-sm-4">
             <Label
               className="visually-hidden"
               htmlFor="autoSizingInputGroup"
             ></Label>
             <InputGroup>
-              <div className="input-group-text">Số đặt lịch</div>
+              <div className="input-group-text">Tổng đặt lịch</div>
               <Input
                 type="text"
                 className="form-control"
                 id="autoSizingInputGroup"
-                name="number"
+                name="number1"
                 onChange={validationType.handleChange}
                 onBlur={validationType.handleBlur}
-                value={validationType.values.number || ""}
+                value={validationType.values.number1 || ""}
                 invalid={
-                  validationType.touched.number && validationType.errors.number
+                  validationType.touched.number1 &&
+                  validationType.errors.number1
                     ? true
                     : false
                 }
               />
-              {validationType.touched.number && validationType.errors.number ? (
+              {validationType.touched.number1 &&
+              validationType.errors.number1 ? (
                 <FormFeedback type="invalid">
-                  {validationType.errors.number}
+                  {validationType.errors.number1}
                 </FormFeedback>
               ) : null}
             </InputGroup>
           </div>
-          <div className="col-sm-5">
+          <div className="col-sm-4">
+            <Label
+              className="visually-hidden"
+              htmlFor="autoSizingInputGroup"
+            ></Label>
+            <InputGroup>
+              <div className="input-group-text">Đặt lịch hôm nay</div>
+              <Input
+                type="text"
+                className="form-control"
+                id="autoSizingInputGroup"
+                name="number2"
+                onChange={validationType.handleChange}
+                onBlur={validationType.handleBlur}
+                value={validationType.values.number2 || ""}
+                invalid={
+                  validationType.touched.number2 &&
+                  validationType.errors.number2
+                    ? true
+                    : false
+                }
+              />
+              {validationType.touched.number2 &&
+              validationType.errors.number2 ? (
+                <FormFeedback type="invalid">
+                  {validationType.errors.number2}
+                </FormFeedback>
+              ) : null}
+            </InputGroup>
+          </div>
+          <div className="col-sm-4">
             <button
               disabled={isSubmitting}
               type="submit"
@@ -130,7 +176,8 @@ const BookingScript = () => {
               <div className="text-center my-3">
                 <h5 className="text-primary">
                   <i className="bx bx-loader bx-spin me-2" />
-                  Đang khởi tạo {validationType.values.number} đặt lịch
+                  Đang tạo {validationType.values.number1} đặt lịch và{" "}
+                  {validationType.values.number2} đặt lịch hôm nay
                 </h5>
               </div>
             </Col>
@@ -152,7 +199,8 @@ const BookingScript = () => {
                       <td className="font-size-14 text-center">{index + 1}</td>
                       {booking.statusCode === 201 ? (
                         <td className="font-size-14">
-                          Đặt lịch thành công với mã #{booking.result.code}
+                          Đặt lịch thành công với mã #{booking.result.code} -{" "}
+                          {formattedDate(booking.result.date)}
                         </td>
                       ) : (
                         <td className="font-size-14">

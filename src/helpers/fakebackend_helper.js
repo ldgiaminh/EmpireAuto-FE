@@ -377,44 +377,42 @@ export const runRemoveScriptCustomers = data =>
   del2(url.RUN_REMOVE_SCRIPT_CUSTOMER, data)
 
 //Booking
-export const runScriptBookings = (number, data) =>
-  post2(`${url.RUN_SCRIPT_BOOKING}?numberOfBooking=${number}`, data)
+export const runScriptBookings = (number1, number2) =>
+  post(
+    `${url.RUN_SCRIPT_BOOKING}?numberOfBooking=${number1}&numberOfBookingToday=${number2}`
+  )
 
 //Remove booking
 export const runRemoveScriptBookings = numberId =>
   del(url.RUN_REMOVE_SCRIPT_BOOKING, { headers: { numberId } })
 
 //Check-in
-export const runScriptCheckIn = (number1, number2, data) =>
-  post2(
-    `${url.RUN_SCRIPT_CHECKIN_BOOKING}?numberOfCheckin=${number1}&numberOfCancel=${number2}`,
-    data
+export const runScriptCheckIn = (number1, number2) =>
+  post(
+    `${url.RUN_SCRIPT_CHECKIN_BOOKING}?numberOfCheckin=${number1}&numberOfCancel=${number2}`
   )
 
 //Diagnose
-export const runScriptDiagnose = (number1, number2, data) =>
-  post2(
-    `${url.RUN_SCRIPT_DIAGNOSE_ORDER}?numberOfDiagnose=${number1}&numberOfCheckout=${number2}`,
-    data
+export const runScriptDiagnose = (number1, number2) =>
+  post(
+    `${url.RUN_SCRIPT_DIAGNOSE_ORDER}?numberOfDiagnose=${number1}&numberOfCheckout=${number2}`
   )
 
 //Confirm & Paid
-export const runScriptConfirmPaid = (number1, number2, number3, data) =>
-  post2(
-    `${url.RUN_SCRIPT_CONFIRM_PAID_SCRIPT_ORDER}?numberOfConfirmAll=${number1}&numberOfConfirmApart=${number2}&numberOfNoConfirmAtAll=${number3}`,
-    data
+export const runScriptConfirmPaid = (number1, number2, number3) =>
+  post(
+    `${url.RUN_SCRIPT_CONFIRM_PAID_SCRIPT_ORDER}?numberOfConfirmAll=${number1}&numberOfConfirmApart=${number2}&numberOfNoConfirmAtAll=${number3}`
   )
 
 //Done
-export const runScriptDone = (number1, number2, number3, number4, data) =>
-  post2(
-    `${url.RUN_SCRIPT_DONE_SCRIPT_ORDER}?numberOfDoneAllNoMaintenance=${number1}&numberOfDoneAllHaveMaintenance=${number2}&numberOfDoneApartHaveMaintenance=${number3}&numberOfNothingDoneHaveMaintenance=${number4}`,
-    data
+export const runScriptDone = (number1, number2, number3, number4) =>
+  post(
+    `${url.RUN_SCRIPT_DONE_SCRIPT_ORDER}?numberOfDoneAllNoMaintenance=${number1}&numberOfDoneAllHaveMaintenance=${number2}&numberOfDoneApartHaveMaintenance=${number3}&numberOfNothingDoneHaveMaintenance=${number4}`
   )
 
 //Check-out
-export const runScriptCheckOut = data =>
-  post2(url.RUN_SCRIPT_CHECKOUT_SCRIPT_ORDER, data)
+export const runScriptCheckOut = () =>
+  post(url.RUN_SCRIPT_CHECKOUT_SCRIPT_ORDER)
 
 /*
 ================================================

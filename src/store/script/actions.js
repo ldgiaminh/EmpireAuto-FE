@@ -73,10 +73,10 @@ export const runScriptRemoveCustomerFail = error => ({
 POST Script Booking 
 ================================================
 */
-export const runScriptBooking = (number, data) => ({
+export const runScriptBooking = (number1, number2) => ({
   type: RUN_SCRIPT_BOOKING,
-  number,
-  payload: { data },
+  number1,
+  number2,
 })
 
 export const runScriptBookingSuccess = scriptBooking => ({
@@ -114,11 +114,10 @@ export const runRemoveScriptBookingFail = error => ({
 POST Script CheckIn 
 ================================================
 */
-export const runScriptCheckIn = (number1, number2, data) => ({
+export const runScriptCheckIn = (number1, number2) => ({
   type: RUN_SCRIPT_CHECKIN,
   number1,
   number2,
-  payload: { data },
 })
 
 export const runScriptCheckInSuccess = scriptCheckIn => ({
@@ -136,11 +135,10 @@ export const runScriptCheckInFail = error => ({
 POST Script Diagnose 
 ================================================
 */
-export const runScriptDiagnose = (number1, number2, data) => ({
+export const runScriptDiagnose = (number1, number2) => ({
   type: RUN_SCRIPT_DIAGNOSE_ORDER,
   number1,
   number2,
-  payload: { data },
 })
 
 export const runScriptDiagnoseSuccess = scriptDiagnose => ({
@@ -158,12 +156,11 @@ export const runScriptDiagnoseFail = error => ({
 POST Script Confirm Paid 
 ================================================
 */
-export const runScriptConfirmPaid = (number1, number2, number3, data) => ({
+export const runScriptConfirmPaid = (number1, number2, number3) => ({
   type: RUN_SCRIPT_CONFIRM_PAID_ORDER,
   number1,
   number2,
   number3,
-  payload: { data },
 })
 
 export const runScriptConfirmPaidSuccess = scriptConfirmPaid => ({
@@ -181,13 +178,12 @@ export const runScriptConfirmPaidFail = error => ({
 POST Script Done 
 ================================================
 */
-export const runScriptDone = (number1, number2, number3, number4, data) => ({
+export const runScriptDone = (number1, number2, number3, number4) => ({
   type: RUN_SCRIPT_DONE_ORDER,
   number1,
   number2,
   number3,
   number4,
-  payload: data,
 })
 
 export const runScriptDoneSuccess = scriptDone => ({

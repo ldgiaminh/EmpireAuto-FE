@@ -47,10 +47,14 @@ import { withTranslation } from "react-i18next"
 import { useSelector, useDispatch } from "react-redux"
 
 const Dashboard = props => {
-  const { bookingSlot, carInGarage, isLoad } = useSelector(state => ({
+  //meta title
+  document.title = "Trang chủ | Empire Garage"
+
+  const { bookingSlot, carInGarage, isLoad, isShow } = useSelector(state => ({
     bookingSlot: state.systems.bookingSlot,
     carInGarage: state.systems.carInGarage,
     isLoad: state.systems.isLoad,
+    isShow: state.Layout.isShow,
   }))
 
   const reports = [
@@ -81,8 +85,21 @@ const Dashboard = props => {
     dispatch(onGetCarInGarage())
   }, [dispatch])
 
-  //meta title
-  document.title = "Trang chủ | Empire Garage"
+  /* Call api when get Notifications */
+
+  useEffect(() => {
+    if (isShow) {
+      dispatch(onGetBookingSlot())
+      return
+    }
+  }, [dispatch, isShow])
+
+  useEffect(() => {
+    if (isShow) {
+      dispatch(onGetCarInGarage())
+      return
+    }
+  }, [dispatch, isShow])
 
   return (
     <React.Fragment>

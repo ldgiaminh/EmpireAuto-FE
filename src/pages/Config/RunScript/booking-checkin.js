@@ -68,7 +68,7 @@ const BookingCheckInScript = () => {
     }),
     onSubmit: values => {
       const data = idList.map(il => il.result.id)
-      dispatch(onRunScriptCheckIn(values.number1, values.number2, data))
+      dispatch(onRunScriptCheckIn(values.number1, values.number2))
       setIsSubmitting(false)
     },
   })
@@ -76,12 +76,15 @@ const BookingCheckInScript = () => {
   useEffect(() => {
     setBookings(scriptCheckIn)
 
-    const successCount = scriptCheckIn.filter(
-      o => o.result.isArrived && o.result.isActived
-    ).length
-    const failCount = scriptCheckIn.filter(
-      o => !o.result.isArrived && !o.result.isActived
-    ).length
+    // const successCount = scriptCheckIn.filter(
+    //   o => o.result.isArrived && o.result.isActived
+    // ).length
+    // const failCount = scriptCheckIn.filter(
+    //   o => !o.result.isArrived && !o.result.isActived
+    // ).length
+
+    const successCount = scriptCheckIn.filter(o => o.statusCode === 200).length
+    const failCount = scriptCheckIn.filter(o => o.statusCode === 500).length
 
     setCountSuccess(successCount)
     setCountFail(failCount)
@@ -195,7 +198,7 @@ const BookingCheckInScript = () => {
           <>
             {bookings.length > 0 && (
               <strong>
-                Có {countSuccess} thành công và {countFail} hủy
+                Có {countSuccess} thành công và {countFail} thất bại
               </strong>
             )}
             {errorCheckIn !== null && bookings.length === 0 ? (
