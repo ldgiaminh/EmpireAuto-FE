@@ -411,8 +411,8 @@ export const runScriptDone = (number1, number2, number3, number4) =>
   )
 
 //Check-out
-export const runScriptCheckOut = () =>
-  post(url.RUN_SCRIPT_CHECKOUT_SCRIPT_ORDER)
+export const runScriptCheckOut = data =>
+  post2(url.RUN_SCRIPT_CHECKOUT_SCRIPT_ORDER, data)
 
 /*
 ================================================
