@@ -123,21 +123,24 @@ const Stepper = ({ logs }) => {
         {/* Done */}
         <div
           className={
-            (logs.done && logs.done.logDateTime !== null) ||
-            (logs.checkout && logs.checkout.logDateTime !== null)
+            logs.done && logs.done.logDateTime !== null
               ? "md-step active"
+              : logs.checkout && logs.checkout.logDateTime !== null
+              ? "md-step active-cancel"
               : "md-step"
           }
         >
           <div className="md-step-circle">
-            {logs.checkout && logs.checkout.logDateTime !== null ? (
+            {logs.done && logs.done.logDateTime !== null ? (
               <i className="fas fa-check"></i>
+            ) : logs.checkout && logs.checkout.logDateTime !== null ? (
+              <i className="fas fa-times"></i>
             ) : (
               <span>5</span>
             )}
           </div>
           <div>
-            <div className="md-step-title">Hoàn thành</div>
+            <div className="md-step-title">Hoàn tất</div>
             <div className="md-step-optional">
               {logs.checkout && logs.checkout.logDateTime !== null
                 ? formattedDateTime(logs.checkout.logDateTime)

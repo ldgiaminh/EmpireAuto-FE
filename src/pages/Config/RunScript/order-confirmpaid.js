@@ -59,9 +59,9 @@ const OrderConfirmPaid = () => {
     enableReinitialize: true,
 
     initialValues: {
-      number1: "",
-      number2: "",
-      number3: "",
+      number1: 0,
+      number2: 0,
+      number3: 0,
     },
     validationSchema: Yup.object().shape({
       number1: Yup.number().required("Chỉ nhập số"),

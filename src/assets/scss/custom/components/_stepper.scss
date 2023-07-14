@@ -30,6 +30,10 @@
       background-color: #2c53d2;
     }
 
+    &.active-cancel .md-step-circle {
+      background-color: #f65353;
+    }
+
     &.green.active .md-step-circle {
       background-color: #00ae4d;
     }
@@ -75,6 +79,11 @@
       color: rgba(0, 0, 0, 0.87);
     }
 
+    &.active-cancel .md-step-title {
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.87);
+    }
+
     &.active.done .md-step-title,
     &.active.editable .md-step-title {
       font-weight: 600;
@@ -87,6 +96,10 @@
     }
 
     &.active .md-step-optional {
+      color: rgba(0, 0, 0, 0.54);
+    }
+
+    &.active-cancel .md-step-optional {
       color: rgba(0, 0, 0, 0.54);
     }
 

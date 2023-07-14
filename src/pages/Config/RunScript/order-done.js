@@ -63,10 +63,10 @@ const OrderDone = () => {
     enableReinitialize: true,
 
     initialValues: {
-      number1: "",
-      number2: "",
-      number3: "",
-      number4: "",
+      number1: 0,
+      number2: 0,
+      number3: 0,
+      number4: 0,
     },
     validationSchema: Yup.object().shape({
       number1: Yup.number().required("Chỉ nhập số"),
