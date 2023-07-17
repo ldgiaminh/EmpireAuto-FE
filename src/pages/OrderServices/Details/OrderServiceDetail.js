@@ -442,12 +442,8 @@ const OrderServiceDetail = props => {
                 //handleCheckOut={handleCheckOut}
               />
               <Breadcrumbs
-                title="Dịch vụ"
-                breadcrumbItem={
-                  "Theo dõi tiến trình" +
-                  " - " +
-                  ("#" + orderServicesDetail.code)
-                }
+                title="Theo dõi tiến trình"
+                breadcrumbItem={"#" + orderServicesDetail.code}
               />
               <Row>
                 <Col>
