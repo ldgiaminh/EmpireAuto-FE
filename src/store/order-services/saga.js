@@ -1,4 +1,4 @@
-import { call, put, takeEvery } from "redux-saga/effects"
+import { call, put, takeEvery, takeLatest } from "redux-saga/effects"
 
 //OrderService Redux States
 import {
@@ -176,6 +176,10 @@ function* onCountServices() {
 function* orderServicesSaga() {
   //yield takeEvery(GET_ORDER_SERVICE_LIST, fetchOrderServicessLists)
   yield takeEvery(
+    GET_ORDER_SERVICE_LIST_BY_STATUS,
+    fetchOrderServiceListByStatus
+  )
+  yield takeLatest(
     GET_ORDER_SERVICE_LIST_BY_STATUS,
     fetchOrderServiceListByStatus
   )

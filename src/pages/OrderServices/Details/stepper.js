@@ -140,7 +140,7 @@ const Stepper = ({ logs }) => {
             )}
           </div>
           <div>
-            <div className="md-step-title">Hoàn tất</div>
+            <div className="md-step-title">Khách bỏ về</div>
             <div className="md-step-optional">
               {logs.checkout && logs.checkout.logDateTime !== null
                 ? formattedDateTime(logs.checkout.logDateTime)

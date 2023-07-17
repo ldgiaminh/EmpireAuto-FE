@@ -89,7 +89,7 @@ function* onRunScriptBookings({ number1, number2 }) {
     const countSuccess = response.filter(b => b.statusCode === 201).length
     const countFail = response.filter(b => b.statusCode === 500).length
 
-    if (countSuccess > 0) {
+    if (countSuccess > 0 || response.length === 0) {
       toast.success("Tạo mới thành công " + countSuccess + " đặt lịch")
     } else {
       toast.error("Tạo thất bại " + countFail + " đặt lịch")
@@ -133,7 +133,7 @@ function* onRunScriptCheckIns({ number1, number2 }) {
       b => !b.result.isArrived || !b.result.isActived
     ).length
 
-    if (countSuccess > 0) {
+    if (countSuccess > 0 || response.length === 0) {
       toast.success(`Check-in thành công ${countSuccess} đặt lịch`)
     } else {
       toast.error(`Check-in thất bại ${countFail} đặt lịch`)
@@ -160,7 +160,8 @@ function* onRunScriptDiagnoses({ number1, number2 }) {
       o => o.statusCode === 200 && !o.result.carLog
     ).length
     const countFail = response.filter(b => b.statusCode === 500).length
-    if (countSuccess > 0) {
+
+    if (countSuccess > 0 || response.length === 0) {
       toast.success("Chẩn đoán thành công " + countSuccess + " phương tiện")
     } else {
       toast.error("Chẩn đoán thất bại " + countFail + " phương tiện")
@@ -184,7 +185,7 @@ function* onRunScriptConfirmPaids({ number1, number2, number3 }) {
     yield put(runScriptConfirmPaidSuccess(response))
     const countSuccess = response.filter(o => o.statusCode === 200).length
     const countFail = response.filter(b => b.statusCode === 500).length
-    if (countSuccess > 0) {
+    if (countSuccess > 0 || response.length === 0) {
       toast.success(
         "Xác nhận & Thanh toán thành công " + countSuccess + " hóa đơn"
       )
@@ -216,7 +217,8 @@ function* onRunScriptDones({ number1, number2, number3, number4 }) {
     yield put(runScriptDoneSuccess(response))
     const countSuccess = response.filter(o => o.statusCode === 200).length
     const countFail = response.filter(b => b.statusCode === 500).length
-    if (countSuccess > 0) {
+
+    if (countSuccess > 0 || response.length === 0) {
       toast.success("Hoàn tất thành công " + countSuccess + " hóa đơn")
     } else {
       toast.error("Hoàn tất thất bại " + countFail + " hóa đơn")
@@ -240,7 +242,8 @@ function* onRunScriptCheckOuts({ payload: data }) {
     yield put(runScriptCheckOutSuccess(response))
     const countSuccess = response.filter(o => o.statusCode === 200).length
     const countFail = response.filter(b => b.statusCode === 500).length
-    if (countSuccess > 0) {
+
+    if (countSuccess > 0 || response.length === 0) {
       toast.success("Check-out thành công " + countSuccess + " phương tiện")
     } else {
       toast.error("Check-out thất bại " + countFail + " phương tiện")

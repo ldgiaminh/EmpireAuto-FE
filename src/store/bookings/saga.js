@@ -1,4 +1,4 @@
-import { call, put, takeEvery } from "redux-saga/effects"
+import { call, put, takeEvery, takeLatest } from "redux-saga/effects"
 
 //Booking Redux States
 import {
@@ -101,6 +101,7 @@ function* checkInQRCodes({ payload: data, history }) {
 function* bookingsSaga() {
   // yield takeEvery(GET_BOOKING_LIST, fetchBookingsLists)
   yield takeEvery(GET_BOOKING_LIST_BY_DATE, fetchBookingsListByDate)
+  yield takeLatest(GET_BOOKING_LIST_BY_DATE, fetchBookingsListByDate)
   yield takeEvery(GET_BOOKING_DETAIL, fetchBookingsDetails)
   yield takeEvery(CHECKIN_BOOKING, checkInBookings)
   yield takeEvery(CHECKIN_QRCODE, checkInQRCodes)

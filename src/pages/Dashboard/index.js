@@ -57,24 +57,6 @@ const Dashboard = props => {
     isShow: state.Layout.isShow,
   }))
 
-  const reports = [
-    {
-      title: "Đặt lịch trong tuần",
-      iconClass: "bx-calendar",
-      description: bookingSlot.currentBooking + " / " + bookingSlot.bookingSlot,
-    },
-    // {
-    //   title: "Hóa đơn",
-    //   iconClass: "bx-archive-in",
-    //   description: bookingSlot.bookingSlot,
-    // },
-    {
-      title: "Xe tại garage",
-      iconClass: "bx-car",
-      description: carInGarage.value,
-    },
-  ]
-
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -101,6 +83,23 @@ const Dashboard = props => {
     }
   }, [dispatch, isShow])
 
+  const reports = [
+    {
+      title: "Đặt lịch trong tuần",
+      iconClass: "bx-calendar",
+      description:
+        bookingSlot.currentBooking !== undefined &&
+        bookingSlot.bookingSlot !== undefined
+          ? bookingSlot.currentBooking + " / " + bookingSlot.bookingSlot
+          : "N/A" + " / " + "N/A",
+    },
+    {
+      title: "Xe tại garage",
+      iconClass: "bx-car",
+      description: carInGarage.value !== undefined ? carInGarage.value : "N/A",
+    },
+  ]
+
   return (
     <React.Fragment>
       <div className="page-content">
@@ -117,41 +116,42 @@ const Dashboard = props => {
             </Col> */}
             <Col xl="8">
               <Row>
-                {reports.map((report, key) => (
-                  <Col md="4" key={"_col_" + key}>
-                    <Card className="mini-stats-wid">
-                      <CardBody>
-                        <div className="d-flex">
-                          <div className="flex-grow-1">
-                            <p className="text-muted fw-medium">
-                              {report.title}
-                            </p>
-                            {isLoad && (
-                              <p className="placeholder-glow">
-                                <span
-                                  className="placeholder"
-                                  style={{ width: "40px" }}
-                                ></span>
+                {reports &&
+                  reports.map((report, key) => (
+                    <Col md="4" key={"_col_" + key}>
+                      <Card className="mini-stats-wid">
+                        <CardBody>
+                          <div className="d-flex">
+                            <div className="flex-grow-1">
+                              <p className="text-muted fw-medium">
+                                {report.title}
                               </p>
-                            )}
-                            {!isLoad && (
-                              <h4 className="mb-0">{report.description}</h4>
-                            )}
+                              {isLoad && (
+                                <p className="placeholder-glow">
+                                  <span
+                                    className="placeholder"
+                                    style={{ width: "40px" }}
+                                  ></span>
+                                </p>
+                              )}
+                              {!isLoad && (
+                                <h4 className="mb-0">{report.description}</h4>
+                              )}
+                            </div>
+                            <div className="avatar-sm rounded-circle bg-primary align-self-center mini-stat-icon">
+                              <span className="avatar-title rounded-circle bg-primary">
+                                <i
+                                  className={
+                                    "bx " + report.iconClass + " font-size-24"
+                                  }
+                                ></i>
+                              </span>
+                            </div>
                           </div>
-                          <div className="avatar-sm rounded-circle bg-primary align-self-center mini-stat-icon">
-                            <span className="avatar-title rounded-circle bg-primary">
-                              <i
-                                className={
-                                  "bx " + report.iconClass + " font-size-24"
-                                }
-                              ></i>
-                            </span>
-                          </div>
-                        </div>
-                      </CardBody>
-                    </Card>
-                  </Col>
-                ))}
+                        </CardBody>
+                      </Card>
+                    </Col>
+                  ))}
               </Row>
 
               {/* <Card>
