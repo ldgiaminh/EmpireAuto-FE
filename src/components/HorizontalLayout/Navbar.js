@@ -64,12 +64,14 @@ const Navbar = props => {
     if (matchingMenuItem) {
       activateParentDropdown(matchingMenuItem)
     }
+  }, [])
 
+  useEffect(() => {
     var userData = getUserName()
     if (userData) {
       setRole(userData.role)
     }
-  })
+  }, [])
 
   return (
     <React.Fragment>
@@ -95,7 +97,7 @@ const Navbar = props => {
                               className="nav-link"
                               to="/"
                               onClick={() => {
-                                props.toggleLeftmenu(!props.leftMenu)
+                                props.toggleLeftmenu(false)
                               }}
                             >
                               <i className="bx bxs-home-circle me-2"></i>
@@ -107,7 +109,7 @@ const Navbar = props => {
                               className="nav-link"
                               to="/bookings"
                               onClick={() => {
-                                props.toggleLeftmenu(!props.leftMenu)
+                                props.toggleLeftmenu(false)
                               }}
                             >
                               <i className="bx bx-calendar me-2"></i>
@@ -119,7 +121,7 @@ const Navbar = props => {
                               className="nav-link"
                               to="/order-services"
                               onClick={() => {
-                                props.toggleLeftmenu(!props.leftMenu)
+                                props.toggleLeftmenu(false)
                               }}
                             >
                               <i className="bx bxs-detail me-2"></i>
@@ -131,7 +133,7 @@ const Navbar = props => {
                               className="nav-link"
                               to="/users"
                               onClick={() => {
-                                props.toggleLeftmenu(!props.leftMenu)
+                                props.toggleLeftmenu(false)
                               }}
                             >
                               <i className="bx bxs-user me-2"></i>
@@ -160,7 +162,7 @@ const Navbar = props => {
                                 to="/history/bookings"
                                 className="dropdown-item"
                                 onClick={() => {
-                                  props.toggleLeftmenu(!props.leftMenu)
+                                  props.toggleLeftmenu(false)
                                 }}
                               >
                                 {props.t("Đặt lịch")}
@@ -169,7 +171,7 @@ const Navbar = props => {
                                 to="/history/order-services"
                                 className="dropdown-item"
                                 onClick={() => {
-                                  props.toggleLeftmenu(!props.leftMenu)
+                                  props.toggleLeftmenu(false)
                                 }}
                               >
                                 {props.t("Hóa đơn")}
@@ -186,7 +188,7 @@ const Navbar = props => {
                               className="nav-link"
                               to="/"
                               onClick={() => {
-                                props.toggleLeftmenu(!props.leftMenu)
+                                props.toggleLeftmenu(false)
                               }}
                             >
                               <i className="bx bxs-home-circle me-2"></i>
@@ -307,7 +309,7 @@ const Navbar = props => {
                                 to="/symptoms"
                                 className="dropdown-item"
                                 onClick={() => {
-                                  props.toggleLeftmenu(!props.leftMenu)
+                                  props.toggleLeftmenu(false)
                                 }}
                               >
                                 {props.t("Triệu chứng")}
@@ -316,7 +318,7 @@ const Navbar = props => {
                                 to="/brands"
                                 className="dropdown-item"
                                 onClick={() => {
-                                  props.toggleLeftmenu(!props.leftMenu)
+                                  props.toggleLeftmenu(false)
                                 }}
                               >
                                 {props.t("Hãng xe")}
@@ -343,7 +345,7 @@ const Navbar = props => {
                               className="nav-link"
                               to="/users"
                               onClick={() => {
-                                props.toggleLeftmenu(!props.leftMenu)
+                                props.toggleLeftmenu(false)
                               }}
                             >
                               <i className="bx bxs-user me-2"></i>
@@ -356,7 +358,7 @@ const Navbar = props => {
                               className="nav-link"
                               to="/create-new"
                               onClick={() => {
-                                props.toggleLeftmenu(!props.leftMenu)
+                                props.toggleLeftmenu(false)
                               }}
                             >
                               <i className="bx bx-customize me-2"></i>
@@ -406,7 +408,7 @@ const Navbar = props => {
                               className="nav-link"
                               to="/config"
                               onClick={() => {
-                                props.toggleLeftmenu(!props.leftMenu)
+                                props.toggleLeftmenu(false)
                               }}
                             >
                               <i className="bx bx-server me-2"></i>
