@@ -281,20 +281,20 @@ const OrderServiceDetail = props => {
     })
   }
 
-  const SingleValue = props => {
-    const { name, workLoad, isMax } = props.getValue()[0]
+  // const SingleValue = props => {
+  //   const { name, workLoad, isMax } = props.getValue()[0]
 
-    return (
-      <components.SingleValue {...props}>
-        <span>{name}</span>{" "}
-        {isMax == true ? (
-          <span style={{ color: "darkgray" }}>MAX</span>
-        ) : (
-          <span style={{ color: "darkgray" }}>{workLoad}</span>
-        )}
-      </components.SingleValue>
-    )
-  }
+  //   return (
+  //     <components.SingleValue {...props}>
+  //       <span>{name}</span>{" "}
+  //       {isMax == true ? (
+  //         <span style={{ color: "darkgray" }}>MAX</span>
+  //       ) : (
+  //         <span style={{ color: "darkgray" }}>{workLoad}</span>
+  //       )}
+  //     </components.SingleValue>
+  //   )
+  // }
 
   const Option = props => {
     const { name, workLoad, isMax } = props.data
@@ -652,7 +652,7 @@ const OrderServiceDetail = props => {
                                               required={true}
                                               onClick={e => e.preventDefault()}
                                               components={{
-                                                SingleValue,
+                                                // SingleValue,
                                                 Option,
                                               }}
                                               // menuPlacement="top"
@@ -684,10 +684,12 @@ const OrderServiceDetail = props => {
                                               verticalAlign: "middle",
                                             }}
                                           >
-                                            {
-                                              orderServicesDetail.expert
-                                                .fullname
-                                            }
+                                            {isOpenEx
+                                              ? selectedGroup &&
+                                                selectedGroup.name
+                                              : orderServicesDetail.expert
+                                                  .fullname}
+
                                             <div>
                                               <div
                                                 className="btn-group"
@@ -727,7 +729,7 @@ const OrderServiceDetail = props => {
                                           required={true}
                                           onClick={e => e.preventDefault()}
                                           components={{
-                                            SingleValue,
+                                            // SingleValue,
                                             Option,
                                           }}
                                           // menuPlacement="top"

@@ -267,7 +267,7 @@ const OrderServicesHistory = props => {
   }, [dispatch, isShow])
 
   const statusServices = [
-    { id: "5", title: "Hoàn thành", count: countService.CHECKOUT },
+    { id: "5", title: "Hoàn tất", count: countService.CHECKOUT },
     { id: "6", title: "Bảo trì", count: countService.MAINTENANCE },
     { id: "-1", title: "Đã Hủy", count: countService.CANCELLED },
   ]
