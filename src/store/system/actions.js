@@ -5,6 +5,9 @@ import {
   GET_CAR_IN_GARAGE,
   GET_CAR_IN_GARAGE_FAIL,
   GET_CAR_IN_GARAGE_SUCCESS,
+  PUT_CONFIG_SYSTEM,
+  PUT_CONFIG_SYSTEM_FAIL,
+  PUT_CONFIG_SYSTEM_SUCCESS,
 } from "./actionTypes"
 
 /*
@@ -42,5 +45,25 @@ export const getCarInGarageSuccess = carInGarage => ({
 
 export const getCarInGarageFail = error => ({
   type: GET_CAR_IN_GARAGE_FAIL,
+  payload: error,
+})
+
+/*
+================================================ 
+PUT Car In Garage
+================================================
+*/
+export const putConfigSystem = config => ({
+  type: PUT_CONFIG_SYSTEM,
+  payload: config,
+})
+
+export const putConfigSystemSuccess = configSystem => ({
+  type: PUT_CONFIG_SYSTEM_SUCCESS,
+  payload: configSystem,
+})
+
+export const putConfigSystemFail = error => ({
+  type: PUT_CONFIG_SYSTEM_FAIL,
   payload: error,
 })

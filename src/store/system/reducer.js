@@ -5,11 +5,15 @@ import {
   GET_CAR_IN_GARAGE,
   GET_CAR_IN_GARAGE_FAIL,
   GET_CAR_IN_GARAGE_SUCCESS,
+  PUT_CONFIG_SYSTEM,
+  PUT_CONFIG_SYSTEM_FAIL,
+  PUT_CONFIG_SYSTEM_SUCCESS,
 } from "./actionTypes"
 
 const INIT_STATE = {
   bookingSlot: {},
   carInGarage: {},
+  configSystem: {},
   isLoad: false,
 }
 
@@ -49,6 +53,26 @@ const systems = (state = INIT_STATE, action) => {
       }
 
     case GET_CAR_IN_GARAGE_FAIL:
+      return {
+        ...state,
+        isLoad: false,
+        error: action.payload,
+      }
+
+    /* CONFIG SYSTEM  */
+    case PUT_CONFIG_SYSTEM:
+      return {
+        ...state,
+        isLoad: true,
+      }
+    case PUT_CONFIG_SYSTEM_SUCCESS:
+      return {
+        ...state,
+        isLoad: false,
+        configSystem: action.payload,
+      }
+
+    case PUT_CONFIG_SYSTEM_FAIL:
       return {
         ...state,
         isLoad: false,

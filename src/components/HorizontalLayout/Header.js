@@ -39,6 +39,7 @@ import { withTranslation } from "react-i18next"
 
 import QrCode from "components/CommonForBoth/QrCode"
 import LiveClock from "components/CommonForBoth/LiveClock"
+import ConfigSystem from "components/CommonForBoth/ConfigSystem"
 
 const Header = props => {
   const [menu, setMenu] = useState(false)
@@ -377,6 +378,8 @@ const Header = props => {
             </div> */}
 
             {role === "RE" && <LiveClock />}
+
+            {role === "MA" && <ConfigSystem />}
 
             <div className="dropdown d-inline-block d-lg-none">
               <button

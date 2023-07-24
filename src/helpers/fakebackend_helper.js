@@ -362,6 +362,8 @@ export const getBookingSlot = () => get(url.GET_BOOKING_SLOT)
 
 export const getCarInGarage = () => get(url.GET_CAR_IN_GARAGE)
 
+export const onConfigSystem = config => put(url.PUT_CONFIG_SYSTEMS, config)
+
 /*
 ================================================
 RUN SCRIPT

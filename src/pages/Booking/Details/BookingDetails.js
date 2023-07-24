@@ -33,6 +33,8 @@ const BookingDetails = props => {
   useEffect(() => {
     if (bookingDetail) {
       document.title = `#${bookingDetail.code} | Empire Garage`
+    } else {
+      document.title = "Empire Garage"
     }
   })
 

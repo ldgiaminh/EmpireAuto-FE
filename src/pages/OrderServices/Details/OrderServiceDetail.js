@@ -54,6 +54,8 @@ const OrderServiceDetail = props => {
   useEffect(() => {
     if (orderServicesDetail) {
       document.title = `#${orderServicesDetail.code} | Empire Garage`
+    } else {
+      document.title = `Empire Garage`
     }
   })
 

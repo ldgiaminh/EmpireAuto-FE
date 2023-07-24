@@ -177,6 +177,8 @@ export const GET_BOOKING_SLOT = "/system-configurations/booking-slot"
 
 export const GET_CAR_IN_GARAGE = "/system-configurations/car-count"
 
+export const PUT_CONFIG_SYSTEMS = "/system-configurations"
+
 /*
 ================================================ 
 RUN SCRIPT

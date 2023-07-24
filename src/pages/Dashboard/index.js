@@ -45,10 +45,19 @@ import { withTranslation } from "react-i18next"
 
 //redux
 import { useSelector, useDispatch } from "react-redux"
+import ConfigSystem from "components/CommonForBoth/ConfigSystem"
 
 const Dashboard = props => {
   //meta title
   document.title = "Trang chủ | Empire Garage"
+
+  const dispatch = useDispatch()
+
+  /*
+  ==================================================
+  STATE REDUX
+  ==================================================
+  */
 
   const { bookingSlot, carInGarage, isLoad, isShow } = useSelector(state => ({
     bookingSlot: state.systems.bookingSlot,
@@ -57,7 +66,11 @@ const Dashboard = props => {
     isShow: state.Layout.isShow,
   }))
 
-  const dispatch = useDispatch()
+  /*
+  ==================================================
+  USE EFFECT
+  ==================================================
+  */
 
   useEffect(() => {
     dispatch(onGetBookingSlot())
@@ -111,9 +124,9 @@ const Dashboard = props => {
           />
 
           <Row>
-            {/* <Col xl="4">
+            <Col xl="4">
               <WelcomeComp />
-            </Col> */}
+            </Col>
             <Col xl="8">
               <Row>
                 {reports &&
