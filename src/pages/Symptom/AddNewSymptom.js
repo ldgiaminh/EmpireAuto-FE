@@ -21,13 +21,10 @@ import { Link, withRouter } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 
-import {
-  getCarsBrand as onGetCarBrand,
-  addNewCarsModel as onAddNewCarModel,
-} from "store/actions"
+import { addNewSymptoms as onAddSymptoms } from "store/actions"
 import Loader from "components/Loader/Loader"
 
-const AddNewCarModel = props => {
+const AddNewSymptom = props => {
   const dispatch = useDispatch()
 
   /*
@@ -36,9 +33,8 @@ const AddNewCarModel = props => {
   ==================================================
   */
 
-  const { isLoading, carsBrand } = useSelector(state => ({
-    isLoading: state.models.isLoading,
-    carsBrand: state.brands.carsBrand,
+  const { isLoading } = useSelector(state => ({
+    isLoading: state.symptomsLists.isLoading,
   }))
 
   /*
@@ -47,24 +43,13 @@ const AddNewCarModel = props => {
   ==================================================
   */
 
-  const [selectedGroup, setSelectedGroup] = useState(null)
   const [isFormValid, setIsFormValid] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const [model, setModel] = useState({
+  const [symptom, setSymptom] = useState({
     name: "",
-    brandId: "",
+    intendedMinutes: "",
   })
-
-  /*
-  ==================================================
-  USE EFFECT
-  ==================================================
-  */
-
-  useEffect(() => {
-    dispatch(onGetCarBrand())
-  }, [dispatch])
 
   /*
   ==================================================
@@ -72,31 +57,11 @@ const AddNewCarModel = props => {
   ==================================================
   */
 
-  function handleSelectGroup(selected) {
-    setModel({
-      ...model,
-      brandId: selected.value,
-    })
-    setSelectedGroup(selected)
-    setIsFormValid(false)
-  }
-
   const handleChange = e => {
     const value = e.target.value
-    setModel({ ...model, [e.target.name]: value })
+    setSymptom({ ...symptom, [e.target.name]: value })
     setIsFormValid(false)
   }
-
-  /*
-  ==================================================
-  OPTIONS
-  ==================================================
-  */
-
-  const optionGroup = carsBrand.map(c => ({
-    label: c.name,
-    value: c.id,
-  }))
 
   /*
   ==================================================
@@ -104,17 +69,17 @@ const AddNewCarModel = props => {
   ==================================================
   */
 
-  const saveModel = e => {
+  const saveSymptom = e => {
     e.preventDefault()
 
     // Check if model is empty
-    if (!model.brandId || !model.name) {
+    if (!symptom.intendedMinutes || !symptom.name) {
       setIsFormValid(true)
       return
     }
 
-    if (model) {
-      dispatch(onAddNewCarModel(model, props.history, selectedGroup.label))
+    if (symptom) {
+      dispatch(onAddSymptoms(symptom, props.history))
       setIsSubmitting(true)
       setIsFormValid(false)
     }
@@ -127,11 +92,10 @@ const AddNewCarModel = props => {
   */
 
   const resetForm = () => {
-    setModel({
+    setSymptom({
       name: "",
-      brandId: "",
+      intendedMinutes: "",
     })
-    setSelectedGroup(null)
   }
 
   const handleReset = () => {
@@ -143,52 +107,47 @@ const AddNewCarModel = props => {
     <div className="page-content">
       {isLoading && <Loader />}
       <Container fluid={true}>
-        <Breadcrumbs title="Tạo mới" breadcrumbItem="Thương hiệu" />
+        <Breadcrumbs title="Tạo mới" breadcrumbItem="Triệu chứng" />
 
         <Row style={{ justifyContent: "center", height: "490px" }}>
           <Col xl={6} md={10}>
             <Card>
               <CardBody>
-                <CardTitle>Dòng xe</CardTitle>
+                <CardTitle>Triệu chứng</CardTitle>
                 <CardSubtitle className="mb-4">
-                  Nhập vào chỗ trống bên dưới để tạo mới dòng xe
+                  Nhập vào chỗ trống bên dưới để tạo mới triệu chứng
                 </CardSubtitle>
                 {isFormValid ? (
                   <Alert color="danger">Vui lòng điền đầy đủ dữ liệu</Alert>
                 ) : null}
-                <Form onSubmit={saveModel}>
+                <Form onSubmit={saveSymptom}>
                   <FormGroup className="select2-container mb-4" row>
-                    <Label md="2" className="col-form-label">
-                      Hãng xe
+                    <Label md="4" className="col-form-label">
+                      Tên triệu chứng*
                     </Label>
-                    <Col md="10">
-                      <Select
-                        value={selectedGroup}
-                        onChange={s => {
-                          handleSelectGroup(s)
-                        }}
-                        options={optionGroup}
-                        placeholder="Chọn hãng xe"
-                        classNamePrefix="select2-selection"
+                    <Col md="8">
+                      <input
+                        className="form-control"
+                        type="text"
+                        placeholder="Nhập tên triệu chứng"
+                        name="name"
+                        onChange={e => handleChange(e)}
+                        value={symptom.name}
                       />
                     </Col>
                   </FormGroup>
                   <FormGroup className="mb-4" row>
-                    <Label
-                      htmlFor="billing-name"
-                      md="2"
-                      className="col-form-label"
-                    >
-                      Tên dòng xe
+                    <Label md="4" className="col-form-label">
+                      Thời gian dự kiến (phút)*
                     </Label>
-                    <Col md="10">
+                    <Col md="8">
                       <input
                         className="form-control"
-                        type="text"
-                        placeholder="Nhập tên hãng"
-                        name="name"
+                        type="number"
+                        placeholder="Nhập thời gian kết thúc"
+                        name="intendedMinutes"
                         onChange={e => handleChange(e)}
-                        value={model.name}
+                        value={symptom.intendedMinutes}
                       />
                     </Col>
                   </FormGroup>
@@ -219,4 +178,4 @@ const AddNewCarModel = props => {
   )
 }
 
-export default withRouter(AddNewCarModel)
+export default withRouter(AddNewSymptom)

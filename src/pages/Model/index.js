@@ -47,8 +47,6 @@ const CarModel = props => {
     match: { params },
   } = props
 
-  const { slug } = useParams()
-
   useEffect(() => {
     if (params && params.id) {
       dispatch(onGetCarsModelByBrand(params.id))
@@ -94,7 +92,7 @@ const CarModel = props => {
               className="btn-sm btn-rounded"
               onClick={() =>
                 history.push(
-                  `/brands/${params.id}/${slug}/models/${cellProps.row.original.id}/${cellProps.row.original.name}/problems`
+                  `/brands/${params.id}/${params.name}/models/${cellProps.row.original.id}/${cellProps.row.original.name}/problems`
                 )
               }
             >

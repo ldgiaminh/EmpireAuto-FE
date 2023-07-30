@@ -63,6 +63,12 @@ import ConfigScriptGarage from "pages/Config"
 import OrderServiceHistory from "pages/History/OrderServices"
 import BookingHistory from "pages/History/Booking"
 import Search from "pages/Search"
+import AddNewCarModel from "pages/Model/AddNewCarModel"
+import AddNewCarProblem from "pages/Problem/AddNewProblem"
+import AddNewCarItem from "pages/Item/AddNewItems"
+import AddNewCarBrand from "pages/CarBrand/AddNewCarBrand"
+import EditCarBrand from "pages/CarBrand/EditCarBrand"
+import AddNewSymptom from "pages/Symptom/AddNewSymptom"
 
 //Config Garage
 
@@ -112,6 +118,18 @@ const authProtectedRoutes = [
 
   //Create
   { path: "/create-new", component: CreateNew },
+  { path: "/create-new-brand", component: AddNewCarBrand },
+  { path: "/create-new-model", component: AddNewCarModel },
+  { path: "/create-new-problem", component: AddNewCarProblem },
+  { path: "/create-new-item", component: AddNewCarItem },
+  { path: "/create-new-symptom", component: AddNewSymptom },
+
+  //Edit
+  { path: "/edit-brand/:id", component: EditCarBrand },
+  { path: "/edit-model/:id", component: AddNewCarModel },
+  { path: "/edit-problem/:id", component: AddNewCarProblem },
+  { path: "/edit-item/:id", component: AddNewCarItem },
+  { path: "/edit-symptom/:id", component: CreateNew },
 
   //History
   { path: "/history/bookings", component: BookingHistory },

@@ -184,10 +184,14 @@ const ConfigSystem = () => {
       key: selectedGroup.value,
       value: number,
     }
-
-    dispatch(onConfigSystem(config))
-    setIsFormValid(false)
-    tog_standard()
+    if (config) {
+      dispatch(onConfigSystem(config))
+      setIsFormValid(false)
+      tog_standard()
+      dispatch(onGetBookingSlot())
+      dispatch(onGetCarInGarage())
+      handleReset()
+    }
   }
 
   /*

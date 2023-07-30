@@ -67,7 +67,7 @@ const CardBrand = props => {
                 </Link>
               </div>
               <div className="flex-fill">
-                <Link to="#" id={"project" + brand.id}>
+                <Link to={`/edit-brand/${brand.id}`} id={"project" + brand.id}>
                   <i className="mdi mdi-file-document-edit-outline" />
                   <UncontrolledTooltip
                     placement="top"

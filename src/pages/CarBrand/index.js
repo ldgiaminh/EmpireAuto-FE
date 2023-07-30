@@ -16,21 +16,26 @@ import TableContainer from "components/Common/TableContainer"
 import { Link, withRouter } from "react-router-dom"
 import CardBrand from "./CardBrand"
 
+import Loading from "components/Loader/Loading"
+
 const CarBrand = props => {
   //meta title
   document.title = "Thương hiệu xe | Empire Garage"
 
   const dispatch = useDispatch()
 
-  const { carsBrand } = useSelector(state => ({
+  const { carsBrand, isLoading } = useSelector(state => ({
     carsBrand: state.brands.carsBrand,
+    isLoading: state.brands.isLoading,
   }))
 
   useEffect(() => {
     if (carsBrand && !carsBrand.length) {
       dispatch(onGetCarsBrand())
     }
-  }, [dispatch, carsBrand])
+  }, [dispatch])
+
+  const sortedCarsBrand = [...carsBrand].sort((a, b) => b.id - a.id)
 
   return (
     <React.Fragment>
@@ -40,7 +45,8 @@ const CarBrand = props => {
           <Breadcrumbs title="Quản lý" breadcrumbItem="Thương hiệu xe" />
 
           <Row>
-            {map(carsBrand, (brand, key) => (
+            {isLoading && <Loading />}
+            {map(sortedCarsBrand, (brand, key) => (
               <CardBrand brand={brand} key={"_brand_" + key} />
             ))}
           </Row>

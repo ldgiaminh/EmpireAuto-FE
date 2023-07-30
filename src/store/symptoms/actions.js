@@ -62,9 +62,10 @@ ADD NEW SYMPTOMS
 ================================================
 */
 
-export const addNewSymptoms = symptoms => ({
+export const addNewSymptoms = (symptoms, history) => ({
   type: ADD_NEW_SYMPTOMS,
   payload: symptoms,
+  history,
 })
 
 export const addNewSymptomsSuccess = symptoms => ({

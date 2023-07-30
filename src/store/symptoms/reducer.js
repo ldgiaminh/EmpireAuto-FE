@@ -1,4 +1,5 @@
 import {
+  ADD_NEW_SYMPTOMS,
   ADD_SYMPTOMS_FAIL,
   ADD_SYMPTOMS_SUCCESS,
   DELETE_SYMPTOMS_FAIL,
@@ -15,6 +16,7 @@ const INIT_STATE = {
   symptoms: [],
   symptomsDetail: {},
   error: {},
+  isLoading: false,
 }
 
 const symptomsLists = (state = INIT_STATE, action) => {
@@ -43,15 +45,23 @@ const symptomsLists = (state = INIT_STATE, action) => {
         error: action.payload,
       }
 
+    case ADD_NEW_SYMPTOMS:
+      return {
+        ...state,
+        isLoading: true,
+      }
+
     case ADD_SYMPTOMS_SUCCESS:
       return {
         ...state,
+        isLoading: false,
         symptoms: [...state.symptoms, action.payload],
       }
 
     case ADD_SYMPTOMS_FAIL:
       return {
         ...state,
+        isLoading: false,
         error: action.payload,
       }
 

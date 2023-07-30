@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from "redux-saga/effects"
 
 //Booking Redux States
-import { GET_SYMPTOMS_LIST } from "./actionTypes"
+import { ADD_NEW_SYMPTOMS, GET_SYMPTOMS_LIST } from "./actionTypes"
 
 import {
   getSymptomsListsFail,
@@ -12,9 +12,13 @@ import {
   deleteBookingSuccess,
   updateBookingFail,
   updateBookingSuccess,
+  addNewSymptomsSuccess,
+  addNewSymptomsFail,
 } from "./actions"
 
-import { getSymptoms } from "../../helpers/fakebackend_helper"
+import { addNewSymptoms, getSymptoms } from "../../helpers/fakebackend_helper"
+
+import { toast } from "react-toastify"
 
 function* fetchSymptomsLists() {
   try {
@@ -22,6 +26,18 @@ function* fetchSymptomsLists() {
     yield put(getSymptomsListsSuccess(response))
   } catch (error) {
     yield put(getSymptomsListsFail(error))
+  }
+}
+
+function* onAddSymptoms({ payload: symptoms, history }) {
+  try {
+    const response = yield call(addNewSymptoms, symptoms)
+    yield put(addNewSymptomsSuccess(response))
+    toast.success("Tạo mới thành công " + response.name)
+    history.push("/symptoms")
+  } catch (error) {
+    toast.error("Đã có lỗi xảy ra")
+    yield put(addNewSymptomsFail(error))
   }
 }
 
@@ -36,7 +52,7 @@ function* fetchSymptomsLists() {
 
 function* symptomsSaga() {
   yield takeEvery(GET_SYMPTOMS_LIST, fetchSymptomsLists)
-  //yield takeEvery(GET_BOOKING_DETAIL, fetchBookingsDetails)
+  yield takeEvery(ADD_NEW_SYMPTOMS, onAddSymptoms)
 }
 
 export default symptomsSaga

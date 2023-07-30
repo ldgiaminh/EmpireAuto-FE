@@ -38,18 +38,19 @@ function* fetchCarsBrand() {
   }
 }
 
-function* fetchCarsBrandDetail({ carsBrandId }) {
+function* fetchCarsBrandDetail({ brandId }) {
   try {
-    const response = yield call(getCarsBrandDetails, carsBrandId)
+    const response = yield call(getCarsBrandDetails, brandId)
     yield put(getCarsBrandDetailSuccess(response))
   } catch (error) {
     yield put(getCarsBrandDetailFail(error))
   }
 }
 
-function* onAddBrand({ payload: carBrand }) {
+function* onAddBrand({ payload: carBrand, history }) {
   try {
     const response = yield call(addNewCarsBrand, carBrand)
+    history.push("/brands")
     yield put(addNewCarsBrandSuccess(response))
     toast.success("Tạo mới thành công " + response.name)
   } catch (error) {

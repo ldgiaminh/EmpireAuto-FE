@@ -11,27 +11,41 @@ import {
   GET_CAR_PROBLEM_DETAIL_SUCCESS,
   GET_CAR_PROBLEM_BY_MODEL_SUCCESS,
   GET_CAR_PROBLEM_BY_MODEL_FAIL,
+  GET_CARS_PROBLEM,
+  ADD_NEW_CAR_PROBLEM,
 } from "./actionTypes"
 
 const INIT_STATE = {
   carsProblem: [],
   carsProblemDetail: {},
   error: {},
+  isLoading: false,
 }
 
 const problems = (state = INIT_STATE, action) => {
   switch (action.type) {
+    /* GET PROBLEM */
+    case GET_CARS_PROBLEM:
+      return {
+        ...state,
+        isLoading: true,
+      }
+
     case GET_CARS_PROBLEM_SUCCESS:
       return {
         ...state,
+        isLoading: false,
         carsProblem: action.payload,
       }
 
     case GET_CARS_PROBLEM_FAIL:
       return {
         ...state,
+        isLoading: false,
         error: action.payload,
       }
+
+    /* GET PROBLEM BY MODEL */
 
     case GET_CAR_PROBLEM_BY_MODEL_SUCCESS:
       return {
@@ -45,23 +59,43 @@ const problems = (state = INIT_STATE, action) => {
         error: action.payload,
       }
 
+    /* ADD NEW PROBLEM */
+
+    case ADD_NEW_CAR_PROBLEM:
+      return {
+        ...state,
+        isLoading: true,
+      }
+
     case ADD_CAR_PROBLEM_SUCCESS:
       return {
         ...state,
+        isLoading: false,
         carsProblem: [...state.carsProblem, action.payload],
       }
 
     case ADD_CAR_PROBLEM_FAIL:
       return {
         ...state,
+        isLoading: false,
         error: action.payload,
       }
+
+    /* GET PROBLEM DETAIL */
 
     case GET_CAR_PROBLEM_DETAIL_SUCCESS:
       return {
         ...state,
         carsProblemDetail: action.payload,
       }
+
+    case GET_CAR_PROBLEM_DETAIL_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      }
+
+    /* UPDATE PROBLEM  */
 
     case UPDATE_CAR_PROBLEM_SUCCESS:
       return {
@@ -79,6 +113,8 @@ const problems = (state = INIT_STATE, action) => {
         error: action.payload,
       }
 
+    /* DELETE PROBLEM  */
+
     case DELETE_CAR_PROBLEM_SUCCESS:
       return {
         ...state,
@@ -88,12 +124,6 @@ const problems = (state = INIT_STATE, action) => {
       }
 
     case DELETE_CAR_PROBLEM_FAIL:
-      return {
-        ...state,
-        error: action.payload,
-      }
-
-    case GET_CAR_PROBLEM_DETAIL_FAIL:
       return {
         ...state,
         error: action.payload,

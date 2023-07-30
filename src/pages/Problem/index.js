@@ -20,7 +20,7 @@ import { isEmpty, map } from "lodash"
 import TableContainer from "components/Common/TableContainer"
 import { Link, withRouter, useParams } from "react-router-dom"
 
-import { Name } from "./CarProblemlistCol"
+import { Name, Symptoms, IntendedMinutes } from "./CarProblemlistCol"
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
@@ -47,7 +47,7 @@ const CarProblem = props => {
     match: { params },
   } = props
 
-  const { slug } = useParams()
+  console.log(params)
 
   useEffect(() => {
     if (params && params.id) {
@@ -67,12 +67,12 @@ const CarProblem = props => {
 
   const columns = useMemo(
     () => [
-      {
-        Header: "#",
-        Cell: () => {
-          return <input type="checkbox" />
-        },
-      },
+      // {
+      //   Header: "#",
+      //   Cell: () => {
+      //     return <input type="checkbox" />
+      //   },
+      // },
 
       {
         Header: "Name",
@@ -82,13 +82,38 @@ const CarProblem = props => {
           return <Name {...cellProps} />
         },
       },
+      // {
+      //   Header: "Triệu chứng",
+      //   accessor: "symptom.name",
+      //   filterable: true,
+      //   Cell: cellProps => {
+      //     return <Symptoms {...cellProps} />
+      //   },
+      // },
       {
-        Header: "Các vấn đề",
+        Header: "Thời gian dự kiến (phút)",
+        accessor: "intendedMinutes",
+        filterable: true,
+        Cell: cellProps => {
+          return <IntendedMinutes {...cellProps} />
+        },
+      },
+      {
+        Header: "Các dịch vụ đi kèm",
         accessor: "view",
         disableFilters: true,
         Cell: cellProps => {
           const { id, name } = cellProps.row.original
           const formattedName = slugify(name, { lower: true })
+
+          const paramss = {
+            brandId: params.id,
+            brandName: "brand_name_value",
+            modelId: "model_id_value",
+            modelName: "slug_value",
+            problemId: id,
+            formattedName: formattedName,
+          }
           return (
             <Button
               type="button"
@@ -96,7 +121,7 @@ const CarProblem = props => {
               className="btn-sm btn-rounded"
               onClick={() =>
                 history.push(
-                  `/brands/${params.id}/${slug}/models/${params.id}/${slug}/problems/${id}/${formattedName}/items`
+                  `/brands/${params.id}/${params.name}/models/${params.id}/${params.name}/problems/${id}/${formattedName}/items?brandId=${brandId}&brandName=${brandName}`
                 )
               }
             >

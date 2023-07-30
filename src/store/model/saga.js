@@ -48,11 +48,12 @@ function* fetchCarsModelByBrand({ id }) {
   }
 }
 
-function* onAddModel({ payload: carsModel }) {
+function* onAddModel({ payload: carsModel, history, brandName }) {
   try {
     const response = yield call(addNewCarsModel, carsModel)
-    toast.success("Tạo mới thành công " + response.name)
     yield put(addNewCarsModelSuccess(response))
+    toast.success("Tạo mới thành công " + response.name)
+    history.push(`/brands/${carsModel.brandId}/${brandName}`)
   } catch (error) {
     toast.error("Đã có lỗi xảy ra")
     yield put(addNewCarsModelFail(error))

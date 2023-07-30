@@ -40,8 +40,9 @@ export const getCarsBrandFail = error => ({
 GET Brands Detail
 ================================================
 */
-export const getCarsBrandDetail = () => ({
+export const getCarsBrandDetail = brandId => ({
   type: GET_CAR_BRAND_DETAIL,
+  brandId,
 })
 
 export const getCarsBrandDetailSuccess = carsBrandDetail => ({
@@ -60,9 +61,10 @@ POST Add New Brand
 ================================================
 */
 
-export const addNewCarsBrand = carsBrand => ({
+export const addNewCarsBrand = (carsBrand, history) => ({
   type: ADD_NEW_CAR_BRAND,
   payload: carsBrand,
+  history,
 })
 
 export const addNewCarsBrandSuccess = carsBrand => ({

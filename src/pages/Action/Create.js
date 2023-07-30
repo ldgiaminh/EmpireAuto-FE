@@ -1,24 +1,6 @@
 import React, { useEffect, useState } from "react"
-import {
-  Card,
-  CardBody,
-  CardTitle,
-  Col,
-  Container,
-  Input,
-  Button,
-  Label,
-  Row,
-  Table,
-  Nav,
-  NavItem,
-  NavLink,
-  TabContent,
-  TabPane,
-  Form,
-  FormGroup,
-  CardSubtitle,
-} from "reactstrap"
+import { Container, Row, Nav, NavItem, NavLink, Col } from "reactstrap"
+import { withRouter } from "react-router-dom"
 
 import classnames from "classnames"
 
@@ -29,19 +11,36 @@ import AddNewCarModel from "pages/Model/AddNewCarModel"
 import AddNewCarProblem from "pages/Problem/AddNewProblem"
 import AddNewCarItem from "pages/Item/AddNewItems"
 
-const CreateNew = () => {
+const CreateNew = props => {
   //meta title
   document.title = "Tạo mới | Empire Garage"
 
   const [activeTab, setActiveTab] = useState("0")
 
-  const numTabs = [
-    { id: "0", title: "Dịch vụ" },
-    { id: "1", title: "Vấn đề" },
-    { id: "2", title: "Dòng xe" },
-    { id: "3", title: "Thương hiệu xe" },
-    { id: "4", title: "Triệu chứng" },
+  const createNew = [
+    { link: "/create-new-symptom", icon: "bx bx-flag", title: "Triệu chứng" },
+    { link: "/create-new-brand", icon: "bx bx-planet", title: "Thương Hiệu" },
+    { link: "/create-new-model", icon: "bx bxs-car", title: "Dòng xe" },
+    {
+      link: "/create-new-problem",
+      icon: "bx bx-cog",
+      title: "Vấn đề",
+    },
+    {
+      link: "/create-new-item",
+      icon: "bx bx-wrench",
+      title: "Dịch vụ",
+    },
+    {
+      link: "/create-new-symptom",
+      icon: "bx bx-book-open",
+      title: "Triệu chứng",
+    },
   ]
+
+  const handleItemClick = link => {
+    props.history.push(link)
+  }
 
   /*
   ==================================================
@@ -54,9 +53,9 @@ const CreateNew = () => {
       <div className="page-content">
         <Container fluid>
           {/* Render Breadcrumb */}
-          <Breadcrumbs title="Tạo mới" breadcrumbItem="Tạo mới" />
+          <Breadcrumbs title="Tạo mới" breadcrumbItem="Thêm mới" />
 
-          <div className="checkout-tabs">
+          {/* <div className="checkout-tabs">
             <Row>
               <Col xl="2" sm="3">
                 <Nav pills className="flex-column">
@@ -97,7 +96,7 @@ const CreateNew = () => {
                     </TabContent>
                   </CardBody>
                 </Card>
-                {/* <Row className="mt-4">
+                <Row className="mt-4">
                   <Col sm="6">
                     <Link
                       to="/ecommerce-cart"
@@ -118,7 +117,30 @@ const CreateNew = () => {
                       </Link>
                     </div>
                   </Col>
-                </Row> */}
+                </Row>
+              </Col>
+            </Row>
+          </div> */}
+
+          <div className="checkout-tabs">
+            <Row>
+              <Col className="create-new">
+                <Nav className="flex-row" pills>
+                  {createNew.map((item, index) => (
+                    <Col xl="3" sm="2" className="link-body" key={index}>
+                      <NavItem>
+                        <NavLink onClick={() => handleItemClick(item.link)}>
+                          <i
+                            className={
+                              item.icon + " d-block check-nav-icon mt-4 mb-2"
+                            }
+                          />
+                          <p className="mb-4">{item.title}</p>
+                        </NavLink>
+                      </NavItem>
+                    </Col>
+                  ))}
+                </Nav>
               </Col>
             </Row>
           </div>
@@ -128,4 +150,4 @@ const CreateNew = () => {
   )
 }
 
-export default CreateNew
+export default withRouter(CreateNew)

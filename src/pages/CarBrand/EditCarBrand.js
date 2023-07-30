@@ -1,4 +1,5 @@
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
+import PropTypes from "prop-types"
 import {
   Alert,
   Button,
@@ -20,7 +21,10 @@ import Breadcrumbs from "../../components/Common/Breadcrumb"
 
 import { useSelector, useDispatch } from "react-redux"
 
-import { addNewCarsBrand as onAddNewCarBrand } from "store/actions"
+import {
+  addNewCarsBrand as onAddNewCarBrand,
+  getCarsBrandDetail as onGetCarBrandDetail,
+} from "store/actions"
 
 import { Link, withRouter } from "react-router-dom"
 
@@ -30,44 +34,52 @@ import { storage } from "helpers/firebase"
 import { getDownloadURL, uploadBytes } from "firebase/storage"
 import Loader from "components/Loader/Loader"
 
-const AddNewCarBrand = props => {
+const EditCarBrand = props => {
   const dispatch = useDispatch()
 
-  /*
-  ==================================================
-  STATE FROM REDUX
-  ==================================================
-  */
-
-  const { isLoading } = useSelector(state => ({
+  const { isLoading, carsBrandDetail } = useSelector(state => ({
     isLoading: state.brands.isLoading,
+    carsBrandDetail: state.brands.carsBrandDetail,
   }))
 
-  /*
-  ==================================================
-  USE STATE
-  ==================================================
-  */
+  const [brand, setBrand] = useState({
+    name: carsBrandDetail.name || "",
+    photo: carsBrandDetail.photo || "",
+  })
 
   const [selectedFile, setSelectedFile] = useState(null)
   const [isFormValid, setIsFormValid] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const [brand, setBrand] = useState({
-    name: "",
-    photo: "",
-  })
+  const {
+    match: { params },
+  } = props
 
-  /*
-  ==================================================
-  HANDLE VALUE
-  ==================================================
-  */
+  useEffect(() => {
+    if (params && params.id) {
+      dispatch(onGetCarBrandDetail(params.id))
+    }
+  }, [params, onGetCarBrandDetail, dispatch])
+
+  useEffect(() => {
+    setBrand(prevBrand => ({
+      ...prevBrand,
+      name: carsBrandDetail.name || "",
+      photo: carsBrandDetail.photo || "",
+    }))
+  }, [carsBrandDetail])
 
   const handleChange = e => {
     const value = e.target.value
     setBrand({ ...brand, [e.target.name]: value })
     setIsFormValid(false)
+  }
+
+  const resetForm = () => {
+    setBrand({
+      name: carsBrandDetail.name,
+      photo: carsBrandDetail.photo,
+    })
   }
 
   function handleAcceptedFiles(files) {
@@ -95,12 +107,6 @@ const AddNewCarBrand = props => {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i]
   }
 
-  /*
-  ==================================================
-  SUBMIT
-  ==================================================
-  */
-
   const saveBrand = e => {
     e.preventDefault()
 
@@ -110,7 +116,7 @@ const AddNewCarBrand = props => {
       return
     }
 
-    if (selectedFile) {
+    if (brand && selectedFile) {
       const imageRef = sRef(storage, `brand/${selectedFile.name}`)
       uploadBytes(imageRef, selectedFile).then(snapshot => {
         getDownloadURL(snapshot.ref).then(url => {
@@ -127,19 +133,6 @@ const AddNewCarBrand = props => {
     }
   }
 
-  /*
-  ==================================================
-  Reset Form
-  ==================================================
-  */
-
-  const resetForm = () => {
-    setBrand({
-      name: "",
-      photo: "",
-    })
-  }
-
   const handleReset = () => {
     resetForm()
     setSelectedFile(null)
@@ -150,16 +143,16 @@ const AddNewCarBrand = props => {
     <div className="page-content">
       {isLoading && <Loader />}
       <Container fluid>
-        <Breadcrumbs title="Tạo mới" breadcrumbItem="Thương hiệu" />
+        <Breadcrumbs title="Thương hiệu" breadcrumbItem="Cập nhật" />
 
         <Row style={{ justifyContent: "center" }}>
           <Col xl={6} md={10}>
             <Card>
               <CardBody>
-                <CardTitle>Tạo mới thương hiệu</CardTitle>
+                <CardTitle>Cập nhật thương hiệu</CardTitle>
                 <CardSubtitle className="mb-4">
                   {" "}
-                  Nhập vào chỗ trống bên dưới để tạo mới thương hiệu
+                  Nhập vào chỗ trống bên dưới để cập nhật
                 </CardSubtitle>
                 {isFormValid ? (
                   <Alert color="danger">Vui lòng điền đầy đủ dữ liệu</Alert>
@@ -231,6 +224,34 @@ const AddNewCarBrand = props => {
                           </div>
                         </Card>
                       )}
+                      {brand && (
+                        <Card className="mt-1 mb-0 shadow-none border dz-processing dz-image-preview dz-success dz-complete">
+                          <div className="p-2">
+                            <Row className="align-items-center">
+                              <Col className="col-auto">
+                                <img
+                                  data-dz-thumbnail=""
+                                  height="80"
+                                  className="avatar-sm rounded bg-light"
+                                  alt={brand.photo}
+                                  src={brand.photo}
+                                />
+                              </Col>
+                              <Col>
+                                <Link
+                                  to="#"
+                                  className="text-muted font-weight-bold"
+                                >
+                                  {brand.photo}
+                                </Link>
+                                <p className="mb-0">
+                                  <strong>{brand.formattedSize}</strong>
+                                </p>
+                              </Col>
+                            </Row>
+                          </div>
+                        </Card>
+                      )}
                     </div>
                   </div>
 
@@ -260,4 +281,9 @@ const AddNewCarBrand = props => {
   )
 }
 
-export default withRouter(AddNewCarBrand)
+EditCarBrand.propTypes = {
+  match: PropTypes.object,
+  isLoading: PropTypes.bool,
+}
+
+export default withRouter(EditCarBrand)

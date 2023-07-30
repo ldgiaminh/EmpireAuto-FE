@@ -219,20 +219,20 @@ SYMPTOMS
 ================================================
 */
 
-// get car brand
+// get car symptoms
 export const getSymptoms = () => get(url.GET_SYMPTOMS_LIST)
 
-// get detail car brand
+// get detail car symptoms
 
-export const getSymptomsDetails = () => get(url.GET_SYMPTOMS_DETAIL)
+export const getSymptomsDetails = id => get(`${url.GET_SYMPTOMS_DETAIL}/${id}`)
 
-// add car brand
+// add car symptoms
 export const addNewSymptoms = symptom => post(url.ADD_NEW_SYMPTOMS, symptom)
 
-// update car brand
+// update car symptoms
 export const updateSymptoms = symptom => put(url.UPDATE_SYMPTOMS, symptom)
 
-// delete car brand
+// delete car symptoms
 export const deleteSymptoms = carBrand =>
   del(url.DELETE_SYMPTOMS, { headers: { symptom } })
 

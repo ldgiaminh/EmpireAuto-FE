@@ -17,6 +17,7 @@ import {
   GET_CARS_MODEL_BY_BRAND,
   GET_CARS_MODEL_BY_BRAND_SUCCESS,
   GET_CARS_MODEL_BY_BRAND_FAIL,
+  RESET_CARS_MODEL,
 } from "./actionTypes"
 
 /*
@@ -83,9 +84,11 @@ POST Add New Model
 ================================================
 */
 
-export const addNewCarsModel = carsModel => ({
+export const addNewCarsModel = (carsModel, history, brandName) => ({
   type: ADD_NEW_CAR_MODEL,
   payload: carsModel,
+  history,
+  brandName,
 })
 
 export const addNewCarsModelSuccess = carsModel => ({
@@ -138,4 +141,13 @@ export const deleteCarsModelSuccess = carsModel => ({
 export const deleteCarsModelFail = error => ({
   type: DELETE_CAR_MODEL_FAIL,
   payload: error,
+})
+
+/*
+================================================ 
+Reset car model
+================================================
+*/
+export const resetCarsModel = () => ({
+  type: RESET_CARS_MODEL,
 })

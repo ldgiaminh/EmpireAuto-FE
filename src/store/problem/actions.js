@@ -18,6 +18,7 @@ import {
   GET_CAR_PROBLEM_BY_MODEL,
   GET_CAR_PROBLEM_BY_MODEL_SUCCESS,
   GET_CAR_PROBLEM_BY_MODEL_FAIL,
+  RESET_CARS_MODEL,
 } from "./actionTypes"
 
 /*
@@ -84,9 +85,21 @@ POST Add New Problem
 ================================================
 */
 
-export const addNewCarsProblem = carsProblem => ({
+export const addNewCarsProblem = (
+  carsProblem,
+  history,
+  carId,
+  carName,
+  modelId,
+  modelName
+) => ({
   type: ADD_NEW_CAR_PROBLEM,
   payload: carsProblem,
+  history,
+  carId,
+  carName,
+  modelId,
+  modelName,
 })
 
 export const addNewCarsProblemSuccess = carsProblem => ({

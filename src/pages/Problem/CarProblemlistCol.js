@@ -11,6 +11,14 @@ const Name = cell => {
   return cell.value ? cell.value : ""
 }
 
+const Symptoms = cell => {
+  return cell.value ? cell.value : ""
+}
+
+const IntendedMinutes = cell => {
+  return cell.value ? cell.value : ""
+}
+
 // const Img = cell => {
 //   return (
 //     <>
@@ -30,4 +38,4 @@ const Name = cell => {
 //   )
 // }
 
-export { Name }
+export { Name, Symptoms, IntendedMinutes }

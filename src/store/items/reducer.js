@@ -12,12 +12,14 @@ import {
   GET_CARS_ITEM_BY_PROBLEM,
   GET_CARS_ITEM_BY_PROBLEM_SUCCESS,
   GET_CARS_ITEM_BY_PROBLEM_FAIL,
+  ADD_NEW_CAR_ITEM,
 } from "./actionTypes"
 
 const INIT_STATE = {
   carsItem: [],
   carsItemDetail: {},
   error: {},
+  isLoading: false,
 }
 
 const items = (state = INIT_STATE, action) => {
@@ -46,15 +48,23 @@ const items = (state = INIT_STATE, action) => {
         error: action.payload,
       }
 
+    case ADD_NEW_CAR_ITEM:
+      return {
+        ...state,
+        isLoading: true,
+      }
+
     case ADD_CAR_ITEM_SUCCESS:
       return {
         ...state,
+        isLoading: false,
         carsItem: [...state.carsItem, action.payload],
       }
 
     case ADD_CAR_ITEM_FAIL:
       return {
         ...state,
+        isLoading: false,
         error: action.payload,
       }
 
