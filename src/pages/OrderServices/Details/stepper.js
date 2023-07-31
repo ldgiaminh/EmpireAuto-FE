@@ -143,7 +143,7 @@ const Stepper = ({ logs }) => {
             {logs.done && logs.done.logDateTime !== null ? (
               <div className="md-step-title">Hoàn tất</div>
             ) : logs.checkout && logs.checkout.logDateTime !== null ? (
-              <div className="md-step-title">Khách bỏ về</div>
+              <div className="md-step-title">Khách hủy</div>
             ) : (
               <div className="md-step-title">Hoàn tất</div>
             )}

@@ -837,6 +837,18 @@ const OrderServiceDetail = props => {
                                 ) : (
                                   ""
                                 )}
+                                {orderServicesDetail.cancelReason && (
+                                  <tr>
+                                    <th
+                                      scope="row"
+                                      style={{ width: "300px" }}
+                                      className={"text-capitalize text-danger"}
+                                    >
+                                      Lý do hủy:
+                                    </th>
+                                    <td>{orderServicesDetail.cancelReason}</td>
+                                  </tr>
+                                )}
                               </tbody>
                             </Table>
                           </div>
