@@ -1,28 +1,21 @@
 import React, { useEffect, useState } from "react"
 import PropTypes from "prop-types"
-import {
-  Alert,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Form,
-  Input,
-  Label,
-  Modal,
-} from "reactstrap"
+import { Alert, Form, Input, Label, Modal } from "reactstrap"
 
 import Select, { components } from "react-select"
 
 import { useDispatch, useSelector } from "react-redux"
+
+import { withRouter } from "react-router-dom"
 
 import {
   getBookingSlot as onGetBookingSlot,
   getCarInGarage as onGetCarInGarage,
   putConfigSystem as onConfigSystem,
 } from "store/actions"
+import Loader from "components/Loader/Loader"
 
-const ConfigSystem = () => {
+const ConfigSystem = props => {
   const dispatch = useDispatch()
 
   /*
@@ -31,9 +24,10 @@ const ConfigSystem = () => {
   ==================================================
   */
 
-  const { bookingSlot, carInGarage } = useSelector(state => ({
+  const { bookingSlot, carInGarage, isLoad } = useSelector(state => ({
     bookingSlot: state.systems.bookingSlot,
     carInGarage: state.systems.carInGarage,
+    isLoad: state.systems.isLoad,
   }))
 
   /*
@@ -174,6 +168,7 @@ const ConfigSystem = () => {
   */
 
   const saveConfig = e => {
+    e.preventDefault()
     // Check if number is empty
     if (!number || !selectedGroup || !selectedGroup.value) {
       setIsFormValid(true)
@@ -185,11 +180,9 @@ const ConfigSystem = () => {
       value: number,
     }
     if (config) {
-      dispatch(onConfigSystem(config))
+      dispatch(onConfigSystem(config, props.history))
       setIsFormValid(false)
       tog_standard()
-      dispatch(onGetBookingSlot())
-      dispatch(onGetCarInGarage())
       handleReset()
     }
   }
@@ -213,6 +206,7 @@ const ConfigSystem = () => {
 
   return (
     <React.Fragment>
+      {isLoad && <Loader />}
       <div className="dropdown d-inline-block">
         <button
           onClick={() => {
@@ -269,7 +263,7 @@ const ConfigSystem = () => {
                     // SingleValue,
                     Option,
                   }}
-                  // menuPlacement="top"
+                  menuPlacement="auto"
                 />
               </div>
               <div className="mb-3">
@@ -288,18 +282,18 @@ const ConfigSystem = () => {
           <div className="modal-footer">
             <button
               type="button"
+              className="btn btn-primary"
+              onClick={saveConfig}
+            >
+              Lưu
+            </button>
+            <button
+              type="button"
               onClick={handleReset}
               className="btn btn-secondary "
               data-dismiss="modal"
             >
               Hủy
-            </button>
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={saveConfig}
-            >
-              Lưu
             </button>
           </div>
         </Modal>
@@ -314,4 +308,4 @@ ConfigSystem.propTypes = {
   carInGarage: PropTypes.any,
 }
 
-export default ConfigSystem
+export default withRouter(ConfigSystem)

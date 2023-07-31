@@ -49,11 +49,12 @@ function* onCarInGarages() {
 
 /* CONFIG SYSTEM */
 
-function* onConfigSystems({ payload: config }) {
+function* onConfigSystems({ payload: config, history }) {
   try {
     const response = yield call(onConfigSystem, config)
     yield put(putConfigSystemSuccess(response))
     toast.success("Cập nhật hệ thống thành công")
+    history.push("/dashboard")
   } catch (error) {
     yield put(putConfigSystemFail(error))
     toast.error("Cập nhất hệ thống thất bại")

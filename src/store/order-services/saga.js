@@ -179,10 +179,7 @@ function* orderServicesSaga() {
     GET_ORDER_SERVICE_LIST_BY_STATUS,
     fetchOrderServiceListByStatus
   )
-  yield takeLatest(
-    GET_ORDER_SERVICE_LIST_BY_STATUS,
-    fetchOrderServiceListByStatus
-  )
+
   yield takeEvery(GET_ORDER_SERVICE_DETAIL, fetchOrderServicesDetails)
   yield takeEvery(PUT_ASSIGN_EXPERT, onAssignExpert)
   yield takeEvery(PUT_AUTO_ASSIGN_EXPERT, onAutoAssignExpert)
