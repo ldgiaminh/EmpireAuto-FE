@@ -267,9 +267,24 @@ const OrderServicesHistory = props => {
   }, [dispatch, isShow])
 
   const statusServices = [
-    { id: "5", title: "Hoàn tất", count: countService.CHECKOUT },
-    { id: "6", title: "Bảo trì", count: countService.MAINTENANCE },
-    { id: "-1", title: "Đã Hủy", count: countService.CANCELLED },
+    {
+      id: "5",
+      title: "Hoàn tất",
+      count: countService.CHECKOUT,
+      color: "bg-success",
+    },
+    {
+      id: "6",
+      title: "Bảo trì",
+      count: countService.MAINTENANCE,
+      color: "bg-warning",
+    },
+    {
+      id: "-1",
+      title: "Đã Hủy",
+      count: countService.CANCELLED,
+      color: "bg-danger",
+    },
   ]
 
   return (
@@ -294,7 +309,7 @@ const OrderServicesHistory = props => {
                         >
                           {tab.title}
                           {tab.count > 0 && (
-                            <span className="badge bg-primary ms-1">
+                            <span className={`badge ms-1 ${tab.color}`}>
                               {tab.count}
                             </span>
                           )}

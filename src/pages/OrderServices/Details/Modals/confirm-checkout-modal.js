@@ -33,7 +33,7 @@ const ConfirmCheckOut = props => {
         data.maintenanceDate = date
         data.cancelReason = reason
       }
-      //dispatch(checkOutService(carId, data, id, licence, history))
+      dispatch(checkOutService(carId, data, id, licence, history))
     }
     toggle(false)
   }
