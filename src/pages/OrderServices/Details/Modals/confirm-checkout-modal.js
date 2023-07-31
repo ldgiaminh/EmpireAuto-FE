@@ -15,6 +15,12 @@ const ConfirmCheckOut = props => {
   const dispatch = useDispatch()
 
   const [date, setDate] = useState("")
+  const [reason, setReason] = useState("")
+
+  const handleChange = e => {
+    const value = e.target.value
+    setReason(value)
+  }
 
   const handleCheckOut = () => {
     const carId = order.car.id
@@ -23,12 +29,19 @@ const ConfirmCheckOut = props => {
     const licence = order.car.carLisenceNo
     if ((carId, order && id && car && licence)) {
       const data = {}
-      if (date) {
+      if (date || reason) {
         data.maintenanceDate = date
+        data.cancelReason = reason
       }
-      dispatch(checkOutService(carId, data, id, licence, history))
+      //dispatch(checkOutService(carId, data, id, licence, history))
     }
     toggle(false)
+  }
+
+  const handleCancel = () => {
+    toggle(false)
+    setDate("")
+    setReason("")
   }
 
   return (
@@ -108,7 +121,7 @@ const ConfirmCheckOut = props => {
           {order.status !== 4 && (
             <>
               <Label>Ngày bảo trì</Label>
-              <InputGroup>
+              <InputGroup className="mb-3">
                 <Flatpickr
                   className="form-control d-block"
                   placeholder="Chọn ngày bảo trì"
@@ -142,6 +155,16 @@ const ConfirmCheckOut = props => {
                   }}
                 />
               </InputGroup>
+              <Label>Lý do hủy</Label>
+              <InputGroup>
+                <input
+                  className="form-control"
+                  type="textarea"
+                  name="reason"
+                  onChange={e => handleChange(e)}
+                  value={reason}
+                />
+              </InputGroup>
             </>
           )}
         </div>
@@ -156,7 +179,7 @@ const ConfirmCheckOut = props => {
           </button>
           <button
             type="button"
-            onClick={toggle}
+            onClick={handleCancel}
             className="btn btn-secondary "
             data-dismiss="modal"
           >

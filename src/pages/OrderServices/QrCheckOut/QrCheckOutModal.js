@@ -44,10 +44,7 @@ const QrCheckOutModal = props => {
           return response.json()
         })
         .then(response => {
-          const data = {
-            maintenanceDate: "",
-            cancelReason: "",
-          }
+          const data = {}
           dispatch(
             onCheckOut(
               response.car.id,
