@@ -6,8 +6,10 @@ import {
   DELETE_SYMPTOMS_SUCCESS,
   GET_SYMPTOMS_DETAIL_FAIL,
   GET_SYMPTOMS_DETAIL_SUCCESS,
+  GET_SYMPTOMS_LIST,
   GET_SYMPTOMS_LIST_FAIL,
   GET_SYMPTOMS_LIST_SUCCESS,
+  UPDATE_SYMPTOMS,
   UPDATE_SYMPTOMS_FAIL,
   UPDATE_SYMPTOMS_SUCCESS,
 } from "./actionTypes"
@@ -21,22 +23,34 @@ const INIT_STATE = {
 
 const symptomsLists = (state = INIT_STATE, action) => {
   switch (action.type) {
+    /* GET SYMPTOM */
+
+    case GET_SYMPTOMS_LIST:
+      return {
+        ...state,
+        isLoading: true,
+      }
+
     case GET_SYMPTOMS_LIST_SUCCESS:
       return {
         ...state,
+        isLoading: false,
         symptoms: action.payload,
       }
 
     case GET_SYMPTOMS_LIST_FAIL:
       return {
         ...state,
+        isLoading: false,
         error: action.payload,
       }
+
+    /* GET SYMPTOM DETAIL*/
 
     case GET_SYMPTOMS_DETAIL_SUCCESS:
       return {
         ...state,
-        bookingDetail: action.payload,
+        symptomsDetail: action.payload,
       }
 
     case GET_SYMPTOMS_DETAIL_FAIL:
@@ -44,6 +58,8 @@ const symptomsLists = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       }
+
+    /* ADD NEW SYMPTOM */
 
     case ADD_NEW_SYMPTOMS:
       return {
@@ -65,28 +81,40 @@ const symptomsLists = (state = INIT_STATE, action) => {
         error: action.payload,
       }
 
+    /* UPDATE SYMPTOM */
+
+    case UPDATE_SYMPTOMS:
+      return {
+        ...state,
+        isLoading: true,
+      }
+
     case UPDATE_SYMPTOMS_SUCCESS:
       return {
         ...state,
-        symptoms: state.symptoms.map(user =>
-          booking.id.toString() === action.payload.id.toString()
-            ? { booking, ...action.payload }
-            : booking
+        isLoading: false,
+        symptoms: state.symptoms.map(s =>
+          s.id.toString() === action.payload.id.toString()
+            ? { s, ...action.payload }
+            : s
         ),
       }
 
     case UPDATE_SYMPTOMS_FAIL:
       return {
         ...state,
+        isLoading: false,
         error: action.payload,
       }
+
+    /* DELETE SYMPTOM */
 
     case DELETE_SYMPTOMS_SUCCESS:
       return {
         ...state,
-        booking: state.symptoms.filter(
-          booking => booking.id.toString() !== action.payload.id.toString()
-        ),
+        // symptoms: state.symptoms.filter(
+        //   symptoms => symptoms.id.toString() !== action.payload.id.toString()
+        // ),
       }
 
     case DELETE_SYMPTOMS_FAIL:

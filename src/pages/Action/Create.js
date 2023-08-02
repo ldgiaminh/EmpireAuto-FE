@@ -31,11 +31,6 @@ const CreateNew = props => {
       icon: "bx bx-wrench",
       title: "Dịch vụ",
     },
-    {
-      link: "/create-new-symptom",
-      icon: "bx bx-book-open",
-      title: "Triệu chứng",
-    },
   ]
 
   const handleItemClick = link => {

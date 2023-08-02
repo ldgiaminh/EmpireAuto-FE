@@ -58,7 +58,7 @@ const NotificationMessaging = props => {
 
   onMessageListener()
     .then(payload => {
-      console.log(payload)
+      // console.log(payload)
       const notification = payload
       setNoti({
         title: notification.notification.title,

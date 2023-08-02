@@ -1,5 +1,5 @@
-import React, { useState } from "react"
-import Select from "react-select"
+import React, { useEffect, useState } from "react"
+import PropTypes from "prop-types"
 
 import {
   Card,
@@ -21,17 +21,17 @@ import { withRouter } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 
-import { addNewSymptoms as onAddSymptoms } from "store/actions"
+import {
+  getSymptomsDetails as onGetSymptomDetail,
+  updateSymptoms as onUpdateSymptoms,
+} from "store/actions"
 import Loader from "components/Loader/Loader"
 
 import * as Yup from "yup"
 import { useFormik } from "formik"
 
-const AddNewSymptom = props => {
+const EditSymptom = props => {
   const dispatch = useDispatch()
-
-  //meta title
-  document.title = "Tạo triệu chứng | Empire Garage"
 
   /*
   ==================================================
@@ -39,8 +39,9 @@ const AddNewSymptom = props => {
   ==================================================
   */
 
-  const { isLoading } = useSelector(state => ({
+  const { isLoading, symptomsDetail } = useSelector(state => ({
     isLoading: state.symptomsLists.isLoading,
+    symptomsDetail: state.symptomsLists.symptomsDetail,
   }))
 
   /*
@@ -53,17 +54,33 @@ const AddNewSymptom = props => {
 
   /*
   ==================================================
+  USE EFFECT
+  ==================================================
+  */
+
+  const {
+    match: { params },
+  } = props
+
+  useEffect(() => {
+    if (params && params.id) {
+      dispatch(onGetSymptomDetail(params.id))
+    }
+  }, [params, onGetSymptomDetail, dispatch])
+
+  /*
+  ==================================================
   FORM
   ==================================================
   */
 
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
-    enableReinitialize: true,
+    enableReinitialize: false,
 
     initialValues: {
-      name: "",
-      intendedMinutes: "",
+      name: (symptomsDetail && symptomsDetail.name) || "",
+      intendedMinutes: (symptomsDetail && symptomsDetail.intendedMinutes) || "",
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Vui lòng nhập tên triệu chứng"),
@@ -74,7 +91,8 @@ const AddNewSymptom = props => {
         .integer("Thời gian dự kiến phải là số nguyên"),
     }),
     onSubmit: values => {
-      dispatch(onAddSymptoms(values, props.history))
+      dispatch(onUpdateSymptoms(values, params.id, props.history))
+      validation.resetForm()
       setIsSubmitting(true)
     },
   })
@@ -97,9 +115,8 @@ const AddNewSymptom = props => {
     <div className="page-content">
       {isLoading && <Loader />}
       <Container fluid={true}>
-        <Breadcrumbs title="Tạo mới" breadcrumbItem="Triệu chứng" />
-
-        <Row style={{ justifyContent: "center", height: "490px" }}>
+        <Breadcrumbs title="Cập nhật" breadcrumbItem="Triệu chứng" />
+        <Row style={{ justifyContent: "center" }}>
           <Col xl={6} md={10}>
             <Card>
               <CardBody>
@@ -172,9 +189,9 @@ const AddNewSymptom = props => {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="btn btn-primary"
+                      className="btn btn-success"
                     >
-                      Tạo mới
+                      Cập nhật
                     </button>
                     <button
                       type="button"
@@ -194,4 +211,10 @@ const AddNewSymptom = props => {
   )
 }
 
-export default withRouter(AddNewSymptom)
+EditSymptom.propTypes = {
+  isLoading: PropTypes.bool,
+  match: PropTypes.any,
+  history: PropTypes.any,
+}
+
+export default withRouter(EditSymptom)

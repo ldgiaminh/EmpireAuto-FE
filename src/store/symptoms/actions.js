@@ -41,9 +41,9 @@ GET SYMPTOMS DETAIL
 ================================================
 */
 
-export const getSymptomsDetails = symptomsId => ({
+export const getSymptomsDetails = symptomId => ({
   type: GET_SYMPTOMS_DETAIL,
-  symptomsId,
+  symptomId,
 })
 
 export const getSymptomsDetailsSuccess = symptomsDetails => ({
@@ -84,9 +84,9 @@ DELETE SYMPTOMS
 ================================================
 */
 
-export const deleteSymptoms = symptoms => ({
+export const deleteSymptoms = symptomsId => ({
   type: DELETE_SYMPTOMS,
-  payload: symptoms,
+  symptomsId,
 })
 
 export const deleteSymptomsSuccess = symptoms => ({
@@ -94,7 +94,7 @@ export const deleteSymptomsSuccess = symptoms => ({
   payload: symptoms,
 })
 
-export const deleteSymptomsError = error => ({
+export const deleteSymptomsFail = error => ({
   type: DELETE_SYMPTOMS_FAIL,
   payload: error,
 })
@@ -105,9 +105,11 @@ UPDATE SYMPTOMS
 ================================================
 */
 
-export const updateSymptoms = symptoms => ({
+export const updateSymptoms = (symptoms, id, history) => ({
   type: UPDATE_SYMPTOMS,
   payload: symptoms,
+  id,
+  history,
 })
 
 export const updateSymptomsSuccess = symptoms => ({

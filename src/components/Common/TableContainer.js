@@ -62,9 +62,9 @@ const TableContainer = ({
   handleBookingClick,
   handleOrderClicks,
   handleUserClick,
-  handleCustomerClick,
+  handleAddNewClick,
   handleCheckInClick,
-  isAddCustList,
+  isAddNew,
   customPageSize,
   className,
   customPageSizeOptions,
@@ -185,17 +185,17 @@ const TableContainer = ({
             </div>
           </Col>
         )}
-        {isAddCustList && (
-          <Col sm="7">
+        {isAddNew && (
+          <Col sm="6">
             <div className="text-sm-end">
               <Button
                 type="button"
-                color="success"
+                color="primary"
                 className="btn-rounded mb-2 me-2"
-                onClick={handleCustomerClick}
+                onClick={handleAddNewClick}
               >
                 <i className="mdi mdi-plus me-1" />
-                New Customers
+                Tạo mới
               </Button>
             </div>
           </Col>

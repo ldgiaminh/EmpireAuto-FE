@@ -69,6 +69,7 @@ import AddNewCarItem from "pages/Item/AddNewItems"
 import AddNewCarBrand from "pages/CarBrand/AddNewCarBrand"
 import EditCarBrand from "pages/CarBrand/EditCarBrand"
 import AddNewSymptom from "pages/Symptom/AddNewSymptom"
+import EditSymptom from "pages/Symptom/EditSymptom"
 
 //Config Garage
 
@@ -129,7 +130,7 @@ const authProtectedRoutes = [
   { path: "/edit-model/:id", component: AddNewCarModel },
   { path: "/edit-problem/:id", component: AddNewCarProblem },
   { path: "/edit-item/:id", component: AddNewCarItem },
-  { path: "/edit-symptom/:id", component: CreateNew },
+  { path: "/edit-symptom/:id", component: EditSymptom },
 
   //History
   { path: "/history/bookings", component: BookingHistory },

@@ -230,11 +230,12 @@ export const getSymptomsDetails = id => get(`${url.GET_SYMPTOMS_DETAIL}/${id}`)
 export const addNewSymptoms = symptom => post(url.ADD_NEW_SYMPTOMS, symptom)
 
 // update car symptoms
-export const updateSymptoms = symptom => put(url.UPDATE_SYMPTOMS, symptom)
+export const updateSymptoms = (id, symptom) =>
+  put(`${url.UPDATE_SYMPTOMS}/${id}`, symptom)
 
 // delete car symptoms
-export const deleteSymptoms = carBrand =>
-  del(url.DELETE_SYMPTOMS, { headers: { symptom } })
+export const deleteSymptoms = id =>
+  del(`${url.DELETE_SYMPTOMS}/${id}`, { headers: { id } })
 
 /*
 ================================================
