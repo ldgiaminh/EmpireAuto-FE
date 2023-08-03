@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react"
 import PropTypes from "prop-types"
-import { Alert, Form, Input, Label, Modal } from "reactstrap"
+import {
+  Alert,
+  Form,
+  Input,
+  Label,
+  Modal,
+  UncontrolledTooltip,
+} from "reactstrap"
 
 import Select, { components } from "react-select"
 
@@ -9,9 +16,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { withRouter } from "react-router-dom"
 
 import {
-  getBookingSlot as onGetBookingSlot,
-  getCarInGarage as onGetCarInGarage,
   putConfigSystem as onConfigSystem,
+  getConfigSystem as onGetConfigSystem,
 } from "store/actions"
 import Loader from "components/Loader/Loader"
 
@@ -24,10 +30,10 @@ const ConfigSystem = props => {
   ==================================================
   */
 
-  const { bookingSlot, carInGarage, isLoad } = useSelector(state => ({
-    bookingSlot: state.systems.bookingSlot,
-    carInGarage: state.systems.carInGarage,
+  const { isLoad, configSystems, isShow } = useSelector(state => ({
     isLoad: state.systems.isLoad,
+    isShow: state.Layout.isShow,
+    configSystems: state.systems.configSystems,
   }))
 
   /*
@@ -65,12 +71,31 @@ const ConfigSystem = props => {
   */
 
   useEffect(() => {
-    dispatch(onGetBookingSlot())
-  }, [dispatch])
+    dispatch(onGetConfigSystem())
+  }, [dispatch, isShow])
 
   useEffect(() => {
-    dispatch(onGetCarInGarage())
-  }, [dispatch])
+    if (isShow) {
+      dispatch(onGetConfigSystem())
+    }
+  }, [dispatch, isShow])
+
+  useEffect(() => {
+    if (isLoad) {
+      dispatch(onGetConfigSystem())
+    }
+  }, [dispatch, isLoad])
+
+  /*
+  ==================================================
+  Get Config Value
+  ==================================================
+  */
+
+  const getConfigValue = (configSystems, key) => {
+    const config = configSystems.find(config => config.key === key)
+    return config ? config.value : "N/A"
+  }
 
   /*
   ==================================================
@@ -81,11 +106,15 @@ const ConfigSystem = props => {
   /* options */
 
   const garageOptions = [
-    { label: "Số lượng bãi đậu", value: "GARAGE_SLOT", current: 0 },
+    {
+      label: "Số lượng bãi đậu",
+      value: "GARAGE_SLOT",
+      current: getConfigValue(configSystems, "GARAGE_SLOT"),
+    },
     {
       label: "Xe tại garage",
       value: "CURRENT_CAR_COUNT_IN_GARAGE",
-      current: carInGarage && carInGarage.value,
+      current: getConfigValue(configSystems, "CURRENT_CAR_COUNT_IN_GARAGE"),
     },
   ]
 
@@ -93,12 +122,17 @@ const ConfigSystem = props => {
     {
       label: "Số lượng đặt lịch trong tuần",
       value: "BOOKING_SLOT_PER_WEEK",
-      current: bookingSlot && bookingSlot.bookingSlot,
+      current: getConfigValue(configSystems, "BOOKING_SLOT_PER_WEEK"),
     },
     {
       label: "Số đặt lịch hiện tại",
       value: "BOOKING_COUNT_IN_CURRENT_WEEK",
-      current: bookingSlot && bookingSlot.currentBooking,
+      current: getConfigValue(configSystems, "BOOKING_COUNT_IN_CURRENT_WEEK"),
+    },
+    {
+      label: "Đặt lịch tối đa trong ngày",
+      value: "BOOKING_SLOT_PER_DAY",
+      current: getConfigValue(configSystems, "BOOKING_SLOT_PER_DAY"),
     },
   ]
 
@@ -106,12 +140,12 @@ const ConfigSystem = props => {
     {
       label: "Công việc tối đa mỗi ngày",
       value: "MAX_WORKLOAD_PER_DAY",
-      current: 0,
+      current: getConfigValue(configSystems, "MAX_WORKLOAD_PER_DAY"),
     },
     {
       label: "Thời gian cho mỗi công việc (Phút)",
       value: "MINUTES_PER_WORKLOAD",
-      current: 0,
+      current: getConfigValue(configSystems, "MINUTES_PER_WORKLOAD"),
     },
   ]
 
@@ -119,14 +153,17 @@ const ConfigSystem = props => {
     {
       label: "Garage",
       options: garageOptions,
+      isFirstGroup: true,
     },
     {
       label: "Đặt lịch",
       options: bookingOptions,
+      isFirstGroup: false,
     },
     {
       label: "Khối lượng công việc",
       options: workLoadOptions,
+      isFirstGroup: false,
     },
   ]
 
@@ -137,10 +174,34 @@ const ConfigSystem = props => {
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <span>{label}</span>
           {current !== undefined && (
-            <span style={{ color: "gray" }}>Hiện Tại: {current}</span>
+            <span style={{ color: "gray" }}>{current}</span>
           )}
         </div>
       </components.Option>
+    )
+  }
+
+  const GroupHeading = props => {
+    const { label, title = "Hiện tại", isFirstGroup } = props.data
+
+    if (!isFirstGroup) {
+      // Return a simple div instead of the GroupHeading component
+      return (
+        <components.GroupHeading {...props}>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <span>{label}</span>
+          </div>
+        </components.GroupHeading>
+      )
+    }
+
+    return (
+      <components.GroupHeading {...props}>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <span>{label}</span>
+          <span>{title}</span>
+        </div>
+      </components.GroupHeading>
     )
   }
 
@@ -215,9 +276,13 @@ const ConfigSystem = props => {
           type="button"
           className="btn header-item noti-icon right-bar-toggle "
           data-toggle="modal"
-          data-target="#myModal"
+          data-target="config"
+          id="config"
         >
           <i className="bx bx-cog bx-spin" />
+          <UncontrolledTooltip placement="auto" target="config">
+            Cấu hình
+          </UncontrolledTooltip>
         </button>
       </div>
       <div>
@@ -260,7 +325,7 @@ const ConfigSystem = props => {
                   required={true}
                   onClick={e => e.preventDefault()}
                   components={{
-                    // SingleValue,
+                    GroupHeading,
                     Option,
                   }}
                   menuPlacement="auto"

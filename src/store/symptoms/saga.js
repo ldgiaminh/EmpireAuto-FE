@@ -74,10 +74,10 @@ function* onUpdateSymptoms({ payload: symptoms, id, history }) {
   }
 }
 
-function* onDeleteSymptoms({ symptomsId }) {
+function* onDeleteSymptoms({ symptoms }) {
   try {
-    const response = yield call(deleteSymptoms, symptomsId)
-    toast.success("Xóa thành công " + response.name)
+    const response = yield call(deleteSymptoms, symptoms.id)
+    toast.success("Xóa thành công " + symptoms.name)
     yield put(deleteSymptomsSuccess(response))
   } catch (error) {
     toast.error("Đã có lỗi xảy ra")

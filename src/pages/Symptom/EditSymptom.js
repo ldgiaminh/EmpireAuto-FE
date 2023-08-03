@@ -33,6 +33,15 @@ import { useFormik } from "formik"
 const EditSymptom = props => {
   const dispatch = useDispatch()
 
+  //meta title
+  useEffect(() => {
+    if (symptomsDetail) {
+      document.title = `${symptomsDetail.name} | Empire Garage`
+    } else {
+      document.title = `Empire Garage`
+    }
+  })
+
   /*
   ==================================================
   STATE FROM REDUX
@@ -109,20 +118,25 @@ const EditSymptom = props => {
 
     // Clear any validation errors
     validation.setErrors({})
+
+    props.history.goBack()
   }
 
   return (
     <div className="page-content">
       {isLoading && <Loader />}
       <Container fluid={true}>
-        <Breadcrumbs title="Cập nhật" breadcrumbItem="Triệu chứng" />
+        <Breadcrumbs
+          title="Cập nhật"
+          breadcrumbItem={`${symptomsDetail && symptomsDetail.name}`}
+        />
         <Row style={{ justifyContent: "center" }}>
           <Col xl={6} md={10}>
             <Card>
               <CardBody>
-                <CardTitle>Triệu chứng</CardTitle>
+                <CardTitle>Cập nhật triệu chứng</CardTitle>
                 <CardSubtitle className="mb-4">
-                  Nhập vào chỗ trống bên dưới để tạo mới triệu chứng
+                  Nhập vào chỗ trống bên dưới để cập nhật mới triệu chứng
                 </CardSubtitle>
 
                 <Form

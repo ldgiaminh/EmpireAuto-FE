@@ -5,10 +5,32 @@ import {
   GET_CAR_IN_GARAGE,
   GET_CAR_IN_GARAGE_FAIL,
   GET_CAR_IN_GARAGE_SUCCESS,
+  GET_SYSTEM_CONFIGURATIONS,
+  GET_SYSTEM_CONFIGURATIONS_FAIL,
+  GET_SYSTEM_CONFIGURATIONS_SUCCESS,
   PUT_CONFIG_SYSTEM,
   PUT_CONFIG_SYSTEM_FAIL,
   PUT_CONFIG_SYSTEM_SUCCESS,
 } from "./actionTypes"
+
+/*
+================================================ 
+GET System Configuration
+================================================
+*/
+export const getConfigSystem = () => ({
+  type: GET_SYSTEM_CONFIGURATIONS,
+})
+
+export const getConfigSystemSuccess = configSystem => ({
+  type: GET_SYSTEM_CONFIGURATIONS_SUCCESS,
+  payload: configSystem,
+})
+
+export const getConfigSystemFail = error => ({
+  type: GET_SYSTEM_CONFIGURATIONS_FAIL,
+  payload: error,
+})
 
 /*
 ================================================ 

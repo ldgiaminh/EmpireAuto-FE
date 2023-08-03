@@ -1,41 +1,12 @@
 import PropTypes from "prop-types"
-import React, { useEffect, useState } from "react"
-import {
-  Container,
-  Row,
-  Col,
-  Button,
-  Card,
-  CardBody,
-  Input,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Table,
-} from "reactstrap"
-import { Link } from "react-router-dom"
-
-import classNames from "classnames"
-
-//import Charts
-import StackedColumnChart from "./StackedColumnChart"
+import React, { useEffect } from "react"
+import { Container, Row, Col, Card, CardBody } from "reactstrap"
 
 //import action
-import {
-  getBookingSlot as onGetBookingSlot,
-  getCarInGarage as onGetCarInGarage,
-} from "../../store/actions"
-
-import modalimage1 from "../../assets/images/product/img-7.png"
-import modalimage2 from "../../assets/images/product/img-4.png"
+import { getConfigSystem as onGetConfigSystem } from "../../store/actions"
 
 // Pages Components
 import WelcomeComp from "./WelcomeComp"
-import MonthlyEarning from "./MonthlyEarning"
-import SocialSource from "./SocialSource"
-import ActivityComp from "./ActivityComp"
-import TopCities from "./TopCities"
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
@@ -45,7 +16,6 @@ import { withTranslation } from "react-i18next"
 
 //redux
 import { useSelector, useDispatch } from "react-redux"
-import ConfigSystem from "components/CommonForBoth/ConfigSystem"
 
 const Dashboard = props => {
   //meta title
@@ -59,11 +29,10 @@ const Dashboard = props => {
   ==================================================
   */
 
-  const { bookingSlot, carInGarage, isLoad, isShow } = useSelector(state => ({
-    bookingSlot: state.systems.bookingSlot,
-    carInGarage: state.systems.carInGarage,
+  const { isLoad, isShow, configSystems } = useSelector(state => ({
     isLoad: state.systems.isLoad,
     isShow: state.Layout.isShow,
+    configSystems: state.systems.configSystems,
   }))
 
   /*
@@ -73,43 +42,65 @@ const Dashboard = props => {
   */
 
   useEffect(() => {
-    dispatch(onGetBookingSlot())
+    dispatch(onGetConfigSystem())
   }, [dispatch])
 
-  useEffect(() => {
-    dispatch(onGetCarInGarage())
-  }, [dispatch])
-
-  /* Call api when get Notifications */
+  /* Call api when get Notifications & Update config */
 
   useEffect(() => {
     if (isShow) {
-      dispatch(onGetBookingSlot())
+      dispatch(onGetConfigSystem())
       return
     }
   }, [dispatch, isShow])
 
   useEffect(() => {
-    if (isShow) {
-      dispatch(onGetCarInGarage())
+    if (isLoad) {
+      dispatch(onGetConfigSystem())
       return
     }
-  }, [dispatch, isShow])
+  }, [dispatch, isLoad])
+
+  /*
+  ==================================================
+  Get Config Value
+  ==================================================
+  */
+
+  const getConfigValue = (configSystems, key) => {
+    const config = configSystems.find(config => config.key === key)
+    return config ? config.value : "N/A"
+  }
+
+  /*
+  ==================================================
+  Render
+  ==================================================
+  */
 
   const reports = [
     {
       title: "Đặt lịch trong tuần",
-      iconClass: "bx-calendar",
+      iconClass: "bx bx-calendar",
       description:
-        bookingSlot.currentBooking !== undefined &&
-        bookingSlot.bookingSlot !== undefined
-          ? bookingSlot.currentBooking + " / " + bookingSlot.bookingSlot
-          : "N/A" + " / " + "N/A",
+        getConfigValue(configSystems, "BOOKING_COUNT_IN_CURRENT_WEEK") +
+        "/" +
+        getConfigValue(configSystems, "BOOKING_SLOT_PER_WEEK"),
+    },
+    {
+      title: "Đặt lịch tối đa trong ngày",
+      iconClass: "bx bx-calendar-event",
+      description: getConfigValue(configSystems, "BOOKING_SLOT_PER_DAY"),
     },
     {
       title: "Xe tại garage",
-      iconClass: "bx-car",
-      description: carInGarage.value !== undefined ? carInGarage.value : "N/A",
+      iconClass: "bx bx-car",
+      description: getConfigValue(configSystems, "CURRENT_CAR_COUNT_IN_GARAGE"),
+    },
+    {
+      title: "Bãi đậu xe",
+      iconClass: "mdi mdi-car-brake-parking",
+      description: getConfigValue(configSystems, "GARAGE_SLOT"),
     },
   ]
 
@@ -154,9 +145,7 @@ const Dashboard = props => {
                             <div className="avatar-sm rounded-circle bg-primary align-self-center mini-stat-icon">
                               <span className="avatar-title rounded-circle bg-primary">
                                 <i
-                                  className={
-                                    "bx " + report.iconClass + " font-size-24"
-                                  }
+                                  className={report.iconClass + " font-size-24"}
                                 ></i>
                               </span>
                             </div>
@@ -166,243 +155,10 @@ const Dashboard = props => {
                     </Col>
                   ))}
               </Row>
-
-              {/* <Card>
-                <CardBody>
-                  <div className="d-sm-flex flex-wrap">
-                    <h4 className="card-title mb-4">Email Sent</h4>
-                    <div className="ms-auto">
-                      <ul className="nav nav-pills">
-                        <li className="nav-item">
-                          <Link
-                            to="#"
-                            className={classNames(
-                              { active: periodType === "weekly" },
-                              "nav-link"
-                            )}
-                            onClick={() => {
-                              onChangeChartPeriod("weekly")
-                            }}
-                            id="one_month"
-                          >
-                            Week
-                          </Link>{" "}
-                        </li>
-                        <li className="nav-item">
-                          <Link
-                            to="#"
-                            className={classNames(
-                              { active: periodType === "monthly" },
-                              "nav-link"
-                            )}
-                            onClick={() => {
-                              onChangeChartPeriod("monthly")
-                            }}
-                            id="one_month"
-                          >
-                            Month
-                          </Link>
-                        </li>
-                        <li className="nav-item">
-                          <Link
-                            to="#"
-                            className={classNames(
-                              { active: periodType === "yearly" },
-                              "nav-link"
-                            )}
-                            onClick={() => {
-                              onChangeChartPeriod("yearly")
-                            }}
-                            id="one_month"
-                          >
-                            Year
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-
-                  <StackedColumnChart periodData={periodData} />
-                </CardBody>
-              </Card> */}
             </Col>
           </Row>
-
-          {/* <Row>
-            <Col xl="4">
-              <SocialSource />
-            </Col>
-            <Col xl="4">
-              <ActivityComp />
-            </Col>
-
-            <Col xl="4">
-              <TopCities />
-            </Col>
-          </Row> */}
-
-          {/* <Row>
-            <Col lg="12">
-              <LatestTranaction />
-            </Col>
-          </Row> */}
         </Container>
       </div>
-
-      {/* subscribe ModalHeader */}
-      {/* <Modal
-        isOpen={subscribemodal}
-        role="dialog"
-        autoFocus={true}
-        centered
-        data-toggle="modal"
-        toggle={() => {
-          setSubscribemodal(!subscribemodal)
-        }}
-      >
-        <div>
-          <ModalHeader
-            className="border-bottom-0"
-            toggle={() => {
-              setSubscribemodal(!subscribemodal)
-            }}
-          ></ModalHeader>
-        </div>
-        <div className="modal-body">
-          <div className="text-center mb-4">
-            <div className="avatar-md mx-auto mb-4">
-              <div className="avatar-title bg-light  rounded-circle text-primary h1">
-                <i className="mdi mdi-email-open"></i>
-              </div>
-            </div>
-
-            <div className="row justify-content-center">
-              <div className="col-xl-10">
-                <h4 className="text-primary">Subscribe !</h4>
-                <p className="text-muted font-size-14 mb-4">
-                  Subscribe our newletter and get notification to stay update.
-                </p>
-
-                <div className="input-group rounded bg-light">
-                  <Input
-                    type="email"
-                    className="form-control bg-transparent border-0"
-                    placeholder="Enter Email address"
-                  />
-                  <Button color="primary" type="button" id="button-addon2">
-                    <i className="bx bxs-paper-plane"></i>
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Modal> */}
-
-      {/* <Modal
-        isOpen={modal}
-        role="dialog"
-        autoFocus={true}
-        centered={true}
-        className="exampleModal"
-        tabIndex="-1"
-        toggle={() => {
-          setmodal(!modal)
-        }}
-      >
-        <div>
-          <ModalHeader
-            toggle={() => {
-              setmodal(!modal)
-            }}
-          >
-            Order Details
-          </ModalHeader>
-          <ModalBody>
-            <p className="mb-2">
-              Product id: <span className="text-primary">#SK2540</span>
-            </p>
-            <p className="mb-4">
-              Billing Name: <span className="text-primary">Neal Matthews</span>
-            </p>
-
-            <div className="table-responsive">
-              <Table className="table table-centered table-nowrap">
-                <thead>
-                  <tr>
-                    <th scope="col">Product</th>
-                    <th scope="col">Product Name</th>
-                    <th scope="col">Price</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">
-                      <div>
-                        <img src={modalimage1} alt="" className="avatar-sm" />
-                      </div>
-                    </th>
-                    <td>
-                      <div>
-                        <h5 className="text-truncate font-size-14">
-                          Wireless Headphone (Black)
-                        </h5>
-                        <p className="text-muted mb-0">$ 225 x 1</p>
-                      </div>
-                    </td>
-                    <td>$ 255</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">
-                      <div>
-                        <img src={modalimage2} alt="" className="avatar-sm" />
-                      </div>
-                    </th>
-                    <td>
-                      <div>
-                        <h5 className="text-truncate font-size-14">
-                          Hoodie (Blue)
-                        </h5>
-                        <p className="text-muted mb-0">$ 145 x 1</p>
-                      </div>
-                    </td>
-                    <td>$ 145</td>
-                  </tr>
-                  <tr>
-                    <td colSpan="2">
-                      <h6 className="m-0 text-end">Sub Total:</h6>
-                    </td>
-                    <td>$ 400</td>
-                  </tr>
-                  <tr>
-                    <td colSpan="2">
-                      <h6 className="m-0 text-end">Shipping:</h6>
-                    </td>
-                    <td>Free</td>
-                  </tr>
-                  <tr>
-                    <td colSpan="2">
-                      <h6 className="m-0 text-end">Total:</h6>
-                    </td>
-                    <td>$ 400</td>
-                  </tr>
-                </tbody>
-              </Table>
-            </div>
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              type="button"
-              color="secondary"
-              onClick={() => {
-                setmodal(!modal)
-              }}
-            >
-              Close
-            </Button>
-          </ModalFooter>
-        </div>
-      </Modal> */}
     </React.Fragment>
   )
 }

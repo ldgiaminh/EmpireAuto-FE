@@ -84,9 +84,9 @@ DELETE SYMPTOMS
 ================================================
 */
 
-export const deleteSymptoms = symptomsId => ({
+export const deleteSymptoms = symptoms => ({
   type: DELETE_SYMPTOMS,
-  symptomsId,
+  symptoms,
 })
 
 export const deleteSymptomsSuccess = symptoms => ({

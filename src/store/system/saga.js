@@ -4,6 +4,7 @@ import { call, put, takeEvery } from "redux-saga/effects"
 import {
   GET_BOOKING_SLOT,
   GET_CAR_IN_GARAGE,
+  GET_SYSTEM_CONFIGURATIONS,
   PUT_CONFIG_SYSTEM,
 } from "./actionTypes"
 
@@ -12,6 +13,8 @@ import {
   getBookingSlotSuccess,
   getCarInGarageFail,
   getCarInGarageSuccess,
+  getConfigSystemFail,
+  getConfigSystemSuccess,
   putConfigSystemFail,
   putConfigSystemSuccess,
 } from "./actions"
@@ -21,9 +24,21 @@ import {
   getBookingSlot,
   getCarInGarage,
   onConfigSystem,
+  getConfigSystem,
 } from "../../helpers/fakebackend_helper"
 
 import { toast } from "react-toastify"
+
+/* SYSTEM CONFIGURATION */
+
+function* onGetSystemConfigs() {
+  try {
+    const response = yield call(getConfigSystem)
+    yield put(getConfigSystemSuccess(response))
+  } catch (error) {
+    yield put(getConfigSystemFail(error))
+  }
+}
 
 /* BOOKING SLOT */
 
@@ -53,15 +68,16 @@ function* onConfigSystems({ payload: config, history }) {
   try {
     const response = yield call(onConfigSystem, config)
     yield put(putConfigSystemSuccess(response))
-    toast.success("Cập nhật hệ thống thành công")
+    toast.success("Cấu hình hệ thống thành công")
     history.push("/dashboard")
   } catch (error) {
     yield put(putConfigSystemFail(error))
-    toast.error("Cập nhất hệ thống thất bại")
+    toast.error("Cấu hình hệ thống thất bại")
   }
 }
 
 function* systemSaga() {
+  yield takeEvery(GET_SYSTEM_CONFIGURATIONS, onGetSystemConfigs)
   yield takeEvery(GET_BOOKING_SLOT, onGetBookingSlots)
   yield takeEvery(GET_CAR_IN_GARAGE, onCarInGarages)
   yield takeEvery(PUT_CONFIG_SYSTEM, onConfigSystems)

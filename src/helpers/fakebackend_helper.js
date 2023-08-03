@@ -359,11 +359,14 @@ SYSTEM
 ================================================
 */
 
+export const getConfigSystem = () => get(url.GET_SYSTEM_CONFIGURATIONS)
+
 export const getBookingSlot = () => get(url.GET_BOOKING_SLOT)
 
 export const getCarInGarage = () => get(url.GET_CAR_IN_GARAGE)
 
-export const onConfigSystem = config => put(url.PUT_CONFIG_SYSTEMS, config)
+export const onConfigSystem = config =>
+  put(url.PUT_SYSTEM_CONFIGURATIONS, config)
 
 /*
 ================================================
@@ -380,9 +383,9 @@ export const runRemoveScriptCustomers = data =>
   del2(url.RUN_REMOVE_SCRIPT_CUSTOMER, data)
 
 //Booking
-export const runScriptBookings = (number1, number2) =>
+export const runScriptBookings = (number1, number2, isNewCustomer) =>
   post(
-    `${url.RUN_SCRIPT_BOOKING}?numberOfBooking=${number1}&numberOfBookingToday=${number2}`
+    `${url.RUN_SCRIPT_BOOKING}?numberOfBooking=${number1}&numberOfBookingToday=${number2}&onlyNewCustomer=${isNewCustomer}`
   )
 
 //Remove booking

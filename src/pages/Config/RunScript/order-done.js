@@ -99,6 +99,17 @@ const OrderDone = () => {
     setCountFail(failCount)
   }, [scriptDone])
 
+  const formattedDate = date => {
+    const createDate = new Date(date)
+    const formattedDate = createDate.toLocaleDateString("vi-VN", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    })
+    const formatted = `${formattedDate}`
+    return formatted
+  }
+
   return (
     <React.Fragment>
       <CardBody>
@@ -292,7 +303,14 @@ const OrderDone = () => {
                       <td className="font-size-14 text-center">{index + 1}</td>
                       {o.statusCode === 200 ? (
                         <td className="font-size-14">
-                          Hoàn tất thành công #{o.result.code}
+                          Hoàn tất thành công #{o.result.code} |{" "}
+                          {o.result.maintenanceSchedule &&
+                            o.result.maintenanceSchedule &&
+                            "có bảo trì -"}{" "}
+                          {o.result.maintenanceSchedule &&
+                            formattedDate(
+                              o.result.maintenanceSchedule.maintenanceDate
+                            )}
                         </td>
                       ) : (
                         <td className="font-size-14">

@@ -13,6 +13,8 @@ import { withTranslation } from "react-i18next"
 
 // users
 import user1 from "../../../assets/images/users/avatar-1.jpg"
+import user4 from "../../../assets/images/users/avatar-4.jpg"
+import user5 from "../../../assets/images/users/avatar-5.jpg"
 
 import { connect } from "react-redux"
 

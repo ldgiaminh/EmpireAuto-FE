@@ -82,9 +82,14 @@ function* onRunScriptRemoveCustomers({ data }) {
 
 /* BOOKING */
 
-function* onRunScriptBookings({ number1, number2 }) {
+function* onRunScriptBookings({ number1, number2, isNewCustomer }) {
   try {
-    const response = yield call(runScriptBookings, number1, number2)
+    const response = yield call(
+      runScriptBookings,
+      number1,
+      number2,
+      isNewCustomer
+    )
     yield put(runScriptBookingSuccess(response))
     const countSuccess = response.filter(b => b.statusCode === 201).length
     const countFail = response.filter(b => b.statusCode === 500).length

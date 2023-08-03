@@ -28,9 +28,8 @@ const BookingScript = () => {
   }))
 
   const [bookings, setBookings] = useState([])
-
+  const [isNewCustomer, setIsNewCustomer] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
-
   const [idList, setIdList] = useState([])
 
   const [countSuccess, setCountSuccess] = useState(0)
@@ -57,8 +56,11 @@ const BookingScript = () => {
     }),
     onSubmit: values => {
       const data = idList.map(il => il.result.id)
-      dispatch(onRunScriptBooking(values.number1, values.number2))
+      dispatch(
+        onRunScriptBooking(values.number1, values.number2, isNewCustomer)
+      )
       setIsSubmitting(false)
+      console.log(values.number1, values.number2, isNewCustomer)
     },
   })
 
@@ -158,6 +160,18 @@ const BookingScript = () => {
               ) : null}
             </InputGroup>
           </div>
+          <div className="form-check col-sm-4 mt-3">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              value={isNewCustomer}
+              id="defaultCheck1"
+              onChange={e => setIsNewCustomer(e.target.checked)}
+            />
+            <label className="form-check-label" htmlFor="defaultCheck1">
+              Áp dụng cho khách hàng mới tạo
+            </label>
+          </div>
           <div className="col-sm-4">
             <button
               disabled={isSubmitting}
@@ -199,13 +213,14 @@ const BookingScript = () => {
                       <td className="font-size-14 text-center">{index + 1}</td>
                       {booking.statusCode === 201 ? (
                         <td className="font-size-14">
-                          Đặt lịch thành công với mã #{booking.result.code} -{" "}
-                          {formattedDate(booking.result.date)}
+                          Đặt lịch thành công |{booking.result.car.carLisenceNo}{" "}
+                          - {formattedDate(booking.result.date)}
                         </td>
                       ) : (
                         <td className="font-size-14">
-                          {booking.result.information.carLisenceNo} |{" "}
-                          {booking.result.error.message}
+                          {booking.result.information &&
+                            booking.result.information.carLisenceNo}{" "}
+                          | {booking.result.error.message}
                         </td>
                       )}
                       <td className="text-end">

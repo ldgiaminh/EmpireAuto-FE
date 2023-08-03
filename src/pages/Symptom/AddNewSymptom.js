@@ -16,7 +16,7 @@ import {
   Row,
 } from "reactstrap"
 
-import { withRouter } from "react-router-dom"
+import { Link, withRouter } from "react-router-dom"
 
 import { useDispatch, useSelector } from "react-redux"
 import Breadcrumbs from "../../components/Common/Breadcrumb"
@@ -97,7 +97,7 @@ const AddNewSymptom = props => {
     <div className="page-content">
       {isLoading && <Loader />}
       <Container fluid={true}>
-        <Breadcrumbs title="Tạo mới" breadcrumbItem="Triệu chứng" />
+        <Breadcrumbs title="Tạo mới" breadcrumbItem="Tạo mới triệu chứng" />
 
         <Row style={{ justifyContent: "center", height: "490px" }}>
           <Col xl={6} md={10}>

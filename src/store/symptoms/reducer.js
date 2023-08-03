@@ -115,6 +115,7 @@ const symptomsLists = (state = INIT_STATE, action) => {
         // symptoms: state.symptoms.filter(
         //   symptoms => symptoms.id.toString() !== action.payload.id.toString()
         // ),
+        symptoms: action.payload,
       }
 
     case DELETE_SYMPTOMS_FAIL:

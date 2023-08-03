@@ -7,6 +7,7 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
+  UncontrolledTooltip,
 } from "reactstrap"
 
 import { useSelector, useDispatch } from "react-redux"
@@ -64,10 +65,13 @@ const QrCode = props => {
       >
         <DropdownToggle
           className="btn header-item noti-icon"
-          id="page-header-notifications-dropdown"
+          id="qr-code"
           tag="button"
         >
           <i className="mdi mdi-qrcode-scan bx-burst-hover"></i>
+          <UncontrolledTooltip placement="auto" target="qr-code">
+            Quét mã Qr Code
+          </UncontrolledTooltip>
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu-end">
           <DropdownItem tag="button">

@@ -43,7 +43,10 @@ const SymptomLists = props => {
   ==================================================
   */
 
-  const [symptomId, setSymptomId] = useState("")
+  const [symptom, setSymptom] = useState({
+    id: "",
+    name: "",
+  })
 
   /*
   ==================================================
@@ -104,7 +107,8 @@ const SymptomLists = props => {
                 className="text-danger"
                 onClick={() => {
                   const id = cellProps.row.original.id
-                  onClickDelete(id)
+                  const name = cellProps.row.original.name
+                  onClickDelete(id, name)
                 }}
               >
                 <i className="mdi mdi-delete font-size-18" id="deletetooltip" />
@@ -129,13 +133,18 @@ const SymptomLists = props => {
   //delete customer
   const [deleteModal, setDeleteModal] = useState(false)
 
-  const onClickDelete = id => {
-    setSymptomId(id)
+  const onClickDelete = (id, name) => {
+    setSymptom({
+      ...symptom,
+      id: id,
+      name: name,
+    })
+    console.log(symptom)
     setDeleteModal(true)
   }
 
   const handleDelete = () => {
-    dispatch(onDeleteSymptom(symptomId))
+    dispatch(onDeleteSymptom(symptom))
     onPaginationPageChange(1)
     setDeleteModal(false)
   }

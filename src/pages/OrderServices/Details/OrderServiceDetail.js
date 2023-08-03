@@ -238,10 +238,12 @@ const OrderServiceDetail = props => {
     {
       label: "Còn trống",
       options: [],
+      isFirstGroup: true,
     },
     {
       label: "Đã đầy",
       options: [],
+      isFirstGroup: false,
     },
   ]
 
@@ -311,6 +313,30 @@ const OrderServiceDetail = props => {
           )}
         </div>
       </components.Option>
+    )
+  }
+
+  const GroupHeading = props => {
+    const { label, title = "WLD", isFirstGroup } = props.data
+
+    if (!isFirstGroup) {
+      // Return a simple div instead of the GroupHeading component
+      return (
+        <components.GroupHeading {...props}>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <span>{label}</span>
+          </div>
+        </components.GroupHeading>
+      )
+    }
+
+    return (
+      <components.GroupHeading {...props}>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <span>{label}</span>
+          <span>{title}</span>
+        </div>
+      </components.GroupHeading>
     )
   }
 
@@ -485,7 +511,8 @@ const OrderServiceDetail = props => {
                               </DropdownMenu>
                             </Dropdown>
                           </div>
-                        ) : orderServicesDetail.status === 6 ? (
+                        ) : orderServicesDetail.status === 6 ||
+                          orderServicesDetail.maintenanceSchedule !== null ? (
                           <>
                             <p className="fw-semibold">
                               <strong>Bảo trì: </strong>
@@ -654,7 +681,7 @@ const OrderServiceDetail = props => {
                                               required={true}
                                               onClick={e => e.preventDefault()}
                                               components={{
-                                                // SingleValue,
+                                                GroupHeading,
                                                 Option,
                                               }}
                                               // menuPlacement="top"

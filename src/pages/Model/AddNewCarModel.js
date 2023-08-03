@@ -11,7 +11,9 @@ import {
   Col,
   Container,
   Form,
+  FormFeedback,
   FormGroup,
+  Input,
   Label,
   Row,
 } from "reactstrap"
@@ -27,8 +29,14 @@ import {
 } from "store/actions"
 import Loader from "components/Loader/Loader"
 
+import * as Yup from "yup"
+import { useFormik } from "formik"
+
 const AddNewCarModel = props => {
   const dispatch = useDispatch()
+
+  //meta title
+  document.title = "Tạo dòng xe | Empire Garage"
 
   /*
   ==================================================
@@ -47,14 +55,8 @@ const AddNewCarModel = props => {
   ==================================================
   */
 
-  const [selectedGroup, setSelectedGroup] = useState(null)
-  const [isFormValid, setIsFormValid] = useState(false)
+  const [selectedBrandName, setSelectedBrandName] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
-
-  const [model, setModel] = useState({
-    name: "",
-    brandId: "",
-  })
 
   /*
   ==================================================
@@ -64,61 +66,31 @@ const AddNewCarModel = props => {
 
   useEffect(() => {
     dispatch(onGetCarBrand())
-  }, [dispatch])
+  }, [dispatch, onGetCarBrand])
 
   /*
   ==================================================
-  HANDLE VALUE
+  FORM
   ==================================================
   */
 
-  function handleSelectGroup(selected) {
-    setModel({
-      ...model,
-      brandId: selected.value,
-    })
-    setSelectedGroup(selected)
-    setIsFormValid(false)
-  }
+  const validation = useFormik({
+    // enableReinitialize : use this flag when initial values needs to be changed
+    enableReinitialize: true,
 
-  const handleChange = e => {
-    const value = e.target.value
-    setModel({ ...model, [e.target.name]: value })
-    setIsFormValid(false)
-  }
-
-  /*
-  ==================================================
-  OPTIONS
-  ==================================================
-  */
-
-  const optionGroup = carsBrand.map(c => ({
-    label: c.name,
-    value: c.id,
-  }))
-
-  /*
-  ==================================================
-  SUBMIT
-  ==================================================
-  */
-
-  const saveModel = e => {
-    e.preventDefault()
-
-    // Check if model is empty
-    if (!model.brandId || !model.name) {
-      setIsFormValid(true)
-      return
-    }
-
-    if (model) {
-      dispatch(onAddNewCarModel(model, props.history, selectedGroup.label))
+    initialValues: {
+      name: "",
+      brandId: "",
+    },
+    validationSchema: Yup.object({
+      name: Yup.string().required("Vui lòng nhập tên dòng  xe"),
+      brandId: Yup.string().required("Vui lòng chọn thương hiệu xe"),
+    }),
+    onSubmit: values => {
+      dispatch(onAddNewCarModel(values, props.history, selectedBrandName))
       setIsSubmitting(true)
-      setIsFormValid(false)
-    }
-  }
+    },
+  })
 
   /*
   ==================================================
@@ -126,70 +98,98 @@ const AddNewCarModel = props => {
   ==================================================
   */
 
-  const resetForm = () => {
-    setModel({
-      name: "",
-      brandId: "",
-    })
-    setSelectedGroup(null)
-  }
-
   const handleReset = () => {
-    resetForm()
-    setIsFormValid(false)
+    // Reset the form values to their initial state
+    validation.resetForm()
+
+    // Clear the selected value for brandId
+    validation.setFieldValue("brandId", "")
+
+    // Clear any validation errors
+    validation.setErrors({})
   }
 
   return (
     <div className="page-content">
       {isLoading && <Loader />}
       <Container fluid={true}>
-        <Breadcrumbs title="Tạo mới" breadcrumbItem="Thương hiệu" />
+        <Breadcrumbs title="Tạo mới" breadcrumbItem="Dòng xe" />
 
         <Row style={{ justifyContent: "center", height: "490px" }}>
           <Col xl={6} md={10}>
             <Card>
               <CardBody>
-                <CardTitle>Dòng xe</CardTitle>
+                <CardTitle>Tạo mới dòng xe</CardTitle>
                 <CardSubtitle className="mb-4">
                   Nhập vào chỗ trống bên dưới để tạo mới dòng xe
                 </CardSubtitle>
-                {isFormValid ? (
-                  <Alert color="danger">Vui lòng điền đầy đủ dữ liệu</Alert>
-                ) : null}
-                <Form onSubmit={saveModel}>
+                <Form
+                  onSubmit={e => {
+                    e.preventDefault()
+                    validation.handleSubmit()
+                    return false
+                  }}
+                >
                   <FormGroup className="select2-container mb-4" row>
-                    <Label md="2" className="col-form-label">
+                    <Label md="3" className="col-form-label">
                       Hãng xe
                     </Label>
-                    <Col md="10">
-                      <Select
-                        value={selectedGroup}
-                        onChange={s => {
-                          handleSelectGroup(s)
+                    <Col md="9">
+                      <Input
+                        type="select"
+                        name="brandId"
+                        value={validation.values.brandId}
+                        onChange={e => {
+                          validation.handleChange(e)
+                          const selectedOption =
+                            e.target.options[e.target.selectedIndex]
+                          setSelectedBrandName(selectedOption.text) // Set the selected brand name
                         }}
-                        options={optionGroup}
-                        placeholder="Chọn hãng xe"
-                        classNamePrefix="select2-selection"
-                      />
+                        invalid={
+                          validation.touched.brandId &&
+                          validation.errors.brandId
+                        }
+                      >
+                        <option value="">Chọn hãng xe</option>
+                        {carsBrand.map(option => (
+                          <option key={option.id} value={option.id}>
+                            {option.name}
+                          </option>
+                        ))}
+                      </Input>
+                      {validation.touched.brandId &&
+                      validation.errors.brandId ? (
+                        <FormFeedback type="invalid">
+                          {validation.errors.brandId}
+                        </FormFeedback>
+                      ) : null}
                     </Col>
                   </FormGroup>
-                  <FormGroup className="mb-4" row>
-                    <Label
-                      htmlFor="billing-name"
-                      md="2"
-                      className="col-form-label"
-                    >
-                      Tên dòng xe
+
+                  <FormGroup className="select2-container mb-4" row>
+                    <Label md="3" className="col-form-label">
+                      Tên dòng xe*
                     </Label>
-                    <Col md="10">
-                      <input
-                        className="form-control"
-                        type="text"
-                        placeholder="Nhập tên hãng"
+                    <Col md="9">
+                      <Input
                         name="name"
-                        onChange={e => handleChange(e)}
-                        value={model.name}
+                        placeholder="Nhập tên dòng xe"
+                        type="text"
+                        className="form-control"
+                        id="validationCustom01"
+                        onChange={validation.handleChange}
+                        value={validation.values.name || ""}
+                        invalid={
+                          validation.touched.name && validation.errors.name
+                            ? true
+                            : false
+                        }
                       />
+                      {validation.touched.name && validation.errors.name ? (
+                        <FormFeedback type="invalid">
+                          {validation.errors.name}
+                        </FormFeedback>
+                      ) : null}
                     </Col>
                   </FormGroup>
 
@@ -206,7 +206,7 @@ const AddNewCarModel = props => {
                       className="btn btn-secondary"
                       onClick={handleReset}
                     >
-                      Hủy
+                      Xóa
                     </button>
                   </div>
                 </Form>

@@ -52,8 +52,8 @@ function* onAddModel({ payload: carsModel, history, brandName }) {
   try {
     const response = yield call(addNewCarsModel, carsModel)
     yield put(addNewCarsModelSuccess(response))
-    toast.success("Tạo mới thành công " + response.name)
     history.push(`/brands/${carsModel.brandId}/${brandName}`)
+    toast.success("Tạo mới thành công " + response.name)
   } catch (error) {
     toast.error("Đã có lỗi xảy ra")
     yield put(addNewCarsModelFail(error))
