@@ -31,6 +31,7 @@ class ProfileMenu extends Component {
     this.state = {
       menu: false,
       name: "",
+      image: "",
     }
     this.toggle = this.toggle.bind(this)
   }
@@ -44,7 +45,7 @@ class ProfileMenu extends Component {
   componentDidMount() {
     const userData = getUserName()
     if (userData) {
-      this.setState({ name: userData.name })
+      this.setState({ name: userData.name, image: userData.image })
     }
   }
 
@@ -52,7 +53,8 @@ class ProfileMenu extends Component {
     if (prevProps.success !== this.props.success) {
       const userData = getUserName()
       if (userData) {
-        this.setState({ name: userData.name })
+        console.log(userData)
+        this.setState({ name: userData.name, image: userData.image })
       }
     }
   }
@@ -72,7 +74,7 @@ class ProfileMenu extends Component {
           >
             <img
               className="rounded-circle header-profile-user"
-              src={user1}
+              src={this.state.image}
               alt="Header Avatar"
             />{" "}
             <span className="d-none d-xl-inline-block ms-1">
