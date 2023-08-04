@@ -58,19 +58,10 @@ const App = props => {
     return layoutCls
   }
 
-  const [role, setRole] = useState("")
-
-  useEffect(() => {
-    if (localStorage.getItem("authUser")) {
-      const obj = JSON.parse(localStorage.getItem("authUser"))
-      setRole(obj.role)
-    }
-  }, [])
-
   const Layout = getLayout()
   return (
     <React.Fragment>
-      {role === "RE" && <NotificationMessaging />}
+      <NotificationMessaging />
       <ToastContainer
         position="top-right"
         autoClose={5000}

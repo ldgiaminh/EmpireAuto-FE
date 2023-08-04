@@ -323,6 +323,15 @@ const Navbar = props => {
                               >
                                 {props.t("Hãng xe")}
                               </Link>
+                              <Link
+                                to="/models"
+                                className="dropdown-item"
+                                onClick={() => {
+                                  props.toggleLeftmenu(false)
+                                }}
+                              >
+                                {props.t("Dòng xe")}
+                              </Link>
                             </div>
                           </li>
 

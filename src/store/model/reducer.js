@@ -13,10 +13,13 @@ import {
   GET_CARS_MODEL_BY_BRAND_FAIL,
   ADD_NEW_CAR_MODEL,
   RESET_CARS_MODEL,
+  GET_CAR_MODEL_DETAIL,
+  DELETE_CAR_MODEL,
 } from "./actionTypes"
 
 const INIT_STATE = {
   carsModel: [],
+  carsModelByBrand: [],
   carsModelDetail: {},
   error: {},
   isLoading: false,
@@ -41,7 +44,7 @@ const models = (state = INIT_STATE, action) => {
     case GET_CARS_MODEL_BY_BRAND_SUCCESS:
       return {
         ...state,
-        carsModel: action.payload,
+        carsModelByBrand: action.payload,
       }
 
     case GET_CARS_MODEL_BY_BRAND_FAIL:
@@ -72,15 +75,23 @@ const models = (state = INIT_STATE, action) => {
       }
 
     /* GET CAR MODEL */
+    case GET_CAR_MODEL_DETAIL:
+      return {
+        ...state,
+        isLoading: true,
+      }
+
     case GET_CAR_MODEL_DETAIL_SUCCESS:
       return {
         ...state,
+        isLoading: false,
         carsModelDetail: action.payload,
       }
 
     case GET_CAR_MODEL_DETAIL_FAIL:
       return {
         ...state,
+        isLoading: false,
         error: action.payload,
       }
 
@@ -88,10 +99,10 @@ const models = (state = INIT_STATE, action) => {
     case UPDATE_CAR_MODEL_SUCCESS:
       return {
         ...state,
-        carsModel: state.carsModel.map(user =>
-          user.id.toString() === action.payload.id.toString()
-            ? { user, ...action.payload }
-            : user
+        carsModel: state.carsModel.map(model =>
+          model.id.toString() === action.payload.id.toString()
+            ? { model, ...action.payload }
+            : model
         ),
       }
 
@@ -102,17 +113,28 @@ const models = (state = INIT_STATE, action) => {
       }
 
     /* DELETE MODEL */
+    case DELETE_CAR_MODEL:
+      return {
+        ...state,
+        isLoading: true,
+      }
+
     case DELETE_CAR_MODEL_SUCCESS:
       return {
         ...state,
+        isLoading: false,
         carsModel: state.carsModel.filter(
-          user => user.id.toString() !== action.payload.id.toString()
+          model => model.id !== action.payload.id
+        ),
+        carsModelByBrand: state.carsModelByBrand.filter(
+          model => model.id !== action.payload.id
         ),
       }
 
     case DELETE_CAR_MODEL_FAIL:
       return {
         ...state,
+        isLoading: false,
         error: action.payload,
       }
 

@@ -14,7 +14,7 @@ const DeleteModal = ({ show, onDeleteClick, onCloseClick }) => {
                 style={{ fontSize: "9em", color: "orange" }}
               />
               <h3>Bạn có muốn xóa?</h3>
-              <h5>Hành động này sẽ không thể hoàn tác nếu "Đồng Ý"!</h5>
+              <h5>Hành động này sẽ không thể hoàn tác nếu "Xác nhận"!</h5>
             </div>
           </Col>
         </Row>

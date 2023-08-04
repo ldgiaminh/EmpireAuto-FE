@@ -9,8 +9,6 @@ import {
   Row,
   UncontrolledTooltip,
 } from "reactstrap"
-import * as Yup from "yup"
-import { useFormik } from "formik"
 
 import { Name, IntendedMinute } from "./symptomlistCol"
 
@@ -21,7 +19,6 @@ import {
   getSymptomsLists as onGetSymptoms,
   deleteSymptoms as onDeleteSymptom,
 } from "store/symptoms/actions"
-import { isEmpty } from "lodash"
 
 //redux
 import { useSelector, useDispatch } from "react-redux"
@@ -47,6 +44,9 @@ const SymptomLists = props => {
     id: "",
     name: "",
   })
+
+  //delete
+  const [deleteModal, setDeleteModal] = useState(false)
 
   /*
   ==================================================
@@ -130,16 +130,12 @@ const SymptomLists = props => {
   ==================================================
   */
 
-  //delete customer
-  const [deleteModal, setDeleteModal] = useState(false)
-
   const onClickDelete = (id, name) => {
     setSymptom({
       ...symptom,
       id: id,
       name: name,
     })
-    console.log(symptom)
     setDeleteModal(true)
   }
 

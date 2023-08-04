@@ -283,11 +283,12 @@ export const addNewCarsModel = carsModel =>
   post(url.ADD_NEW_CAR_MODEL, carsModel)
 
 // update car model
-export const updateCarsModel = carsModel => put(url.UPDATE_CAR_MODEL, carsModel)
+export const updateCarsModel = (id, carsModel) =>
+  put(`${url.UPDATE_CAR_MODEL}/${id}`, carsModel)
 
 // delete car model
-export const deleteCarsModel = carsModel =>
-  del(url.DELETE_CAR_MODEL, { headers: { carsModel } })
+export const deleteCarsModel = id =>
+  del(`${url.DELETE_CAR_MODEL}/${id}`, { headers: { id } })
 
 /*
 ================================================

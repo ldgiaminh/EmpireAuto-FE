@@ -67,7 +67,7 @@ function* onUpdateSymptoms({ payload: symptoms, id, history }) {
     const response = yield call(updateSymptoms, id, symptoms)
     yield put(updateSymptomsSuccess(response))
     toast.success("Cập nhật thành công " + response.name)
-    history.push("/symptoms")
+    history.goBack()
   } catch (error) {
     toast.error("Đã có lỗi xảy ra")
     yield put(updateSymptomsFail(error))

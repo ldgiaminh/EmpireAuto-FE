@@ -80,15 +80,16 @@ const NotificationMessaging = props => {
     )
 
   return (
-    <div className="position-fixed top-0 end-0 p-3" style={{ zIndex: "1005" }}>
-      <Toast isOpen={props.isShow}>
-        <ToastHeader toggle={toggleToast}>
-          {/* <img src={logo} alt="" className="me-2" height="18" /> */}
-          {noti.title}
-        </ToastHeader>
-        <ToastBody>{noti.body}</ToastBody>
-      </Toast>
-    </div>
+    // <div className="position-fixed top-0 end-0 p-3" style={{ zIndex: "1005" }}>
+    //   <Toast isOpen={props.isShow}>
+    //     <ToastHeader toggle={toggleToast}>
+    //       <img src={logo} alt="" className="me-2" height="18" />
+    //       {noti.title}
+    //     </ToastHeader>
+    //     <ToastBody>{noti.body}</ToastBody>
+    //   </Toast>
+    // </div>
+    <></>
   )
 }
 

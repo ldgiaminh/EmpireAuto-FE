@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react"
-import PropTypes from "prop-types"
+import Select from "react-select"
 
 import {
+  Alert,
+  Button,
   Card,
   CardBody,
   CardSubtitle,
@@ -16,27 +18,28 @@ import {
   Row,
 } from "reactstrap"
 
-import { withRouter } from "react-router-dom"
+import { Link, withRouter } from "react-router-dom"
 
 import { useDispatch, useSelector } from "react-redux"
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 
 import {
-  getSymptomsDetails as onGetSymptomDetail,
-  updateSymptoms as onUpdateSymptoms,
+  getCarsBrand as onGetCarBrand,
+  getCarsModelDetail as onGetCarModelDetail,
+  updateCarsModel as onUpdateCarModel,
 } from "store/actions"
 import Loader from "components/Loader/Loader"
 
 import * as Yup from "yup"
 import { useFormik } from "formik"
 
-const EditSymptom = props => {
+const EditCarModel = props => {
   const dispatch = useDispatch()
 
   //meta title
   useEffect(() => {
-    if (symptomsDetail) {
-      document.title = `${symptomsDetail.name} | Empire Garage`
+    if (carsModelDetail) {
+      document.title = `${carsModelDetail.name} | Empire Garage`
     } else {
       document.title = `Empire Garage`
     }
@@ -48,9 +51,10 @@ const EditSymptom = props => {
   ==================================================
   */
 
-  const { isLoading, symptomsDetail } = useSelector(state => ({
-    isLoading: state.symptomsLists.isLoading,
-    symptomsDetail: state.symptomsLists.symptomsDetail,
+  const { isLoading, carsBrand, carsModelDetail } = useSelector(state => ({
+    isLoading: state.models.isLoading,
+    carsModelDetail: state.models.carsModelDetail,
+    carsBrand: state.brands.carsBrand,
   }))
 
   /*
@@ -73,9 +77,13 @@ const EditSymptom = props => {
 
   useEffect(() => {
     if (params && params.id) {
-      dispatch(onGetSymptomDetail(params.id))
+      dispatch(onGetCarModelDetail(params.id))
     }
-  }, [params, onGetSymptomDetail, dispatch])
+  }, [params, onGetCarModelDetail, dispatch])
+
+  useEffect(() => {
+    dispatch(onGetCarBrand())
+  }, [dispatch, onGetCarBrand])
 
   /*
   ==================================================
@@ -88,20 +96,20 @@ const EditSymptom = props => {
     enableReinitialize: true,
 
     initialValues: {
-      name: (symptomsDetail && symptomsDetail.name) || "",
-      intendedMinutes: (symptomsDetail && symptomsDetail.intendedMinutes) || "",
+      name: (carsModelDetail && carsModelDetail.name) || "",
+      brandId:
+        (carsModelDetail &&
+          carsModelDetail.brand &&
+          carsModelDetail.brand.id) ||
+        "",
+      code: "",
     },
     validationSchema: Yup.object({
-      name: Yup.string().required("Vui lòng nhập tên triệu chứng"),
-      intendedMinutes: Yup.number()
-        .typeError("Vui lòng nhập một số")
-        .required("Vui lòng nhập thời gian kết thúc")
-        .positive("Thời gian dự kiến phải là một số dương")
-        .integer("Thời gian dự kiến phải là số nguyên"),
+      name: Yup.string().required("Vui lòng nhập tên dòng xe"),
+      brandId: Yup.string().required("Vui lòng chọn thương hiệu xe"),
     }),
     onSubmit: values => {
-      dispatch(onUpdateSymptoms(values, params.id, props.history))
-      validation.resetForm()
+      dispatch(onUpdateCarModel(values, params.id, props.history, values.name))
       setIsSubmitting(true)
     },
   })
@@ -131,17 +139,17 @@ const EditSymptom = props => {
       <Container fluid={true}>
         <Breadcrumbs
           title="Cập nhật"
-          breadcrumbItem={`${symptomsDetail && symptomsDetail.name}`}
+          breadcrumbItem={`${carsModelDetail && carsModelDetail.name}`}
         />
-        <Row style={{ justifyContent: "center" }}>
+
+        <Row style={{ justifyContent: "center", height: "490px" }}>
           <Col xl={6} md={10}>
             <Card>
               <CardBody>
-                <CardTitle>Cập nhật triệu chứng</CardTitle>
+                <CardTitle>Cập nhật dòng xe</CardTitle>
                 <CardSubtitle className="mb-4">
-                  Nhập vào chỗ trống bên dưới để cập nhật mới triệu chứng
+                  Nhập vào chỗ trống bên dưới để cập nhật mới dòng xe
                 </CardSubtitle>
-
                 <Form
                   onSubmit={e => {
                     e.preventDefault()
@@ -150,13 +158,50 @@ const EditSymptom = props => {
                   }}
                 >
                   <FormGroup className="select2-container mb-4" row>
-                    <Label md="5" className="col-form-label">
-                      Tên triệu chứng*
+                    <Label md="3" className="col-form-label">
+                      Hãng xe
                     </Label>
-                    <Col md="7">
+                    <Col md="9">
+                      <Input
+                        type="select"
+                        name="brandId"
+                        value={validation.values.brandId}
+                        onChange={e => {
+                          validation.handleChange(e)
+                        }}
+                        invalid={
+                          validation.touched.brandId &&
+                          validation.errors.brandId
+                        }
+                      >
+                        <option value="">
+                          {carsModelDetail && carsModelDetail.brand
+                            ? carsModelDetail.brand.name
+                            : "Chọn hãng xe"}
+                        </option>
+                        {carsBrand.map(option => (
+                          <option key={option.id} value={option.id}>
+                            {option.name}
+                          </option>
+                        ))}
+                      </Input>
+                      {validation.touched.brandId &&
+                      validation.errors.brandId ? (
+                        <FormFeedback type="invalid">
+                          {validation.errors.brandId}
+                        </FormFeedback>
+                      ) : null}
+                    </Col>
+                  </FormGroup>
+
+                  <FormGroup className="select2-container mb-4" row>
+                    <Label md="3" className="col-form-label">
+                      Tên dòng xe*
+                    </Label>
+                    <Col md="9">
                       <Input
                         name="name"
-                        placeholder="Nhập tên triệu chứng"
+                        placeholder="Nhập tên dòng xe"
                         type="text"
                         className="form-control"
                         id="validationCustom01"
@@ -171,32 +216,6 @@ const EditSymptom = props => {
                       {validation.touched.name && validation.errors.name ? (
                         <FormFeedback type="invalid">
                           {validation.errors.name}
-                        </FormFeedback>
-                      ) : null}
-                    </Col>
-                  </FormGroup>
-                  <FormGroup className="mb-4" row>
-                    <Label md="5" className="col-form-label">
-                      Thời gian dự kiến kết thúc (phút)*
-                    </Label>
-                    <Col md="7">
-                      <Input
-                        name="intendedMinutes"
-                        placeholder="Nhập thời gian dự kiến (phút)"
-                        type="number"
-                        onChange={validation.handleChange}
-                        value={validation.values.intendedMinutes || ""}
-                        invalid={
-                          validation.touched.intendedMinutes &&
-                          validation.errors.intendedMinutes
-                            ? true
-                            : false
-                        }
-                      />
-                      {validation.touched.intendedMinutes &&
-                      validation.errors.intendedMinutes ? (
-                        <FormFeedback type="invalid">
-                          {validation.errors.intendedMinutes}
                         </FormFeedback>
                       ) : null}
                     </Col>
@@ -228,10 +247,4 @@ const EditSymptom = props => {
   )
 }
 
-EditSymptom.propTypes = {
-  isLoading: PropTypes.bool,
-  match: PropTypes.any,
-  history: PropTypes.any,
-}
-
-export default withRouter(EditSymptom)
+export default withRouter(EditCarModel)

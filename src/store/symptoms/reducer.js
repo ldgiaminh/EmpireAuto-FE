@@ -4,6 +4,7 @@ import {
   ADD_SYMPTOMS_SUCCESS,
   DELETE_SYMPTOMS_FAIL,
   DELETE_SYMPTOMS_SUCCESS,
+  GET_SYMPTOMS_DETAIL,
   GET_SYMPTOMS_DETAIL_FAIL,
   GET_SYMPTOMS_DETAIL_SUCCESS,
   GET_SYMPTOMS_LIST,
@@ -47,15 +48,23 @@ const symptomsLists = (state = INIT_STATE, action) => {
 
     /* GET SYMPTOM DETAIL*/
 
+    case GET_SYMPTOMS_DETAIL:
+      return {
+        ...state,
+        isLoading: true,
+      }
+
     case GET_SYMPTOMS_DETAIL_SUCCESS:
       return {
         ...state,
+        isLoading: false,
         symptomsDetail: action.payload,
       }
 
     case GET_SYMPTOMS_DETAIL_FAIL:
       return {
         ...state,
+        isLoading: false,
         error: action.payload,
       }
 

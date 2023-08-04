@@ -64,8 +64,9 @@ export const getCarsModelByBrandFail = error => ({
 GET Model Detail
 ================================================
 */
-export const getCarsModelDetail = () => ({
+export const getCarsModelDetail = carModelId => ({
   type: GET_CAR_MODEL_DETAIL,
+  carModelId,
 })
 
 export const getCarsModelDetailSuccess = carsModelDetail => ({
@@ -107,9 +108,12 @@ PUT Model Update
 ================================================
 */
 
-export const updateCarsModel = carsModel => ({
+export const updateCarsModel = (carsModel, id, history, modelName) => ({
   type: UPDATE_CAR_MODEL,
   payload: carsModel,
+  id,
+  history,
+  modelName,
 })
 
 export const updateCarsModelSuccess = carsModel => ({

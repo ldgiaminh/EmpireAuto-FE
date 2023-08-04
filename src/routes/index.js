@@ -32,7 +32,8 @@ import UserLists from "../pages/User/index"
 import CarBrand from "../pages/CarBrand/index"
 
 //Car model
-import CarModel from "../pages/Model/index"
+import CarModels from "../pages/Model/index"
+import CarModelByBrand from "../pages/Model/CarModelByBrand"
 
 //Car problem
 import CarProblem from "../pages/Problem/index"
@@ -70,6 +71,7 @@ import AddNewCarBrand from "pages/CarBrand/AddNewCarBrand"
 import EditCarBrand from "pages/CarBrand/EditCarBrand"
 import AddNewSymptom from "pages/Symptom/AddNewSymptom"
 import EditSymptom from "pages/Symptom/EditSymptom"
+import EditCarModel from "pages/Model/EditCarModel"
 
 //Config Garage
 
@@ -101,7 +103,9 @@ const authProtectedRoutes = [
 
   //Vehicle
   { path: "/brands", component: CarBrand },
-  { path: "/brands/:id/:name", component: CarModel },
+  { path: "/models", component: CarModels },
+
+  { path: "/brands/:id/:name", component: CarModelByBrand },
   {
     path: "/brands/:id/:name/models/:id/:name",
     component: CarProblem,
@@ -127,7 +131,7 @@ const authProtectedRoutes = [
 
   //Edit
   { path: "/edit-brand/:id", component: EditCarBrand },
-  { path: "/edit-model/:id", component: AddNewCarModel },
+  { path: "/edit-model/:id", component: EditCarModel },
   { path: "/edit-problem/:id", component: AddNewCarProblem },
   { path: "/edit-item/:id", component: AddNewCarItem },
   { path: "/edit-symptom/:id", component: EditSymptom },

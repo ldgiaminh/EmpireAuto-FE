@@ -37,7 +37,7 @@ const WelcomeComp = () => {
             <Col sm="4">
               <div className="avatar-md profile-user-wid mb-4">
                 <img
-                  src={avatar1}
+                  src={info.image}
                   alt=""
                   className="img-thumbnail rounded-circle"
                 />
