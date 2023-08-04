@@ -206,10 +206,12 @@ const OrderServiceDetail = props => {
     {
       label: "Còn trống",
       options: [],
+      isFirstGroup: true,
     },
     {
       label: "Đã đầy",
       options: [],
+      isFirstGroup: false,
     },
   ]
 

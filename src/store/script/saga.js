@@ -56,11 +56,7 @@ function* onRunScriptCustomers({ number }) {
     const response = yield call(runScriptCustomers, number)
     yield put(runScriptCustomerSuccess(response))
     toast.success("Tạo mới thành công " + number + " khách hàng")
-    localStorage.setItem("scriptCustomer", JSON.stringify(response))
-
-    setTimeout(() => {
-      localStorage.removeItem("scriptCustomer")
-    }, 6 * 60 * 60 * 1000)
+    // localStorage.setItem("scriptCustomer", JSON.stringify(response))
   } catch (error) {
     yield put(runScriptCustomerFail(error))
     toast.error("Đã có lỗi xảy ra")
@@ -99,11 +95,11 @@ function* onRunScriptBookings({ number1, number2, isNewCustomer }) {
     } else {
       toast.error("Tạo thất bại " + countFail + " đặt lịch")
     }
-    localStorage.setItem("scriptBooking", JSON.stringify(response))
+    // localStorage.setItem("scriptBooking", JSON.stringify(response))
 
-    setTimeout(() => {
-      localStorage.removeItem("scriptBooking")
-    }, 6 * 60 * 60 * 1000)
+    // setTimeout(() => {
+    //   localStorage.removeItem("scriptBooking")
+    // }, 6 * 60 * 60 * 1000)
   } catch (error) {
     toast.error("Đã có lỗi xảy ra")
     yield put(runScriptBookingFail(error))
@@ -144,11 +140,11 @@ function* onRunScriptCheckIns({ number1, number2 }) {
       toast.error(`Check-in thất bại ${countFail} đặt lịch`)
     }
 
-    localStorage.setItem("scriptCheckIn", JSON.stringify(response))
+    // localStorage.setItem("scriptCheckIn", JSON.stringify(response))
 
-    setTimeout(() => {
-      localStorage.removeItem("scriptCheckIn")
-    }, 6 * 60 * 60 * 1000)
+    // setTimeout(() => {
+    //   localStorage.removeItem("scriptCheckIn")
+    // }, 6 * 60 * 60 * 1000)
   } catch (error) {
     toast.error("Đã có lỗi xảy ra")
     yield put(runScriptCheckInFail(error.response.data.message))
@@ -171,11 +167,11 @@ function* onRunScriptDiagnoses({ number1, number2 }) {
     } else {
       toast.error("Chẩn đoán thất bại " + countFail + " phương tiện")
     }
-    localStorage.setItem("scriptDiagnose", JSON.stringify(response))
+    // localStorage.setItem("scriptDiagnose", JSON.stringify(response))
 
-    setTimeout(() => {
-      localStorage.removeItem("scriptDiagnose")
-    }, 6 * 60 * 60 * 1000)
+    // setTimeout(() => {
+    //   localStorage.removeItem("scriptDiagnose")
+    // }, 6 * 60 * 60 * 1000)
   } catch (error) {
     toast.error("Đã có lỗi xảy ra")
     yield put(runScriptDiagnoseFail(error.response.data))
@@ -197,11 +193,11 @@ function* onRunScriptConfirmPaids({ number1, number2, number3 }) {
     } else {
       toast.error("Xác nhận & Thanh toán thất bại " + countFail + " hóa đơn")
     }
-    localStorage.setItem("scriptConfirmPaid", JSON.stringify(response))
+    // localStorage.setItem("scriptConfirmPaid", JSON.stringify(response))
 
-    setTimeout(() => {
-      localStorage.removeItem("scriptConfirmPaid")
-    }, 6 * 60 * 60 * 1000)
+    // setTimeout(() => {
+    //   localStorage.removeItem("scriptConfirmPaid")
+    // }, 6 * 60 * 60 * 1000)
   } catch (error) {
     toast.error("Đã có lỗi xảy ra")
     yield put(runScriptConfirmPaidFail(error.response.data))
@@ -230,9 +226,9 @@ function* onRunScriptDones({ number1, number2, number3, number4 }) {
     }
     localStorage.setItem("scriptDone", JSON.stringify(response))
 
-    setTimeout(() => {
-      localStorage.removeItem("scriptDone")
-    }, 6 * 60 * 60 * 1000)
+    // setTimeout(() => {
+    //   localStorage.removeItem("scriptDone")
+    // }, 6 * 60 * 60 * 1000)
   } catch (error) {
     toast.error("Đã có lỗi xảy ra")
     yield put(runScriptDoneFail(error.response.data))
@@ -253,11 +249,11 @@ function* onRunScriptCheckOuts({ payload: data }) {
     } else {
       toast.error("Check-out thất bại " + countFail + " phương tiện")
     }
-    localStorage.setItem("scriptCheckOut", JSON.stringify(response))
+    // localStorage.setItem("scriptCheckOut", JSON.stringify(response))
 
-    setTimeout(() => {
-      localStorage.removeItem("scriptCheckOut")
-    }, 6 * 60 * 60 * 1000)
+    // setTimeout(() => {
+    //   localStorage.removeItem("scriptCheckOut")
+    // }, 6 * 60 * 60 * 1000)
   } catch (error) {
     toast.error("Đã có lỗi xảy ra")
     yield put(runScriptCheckOutFail(error))

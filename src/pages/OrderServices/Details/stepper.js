@@ -131,7 +131,10 @@ const Stepper = ({ logs }) => {
           }
         >
           <div className="md-step-circle">
-            {logs.done && logs.done.logDateTime !== null ? (
+            {logs.done &&
+            logs.done.logDateTime !== null &&
+            logs.checkout &&
+            logs.checkout.logDateTime !== null ? (
               <i className="fas fa-check"></i>
             ) : logs.checkout && logs.checkout.logDateTime !== null ? (
               <i className="fas fa-times"></i>

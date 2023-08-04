@@ -26,6 +26,7 @@ import {
   deleteCarsModel as onDeleteCarModel,
 } from "store/actions"
 import DeleteModal from "components/Common/DeleteModal"
+import Loader from "components/Loader/Loader"
 
 /*
   ==================================================
@@ -65,8 +66,9 @@ const CarModels = props => {
   ==================================================
   */
 
-  const { carsModel } = useSelector(state => ({
+  const { carsModel, isLoading } = useSelector(state => ({
     carsModel: state.models.carsModel,
+    isLoading: state.models.isLoading,
   }))
 
   /*
@@ -99,14 +101,14 @@ const CarModels = props => {
   useEffect(() => {
     const transformedData = transformData(carsModel)
     setModels(transformedData)
-  }, [])
+  }, [carsModel])
 
   useEffect(() => {
     const transformedData = transformData(carsModel)
     if (!isEmpty(transformedData)) {
       setModels(transformedData)
     }
-  }, [])
+  }, [carsModel])
 
   /*
   ==================================================
@@ -128,21 +130,25 @@ const CarModels = props => {
     const query = event.target.value.toLowerCase()
     setSearchQuery(query)
 
-    // Filter modelsData based on the search query
-    const filteredData = models.map(brand => {
-      return {
-        ...brand,
-        models: brand.models.filter(
-          model =>
-            model.name.toLowerCase().includes(query) ||
-            brand.category.toLowerCase().includes(query)
-        ),
-      }
-    })
+    if (query === "") {
+      // Revert to the original transformed data
+      const transformedData = transformData(carsModel)
+      setModels(transformedData)
+    } else {
+      // Filter models based on the search query
+      const filteredData = models.map(brand => {
+        return {
+          ...brand,
+          models: brand.models.filter(
+            model =>
+              model.name.toLowerCase().includes(query) ||
+              brand.category.toLowerCase().includes(query)
+          ),
+        }
+      })
 
-    console.log("Filtered Data:", filteredData)
-
-    setModels(filteredData)
+      setModels(filteredData)
+    }
   }
 
   /*
@@ -168,6 +174,7 @@ const CarModels = props => {
 
   return (
     <React.Fragment>
+      {isLoading && <Loader />}
       <DeleteModal
         show={deleteModal}
         onDeleteClick={handleDelete}
@@ -175,10 +182,7 @@ const CarModels = props => {
       />
       <div className="page-content">
         <Container fluid={true}>
-          <Breadcrumbs
-            title="Quản lý"
-            breadcrumbItem="Các dòng xe tại Empire Garage"
-          />
+          <Breadcrumbs title="Quản lý" breadcrumbItem="Tất cả dòng xe" />
           <Row>
             <Col sm={4}>
               <div className="search-box me-2 mb-2 d-inline-block search-table">
@@ -219,76 +223,91 @@ const CarModels = props => {
                 </div>
               </div>
             </Col>
-            {map(models, brand => (
-              <Row key={brand.id}>
-                <h4>{brand.category}</h4>
-                {map(brand.models, m => (
-                  <Col xl="4" sm="6" key={m.id}>
-                    <Card>
-                      <CardBody>
-                        <div className="d-flex">
-                          <div className="avatar-md me-4">
-                            <span className="avatar-title rounded-circle bg-transparent text-danger font-size-16">
-                              <img src={m && m.photo} alt="" height="55" />
-                            </span>
-                          </div>
+            {models.map(
+              brand =>
+                brand.models.length > 0 && ( // Correctly place the curly braces here
+                  <React.Fragment key={brand.id}>
+                    <Row>
+                      <h4>{brand.category}</h4>
+                      {brand.models.map(m => (
+                        <Col xl="4" sm="6" key={m.id}>
+                          <Card>
+                            <CardBody>
+                              <div className="d-flex">
+                                <div className="avatar-md me-4">
+                                  <span className="avatar-title rounded-circle bg-transparent text-danger font-size-16">
+                                    <img
+                                      src={m && m.photo}
+                                      alt=""
+                                      height="55"
+                                    />
+                                  </span>
+                                </div>
 
-                          <div className="flex-grow-1">
-                            <h5 className="d-flex justify-content-between align-items-center">
-                              <strong className="text-black font-size-17">
-                                {m && m.name}
-                              </strong>
-                              <Dropdown
-                                isOpen={openDropdownId === m.id}
-                                toggle={() => toggleDropdown(m.id)}
-                              >
-                                <DropdownToggle
-                                  tag="a"
-                                  className="btn nav-btn"
-                                  type="button"
-                                >
-                                  <i className="fa fa-fw fa-bars" />
-                                </DropdownToggle>
-                                <DropdownMenu className="dropdown-menu-end">
+                                <div className="flex-grow-1">
+                                  <h5 className="d-flex justify-content-between align-items-center">
+                                    <strong className="text-black font-size-16">
+                                      {m && m.name}
+                                    </strong>
+                                    <Dropdown
+                                      isOpen={openDropdownId === m.id}
+                                      toggle={() => toggleDropdown(m.id)}
+                                    >
+                                      <DropdownToggle
+                                        tag="a"
+                                        className="btn nav-btn"
+                                        type="button"
+                                      >
+                                        <i className="fa fa-fw fa-bars" />
+                                      </DropdownToggle>
+                                      <DropdownMenu className="dropdown-menu-end">
+                                        <Link
+                                          to={`/edit-model/${m.id}`}
+                                          className="dropdown-item"
+                                        >
+                                          Cập nhật
+                                        </Link>
+                                        <Link
+                                          to="#"
+                                          className="dropdown-item"
+                                          onClick={onClickDelete(m.id, m.name)}
+                                        >
+                                          Xóa
+                                        </Link>
+                                      </DropdownMenu>
+                                    </Dropdown>
+                                  </h5>
+                                  <p className="text-muted mb-3 text-uppercase">
+                                    {brand.category}
+                                  </p>
                                   <Link
-                                    to={`/edit-model/${m.id}`}
-                                    className="dropdown-item"
+                                    to={`/brands/${brand.id}/${
+                                      brand.category
+                                    }/models/${m.id}/${slugify(m.name, {
+                                      lower: true,
+                                    })}`}
+                                    className="text-decoration-underline text-primary"
                                   >
-                                    Cập nhật
+                                    Xem các vấn đề{" "}
+                                    <i className="mdi mdi-arrow-right"></i>
                                   </Link>
-                                  <Link
-                                    to="#"
-                                    className="dropdown-item"
-                                    onClick={onClickDelete(m.id, m.name)}
-                                  >
-                                    Xóa
-                                  </Link>
-                                </DropdownMenu>
-                              </Dropdown>
-                            </h5>
-                            <p className="text-muted mb-3 text-uppercase">
-                              {brand.category}
-                            </p>
-                            <Link
-                              to={`/brands/${brand.id}/${
-                                brand.category
-                              }/models/${m.id}/${slugify(m.name, {
-                                lower: true,
-                              })}`}
-                              className="text-decoration-underline text-primary"
-                            >
-                              Xem các vấn đề{" "}
-                              <i className="mdi mdi-arrow-right"></i>
-                            </Link>
-                          </div>
-                        </div>
-                      </CardBody>
-                    </Card>
-                  </Col>
-                ))}
-              </Row>
-            ))}
+                                </div>
+                              </div>
+                            </CardBody>
+                          </Card>
+                        </Col>
+                      ))}
+                    </Row>
+                  </React.Fragment>
+                )
+            )}
           </Row>
+          {/* Render a message when no results are found for any category */}
+          {models.every(brand => brand.models.length === 0) && (
+            <div className="w-100 text-center mt-5">
+              <h4>Không tìm thấy kết quả tìm kiếm "{searchQuery}"</h4>
+            </div>
+          )}
         </Container>
       </div>
     </React.Fragment>

@@ -119,7 +119,7 @@ const ConfirmCheckOut = props => {
           })()}
 
           {order.status !== 4 && (
-            <>
+            <Form>
               <Label>Ngày bảo trì</Label>
               <InputGroup className="mb-3">
                 <Flatpickr
@@ -160,12 +160,13 @@ const ConfirmCheckOut = props => {
                 <input
                   className="form-control"
                   type="textarea"
+                  placeholder="Nhập lý do hủy"
                   name="reason"
                   onChange={e => handleChange(e)}
                   value={reason}
                 />
               </InputGroup>
-            </>
+            </Form>
           )}
         </div>
 

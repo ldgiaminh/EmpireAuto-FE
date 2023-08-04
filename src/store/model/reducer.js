@@ -15,6 +15,7 @@ import {
   RESET_CARS_MODEL,
   GET_CAR_MODEL_DETAIL,
   DELETE_CAR_MODEL,
+  GET_CARS_MODEL,
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -28,15 +29,22 @@ const INIT_STATE = {
 const models = (state = INIT_STATE, action) => {
   switch (action.type) {
     /* GET MODEL */
+    case GET_CARS_MODEL:
+      return {
+        ...state,
+        isLoading: true,
+      }
     case GET_CARS_MODEL_SUCCESS:
       return {
         ...state,
+        isLoading: false,
         carsModel: action.payload,
       }
 
     case GET_CARS_MODEL_FAIL:
       return {
         ...state,
+        isLoading: false,
         error: action.payload,
       }
 
