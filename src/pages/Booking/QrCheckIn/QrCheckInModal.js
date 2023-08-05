@@ -12,6 +12,8 @@ import { checkinQRCode as checkInQRCodes } from "store/actions"
 const QrCheckInModal = props => {
   const { isOpen, toggle, history } = props
 
+  const [disabled, setDisabled] = useState(false)
+
   const dispatch = useDispatch()
 
   const { isAssign } = useSelector(state => ({
@@ -23,47 +25,22 @@ const QrCheckInModal = props => {
   }
 
   const handleScan = qrCode => {
-    if (qrCode) {
+    if (qrCode && !disabled) {
       toggle(false)
+      setDisabled(true)
       const data = {
         qrCode: qrCode,
         autoAssign: isAssign,
       }
       dispatch(checkInQRCodes(data, history))
-
-      // fetch(
-      //   `https://empire-api.azurewebsites.net/api/v1/booking-qrcode/close-generation?qrcode=${encodeURIComponent(
-      //     data
-      //   )}`,
-      //   {
-      //     method: "PUT",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //       Authorization: "Bearer " + obj.accessToken,
-      //     },
-      //   }
-      // )
-      //   .then(response => {
-      //     if (!response.ok) {
-      //       toggle(false)
-      //       toast.error("Không tìm thấy đặt lịch !!")
-      //       throw new Error("Network response was not ok")
-      //     }
-      //     return response.json()
-      //   })
-      //   .then(data => {
-      //     goToCheckIn(data.id)
-      //   })
-      //   .catch(error => {
-      //     toggle(false)
-      //     console.log("Error: " + error)
-      //   })
     }
   }
 
-  // const goToCheckIn = id => {
-  //   dispatch(checkInBooking(id, isAssign, history))
-  // }
+  useEffect(() => {
+    if (!isOpen) {
+      setDisabled(false)
+    }
+  }, [isOpen])
 
   return (
     <>

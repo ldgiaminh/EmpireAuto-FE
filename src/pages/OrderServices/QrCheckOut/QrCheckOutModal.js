@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { Modal } from "reactstrap"
 import PropTypes from "prop-types"
 import QrReader from "react-qr-reader"
@@ -13,6 +13,8 @@ const QrCheckOutModal = props => {
 
   const obj = JSON.parse(localStorage.getItem("authUser"))
 
+  const [disabled, setDisabled] = useState(false)
+
   const dispatch = useDispatch()
 
   const handleError = err => {
@@ -20,8 +22,9 @@ const QrCheckOutModal = props => {
   }
 
   const handleScan = data => {
-    if (data) {
+    if (data && !disabled) {
       toggle(false)
+      setDisabled(true)
 
       fetch(
         `https://empire-api.azurewebsites.net/api/v1/order-services/close-checkout-qrcode-generation?qrCode=${encodeURIComponent(
@@ -61,6 +64,12 @@ const QrCheckOutModal = props => {
         })
     }
   }
+
+  useEffect(() => {
+    if (!isOpen) {
+      setDisabled(false)
+    }
+  }, [isOpen])
 
   return (
     <>
