@@ -66,11 +66,12 @@ function* onAddBrands({ payload: carBrand, history }) {
 function* onUpdateCarBrands({ payload: carBrand, brandId, history }) {
   try {
     const response = yield call(updateCarsBrand, brandId, carBrand)
-    yield put(updateCarsBrandSuccess(response))
+    yield put(updateCarsBrandSuccess(carBrand))
     history.goBack()
     toast.success("Cập nhật thành công " + carBrand.name)
   } catch (error) {
     yield put(updateCarsBrandFail(error))
+    toast.error("Đã có lỗi xảy ra")
   }
 }
 

@@ -101,10 +101,8 @@ const brands = (state = INIT_STATE, action) => {
       return {
         ...state,
         isLoading: false,
-        carsBrand: state.carsBrand.map(user =>
-          user.id.toString() === action.payload.id.toString()
-            ? { user, ...action.payload }
-            : user
+        carsBrand: state.carsBrand.map(brand =>
+          brand.id === action.payload.id ? { brand, ...action.payload } : brand
         ),
       }
 

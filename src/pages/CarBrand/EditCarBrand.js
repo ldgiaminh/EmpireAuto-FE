@@ -139,7 +139,7 @@ const EditCarBrand = props => {
             photo: url,
           }
           dispatch(onUpdateCarBrands(newValues, params.id, props.history))
-          deletePhotoFromFirebase(carsBrandDetail.photo)
+          // deletePhotoFromFirebase(carsBrandDetail.photo)
           setIsLoad(false)
         })
         .catch(error => {
@@ -164,8 +164,9 @@ const EditCarBrand = props => {
     // Reset the form values to their initial state
     validation.resetForm()
 
-    // Clear the selected value for brandId
+    // Clear the selected value
     validation.setFieldValue("photo", "")
+    validation.setFieldValue("name", "")
 
     // Clear any validation errors
     validation.setErrors({})
