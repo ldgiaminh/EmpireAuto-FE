@@ -209,7 +209,7 @@ const CarBrand = props => {
                 <div className="text-sm-end">
                   <Button type="button" color="success" className="mb-2 me-2">
                     <i className="mdi mdi-file-plus-outline me-1" />
-                    Tạo mới với Excel
+                    Excel
                   </Button>
                 </div>
               </div>

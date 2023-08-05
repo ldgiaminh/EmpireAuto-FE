@@ -105,14 +105,14 @@ const CarProblemByModel = props => {
           return <Name {...cellProps} />
         },
       },
-      // {
-      //   Header: "Triệu chứng",
-      //   accessor: "symptom.name",
-      //   filterable: true,
-      //   Cell: cellProps => {
-      //     return <Symptoms {...cellProps} />
-      //   },
-      // },
+      {
+        Header: "Triệu chứng",
+        accessor: "symptom.name",
+        filterable: true,
+        Cell: cellProps => {
+          return <Symptoms {...cellProps} />
+        },
+      },
       {
         Header: "Thời gian dự kiến (phút)",
         accessor: "intendedMinutes",

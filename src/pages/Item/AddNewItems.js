@@ -37,6 +37,9 @@ import Loader from "components/Loader/Loader"
 const AddNewCarItem = () => {
   const dispatch = useDispatch()
 
+  //meta title
+  document.title = "Tạo mới dịch vụ | Empire Garage"
+
   /*
   ==================================================
   STATE FROM REDUX
