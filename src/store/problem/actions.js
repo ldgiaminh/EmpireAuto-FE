@@ -65,8 +65,9 @@ export const getCarsProblemByModelFail = error => ({
 GET Problem Detail
 ================================================
 */
-export const getCarsProblemDetail = () => ({
+export const getCarsProblemDetail = problemId => ({
   type: GET_CAR_PROBLEM_DETAIL,
+  problemId,
 })
 
 export const getCarsProblemDetailSuccess = carsProblemDetail => ({
@@ -88,16 +89,16 @@ POST Add New Problem
 export const addNewCarsProblem = (
   carsProblem,
   history,
-  carId,
-  carName,
+  brandId,
+  brandName,
   modelId,
   modelName
 ) => ({
   type: ADD_NEW_CAR_PROBLEM,
   payload: carsProblem,
   history,
-  carId,
-  carName,
+  brandId,
+  brandName,
   modelId,
   modelName,
 })

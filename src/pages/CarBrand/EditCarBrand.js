@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react"
-import PropTypes from "prop-types"
 import {
   Alert,
   Button,
@@ -10,6 +9,7 @@ import {
   Col,
   Container,
   Form,
+  FormFeedback,
   FormGroup,
   Input,
   Label,
@@ -22,14 +22,17 @@ import Breadcrumbs from "../../components/Common/Breadcrumb"
 import { useSelector, useDispatch } from "react-redux"
 
 import {
-  addNewCarsBrand as onAddNewCarBrand,
   getCarsBrandDetail as onGetCarBrandDetail,
+  updateCarsBrand as onUpdateCarBrands,
 } from "store/actions"
 
 import { Link, withRouter } from "react-router-dom"
 
+import * as Yup from "yup"
+import { useFormik } from "formik"
+
 //Firebase
-import { ref as sRef } from "firebase/storage"
+import { ref as sRef, deleteObject } from "firebase/storage"
 import { storage } from "helpers/firebase"
 import { getDownloadURL, uploadBytes } from "firebase/storage"
 import Loader from "components/Loader/Loader"
@@ -37,19 +40,31 @@ import Loader from "components/Loader/Loader"
 const EditCarBrand = props => {
   const dispatch = useDispatch()
 
+  /*
+  ==================================================
+  STATE FROM REDUX
+  ==================================================
+  */
+
   const { isLoading, carsBrandDetail } = useSelector(state => ({
     isLoading: state.brands.isLoading,
     carsBrandDetail: state.brands.carsBrandDetail,
   }))
 
-  const [brand, setBrand] = useState({
-    name: carsBrandDetail.name || "",
-    photo: carsBrandDetail.photo || "",
-  })
+  /*
+  ==================================================
+  USE STATE
+  ==================================================
+  */
 
-  const [selectedFile, setSelectedFile] = useState(null)
-  const [isFormValid, setIsFormValid] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isLoad, setIsLoad] = useState(false)
+
+  /*
+  ==================================================
+  USE EFFECT
+  ==================================================
+  */
 
   const {
     match: { params },
@@ -61,36 +76,20 @@ const EditCarBrand = props => {
     }
   }, [params, onGetCarBrandDetail, dispatch])
 
-  useEffect(() => {
-    setBrand(prevBrand => ({
-      ...prevBrand,
-      name: carsBrandDetail.name || "",
-      photo: carsBrandDetail.photo || "",
-    }))
-  }, [carsBrandDetail])
+  /*
+  ==================================================
+  HANDLE VALUE
+  ==================================================
+  */
 
-  const handleChange = e => {
-    const value = e.target.value
-    setBrand({ ...brand, [e.target.name]: value })
-    setIsFormValid(false)
-  }
-
-  const resetForm = () => {
-    setBrand({
-      name: carsBrandDetail.name,
-      photo: carsBrandDetail.photo,
-    })
-  }
-
-  function handleAcceptedFiles(files) {
+  const handleAcceptedFiles = files => {
     if (files.length > 0) {
       const file = files[0]
       Object.assign(file, {
         preview: URL.createObjectURL(file),
         formattedSize: formatBytes(file.size),
       })
-      setSelectedFile(file)
-      setIsFormValid(false)
+      validation.setFieldValue("photo", file) // Update the 'photo' field in formik
     }
   }
 
@@ -107,75 +106,148 @@ const EditCarBrand = props => {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i]
   }
 
-  const saveBrand = e => {
-    e.preventDefault()
+  /*
+  ==================================================
+  FORM
+  ==================================================
+  */
 
-    // Check if brand is empty
-    if (brand.name.trim() === "") {
-      setIsFormValid(true)
-      return
-    }
+  const validation = useFormik({
+    // enableReinitialize : use this flag when initial values needs to be changed
+    enableReinitialize: true,
 
-    if (brand && selectedFile) {
-      const imageRef = sRef(storage, `brand/${selectedFile.name}`)
-      uploadBytes(imageRef, selectedFile).then(snapshot => {
-        getDownloadURL(snapshot.ref).then(url => {
-          const newBrand = {
-            ...brand,
+    initialValues: {
+      name: (carsBrandDetail && carsBrandDetail.name) || "",
+      photo: {
+        preview: (carsBrandDetail && carsBrandDetail.photo) || null,
+      },
+    },
+    validationSchema: Yup.object({
+      name: Yup.string().required("Vui lòng nhập tên thương hiệu"),
+      photo: Yup.mixed().required("Vui lòng chọn hình ảnh"),
+    }),
+    onSubmit: values => {
+      setIsLoad(true)
+
+      const imageRef = sRef(storage, `brand/${values.photo.name}`)
+      setIsSubmitting(true)
+      uploadBytes(imageRef, values.photo)
+        .then(snapshot => getDownloadURL(snapshot.ref))
+        .then(url => {
+          const newValues = {
+            ...values,
             photo: url,
           }
-          dispatch(onAddNewCarBrand(newBrand, props.history))
+          dispatch(onUpdateCarBrands(newValues, params.id, props.history))
+          deletePhotoFromFirebase(carsBrandDetail.photo)
+          setIsLoad(false)
         })
-      })
-      setIsSubmitting(true)
-    } else {
-      setIsFormValid(true)
-    }
-  }
+        .catch(error => {
+          // Handle error, if any
+          console.error(error)
+          setIsSubmitting(false) // Set isSubmitting to false to allow resubmission
+          setIsLoad(false)
+        })
+    },
+  })
+
+  // Use the 'dirty' property to disable the "Cập nhật" button until there are changes
+  const isButtonDisabled = !validation.dirty || isSubmitting
+
+  /*
+  ==================================================
+  Reset Form
+  ==================================================
+  */
 
   const handleReset = () => {
-    resetForm()
-    setSelectedFile(null)
-    setIsFormValid(false)
+    // Reset the form values to their initial state
+    validation.resetForm()
+
+    // Clear the selected value for brandId
+    validation.setFieldValue("photo", "")
+
+    // Clear any validation errors
+    validation.setErrors({})
+
+    props.history.goBack()
+  }
+
+  /*
+  ==================================================
+  REMOVE IMAGE
+  ==================================================
+  */
+
+  const deletePhotoFromFirebase = async photoUrl => {
+    try {
+      // Get the reference to the photo in Firebase Storage
+      const photoRef = sRef(storage, photoUrl)
+
+      // Delete the photo using the deleteObject method
+      await deleteObject(photoRef)
+    } catch (error) {
+      // Handle the error if the photo deletion fails.
+      console.error("Error deleting photo:", error)
+    }
   }
 
   return (
     <div className="page-content">
-      {isLoading && <Loader />}
-      <Container fluid>
-        <Breadcrumbs title="Thương hiệu" breadcrumbItem="Cập nhật" />
+      {(isLoading || isLoad) && <Loader />}
+      <Container fluid={true}>
+        <Breadcrumbs title="Tạo mới" breadcrumbItem="Thương hiệu" />
 
         <Row style={{ justifyContent: "center" }}>
           <Col xl={6} md={10}>
             <Card>
               <CardBody>
-                <CardTitle>Cập nhật thương hiệu</CardTitle>
+                <CardTitle>Tạo mới thương hiệu</CardTitle>
                 <CardSubtitle className="mb-4">
                   {" "}
-                  Nhập vào chỗ trống bên dưới để cập nhật
+                  Nhập vào chỗ trống bên dưới để tạo mới thương hiệu
                 </CardSubtitle>
-                {isFormValid ? (
-                  <Alert color="danger">Vui lòng điền đầy đủ dữ liệu</Alert>
-                ) : null}
-                <Form onSubmit={saveBrand}>
-                  <div className="mb-3">
-                    <Label htmlFor="formrow-email-Input">Tên thương hiệu</Label>
-                    <Input
-                      type="text"
-                      className="form-control"
-                      placeholder="Nhập tên thương hiệu"
-                      name="name"
-                      onChange={e => handleChange(e)}
-                      value={brand.name}
-                    />
-                  </div>
+
+                <Form
+                  onSubmit={e => {
+                    e.preventDefault()
+                    validation.handleSubmit()
+                    return false
+                  }}
+                >
+                  <FormGroup className="mb-4" row>
+                    <Label md="3" className="col-form-label">
+                      Tên dòng xe*
+                    </Label>
+                    <Col md="9">
+                      <Input
+                        name="name"
+                        placeholder="Nhập tên dòng xe"
+                        type="text"
+                        className="form-control"
+                        id="validationCustom01"
+                        onChange={validation.handleChange}
+                        value={validation.values.name || ""}
+                        invalid={
+                          validation.touched.name && validation.errors.name
+                            ? true
+                            : false
+                        }
+                      />
+                      {validation.touched.name && validation.errors.name ? (
+                        <FormFeedback type="invalid">
+                          {validation.errors.name}
+                        </FormFeedback>
+                      ) : null}
+                    </Col>
+                  </FormGroup>
 
                   <div>
-                    <Label htmlFor="formrow-email-Input">Hình ảnh (Logo)</Label>
+                    <Label htmlFor="formrow-email-Input">
+                      Hình ảnh (Logo)*
+                    </Label>
                     <Dropzone
-                      onDrop={acceptedFiles => {
-                        handleAcceptedFiles(acceptedFiles)
-                      }}
+                      onDrop={handleAcceptedFiles}
                       accept="image/*"
                       maxFiles={1}
                     >
@@ -185,7 +257,7 @@ const EditCarBrand = props => {
                             className="dz-message needsclick mt-2"
                             {...getRootProps()}
                           >
-                            <input {...getInputProps()} />
+                            <input {...getInputProps()} name="photo" />
                             <div className="mb-3">
                               <i className="display-4 text-muted bx bxs-cloud-upload" />
                             </div>
@@ -195,8 +267,14 @@ const EditCarBrand = props => {
                       )}
                     </Dropzone>
 
+                    {validation.touched.photo && validation.errors.photo ? (
+                      <Alert color="danger mt-2">
+                        {validation.errors.photo}
+                      </Alert>
+                    ) : null}
+
                     <div className="dropzone-previews mt-3" id="file-previews">
-                      {selectedFile && (
+                      {validation.values.photo && (
                         <Card className="mt-1 mb-0 shadow-none border dz-processing dz-image-preview dz-success dz-complete">
                           <div className="p-2">
                             <Row className="align-items-center">
@@ -205,8 +283,12 @@ const EditCarBrand = props => {
                                   data-dz-thumbnail=""
                                   height="80"
                                   className="avatar-sm rounded bg-light"
-                                  alt={selectedFile.name}
-                                  src={selectedFile.preview}
+                                  alt={validation.values.name}
+                                  src={
+                                    validation.values.photo.preview !== null
+                                      ? validation.values.photo.preview
+                                      : validation.values.photo
+                                  }
                                 />
                               </Col>
                               <Col>
@@ -214,38 +296,17 @@ const EditCarBrand = props => {
                                   to="#"
                                   className="text-muted font-weight-bold"
                                 >
-                                  {selectedFile.name}
+                                  {validation.values.photo.preview !== null &&
+                                  validation.values.photo.name
+                                    ? validation.values.photo.name
+                                    : validation.values.name}
                                 </Link>
                                 <p className="mb-0">
-                                  <strong>{selectedFile.formattedSize}</strong>
-                                </p>
-                              </Col>
-                            </Row>
-                          </div>
-                        </Card>
-                      )}
-                      {brand && (
-                        <Card className="mt-1 mb-0 shadow-none border dz-processing dz-image-preview dz-success dz-complete">
-                          <div className="p-2">
-                            <Row className="align-items-center">
-                              <Col className="col-auto">
-                                <img
-                                  data-dz-thumbnail=""
-                                  height="80"
-                                  className="avatar-sm rounded bg-light"
-                                  alt={brand.photo}
-                                  src={brand.photo}
-                                />
-                              </Col>
-                              <Col>
-                                <Link
-                                  to="#"
-                                  className="text-muted font-weight-bold"
-                                >
-                                  {brand.photo}
-                                </Link>
-                                <p className="mb-0">
-                                  <strong>{brand.formattedSize}</strong>
+                                  <strong>
+                                    {validation.values.photo.formattedSize
+                                      ? validation.values.photo.formattedSize
+                                      : "Ảnh hiện tại"}
+                                  </strong>
                                 </p>
                               </Col>
                             </Row>
@@ -255,22 +316,35 @@ const EditCarBrand = props => {
                     </div>
                   </div>
 
-                  <div className="d-flex flex-grap gap-2 justify-content-end text-center mt-4">
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="btn btn-primary"
-                    >
-                      Tạo mới
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-secondary"
-                      onClick={handleReset}
-                    >
-                      Hủy
-                    </button>
-                  </div>
+                  <hr />
+                  <Row className="mt-3">
+                    {/* <Col sm="6">
+                      <Button
+                        className="btn btn-secondary"
+                        onClick={() => props.history.goBack()}
+                      >
+                        <i className="mdi mdi-arrow-left me-1" /> Trở về{" "}
+                      </Button>
+                    </Col> */}
+                    <Col sm="12">
+                      <div className="text-sm-end mt-2 mt-sm-0">
+                        <button
+                          type="submit"
+                          disabled={isButtonDisabled}
+                          className="btn btn-success me-2"
+                        >
+                          Cập nhật
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          onClick={handleReset}
+                        >
+                          Hủy
+                        </button>
+                      </div>
+                    </Col>
+                  </Row>
                 </Form>
               </CardBody>
             </Card>
@@ -279,11 +353,6 @@ const EditCarBrand = props => {
       </Container>
     </div>
   )
-}
-
-EditCarBrand.propTypes = {
-  match: PropTypes.object,
-  isLoading: PropTypes.bool,
 }
 
 export default withRouter(EditCarBrand)

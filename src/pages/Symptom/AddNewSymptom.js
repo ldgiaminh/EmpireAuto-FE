@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import Select from "react-select"
 
 import {
+  Button,
   Card,
   CardBody,
   CardSubtitle,
@@ -168,22 +169,35 @@ const AddNewSymptom = props => {
                     </Col>
                   </FormGroup>
 
-                  <div className="d-flex flex-grap gap-2 justify-content-end text-center mt-4">
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="btn btn-primary"
-                    >
-                      Tạo mới
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-secondary"
-                      onClick={handleReset}
-                    >
-                      Hủy
-                    </button>
-                  </div>
+                  <hr />
+                  <Row className="mt-3">
+                    <Col sm="6">
+                      <Button
+                        className="btn btn-secondary"
+                        onClick={() => props.history.goBack()}
+                      >
+                        <i className="mdi mdi-arrow-left me-1" /> Trở về{" "}
+                      </Button>
+                    </Col>
+                    <Col sm="6">
+                      <div className="text-sm-end mt-2 mt-sm-0">
+                        <button
+                          type="submit"
+                          disabled={isSubmitting}
+                          className="btn btn-primary me-2"
+                        >
+                          Tạo mới
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          onClick={handleReset}
+                        >
+                          Hủy
+                        </button>
+                      </div>
+                    </Col>
+                  </Row>
                 </Form>
               </CardBody>
             </Card>

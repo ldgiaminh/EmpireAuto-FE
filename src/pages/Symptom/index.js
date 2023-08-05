@@ -65,12 +65,12 @@ const SymptomLists = props => {
   */
   const columns = useMemo(
     () => [
-      // {
-      //   Header: "#",
-      //   Cell: () => {
-      //     return <input type="checkbox" />
-      //   },
-      // },
+      {
+        Header: "STT",
+        Cell: ({ row }) => {
+          return <span className="text-align-center">{row.index + 1}</span>
+        },
+      },
       {
         Header: "Triệu chứng",
         accessor: "name",
@@ -145,10 +145,6 @@ const SymptomLists = props => {
     setDeleteModal(false)
   }
 
-  const handleAddNew = () => {
-    props.history.push("/create-new-symptom")
-  }
-
   var node = useRef()
   const onPaginationPageChange = page => {
     if (
@@ -162,7 +158,15 @@ const SymptomLists = props => {
     }
   }
 
-  // const keyField = "id"
+  /*
+  ==================================================
+  ADD NEW
+  ==================================================
+  */
+
+  const handleAddNew = () => {
+    props.history.push("/create-new-symptom")
+  }
 
   return (
     <React.Fragment>

@@ -255,11 +255,12 @@ export const getCarsBrandDetails = id =>
 export const addNewCarsBrand = carBrand => post(url.ADD_NEW_CAR_BRAND, carBrand)
 
 // update car brand
-export const updateCarsBrand = carBrand => put(url.UPDATE_CAR_BRAND, carBrand)
+export const updateCarsBrand = (id, carBrand) =>
+  put(`${url.UPDATE_CAR_BRAND}/${id}`, carBrand)
 
 // delete car brand
-export const deleteCarsBrand = carBrand =>
-  del(url.DELETE_CAR_BRAND, { headers: { carBrand } })
+export const deleteCarsBrand = id =>
+  del(`${url.DELETE_CAR_BRAND}/${id}`, { headers: { id } })
 
 /*
 ================================================
@@ -305,19 +306,19 @@ export const getCarsProblemByModel = id =>
 
 // get detail car problem
 export const getCarsProblemDetails = id =>
-  get(`${url.GET_CAR_PROBLEM_DETAIL}/{${id}}`)
+  get(`${url.GET_CAR_PROBLEM_DETAIL}/${id}`)
 
 // add car problem
 export const addNewCarsProblem = carsProblem =>
   post(url.ADD_NEW_CAR_PROBLEM, carsProblem)
 
 // update car problem
-export const updateCarsProblem = carsProblem =>
-  put(url.UPDATE_CAR_PROBLEM, carsProblem)
+export const updateCarsProblem = (id, carsProblem) =>
+  put(`${url.UPDATE_CAR_PROBLEM}/${id}`, carsProblem)
 
 // delete car problem
-export const deleteCarsProblem = carsProblem =>
-  del(url.DELETE_CAR_PROBLEM, { headers: { carsProblem } })
+export const deleteCarsProblem = id =>
+  del(`${url.DELETE_CAR_PROBLEM}/${id}`, { headers: { id } })
 
 /*
 ================================================

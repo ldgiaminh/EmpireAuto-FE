@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react"
 
 import {
-  Button,
   Card,
   CardBody,
   CardSubtitle,
@@ -30,14 +29,21 @@ import {
   getSymptomsLists as onGetCarSymptoms,
   addNewCarsProblem as onAddNewCarProblem,
   resetCarsModel as onResetCarsModel,
+  getCarsProblemDetail as onGetCarProblemDetail,
 } from "store/actions"
 import Loader from "components/Loader/Loader"
 
-const AddNewCarProblem = props => {
+const EditCarProblem = props => {
   const dispatch = useDispatch()
 
   //meta title
-  document.title = "Tạo mới vấn đề phương tiện | Empire Garage"
+  useEffect(() => {
+    if (carsProblemDetail) {
+      document.title = `${carsProblemDetail.name} | Empire Garage`
+    } else {
+      document.title = `Empire Garage`
+    }
+  })
 
   /*
   ==================================================
@@ -45,14 +51,19 @@ const AddNewCarProblem = props => {
   ==================================================
   */
 
-  const { carsBrand, carsModelByBrand, symptoms, isLoading } = useSelector(
-    state => ({
-      carsBrand: state.brands.carsBrand,
-      carsModelByBrand: state.models.carsModelByBrand,
-      symptoms: state.symptomsLists.symptoms,
-      isLoading: state.problems.isLoading,
-    })
-  )
+  const {
+    carsBrand,
+    carsModelByBrand,
+    symptoms,
+    carsProblemDetail,
+    isLoading,
+  } = useSelector(state => ({
+    carsBrand: state.brands.carsBrand,
+    carsModelByBrand: state.models.carsModelByBrand,
+    symptoms: state.symptomsLists.symptoms,
+    carsProblemDetail: state.problems.carsProblemDetail,
+    isLoading: state.problems.isLoading,
+  }))
 
   /*
   ==================================================
@@ -70,6 +81,16 @@ const AddNewCarProblem = props => {
   USE EFFECT
   ==================================================
   */
+
+  const {
+    match: { params },
+  } = props
+
+  useEffect(() => {
+    if (params && params.id) {
+      dispatch(onGetCarProblemDetail(params.id))
+    }
+  }, [params, onGetCarProblemDetail, dispatch])
 
   useEffect(() => {
     dispatch(onGetCarBrand())
@@ -116,22 +137,23 @@ const AddNewCarProblem = props => {
     enableReinitialize: true,
 
     initialValues: {
-      name: "",
+      name: (carsProblemDetail && carsProblemDetail.name) || "",
       brandId: "",
       modelId: "",
       symptomId: "",
-      intendedMinutes: "",
+      intendedMinutes:
+        (carsProblemDetail && carsProblemDetail.intendedMinutes) || "",
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Vui lòng nhập tên vấn đề"),
       brandId: Yup.string().required("Vui lòng chọn hãng xe"),
       modelId: Yup.string().when("brandId", {
         is: brandId => !brandId,
-        then: Yup.string().nullable().required("Vui lòng chọn hãng xe"),
+        then: Yup.string().nullable().required("Vui lòng chọn hãng xe trước"),
         otherwise: Yup.string().nullable().required("Vui lòng chọn dòng xe"),
       }),
       symptomId: Yup.string().required("Vui lòng chọn triệu chứng đi kèm"),
-      intendedMinutes: Yup.string().required("Vui lòng nhập dự kiến kết thúc"),
+      intendedMinutes: Yup.string().required("Vui lòng chọn dự kiến kết thúc"),
     }),
     onSubmit: values => {
       const newValue = { ...values }
@@ -175,16 +197,19 @@ const AddNewCarProblem = props => {
     <div className="page-content">
       {isLoading && <Loader />}
       <Container fluid>
-        <Breadcrumbs title="Tạo mới" breadcrumbItem="Vấn đề phương tiện" />
+        <Breadcrumbs
+          title="Cập nhật"
+          breadcrumbItem={`${carsProblemDetail.name}`}
+        />
 
         <Row style={{ justifyContent: "center", height: "500px" }}>
-          <Col md={8}>
+          <Col md={10}>
             <Card>
               <CardBody>
-                <CardTitle>Tạo Mới Vấn đề</CardTitle>
+                <CardTitle>Cập nhật vấn đề</CardTitle>
                 <CardSubtitle className="mb-4">
-                  Nhập vào chỗ trống bên dưới để tạo mới vấn đề cho các phương
-                  tiện
+                  Nhập vào chỗ trống bên dưới để cấp nhật mới vấn đề cho các
+                  phương tiện
                 </CardSubtitle>
                 <Form
                   onSubmit={e => {
@@ -196,10 +221,14 @@ const AddNewCarProblem = props => {
                   <Row>
                     <Col lg={6}>
                       <FormGroup className="mb-4" row>
-                        <Label htmlFor="name" md="5" className="col-form-label">
+                        <Label
+                          htmlFor="billing-name"
+                          md="4"
+                          className="col-form-label"
+                        >
                           Tên vấn đề*
                         </Label>
-                        <Col md="7">
+                        <Col md="8">
                           <Input
                             name="name"
                             placeholder="Nhập tên dòng xe"
@@ -222,10 +251,10 @@ const AddNewCarProblem = props => {
                         </Col>
                       </FormGroup>
                       <FormGroup className="mb-4" row>
-                        <Label md="5" className="col-form-label">
+                        <Label md="4" className="col-form-label">
                           Hãng xe*
                         </Label>
-                        <Col md="7">
+                        <Col md="8">
                           <Input
                             type="select"
                             name="selectedBrand"
@@ -253,10 +282,10 @@ const AddNewCarProblem = props => {
                       </FormGroup>
 
                       <FormGroup row>
-                        <Label md="5" className="col-form-label">
+                        <Label md="4" className="col-form-label">
                           Dòng xe*
                         </Label>
-                        <Col md="7">
+                        <Col md="8">
                           <Input
                             type="select"
                             name="modelId"
@@ -275,7 +304,7 @@ const AddNewCarProblem = props => {
                             <option value="">
                               {selectedBrand
                                 ? "Chọn dòng xe"
-                                : "Vui lòng chọn hãng xe"}
+                                : "Vui lòng chọn hãng xe trước"}
                             </option>
                             {selectedBrand &&
                               (carsModelByBrand.length > 0 ? (
@@ -303,10 +332,10 @@ const AddNewCarProblem = props => {
                     </Col>
                     <Col lg={6}>
                       <FormGroup className="mb-4" row>
-                        <Label md="5" className="col-form-label">
+                        <Label md="4" className="col-form-label">
                           Triệu chứng*
                         </Label>
-                        <Col md="7">
+                        <Col md="8">
                           <Input
                             type="select"
                             name="symptomId"
@@ -335,13 +364,17 @@ const AddNewCarProblem = props => {
                         </Col>
                       </FormGroup>
                       <FormGroup row>
-                        <Label md="5" className="col-form-label">
+                        <Label
+                          htmlFor="billing-name"
+                          md="4"
+                          className="col-form-label"
+                        >
                           Dự kiến kết thức (phút)*
                         </Label>
-                        <Col md="7">
+                        <Col md="8">
                           <Input
                             name="intendedMinutes"
-                            placeholder="Nhập thời gian dự kiến"
+                            placeholder="Nhập thời gian dự kiến kết thúc"
                             type="text"
                             className="form-control"
                             id="validationCustom01"
@@ -364,35 +397,23 @@ const AddNewCarProblem = props => {
                       </FormGroup>
                     </Col>
                   </Row>
-                  <hr />
-                  <Row className="mt-3">
-                    <Col sm="6">
-                      <Button
-                        className="btn btn-secondary"
-                        onClick={() => props.history.goBack()}
-                      >
-                        <i className="mdi mdi-arrow-left me-1" /> Trở về{" "}
-                      </Button>
-                    </Col>
-                    <Col sm="6">
-                      <div className="text-sm-end mt-2 mt-sm-0">
-                        <button
-                          type="submit"
-                          disabled={isSubmitting}
-                          className="btn btn-primary me-2"
-                        >
-                          Tạo mới
-                        </button>
-                        <button
-                          type="button"
-                          className="btn btn-secondary"
-                          onClick={handleReset}
-                        >
-                          Hủy
-                        </button>
-                      </div>
-                    </Col>
-                  </Row>
+
+                  <div className="d-flex flex-grap gap-2 justify-content-end text-center">
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="btn btn-primary"
+                    >
+                      Tạo mới
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      onClick={handleReset}
+                    >
+                      Hủy
+                    </button>
+                  </div>
                 </Form>
               </CardBody>
             </Card>
@@ -403,4 +424,4 @@ const AddNewCarProblem = props => {
   )
 }
 
-export default withRouter(AddNewCarProblem)
+export default withRouter(EditCarProblem)

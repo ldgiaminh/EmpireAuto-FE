@@ -3,6 +3,7 @@ import { call, put, takeEvery } from "redux-saga/effects"
 // User Redux States
 import {
   ADD_NEW_CAR_BRAND,
+  DELETE_CAR_BRAND,
   GET_CARS_BRAND,
   UPDATE_CAR_BRAND,
 } from "./actionTypes"
@@ -16,11 +17,14 @@ import {
   getCarsBrandDetailFail,
   updateCarsBrandSuccess,
   updateCarsBrandFail,
+  deleteCarsBrandSuccess,
+  deleteCarsBrandFail,
 } from "./actions"
 
 //Include Both Helper File with needed methods
 import {
   addNewCarsBrand,
+  deleteCarsBrand,
   getCarsBrand,
   getCarsBrandDetails,
   updateCarsBrand,
@@ -29,7 +33,7 @@ import { GET_CAR_BRAND_DETAIL } from "./actionTypes"
 
 import { toast } from "react-toastify"
 
-function* fetchCarsBrand() {
+function* fetchCarsBrands() {
   try {
     const response = yield call(getCarsBrand)
     yield put(getCarsBrandSuccess(response))
@@ -38,7 +42,7 @@ function* fetchCarsBrand() {
   }
 }
 
-function* fetchCarsBrandDetail({ brandId }) {
+function* fetchCarsBrandDetails({ brandId }) {
   try {
     const response = yield call(getCarsBrandDetails, brandId)
     yield put(getCarsBrandDetailSuccess(response))
@@ -47,11 +51,11 @@ function* fetchCarsBrandDetail({ brandId }) {
   }
 }
 
-function* onAddBrand({ payload: carBrand, history }) {
+function* onAddBrands({ payload: carBrand, history }) {
   try {
     const response = yield call(addNewCarsBrand, carBrand)
-    history.push("/brands")
     yield put(addNewCarsBrandSuccess(response))
+    history.push("/brands")
     toast.success("Tạo mới thành công " + response.name)
   } catch (error) {
     toast.error("Đã có lỗi xảy ra")
@@ -59,20 +63,34 @@ function* onAddBrand({ payload: carBrand, history }) {
   }
 }
 
-function* onUpdateCarBrand({ payload: carBrand }) {
+function* onUpdateCarBrands({ payload: carBrand, brandId, history }) {
   try {
-    const response = yield call(updateCarsBrand, carBrand)
+    const response = yield call(updateCarsBrand, brandId, carBrand)
     yield put(updateCarsBrandSuccess(response))
+    history.goBack()
+    toast.success("Cập nhật thành công " + carBrand.name)
   } catch (error) {
     yield put(updateCarsBrandFail(error))
   }
 }
 
+function* onDeleteCarBrands({ payload: carBrand }) {
+  try {
+    const response = yield call(deleteCarsBrand, carBrand.id)
+    yield put(deleteCarsBrandSuccess(carBrand))
+    toast.success("Xóa thành công " + carBrand.name)
+  } catch (error) {
+    yield put(deleteCarsBrandFail(error))
+    toast.error("Đã có lỗi xảy ra")
+  }
+}
+
 function* brandsSaga() {
-  yield takeEvery(GET_CARS_BRAND, fetchCarsBrand)
-  yield takeEvery(GET_CAR_BRAND_DETAIL, fetchCarsBrandDetail)
-  yield takeEvery(ADD_NEW_CAR_BRAND, onAddBrand)
-  yield takeEvery(UPDATE_CAR_BRAND, onUpdateCarBrand)
+  yield takeEvery(GET_CARS_BRAND, fetchCarsBrands)
+  yield takeEvery(GET_CAR_BRAND_DETAIL, fetchCarsBrandDetails)
+  yield takeEvery(ADD_NEW_CAR_BRAND, onAddBrands)
+  yield takeEvery(UPDATE_CAR_BRAND, onUpdateCarBrands)
+  yield takeEvery(DELETE_CAR_BRAND, onDeleteCarBrands)
 }
 
 export default brandsSaga

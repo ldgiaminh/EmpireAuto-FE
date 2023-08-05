@@ -23,14 +23,26 @@ import Breadcrumbs from "../../components/Common/Breadcrumb"
 import { useSelector, useDispatch } from "react-redux"
 
 import {
-  getCarsProblem as onGetCarsProblem,
+  getCarsProblemByModel as onGetCarsProblemByModel,
   deleteCarsProblem as onDeleteProblem,
 } from "store/actions"
 import DeleteModal from "components/Common/DeleteModal"
 
-const CarProblems = props => {
+const CarProblemByModel = props => {
   //meta title
-  document.title = "Empire Garage"
+  useEffect(() => {
+    if (params) {
+      document.title = `Vấn đề xe ${
+        params.name.charAt(0).toUpperCase() + params.name.slice(1)
+      } | Empire Garage`
+    } else {
+      document.title = "Empire Garage"
+    }
+  })
+
+  const {
+    match: { params },
+  } = props
 
   const { history } = props
   const dispatch = useDispatch()
@@ -41,8 +53,8 @@ const CarProblems = props => {
   ==================================================
   */
 
-  const { carsProblem } = useSelector(state => ({
-    carsProblem: state.problems.carsProblem,
+  const { carsProblemByModel } = useSelector(state => ({
+    carsProblemByModel: state.problems.carsProblemByModel,
   }))
 
   /*
@@ -66,8 +78,10 @@ const CarProblems = props => {
   */
 
   useEffect(() => {
-    dispatch(onGetCarsProblem())
-  }, [, dispatch])
+    if (params && params.id) {
+      dispatch(onGetCarsProblemByModel(params.id))
+    }
+  }, [params, dispatch])
 
   /*
   ==================================================
@@ -115,24 +129,24 @@ const CarProblems = props => {
           const { id, name } = cellProps.row.original
           const formattedName = slugify(name, { lower: true })
 
-          //   const paramss = {
-          //     brandId: params.id,
-          //     brandName: "brand_name_value",
-          //     modelId: "model_id_value",
-          //     modelName: "slug_value",
-          //     problemId: id,
-          //     formattedName: formattedName,
-          //   }
+          const paramss = {
+            brandId: params.id,
+            brandName: "brand_name_value",
+            modelId: "model_id_value",
+            modelName: "slug_value",
+            problemId: id,
+            formattedName: formattedName,
+          }
           return (
             <Button
               type="button"
               color="primary"
               className="btn-sm btn-rounded"
-              //   onClick={() =>
-              //     history.push(
-              //       `/brands/${params.id}/${params.name}/models/${params.id}/${params.name}/problems/${id}/${formattedName}/items?brandId=${brandId}&brandName=${brandName}`
-              //     )
-              //   }
+              onClick={() =>
+                history.push(
+                  `/brands/${params.id}/${params.name}/models/${params.id}/${params.name}/problems/${id}/${formattedName}/items?brandId=${brandId}&brandName=${brandName}`
+                )
+              }
             >
               Xem các dịch vụ
             </Button>
@@ -232,7 +246,7 @@ const CarProblems = props => {
         <Container fluid={true}>
           <Breadcrumbs
             title="Quản lý"
-            breadcrumbItem="Tất cả vấn đề của các xe"
+            breadcrumbItem={`Vấn đề xe - ${params.name}`}
           />
           <Row>
             <Col lg="12">
@@ -240,12 +254,10 @@ const CarProblems = props => {
                 <CardBody>
                   <TableContainer
                     columns={columns}
-                    data={carsProblem}
+                    data={carsProblemByModel}
                     isGlobalFilter={true}
                     isAddNew={true}
-                    isAddFileExcel={true}
                     handleAddNewClick={handleAddNew}
-                    handleAddFileExcelClick={handleAddNew}
                     customPageSize={10}
                     className="custom-header-css"
                   />
@@ -259,9 +271,9 @@ const CarProblems = props => {
   )
 }
 
-CarProblems.propTypes = {
+CarProblemByModel.propTypes = {
   isLoading: PropTypes.bool,
   match: PropTypes.any,
 }
 
-export default withRouter(CarProblems)
+export default withRouter(CarProblemByModel)

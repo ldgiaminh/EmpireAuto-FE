@@ -13,10 +13,15 @@ import {
   GET_CAR_PROBLEM_BY_MODEL_FAIL,
   GET_CARS_PROBLEM,
   ADD_NEW_CAR_PROBLEM,
+  GET_CAR_PROBLEM_BY_MODEL,
+  GET_CAR_PROBLEM_DETAIL,
+  UPDATE_CAR_PROBLEM,
+  DELETE_CAR_PROBLEM,
 } from "./actionTypes"
 
 const INIT_STATE = {
   carsProblem: [],
+  carsProblemByModel: [],
   carsProblemDetail: {},
   error: {},
   isLoading: false,
@@ -47,15 +52,23 @@ const problems = (state = INIT_STATE, action) => {
 
     /* GET PROBLEM BY MODEL */
 
+    case GET_CAR_PROBLEM_BY_MODEL:
+      return {
+        ...state,
+        isLoading: true,
+      }
+
     case GET_CAR_PROBLEM_BY_MODEL_SUCCESS:
       return {
         ...state,
-        carsProblem: action.payload,
+        isLoading: false,
+        carsProblemByModel: action.payload,
       }
 
     case GET_CAR_PROBLEM_BY_MODEL_FAIL:
       return {
         ...state,
+        isLoading: false,
         error: action.payload,
       }
 
@@ -83,23 +96,38 @@ const problems = (state = INIT_STATE, action) => {
 
     /* GET PROBLEM DETAIL */
 
+    case GET_CAR_PROBLEM_DETAIL:
+      return {
+        ...state,
+        isLoading: true,
+      }
+
     case GET_CAR_PROBLEM_DETAIL_SUCCESS:
       return {
         ...state,
+        isLoading: false,
         carsProblemDetail: action.payload,
       }
 
     case GET_CAR_PROBLEM_DETAIL_FAIL:
       return {
         ...state,
+        isLoading: false,
         error: action.payload,
       }
 
     /* UPDATE PROBLEM  */
 
+    case UPDATE_CAR_PROBLEM:
+      return {
+        ...state,
+        isLoading: true,
+      }
+
     case UPDATE_CAR_PROBLEM_SUCCESS:
       return {
         ...state,
+        isLoading: false,
         carsProblem: state.carsProblem.map(user =>
           user.id.toString() === action.payload.id.toString()
             ? { user, ...action.payload }
@@ -110,22 +138,34 @@ const problems = (state = INIT_STATE, action) => {
     case UPDATE_CAR_PROBLEM_FAIL:
       return {
         ...state,
+        isLoading: false,
         error: action.payload,
       }
 
     /* DELETE PROBLEM  */
+    case DELETE_CAR_PROBLEM:
+      return {
+        ...state,
+        isLoading: true,
+      }
 
     case DELETE_CAR_PROBLEM_SUCCESS:
       return {
         ...state,
+        isLoading: false,
         carsProblem: state.carsProblem.filter(
-          user => user.id.toString() !== action.payload.id.toString()
+          problem => problem.id.toString() !== action.payload.id.toString()
+        ),
+        carsProblemByModel: state.carsProblemByModel.filter(
+          problem => problem.id.toString() !== action.payload.id.toString()
         ),
       }
 
     case DELETE_CAR_PROBLEM_FAIL:
       return {
         ...state,
+        isLoading: false,
+
         error: action.payload,
       }
 

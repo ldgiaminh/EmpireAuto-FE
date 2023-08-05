@@ -9,6 +9,7 @@ import {
   Col,
   Container,
   Form,
+  FormFeedback,
   FormGroup,
   Input,
   Label,
@@ -23,6 +24,9 @@ import { useSelector, useDispatch } from "react-redux"
 import { addNewCarsBrand as onAddNewCarBrand } from "store/actions"
 
 import { Link, withRouter } from "react-router-dom"
+
+import * as Yup from "yup"
+import { useFormik } from "formik"
 
 //Firebase
 import { ref as sRef } from "firebase/storage"
@@ -49,14 +53,8 @@ const AddNewCarBrand = props => {
   ==================================================
   */
 
-  const [selectedFile, setSelectedFile] = useState(null)
-  const [isFormValid, setIsFormValid] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
-
-  const [brand, setBrand] = useState({
-    name: "",
-    photo: "",
-  })
+  const [isLoad, setIsLoad] = useState(false)
 
   /*
   ==================================================
@@ -64,21 +62,14 @@ const AddNewCarBrand = props => {
   ==================================================
   */
 
-  const handleChange = e => {
-    const value = e.target.value
-    setBrand({ ...brand, [e.target.name]: value })
-    setIsFormValid(false)
-  }
-
-  function handleAcceptedFiles(files) {
+  const handleAcceptedFiles = files => {
     if (files.length > 0) {
       const file = files[0]
       Object.assign(file, {
         preview: URL.createObjectURL(file),
         formattedSize: formatBytes(file.size),
       })
-      setSelectedFile(file)
-      setIsFormValid(false)
+      validation.setFieldValue("photo", file) // Update the 'photo' field in formik
     }
   }
 
@@ -97,35 +88,46 @@ const AddNewCarBrand = props => {
 
   /*
   ==================================================
-  SUBMIT
+  FORM
   ==================================================
   */
 
-  const saveBrand = e => {
-    e.preventDefault()
+  const validation = useFormik({
+    // enableReinitialize : use this flag when initial values needs to be changed
+    enableReinitialize: true,
 
-    // Check if brand is empty
-    if (brand.name.trim() === "") {
-      setIsFormValid(true)
-      return
-    }
+    initialValues: {
+      name: "",
+      photo: null,
+    },
+    validationSchema: Yup.object({
+      name: Yup.string().required("Vui lòng nhập tên thương hiệu"),
+      photo: Yup.mixed().required("Vui lòng chọn hình ảnh"),
+    }),
+    onSubmit: values => {
+      setIsLoad(true)
 
-    if (selectedFile) {
-      const imageRef = sRef(storage, `brand/${selectedFile.name}`)
-      uploadBytes(imageRef, selectedFile).then(snapshot => {
-        getDownloadURL(snapshot.ref).then(url => {
-          const newBrand = {
-            ...brand,
+      const imageRef = sRef(storage, `brand/${values.photo.name}`)
+      setIsSubmitting(true)
+      uploadBytes(imageRef, values.photo)
+        .then(snapshot => getDownloadURL(snapshot.ref))
+        .then(url => {
+          const newValues = {
+            ...values,
             photo: url,
           }
-          dispatch(onAddNewCarBrand(newBrand, props.history))
+          dispatch(onAddNewCarBrand(newValues, props.history))
+
+          setIsLoad(false)
         })
-      })
-      setIsSubmitting(true)
-    } else {
-      setIsFormValid(true)
-    }
-  }
+        .catch(error => {
+          // Handle error, if any
+          console.error(error)
+          setIsSubmitting(false) // Set isSubmitting to false to allow resubmission
+          setIsLoad(false)
+        })
+    },
+  })
 
   /*
   ==================================================
@@ -133,23 +135,23 @@ const AddNewCarBrand = props => {
   ==================================================
   */
 
-  const resetForm = () => {
-    setBrand({
-      name: "",
-      photo: "",
-    })
-  }
-
   const handleReset = () => {
-    resetForm()
-    setSelectedFile(null)
-    setIsFormValid(false)
+    // Reset the form values to their initial state
+    validation.resetForm()
+
+    // Clear the selected value for brandId
+    validation.setFieldValue("photo", "")
+
+    // Clear any validation errors
+    validation.setErrors({})
+
+    setIsSubmitting(false)
   }
 
   return (
     <div className="page-content">
-      {isLoading && <Loader />}
-      <Container fluid>
+      {(isLoading || isLoad) && <Loader />}
+      <Container fluid={true}>
         <Breadcrumbs title="Tạo mới" breadcrumbItem="Thương hiệu" />
 
         <Row style={{ justifyContent: "center" }}>
@@ -161,28 +163,47 @@ const AddNewCarBrand = props => {
                   {" "}
                   Nhập vào chỗ trống bên dưới để tạo mới thương hiệu
                 </CardSubtitle>
-                {isFormValid ? (
-                  <Alert color="danger">Vui lòng điền đầy đủ dữ liệu</Alert>
-                ) : null}
-                <Form onSubmit={saveBrand}>
-                  <div className="mb-3">
-                    <Label htmlFor="formrow-email-Input">Tên thương hiệu</Label>
-                    <Input
-                      type="text"
-                      className="form-control"
-                      placeholder="Nhập tên thương hiệu"
-                      name="name"
-                      onChange={e => handleChange(e)}
-                      value={brand.name}
-                    />
-                  </div>
+
+                <Form
+                  onSubmit={e => {
+                    e.preventDefault()
+                    validation.handleSubmit()
+                    return false
+                  }}
+                >
+                  <FormGroup className="mb-4" row>
+                    <Label md="3" className="col-form-label">
+                      Tên dòng xe*
+                    </Label>
+                    <Col md="9">
+                      <Input
+                        name="name"
+                        placeholder="Nhập tên dòng xe"
+                        type="text"
+                        className="form-control"
+                        id="validationCustom01"
+                        onChange={validation.handleChange}
+                        value={validation.values.name || ""}
+                        invalid={
+                          validation.touched.name && validation.errors.name
+                            ? true
+                            : false
+                        }
+                      />
+                      {validation.touched.name && validation.errors.name ? (
+                        <FormFeedback type="invalid">
+                          {validation.errors.name}
+                        </FormFeedback>
+                      ) : null}
+                    </Col>
+                  </FormGroup>
 
                   <div>
-                    <Label htmlFor="formrow-email-Input">Hình ảnh (Logo)</Label>
+                    <Label htmlFor="formrow-email-Input">
+                      Hình ảnh (Logo)*
+                    </Label>
                     <Dropzone
-                      onDrop={acceptedFiles => {
-                        handleAcceptedFiles(acceptedFiles)
-                      }}
+                      onDrop={handleAcceptedFiles}
                       accept="image/*"
                       maxFiles={1}
                     >
@@ -192,7 +213,7 @@ const AddNewCarBrand = props => {
                             className="dz-message needsclick mt-2"
                             {...getRootProps()}
                           >
-                            <input {...getInputProps()} />
+                            <input {...getInputProps()} name="photo" />
                             <div className="mb-3">
                               <i className="display-4 text-muted bx bxs-cloud-upload" />
                             </div>
@@ -202,8 +223,14 @@ const AddNewCarBrand = props => {
                       )}
                     </Dropzone>
 
+                    {validation.touched.photo && validation.errors.photo ? (
+                      <Alert color="danger mt-2">
+                        {validation.errors.photo}
+                      </Alert>
+                    ) : null}
+
                     <div className="dropzone-previews mt-3" id="file-previews">
-                      {selectedFile && (
+                      {validation.values.photo && (
                         <Card className="mt-1 mb-0 shadow-none border dz-processing dz-image-preview dz-success dz-complete">
                           <div className="p-2">
                             <Row className="align-items-center">
@@ -212,8 +239,8 @@ const AddNewCarBrand = props => {
                                   data-dz-thumbnail=""
                                   height="80"
                                   className="avatar-sm rounded bg-light"
-                                  alt={selectedFile.name}
-                                  src={selectedFile.preview}
+                                  alt={validation.values.photo.name}
+                                  src={validation.values.photo.preview}
                                 />
                               </Col>
                               <Col>
@@ -221,10 +248,12 @@ const AddNewCarBrand = props => {
                                   to="#"
                                   className="text-muted font-weight-bold"
                                 >
-                                  {selectedFile.name}
+                                  {validation.values.photo.name}
                                 </Link>
                                 <p className="mb-0">
-                                  <strong>{selectedFile.formattedSize}</strong>
+                                  <strong>
+                                    {validation.values.photo.formattedSize}
+                                  </strong>
                                 </p>
                               </Col>
                             </Row>
@@ -234,22 +263,35 @@ const AddNewCarBrand = props => {
                     </div>
                   </div>
 
-                  <div className="d-flex flex-grap gap-2 justify-content-end text-center mt-4">
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="btn btn-primary"
-                    >
-                      Tạo mới
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-secondary"
-                      onClick={handleReset}
-                    >
-                      Hủy
-                    </button>
-                  </div>
+                  <hr />
+                  <Row className="mt-3">
+                    <Col sm="6">
+                      <Button
+                        className="btn btn-secondary"
+                        onClick={() => props.history.goBack()}
+                      >
+                        <i className="mdi mdi-arrow-left me-1" /> Trở về{" "}
+                      </Button>
+                    </Col>
+                    <Col sm="6">
+                      <div className="text-sm-end mt-2 mt-sm-0">
+                        <button
+                          type="submit"
+                          disabled={isSubmitting}
+                          className="btn btn-primary me-2"
+                        >
+                          Tạo mới
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          onClick={handleReset}
+                        >
+                          Hủy
+                        </button>
+                      </div>
+                    </Col>
+                  </Row>
                 </Form>
               </CardBody>
             </Card>

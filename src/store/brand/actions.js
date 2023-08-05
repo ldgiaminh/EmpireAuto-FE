@@ -83,9 +83,11 @@ PUT Brands Update
 ================================================
 */
 
-export const updateCarsBrand = carsBrand => ({
+export const updateCarsBrand = (carsBrand, brandId, history) => ({
   type: UPDATE_CAR_BRAND,
   payload: carsBrand,
+  brandId,
+  history,
 })
 
 export const updateCarsBrandSuccess = carsBrand => ({

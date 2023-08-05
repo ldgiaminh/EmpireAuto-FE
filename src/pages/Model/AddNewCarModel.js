@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react"
-import Select from "react-select"
 
 import {
-  Alert,
   Button,
   Card,
   CardBody,
@@ -18,7 +16,7 @@ import {
   Row,
 } from "reactstrap"
 
-import { Link, withRouter } from "react-router-dom"
+import { withRouter } from "react-router-dom"
 
 import { useDispatch, useSelector } from "react-redux"
 import Breadcrumbs from "../../components/Common/Breadcrumb"
@@ -36,7 +34,7 @@ const AddNewCarModel = props => {
   const dispatch = useDispatch()
 
   //meta title
-  document.title = "Tạo dòng xe | Empire Garage"
+  document.title = "Tạo mới dòng xe | Empire Garage"
 
   /*
   ==================================================
@@ -130,7 +128,7 @@ const AddNewCarModel = props => {
                     return false
                   }}
                 >
-                  <FormGroup className="select2-container mb-4" row>
+                  <FormGroup className="mb-4" row>
                     <Label md="3" className="col-form-label">
                       Hãng xe
                     </Label>
@@ -166,7 +164,7 @@ const AddNewCarModel = props => {
                     </Col>
                   </FormGroup>
 
-                  <FormGroup className="select2-container mb-4" row>
+                  <FormGroup className="mb-4" row>
                     <Label md="3" className="col-form-label">
                       Tên dòng xe*
                     </Label>
@@ -192,23 +190,35 @@ const AddNewCarModel = props => {
                       ) : null}
                     </Col>
                   </FormGroup>
-
-                  <div className="d-flex flex-grap gap-2 justify-content-end text-center mt-4">
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="btn btn-primary"
-                    >
-                      Tạo mới
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-secondary"
-                      onClick={handleReset}
-                    >
-                      Xóa
-                    </button>
-                  </div>
+                  <hr />
+                  <Row className="mt-3">
+                    <Col sm="6">
+                      <Button
+                        className="btn btn-secondary"
+                        onClick={() => props.history.goBack()}
+                      >
+                        <i className="mdi mdi-arrow-left me-1" /> Trở về{" "}
+                      </Button>
+                    </Col>
+                    <Col sm="6">
+                      <div className="text-sm-end mt-2 mt-sm-0">
+                        <button
+                          type="submit"
+                          disabled={isSubmitting}
+                          className="btn btn-primary me-2"
+                        >
+                          Tạo mới
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          onClick={handleReset}
+                        >
+                          Hủy
+                        </button>
+                      </div>
+                    </Col>
+                  </Row>
                 </Form>
               </CardBody>
             </Card>

@@ -168,7 +168,7 @@ const CarModelByBrand = props => {
                       id="search-bar-0"
                       type="text"
                       className="form-control"
-                      placeholder="Tìm kiếm tên dòng xe"
+                      placeholder="Tìm kiếm dòng xe"
                       value={searchQuery}
                       onChange={handleSearch} // Call the search function on input change
                     />

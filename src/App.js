@@ -21,6 +21,7 @@ import NotificationMessaging from "components/NotificationMessaging/Notification
 
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
+import AppLogout from "AppLogout"
 
 // Import Firebase Configuration file
 //import { initFirebaseBackend } from "./helpers/firebase_helper"
@@ -75,29 +76,31 @@ const App = props => {
         theme="light"
       />
       <Router>
-        <Switch>
-          {publicRoutes.map((route, idx) => (
-            <Authmiddleware
-              path={route.path}
-              layout={NonAuthLayout}
-              component={route.component}
-              key={idx}
-              isAuthProtected={false}
-              exact
-            />
-          ))}
+        <AppLogout>
+          <Switch>
+            {publicRoutes.map((route, idx) => (
+              <Authmiddleware
+                path={route.path}
+                layout={NonAuthLayout}
+                component={route.component}
+                key={idx}
+                isAuthProtected={false}
+                exact
+              />
+            ))}
 
-          {authProtectedRoutes.map((route, idx) => (
-            <Authmiddleware
-              path={route.path}
-              layout={Layout}
-              component={route.component}
-              key={idx}
-              isAuthProtected={true}
-              exact
-            />
-          ))}
-        </Switch>
+            {authProtectedRoutes.map((route, idx) => (
+              <Authmiddleware
+                path={route.path}
+                layout={Layout}
+                component={route.component}
+                key={idx}
+                isAuthProtected={true}
+                exact
+              />
+            ))}
+          </Switch>
+        </AppLogout>
       </Router>
     </React.Fragment>
   )

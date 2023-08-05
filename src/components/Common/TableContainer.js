@@ -59,12 +59,14 @@ const TableContainer = ({
   isAddUserList,
   isAddBookingOptions,
   isCheckin,
+  isAddNew,
+  isAddFileExcel,
   handleBookingClick,
   handleOrderClicks,
   handleUserClick,
   handleAddNewClick,
   handleCheckInClick,
-  isAddNew,
+  handleAddFileExcelClick,
   customPageSize,
   className,
   customPageSizeOptions,
@@ -186,7 +188,7 @@ const TableContainer = ({
           </Col>
         )}
         {isAddNew && (
-          <Col sm="6">
+          <Col sm={6}>
             <div className="text-sm-end">
               <Button
                 type="button"
@@ -197,6 +199,17 @@ const TableContainer = ({
                 <i className="mdi mdi-plus me-1" />
                 Tạo mới
               </Button>
+              {isAddFileExcel && (
+                <Button
+                  type="button"
+                  color="success"
+                  className="mb-2"
+                  onClick={handleAddFileExcelClick}
+                >
+                  <i className="mdi mdi-file-plus-outline me-1" />
+                  Excel
+                </Button>
+              )}
             </div>
           </Col>
         )}

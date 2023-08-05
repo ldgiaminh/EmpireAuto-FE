@@ -11,6 +11,9 @@ import {
   GET_CAR_BRAND_DETAIL_SUCCESS,
   GET_CARS_BRAND,
   ADD_NEW_CAR_BRAND,
+  GET_CAR_BRAND_DETAIL,
+  UPDATE_CAR_BRAND,
+  DELETE_CAR_BRAND,
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -65,24 +68,39 @@ const brands = (state = INIT_STATE, action) => {
       }
 
     /* GET DETAIL BRAND */
+    case GET_CAR_BRAND_DETAIL:
+      return {
+        ...state,
+        isLoading: true,
+        carsBrandDetail: action.payload,
+      }
 
     case GET_CAR_BRAND_DETAIL_SUCCESS:
       return {
         ...state,
+        isLoading: false,
         carsBrandDetail: action.payload,
       }
 
     case GET_CAR_BRAND_DETAIL_FAIL:
       return {
         ...state,
+        isLoading: false,
         error: action.payload,
       }
 
     /* UPDATE BRAND */
 
+    case UPDATE_CAR_BRAND:
+      return {
+        ...state,
+        isLoading: true,
+      }
+
     case UPDATE_CAR_BRAND_SUCCESS:
       return {
         ...state,
+        isLoading: false,
         carsBrand: state.carsBrand.map(user =>
           user.id.toString() === action.payload.id.toString()
             ? { user, ...action.payload }
@@ -93,25 +111,33 @@ const brands = (state = INIT_STATE, action) => {
     case UPDATE_CAR_BRAND_FAIL:
       return {
         ...state,
+        isLoading: false,
         error: action.payload,
       }
 
     /* DELETE BRAND */
+    case DELETE_CAR_BRAND:
+      return {
+        ...state,
+        isLoading: true,
+      }
 
     case DELETE_CAR_BRAND_SUCCESS:
       return {
         ...state,
+        isLoading: false,
         carsBrand: state.carsBrand.filter(
-          user => user.id.toString() !== action.payload.id.toString()
+          brand => brand.id.toString() !== action.payload.id.toString()
         ),
       }
 
     case DELETE_CAR_BRAND_FAIL:
       return {
         ...state,
+        isLoading: false,
+
         error: action.payload,
       }
-
     default:
       return state
   }
