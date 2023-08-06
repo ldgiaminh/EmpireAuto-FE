@@ -202,7 +202,8 @@ const EditSymptom = props => {
                     </Col>
                   </FormGroup>
 
-                  <div className="d-flex flex-grap gap-2 justify-content-end text-center mt-4">
+                  <hr />
+                  <div className="d-flex flex-grap gap-2 justify-content-end text-center">
                     <button
                       type="submit"
                       disabled={isButtonDisabled}

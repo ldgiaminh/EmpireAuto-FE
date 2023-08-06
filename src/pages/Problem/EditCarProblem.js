@@ -27,7 +27,7 @@ import {
   getCarsModelByBrand as onGetCarModelByBrand,
   getCarsBrand as onGetCarBrand,
   getSymptomsLists as onGetCarSymptoms,
-  addNewCarsProblem as onAddNewCarProblem,
+  updateCarsProblem as onUpdateCarProblem,
   resetCarsModel as onResetCarsModel,
   getCarsProblemDetail as onGetCarProblemDetail,
 } from "store/actions"
@@ -92,19 +92,34 @@ const EditCarProblem = props => {
     }
   }, [params, onGetCarProblemDetail, dispatch])
 
-  useEffect(() => {
-    dispatch(onGetCarBrand())
-  }, [dispatch])
+  // useEffect(() => {
+  //   dispatch(onGetCarBrand())
+  // }, [dispatch])
 
   useEffect(() => {
     dispatch(onGetCarSymptoms())
   }, [dispatch])
 
+  // useEffect(() => {
+  //   if (selectedBrand) {
+  //     dispatch(onGetCarModelByBrand(selectedBrand))
+  //   }
+  // }, [dispatch, selectedBrand])
+
   useEffect(() => {
-    if (selectedBrand) {
-      dispatch(onGetCarModelByBrand(selectedBrand))
+    // Dispatch action to fetch car brands
+    dispatch(onGetCarBrand())
+
+    // If carsProblemDetail contains a model, fetch the models for the selected brand
+    if (
+      carsProblemDetail &&
+      carsProblemDetail.model &&
+      carsProblemDetail.model.brand
+    ) {
+      setSelectedBrand(carsProblemDetail.model.brand.id)
+      dispatch(onGetCarModelByBrand(carsProblemDetail.model.brand.id))
     }
-  }, [dispatch, selectedBrand])
+  }, [dispatch, carsProblemDetail])
 
   /*
   ==================================================
@@ -115,7 +130,9 @@ const EditCarProblem = props => {
   const handleChangeBrand = e => {
     const brandId = e.target.value
     setSelectedBrand(brandId === "" ? null : brandId)
+
     validation.setFieldValue("brandId", brandId)
+    validation.setFieldValue("modelId", "")
 
     const selectedOption = e.target.options[e.target.selectedIndex]
     setSelectedBrandName(selectedOption.text)
@@ -138,9 +155,22 @@ const EditCarProblem = props => {
 
     initialValues: {
       name: (carsProblemDetail && carsProblemDetail.name) || "",
-      brandId: "",
-      modelId: "",
-      symptomId: "",
+      brandId:
+        (carsProblemDetail &&
+          carsProblemDetail.model &&
+          carsProblemDetail.model.brand &&
+          carsProblemDetail.model.brand.id) ||
+        "",
+      modelId:
+        (carsProblemDetail &&
+          carsProblemDetail.model &&
+          carsProblemDetail.model.id) ||
+        "",
+      symptomId:
+        (carsProblemDetail &&
+          carsProblemDetail.symptom &&
+          carsProblemDetail.symptom.id) ||
+        "",
       intendedMinutes:
         (carsProblemDetail && carsProblemDetail.intendedMinutes) || "",
     },
@@ -159,19 +189,14 @@ const EditCarProblem = props => {
       const newValue = { ...values }
       delete newValue.brandId
 
-      dispatch(
-        onAddNewCarProblem(
-          newValue,
-          props.history,
-          values.brandId,
-          selectedBrandName,
-          newValue.modelId,
-          selectedModelName
-        )
-      )
+      dispatch(onUpdateCarProblem(newValue, params.id, props.history))
+
       setIsSubmitting(true)
     },
   })
+
+  // Use the 'dirty' property to disable the "Cập nhật" button until there are changes
+  const isButtonDisabled = !validation.dirty || isSubmitting
 
   /*
   ==================================================
@@ -191,6 +216,8 @@ const EditCarProblem = props => {
 
     // Clear any validation errors
     validation.setErrors({})
+
+    props.history.goBack()
   }
 
   return (
@@ -265,7 +292,6 @@ const EditCarProblem = props => {
                               validation.errors.brandId
                             }
                           >
-                            <option value="">Chọn hãng xe</option>
                             {carsBrand.map(option => (
                               <option key={option.id} value={option.id}>
                                 {option.name}
@@ -301,11 +327,7 @@ const EditCarProblem = props => {
                               validation.errors.modelId
                             }
                           >
-                            <option value="">
-                              {selectedBrand
-                                ? "Chọn dòng xe"
-                                : "Vui lòng chọn hãng xe trước"}
-                            </option>
+                            <option value="">Chọn dòng xe</option>
                             {selectedBrand &&
                               (carsModelByBrand.length > 0 ? (
                                 carsModelByBrand.map(option => (
@@ -348,7 +370,6 @@ const EditCarProblem = props => {
                               validation.errors.symptomId
                             }
                           >
-                            <option value="">Chọn triệu chứng</option>
                             {symptoms.map(option => (
                               <option key={option.id} value={option.id}>
                                 {option.name}
@@ -398,13 +419,14 @@ const EditCarProblem = props => {
                     </Col>
                   </Row>
 
+                  <hr />
                   <div className="d-flex flex-grap gap-2 justify-content-end text-center">
                     <button
                       type="submit"
-                      disabled={isSubmitting}
-                      className="btn btn-primary"
+                      disabled={isButtonDisabled}
+                      className="btn btn-success"
                     >
-                      Tạo mới
+                      Cập nhật
                     </button>
                     <button
                       type="button"

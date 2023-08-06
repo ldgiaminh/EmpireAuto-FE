@@ -9,16 +9,28 @@ import {
   addNewCarsItemFail,
   getCarsItemByProblemSuccess,
   getCarsItemByProblemFail,
+  updateCarsItemSuccess,
+  updateCarsItemFail,
+  deleteCarsItemSuccess,
+  deleteCarsItemFail,
+  getCarsItemDetailSuccess,
+  getCarsItemDetailFail,
 } from "./actions"
 import {
   addNewCarsItem,
+  deleteCarsItem,
   getCarsItem,
   getCarsItemByProblem,
+  getCarsItemDetails,
+  updateCarsItem,
 } from "helpers/fakebackend_helper"
 import {
   ADD_NEW_CAR_ITEM,
+  DELETE_CAR_ITEM,
   GET_CARS_ITEM,
   GET_CARS_ITEM_BY_PROBLEM,
+  GET_CAR_ITEM_DETAIL,
+  UPDATE_CAR_ITEM,
 } from "./actionTypes"
 
 import { toast } from "react-toastify"
@@ -43,51 +55,59 @@ function* fetchCarsItemByProblem({ id }) {
   }
 }
 
-function* onAddItem({ payload: carsItem }) {
+function* fetchCarsItemsDetails({ carItemId }) {
   try {
-    const response = yield call(addNewCarsItem, carsItem)
-    toast.success("Tạo mới thành công " + response.name)
-    yield put(addNewCarsItemSuccess(response))
+    const response = yield call(getCarsItemDetails, carItemId)
+    yield put(getCarsItemDetailSuccess(response))
   } catch (error) {
-    toast.error("Đã có lỗi xảy ra")
-    yield put(addNewCarsItemFail(error))
+    yield put(getCarsItemDetailFail(error))
   }
 }
 
-// function* fetchUserProfile() {
-//   try {
-//     const response = yield call(getUserProfile)
-//     yield put(getUserProfileSuccess(response))
-//   } catch (error) {
-//     yield put(getUserProfileFail(error))
-//   }
-// }
+function* onAddItem({ payload: carsItem, payload: paramss, history }) {
+  try {
+    const response = yield call(addNewCarsItem, carsItem)
+    yield put(addNewCarsItemSuccess(response))
+    history.push(
+      `/brands/${paramss.brandId}/${paramss.brandName}/models/${paramss.modelId}/${paramss.modelName}/problems/${paramss.problemId}/${paramss.problemName}/items`
+    )
+    toast.success("Tạo mới thành công " + carsItem.name)
+  } catch (error) {
+    yield put(addNewCarsItemFail(error))
+    toast.error("Đã có lỗi xảy ra")
+  }
+}
 
-// function* onUpdateUser({ payload: user }) {
-//   try {
-//     const response = yield call(updateUser, user)
-//     yield put(updateUserSuccess(response))
-//   } catch (error) {
-//     yield put(updateUserFail(error))
-//   }
-// }
+function* onUpdateItems({ payload: carsModel, id, history, itemName }) {
+  try {
+    const response = yield call(updateCarsItem, id, carsModel)
+    yield put(updateCarsItemSuccess(response))
+    history.goBack()
+    toast.success("Cập nhật thành công dịch vụ " + itemName)
+  } catch (error) {
+    toast.error("Đã có lỗi xảy ra")
+    yield put(updateCarsItemFail(error))
+  }
+}
 
-// function* onDeleteUser({ payload: user }) {
-//   try {
-//     const response = yield call(deleteUser, user)
-//     yield put(deleteUserSuccess(response))
-//   } catch (error) {
-//     yield put(deleteUserFail(error))
-//   }
-// }
+function* onDeleteItems({ payload: carsItem }) {
+  try {
+    const response = yield call(deleteCarsItem, carsItem.id)
+    yield put(deleteCarsItemSuccess(carsItem))
+    toast.success("Xóa thành công dòng xe " + carsItem.name)
+  } catch (error) {
+    toast.error("Đã có lỗi xảy ra")
+    yield put(deleteCarsItemFail(error))
+  }
+}
 
 function* itemsSaga() {
   yield takeEvery(GET_CARS_ITEM, fetchCarsItem)
   yield takeEvery(GET_CARS_ITEM_BY_PROBLEM, fetchCarsItemByProblem)
-  // yield takeEvery(GET_USER_PROFILE, fetchUserProfile)
+  yield takeEvery(GET_CAR_ITEM_DETAIL, fetchCarsItemsDetails)
   yield takeEvery(ADD_NEW_CAR_ITEM, onAddItem)
-  // yield takeEvery(UPDATE_USER, onUpdateUser)
-  // yield takeEvery(DELETE_USER, onDeleteUser)
+  yield takeEvery(UPDATE_CAR_ITEM, onUpdateItems)
+  yield takeEvery(DELETE_CAR_ITEM, onDeleteItems)
 }
 
 export default itemsSaga

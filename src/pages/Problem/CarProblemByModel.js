@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useRef, useState } from "react"
 import PropTypes from "prop-types"
 import slugify from "slugify"
 import {
-  Badge,
   Button,
   Card,
   CardBody,
@@ -33,7 +32,7 @@ const CarProblemByModel = props => {
   useEffect(() => {
     if (params) {
       document.title = `Vấn đề xe ${
-        params.name.charAt(0).toUpperCase() + params.name.slice(1)
+        params.mName.charAt(0).toUpperCase() + params.mName.slice(1)
       } | Empire Garage`
     } else {
       document.title = "Empire Garage"
@@ -78,8 +77,8 @@ const CarProblemByModel = props => {
   */
 
   useEffect(() => {
-    if (params && params.id) {
-      dispatch(onGetCarsProblemByModel(params.id))
+    if (params && params.mId) {
+      dispatch(onGetCarsProblemByModel(params.mId))
     }
   }, [params, dispatch])
 
@@ -127,16 +126,15 @@ const CarProblemByModel = props => {
         disableFilters: true,
         Cell: cellProps => {
           const { id, name } = cellProps.row.original
-          const formattedName = slugify(name, { lower: true })
+          const slugName = slugify(name, {
+            replacement: "-", // replace spaces with replacement character, defaults to `-`
+            remove: undefined, // remove characters that match regex, defaults to `undefined`
+            lower: true, // convert to lower case, defaults to `false`
+            strict: false, // strip special characters except replacement, defaults to `false`
+            locale: "vi", // language code of the locale to use
+            trim: false, // trim leading and trailing replacement chars, defaults to `true`
+          })
 
-          const paramss = {
-            brandId: params.id,
-            brandName: "brand_name_value",
-            modelId: "model_id_value",
-            modelName: "slug_value",
-            problemId: id,
-            formattedName: formattedName,
-          }
           return (
             <Button
               type="button"
@@ -144,7 +142,7 @@ const CarProblemByModel = props => {
               className="btn-sm btn-rounded"
               onClick={() =>
                 history.push(
-                  `/brands/${params.id}/${params.name}/models/${params.id}/${params.name}/problems/${id}/${formattedName}/items?brandId=${brandId}&brandName=${brandName}`
+                  `/brands/${params.bId}/${params.bName}/models/${params.mId}/${params.mName}/problems/${id}/${slugName}/items`
                 )
               }
             >
@@ -246,7 +244,7 @@ const CarProblemByModel = props => {
         <Container fluid={true}>
           <Breadcrumbs
             title="Quản lý"
-            breadcrumbItem={`Vấn đề xe - ${params.name}`}
+            breadcrumbItem={`Vấn đề xe - ${params.mName}`}
           />
           <Row>
             <Col lg="12">
@@ -257,7 +255,9 @@ const CarProblemByModel = props => {
                     data={carsProblemByModel}
                     isGlobalFilter={true}
                     isAddNew={true}
+                    isAddFileExcel={true}
                     handleAddNewClick={handleAddNew}
+                    handleAddFileExcelClick={handleAddNew}
                     customPageSize={10}
                     className="custom-header-css"
                   />

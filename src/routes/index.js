@@ -40,7 +40,7 @@ import CarProblems from "../pages/Problem/index"
 import CarProblemByModel from "../pages/Problem/CarProblemByModel"
 
 //Car item
-import CarItem from "../pages/Item/index"
+import CarItemByProblem from "../pages/Item/CarItemByProblem"
 
 //Symptom
 import SymptomLists from "../pages/Symptom/index"
@@ -110,12 +110,12 @@ const authProtectedRoutes = [
 
   { path: "/brands/:id/:name", component: CarModelByBrand },
   {
-    path: "/brands/:id/:name/models/:id/:name",
+    path: "/brands/:bId/:bName/models/:mId/:mName",
     component: CarProblemByModel,
   },
   {
-    path: "/brands/:id/:name/models/:id/:name/problems/:id/:name/items",
-    component: CarItem,
+    path: "/brands/:bId/:bName/models/:mId/:mName/problems/:pId/:pName/items",
+    component: CarItemByProblem,
   },
 
   //Items

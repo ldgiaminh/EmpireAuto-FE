@@ -17,6 +17,7 @@ import {
   GET_CAR_PROBLEM_DETAIL,
   UPDATE_CAR_PROBLEM,
   DELETE_CAR_PROBLEM,
+  RESET_CARS_PROBLEM,
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -128,10 +129,8 @@ const problems = (state = INIT_STATE, action) => {
       return {
         ...state,
         isLoading: false,
-        carsProblem: state.carsProblem.map(user =>
-          user.id.toString() === action.payload.id.toString()
-            ? { user, ...action.payload }
-            : user
+        carsProblem: state.carsProblem.map(p =>
+          p.id === action.payload.id ? { p, ...action.payload } : p
         ),
       }
 
@@ -165,8 +164,14 @@ const problems = (state = INIT_STATE, action) => {
       return {
         ...state,
         isLoading: false,
-
         error: action.payload,
+      }
+
+    /* DELETE PROBLEM  */
+    case RESET_CARS_PROBLEM:
+      return {
+        ...state,
+        carsProblemByModel: [],
       }
 
     default:

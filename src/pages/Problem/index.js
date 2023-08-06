@@ -14,7 +14,13 @@ import {
 import TableContainer from "components/Common/TableContainer"
 import { Link, withRouter } from "react-router-dom"
 
-import { Name, Symptoms, IntendedMinutes } from "./CarProblemlistCol"
+import {
+  Name,
+  Symptoms,
+  IntendedMinutes,
+  Brand,
+  Model,
+} from "./CarProblemlistCol"
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
@@ -27,6 +33,7 @@ import {
   deleteCarsProblem as onDeleteProblem,
 } from "store/actions"
 import DeleteModal from "components/Common/DeleteModal"
+import models from "store/model/reducer"
 
 const CarProblems = props => {
   //meta title
@@ -84,7 +91,23 @@ const CarProblems = props => {
         },
       },
       {
-        Header: "Name",
+        Header: "Hãng xe",
+        accessor: "model.brand.name",
+        filterable: true,
+        Cell: cellProps => {
+          return <Brand {...cellProps} />
+        },
+      },
+      {
+        Header: "Dòng xe",
+        accessor: "model.name",
+        filterable: true,
+        Cell: cellProps => {
+          return <Model {...cellProps} />
+        },
+      },
+      {
+        Header: "Tên vấn đề",
         accessor: "name",
         filterable: true,
         Cell: cellProps => {
@@ -112,27 +135,30 @@ const CarProblems = props => {
         accessor: "view",
         disableFilters: true,
         Cell: cellProps => {
-          const { id, name } = cellProps.row.original
-          const formattedName = slugify(name, { lower: true })
+          const { model, id, name } = cellProps.row.original
+          const { id: mId, name: mName } = model
+          const { brand } = model
+          const { id: bId, name: bName } = brand
 
-          //   const paramss = {
-          //     brandId: params.id,
-          //     brandName: "brand_name_value",
-          //     modelId: "model_id_value",
-          //     modelName: "slug_value",
-          //     problemId: id,
-          //     formattedName: formattedName,
-          //   }
+          const slugName = slugify(name, {
+            replacement: "-",
+            remove: undefined,
+            lower: true,
+            strict: false,
+            locale: "vi",
+            trim: false,
+          })
+
           return (
             <Button
               type="button"
               color="primary"
               className="btn-sm btn-rounded"
-              //   onClick={() =>
-              //     history.push(
-              //       `/brands/${params.id}/${params.name}/models/${params.id}/${params.name}/problems/${id}/${formattedName}/items?brandId=${brandId}&brandName=${brandName}`
-              //     )
-              //   }
+              onClick={() =>
+                history.push(
+                  `/brands/${bId}/${bName}/models/${mId}/${mName}/problems/${id}/${slugName}/items`
+                )
+              }
             >
               Xem các dịch vụ
             </Button>

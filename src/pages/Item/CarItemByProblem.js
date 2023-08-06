@@ -1,15 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react"
 import PropTypes from "prop-types"
+import slugify from "slugify"
 import {
-  Badge,
-  Button,
   Card,
   CardBody,
   Col,
   Container,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
   Row,
   Table,
   UncontrolledDropdown,
@@ -17,9 +13,16 @@ import {
 } from "reactstrap"
 import { isEmpty, map } from "lodash"
 import TableContainer from "components/Common/TableContainer"
-import { Link, withRouter, useParams } from "react-router-dom"
+import { Link, withRouter } from "react-router-dom"
 
-import { Name, Img } from "./CarItemlistCol"
+import {
+  Name,
+  Img,
+  Warranty,
+  Price,
+  isDefault,
+  IsDefaultProblem,
+} from "./CarItemlistCol"
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
@@ -29,52 +32,89 @@ import { useSelector, useDispatch } from "react-redux"
 
 import { getCarsItemByProblem as onGetCarsItemByProblem } from "store/actions"
 
-const CarItem = props => {
-  //meta title
-  document.title = "Các dịch vụ | Empire Garage"
-
-  const { history } = props
+const CarItemByProblem = props => {
   const dispatch = useDispatch()
-
-  const [items, setItems] = useState([])
-
-  const { carsItem } = useSelector(state => ({
-    carsItem: state.items.carsItem,
-  }))
 
   const {
     match: { params },
   } = props
 
-  const { slug } = useParams()
+  //meta title
+  useEffect(() => {
+    if (params) {
+      document.title = `Dịch vụ ${
+        params.pName.charAt(0).toUpperCase() + params.pName.slice(1)
+      } | Empire Garage`
+    } else {
+      document.title = "Empire Garage"
+    }
+  })
+
+  /*
+  ==================================================
+  REVERT SLUGIFY
+  ==================================================
+  */
+
+  // const revertSlug = slug => {
+  //   return slug
+  //     .toLowerCase()
+  //     .split("-")
+  //     .map(i => i[0].toUpperCase() + i.substr(1))
+  //     .join(" ")
+  // }
+
+  /*
+  ==================================================
+  STATE FROM REDUX
+  ==================================================
+  */
+
+  const { carsItemByProblem } = useSelector(state => ({
+    carsItemByProblem: state.items.carsItemByProblem,
+  }))
+
+  /*
+  ==================================================
+  USE STATE
+  ==================================================
+  */
+
+  const [items, setItems] = useState({
+    id: "",
+    name: "",
+  })
+
+  /*
+  ==================================================
+  USE EFFECT
+  ==================================================
+  */
 
   useEffect(() => {
-    if (params && params.id) {
-      dispatch(onGetCarsItemByProblem(params.id))
+    if (params && params.pId) {
+      dispatch(onGetCarsItemByProblem(params.pId))
     }
   }, [params, dispatch])
 
-  useEffect(() => {
-    setItems(carsItem)
-  }, [carsItem])
+  console.log(carsItemByProblem)
 
-  useEffect(() => {
-    if (!isEmpty(carsItem)) {
-      setItems(carsItem)
-    }
-  }, [carsItem])
-
+  /*
+  ==================================================
+  COLUMN
+  ==================================================
+  */
   const columns = useMemo(
     () => [
       {
-        Header: "#",
-        Cell: () => {
-          return <input type="checkbox" />
+        Header: "STT",
+        Cell: ({ row }) => {
+          return <span className="text-align-center">{row.index + 1}</span>
         },
       },
       {
-        Header: "Img",
-        //accessor: "photo",
+        Header: "Hình ảnh",
+        accessor: "photo",
         disableFilters: true,
         filterable: true,
         accessor: cellProps => (
@@ -98,7 +138,7 @@ const CarItem = props => {
         ),
       },
       {
-        Header: "Name",
+        Header: "Tên dịch vụ",
         accessor: "name",
         filterable: true,
         Cell: cellProps => {
@@ -106,34 +146,29 @@ const CarItem = props => {
         },
       },
       {
-        Header: "Giá",
+        Header: "Giá tiền",
         accessor: "presentPrice",
         filterable: true,
         Cell: cellProps => {
-          return <Name {...cellProps} />
+          return <Price {...cellProps} />
         },
       },
-      // {
-      //   Header: "Các vấn đề",
-      //   accessor: "view",
-      //   disableFilters: true,
-      //   Cell: cellProps => {
-      //     return (
-      //       <Button
-      //         type="button"
-      //         color="primary"
-      //         className="btn-sm btn-rounded"
-      //         onClick={() =>
-      //           history.push(
-      //             `/car-brands/${params.id}/${params.name}/models/${cellProps.row.original.id}/${cellProps.row.original.name}/problems`
-      //           )
-      //         }
-      //       >
-      //         Xem các dịch vụ
-      //       </Button>
-      //     )
-      //   },
-      // },
+      {
+        Header: "Bảo hành",
+        accessor: "warranty",
+        filterable: true,
+        Cell: cellProps => {
+          return <Warranty {...cellProps} />
+        },
+      },
+      {
+        Header: "Mặc định",
+        accessor: "isDefault",
+        filterable: true,
+        Cell: cellProps => {
+          return <IsDefaultProblem {...cellProps} />
+        },
+      },
 
       {
         Header: "",
@@ -175,13 +210,23 @@ const CarItem = props => {
     []
   )
 
+  /*
+  ==================================================
+  ADD NEW
+  ==================================================
+  */
+
+  const handleAddNew = () => {
+    props.history.push("/create-new-item")
+  }
+
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid={true}>
           <Breadcrumbs
             title="Quản lý"
-            breadcrumbItem={`Danh sách các dịch vụ xe - ${params.name}`}
+            breadcrumbItem={`Dịch vụ vấn đề - ${params.pName}`}
           />
           <Row>
             <Col lg="12">
@@ -189,10 +234,12 @@ const CarItem = props => {
                 <CardBody>
                   <TableContainer
                     columns={columns}
-                    data={items}
+                    data={carsItemByProblem}
                     isGlobalFilter={true}
-                    isAddUserList={false}
-                    // handleUserClick={handleUserClicks}
+                    isAddNew={true}
+                    isAddFileExcel={true}
+                    handleAddNewClick={handleAddNew}
+                    handleAddFileExcelClick={handleAddNew}
                     customPageSize={10}
                     className="custom-header-css"
                   />
@@ -206,9 +253,9 @@ const CarItem = props => {
   )
 }
 
-CarItem.propTypes = {
+CarItemByProblem.propTypes = {
   isLoading: PropTypes.bool,
   match: PropTypes.any,
 }
 
-export default withRouter(CarItem)
+export default withRouter(CarItemByProblem)

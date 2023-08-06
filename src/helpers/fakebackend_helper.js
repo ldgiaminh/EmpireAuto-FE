@@ -340,11 +340,12 @@ export const getCarsItemDetails = id => get(`${url.GET_CAR_ITEM_DETAIL}/${id}`)
 export const addNewCarsItem = carsItem => post(url.ADD_NEW_CAR_ITEM, carsItem)
 
 // update car item
-export const updateCarsItem = carsItem => put(url.UPDATE_CAR_ITEM, carsItem)
+export const updateCarsItem = (id, carsItem) =>
+  put(`${url.UPDATE_CAR_ITEM}/${id}`, carsItem)
 
 // delete car item
-export const deleteCarsItem = carsItem =>
-  del(url.DELETE_CAR_ITEM, { headers: { carsItem } })
+export const deleteCarsItem = id =>
+  del(`${url.DELETE_CAR_ITEM}/${id}`, { headers: { id } })
 
 /*
 ================================================

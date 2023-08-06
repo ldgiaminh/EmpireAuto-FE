@@ -13,10 +13,15 @@ import {
   GET_CARS_ITEM_BY_PROBLEM_SUCCESS,
   GET_CARS_ITEM_BY_PROBLEM_FAIL,
   ADD_NEW_CAR_ITEM,
+  GET_CARS_ITEM,
+  GET_CAR_ITEM_DETAIL,
+  UPDATE_CAR_ITEM,
+  DELETE_CAR_ITEM,
 } from "./actionTypes"
 
 const INIT_STATE = {
   carsItem: [],
+  carsItemByProblem: [],
   carsItemDetail: {},
   error: {},
   isLoading: false,
@@ -24,29 +29,50 @@ const INIT_STATE = {
 
 const items = (state = INIT_STATE, action) => {
   switch (action.type) {
+    /* GET PROBLEM */
+
+    case GET_CARS_ITEM:
+      return {
+        ...state,
+        isLoading: true,
+      }
     case GET_CARS_ITEM_SUCCESS:
       return {
         ...state,
+        isLoading: false,
         carsItem: action.payload,
       }
 
     case GET_CARS_ITEM_FAIL:
       return {
         ...state,
+        isLoading: false,
         error: action.payload,
+      }
+
+    /* GET PROBLEM */
+
+    case GET_CARS_ITEM_BY_PROBLEM:
+      return {
+        ...state,
+        isLoading: true,
       }
 
     case GET_CARS_ITEM_BY_PROBLEM_SUCCESS:
       return {
         ...state,
-        carsItem: action.payload,
+        isLoading: false,
+        carsItemByProblem: action.payload,
       }
 
     case GET_CARS_ITEM_BY_PROBLEM_FAIL:
       return {
         ...state,
+        isLoading: false,
         error: action.payload,
       }
+
+    /* ADD PROBLEM */
 
     case ADD_NEW_CAR_ITEM:
       return {
@@ -68,45 +94,73 @@ const items = (state = INIT_STATE, action) => {
         error: action.payload,
       }
 
+    /* GET PROBLEM DETAIL*/
+
+    case GET_CAR_ITEM_DETAIL:
+      return {
+        ...state,
+        isLoading: true,
+      }
+
     case GET_CAR_ITEM_DETAIL_SUCCESS:
       return {
         ...state,
+        isLoading: false,
         carsItemDetail: action.payload,
+      }
+
+    case GET_CAR_ITEM_DETAIL_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      }
+
+    /* UPDATE PROBLEM*/
+    case UPDATE_CAR_ITEM:
+      return {
+        ...state,
+        isLoading: true,
       }
 
     case UPDATE_CAR_ITEM_SUCCESS:
       return {
         ...state,
-        carsItem: state.carsItem.map(user =>
-          user.id.toString() === action.payload.id.toString()
-            ? { user, ...action.payload }
-            : user
+        isLoading: false,
+        carsItem: state.carsItem.map(item =>
+          item.id === action.payload.id ? { item, ...action.payload } : user
         ),
       }
 
     case UPDATE_CAR_ITEM_FAIL:
       return {
         ...state,
+        isLoading: false,
         error: action.payload,
+      }
+
+    /* DELTE PROBLEM*/
+    case DELETE_CAR_ITEM:
+      return {
+        ...state,
+        isLoading: true,
       }
 
     case DELETE_CAR_ITEM_SUCCESS:
       return {
         ...state,
+        isLoading: false,
         carsItem: state.carsItem.filter(
-          user => user.id.toString() !== action.payload.id.toString()
+          items => items.id !== action.payload.id
+        ),
+        carsItemByProblem: state.carsItem.filter(
+          items => items.id !== action.payload.id
         ),
       }
 
     case DELETE_CAR_ITEM_FAIL:
       return {
         ...state,
-        error: action.payload,
-      }
-
-    case GET_CAR_ITEM_DETAIL_FAIL:
-      return {
-        ...state,
+        isLoading: false,
         error: action.payload,
       }
 

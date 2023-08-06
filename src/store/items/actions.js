@@ -63,8 +63,9 @@ export const getCarsItemByProblemFail = error => ({
 GET Item Detail
 ================================================
 */
-export const getCarsItemDetail = () => ({
+export const getCarsItemDetail = carItemId => ({
   type: GET_CAR_ITEM_DETAIL,
+  carItemId,
 })
 
 export const getCarsItemDetailSuccess = carsItemDetail => ({
@@ -83,9 +84,10 @@ POST Add New Item
 ================================================
 */
 
-export const addNewCarsItem = carsItem => ({
+export const addNewCarsItem = (carsItem, history) => ({
   type: ADD_NEW_CAR_ITEM,
   payload: carsItem,
+  history,
 })
 
 export const addNewCarsItemSuccess = carsItem => ({
@@ -104,9 +106,12 @@ PUT Item Update
 ================================================
 */
 
-export const updateCarsItem = carsItem => ({
+export const updateCarsItem = (carsItem, id, history, itemName) => ({
   type: UPDATE_CAR_ITEM,
   payload: carsItem,
+  id,
+  history,
+  itemName,
 })
 
 export const updateCarsItemSuccess = carsItem => ({

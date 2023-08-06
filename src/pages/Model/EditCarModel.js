@@ -171,11 +171,13 @@ const EditCarModel = props => {
                           validation.errors.brandId
                         }
                       >
-                        <option value="">
-                          {carsModelDetail && carsModelDetail.brand
-                            ? carsModelDetail.brand.name
-                            : "Chọn hãng xe"}
-                        </option>
+                        {validation.values.brandId ? null : (
+                          <option value="">
+                            {carsModelDetail &&
+                              carsModelDetail.brand &&
+                              carsModelDetail.brand.name}
+                          </option>
+                        )}
                         {carsBrand.map(option => (
                           <option key={option.id} value={option.id}>
                             {option.name}
@@ -190,7 +192,6 @@ const EditCarModel = props => {
                       ) : null}
                     </Col>
                   </FormGroup>
-
                   <FormGroup className="select2-container mb-4" row>
                     <Label md="3" className="col-form-label">
                       Tên dòng xe*
@@ -218,7 +219,8 @@ const EditCarModel = props => {
                     </Col>
                   </FormGroup>
 
-                  <div className="d-flex flex-grap gap-2 justify-content-end text-center mt-4">
+                  <hr />
+                  <div className="d-flex flex-grap gap-2 justify-content-end text-center">
                     <button
                       type="submit"
                       disabled={isButtonDisabled}

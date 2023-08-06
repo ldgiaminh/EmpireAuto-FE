@@ -19,6 +19,7 @@ import {
   GET_CAR_PROBLEM_BY_MODEL_SUCCESS,
   GET_CAR_PROBLEM_BY_MODEL_FAIL,
   RESET_CARS_MODEL,
+  RESET_CARS_PROBLEM,
 } from "./actionTypes"
 
 /*
@@ -119,9 +120,11 @@ PUT PROBLEMs Problem
 ================================================
 */
 
-export const updateCarsProblem = carsProblem => ({
+export const updateCarsProblem = (carsProblem, id, history) => ({
   type: UPDATE_CAR_PROBLEM,
   payload: carsProblem,
+  id,
+  history,
 })
 
 export const updateCarsProblemSuccess = carsProblem => ({
@@ -153,4 +156,14 @@ export const deleteCarsProblemSuccess = carsProblem => ({
 export const deleteCarsProblemFail = error => ({
   type: DELETE_CAR_PROBLEM_FAIL,
   payload: error,
+})
+
+/*
+================================================ 
+RESET Problem 
+================================================
+*/
+
+export const resetCarsProblem = () => ({
+  type: RESET_CARS_PROBLEM,
 })

@@ -13,6 +13,8 @@ import {
   getCarsProblemDetailFail,
   deleteCarsProblemSuccess,
   deleteCarsProblemFail,
+  updateCarsProblemSuccess,
+  updateCarsProblemFail,
 } from "./actions"
 
 //Include Both Helper File with needed methods
@@ -22,6 +24,7 @@ import {
   getCarsProblem,
   getCarsProblemByModel,
   getCarsProblemDetails,
+  updateCarsProblem,
 } from "../../helpers/fakebackend_helper"
 import {
   ADD_NEW_CAR_PROBLEM,
@@ -29,6 +32,7 @@ import {
   GET_CARS_PROBLEM,
   GET_CAR_PROBLEM_BY_MODEL,
   GET_CAR_PROBLEM_DETAIL,
+  UPDATE_CAR_PROBLEM,
 } from "./actionTypes"
 
 import { toast } from "react-toastify"
@@ -81,12 +85,24 @@ function* fetchCarsProblemDetails({ problemId }) {
   }
 }
 
+function* onUpdateProblems({ payload: carsProblem, id, history }) {
+  try {
+    const response = yield call(updateCarsProblem, id, carsProblem)
+    yield put(updateCarsProblemSuccess(carsProblem))
+    toast.success("Xóa thành công " + carsProblem.name)
+    history.goBack()
+  } catch (error) {
+    yield put(updateCarsProblemFail(error))
+  }
+}
+
 function* onDeleteProblems({ payload: carsProblem }) {
   try {
     const response = yield call(deleteCarsProblem, carsProblem.id)
     yield put(deleteCarsProblemSuccess(carsProblem))
     toast.success("Xóa thành công " + carsProblem.name)
   } catch (error) {
+    toast.success("Đã có lỗi xảy ra")
     yield put(deleteCarsProblemFail(error))
   }
 }
@@ -96,6 +112,7 @@ function* problemsSaga() {
   yield takeEvery(GET_CAR_PROBLEM_BY_MODEL, fetchCarsProblemByModel)
   yield takeEvery(ADD_NEW_CAR_PROBLEM, onAddProblem)
   yield takeEvery(GET_CAR_PROBLEM_DETAIL, fetchCarsProblemDetails)
+  yield takeEvery(UPDATE_CAR_PROBLEM, onUpdateProblems)
   yield takeEvery(DELETE_CAR_PROBLEM, onDeleteProblems)
 }
 

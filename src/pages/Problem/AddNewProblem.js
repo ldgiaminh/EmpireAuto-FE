@@ -19,7 +19,7 @@ import {
 import { useDispatch, useSelector } from "react-redux"
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 
-import { Link, withRouter } from "react-router-dom"
+import { withRouter } from "react-router-dom"
 
 import * as Yup from "yup"
 import { useFormik } from "formik"
@@ -131,7 +131,11 @@ const AddNewCarProblem = props => {
         otherwise: Yup.string().nullable().required("Vui lòng chọn dòng xe"),
       }),
       symptomId: Yup.string().required("Vui lòng chọn triệu chứng đi kèm"),
-      intendedMinutes: Yup.string().required("Vui lòng nhập dự kiến kết thúc"),
+      intendedMinutes: Yup.number()
+        .typeError("Vui lòng nhập thời gian kết thúc hợp lệ")
+        .required("Vui lòng nhập thời gian kết thúc")
+        .positive("Thời gian dự kiến phải là một số dương")
+        .integer("Thời gian dự kiến không phải số thập phân"),
     }),
     onSubmit: values => {
       const newValue = { ...values }
@@ -178,7 +182,7 @@ const AddNewCarProblem = props => {
         <Breadcrumbs title="Tạo mới" breadcrumbItem="Vấn đề phương tiện" />
 
         <Row style={{ justifyContent: "center", height: "500px" }}>
-          <Col md={8}>
+          <Col xl={9} md={10}>
             <Card>
               <CardBody>
                 <CardTitle>Tạo Mới Vấn đề</CardTitle>
@@ -251,8 +255,7 @@ const AddNewCarProblem = props => {
                             )}
                         </Col>
                       </FormGroup>
-
-                      <FormGroup row>
+                      <FormGroup className="mb-4" row>
                         <Label md="5" className="col-form-label">
                           Dòng xe*
                         </Label>
@@ -294,8 +297,8 @@ const AddNewCarProblem = props => {
                             validation.errors.modelId && (
                               <FormFeedback type="invalid">
                                 {selectedBrand
-                                  ? "Vui lòng chọn dòng xe"
-                                  : "Vui lòng chọn hãng xe trước"}
+                                  ? validation.errors.modelId
+                                  : "Vui lòng chọn hãng xe"}
                               </FormFeedback>
                             )}
                         </Col>
@@ -334,7 +337,7 @@ const AddNewCarProblem = props => {
                           ) : null}
                         </Col>
                       </FormGroup>
-                      <FormGroup row>
+                      <FormGroup className="mb-4" row>
                         <Label md="5" className="col-form-label">
                           Dự kiến kết thức (phút)*
                         </Label>
@@ -342,7 +345,7 @@ const AddNewCarProblem = props => {
                           <Input
                             name="intendedMinutes"
                             placeholder="Nhập thời gian dự kiến"
-                            type="text"
+                            type="number"
                             className="form-control"
                             id="validationCustom01"
                             onChange={validation.handleChange}

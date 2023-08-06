@@ -69,7 +69,7 @@ const AddNewSymptom = props => {
     validationSchema: Yup.object({
       name: Yup.string().required("Vui lòng nhập tên triệu chứng"),
       intendedMinutes: Yup.number()
-        .typeError("Vui lòng nhập một số")
+        .typeError("Vui lòng nhập thời gian kết thúc hợp lệ")
         .required("Vui lòng nhập thời gian kết thúc")
         .positive("Thời gian dự kiến phải là một số dương")
         .integer("Thời gian dự kiến phải là số nguyên"),

@@ -2,19 +2,13 @@ import { call, put, takeEvery } from "redux-saga/effects"
 
 // User Redux States
 import {
-  ADD_NEW_CAR_BRAND,
   DELETE_CAR_MODEL,
-  GET_CARS_BRAND,
   GET_CARS_MODEL_BY_BRAND,
   GET_CAR_MODEL_DETAIL,
   UPDATE_CAR_MODEL,
 } from "./actionTypes"
 
 import {
-  getCarsBrandSuccess,
-  getCarsBrandFail,
-  addNewCarsBrandSuccess,
-  addNewCarsBrandFail,
   getCarsModelSuccess,
   getCarsModelFail,
   addNewCarsModelSuccess,

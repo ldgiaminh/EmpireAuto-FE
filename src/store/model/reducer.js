@@ -108,9 +108,7 @@ const models = (state = INIT_STATE, action) => {
       return {
         ...state,
         carsModel: state.carsModel.map(model =>
-          model.id.toString() === action.payload.id.toString()
-            ? { model, ...action.payload }
-            : model
+          model.id === action.payload.id ? { model, ...action.payload } : model
         ),
       }
 
@@ -150,7 +148,7 @@ const models = (state = INIT_STATE, action) => {
     case RESET_CARS_MODEL:
       return {
         ...state,
-        carsModel: [],
+        carsModelByBrand: [],
       }
 
     default:

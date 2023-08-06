@@ -1,18 +1,38 @@
 import React from "react"
-import { Link } from "react-router-dom"
-import * as moment from "moment"
-import { size, map } from "lodash"
+import { Input } from "reactstrap"
 
-const toLowerCase1 = str => {
-  return str === "" || str === undefined ? "" : str.toLowerCase()
+const formatPriceVND = price => {
+  // Assuming the input `price` is a number representing the price in VND
+  return price.toLocaleString("vi-VN", { style: "currency", currency: "VND" })
 }
 
 const Name = cell => {
   return cell.value ? cell.value : ""
 }
 
+const Warranty = cell => {
+  return cell.value ? cell.value + " tháng" : "Chưa có thời gian bảo hành"
+}
+
 const Price = cell => {
-  return cell.value ? cell.value : ""
+  return cell.value ? formatPriceVND(cell.value) : "Chưa có gi"
+}
+
+const IsDefaultProblem = cell => {
+  const isChecked = cell.value === true
+  const isDisabled = cell.value === false
+
+  return (
+    <div>
+      <Input
+        type="checkbox"
+        className="form-check-input"
+        id="invalidCheck"
+        checked={isChecked}
+        disabled={isDisabled}
+      />
+    </div>
+  )
 }
 
 const Img = cell => {
@@ -34,4 +54,4 @@ const Img = cell => {
   )
 }
 
-export { Name, Img, Price }
+export { Name, Img, Price, Warranty, IsDefaultProblem }
