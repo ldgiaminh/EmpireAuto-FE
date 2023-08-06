@@ -90,7 +90,7 @@ const CarBrand = props => {
   ==================================================
   */
 
-  const sortedCarsBrand = [...carsBrand].sort((a, b) => b.id - a.id)
+  const sortedCarsBrand = [...carsBrand].reverse()
 
   /*
   ==================================================

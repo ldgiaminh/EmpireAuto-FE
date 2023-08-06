@@ -124,6 +124,14 @@ const CarModelByBrand = props => {
 
   /*
   ==================================================
+  SORT
+  ==================================================
+  */
+
+  const sortedCarsModel = [...models].reverse()
+
+  /*
+  ==================================================
   HANDLE DELETE
   ==================================================
   */
@@ -198,7 +206,7 @@ const CarModelByBrand = props => {
                 </div>
               </div>
             </Col>
-            {map(models, model => (
+            {map(sortedCarsModel, model => (
               <Col xl="4" sm="6" key={model.id}>
                 <Card>
                   <CardBody>

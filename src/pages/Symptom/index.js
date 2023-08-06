@@ -126,6 +126,14 @@ const SymptomLists = props => {
 
   /*
   ==================================================
+  SORT
+  ==================================================
+  */
+
+  const sortedSymptom = [...symptoms].reverse()
+
+  /*
+  ==================================================
   DELETE
   ==================================================
   */
@@ -188,7 +196,7 @@ const SymptomLists = props => {
                 <CardBody>
                   <TableContainer
                     columns={columns}
-                    data={symptoms}
+                    data={sortedSymptom}
                     isGlobalFilter={true}
                     isAddNew={true}
                     handleAddNewClick={handleAddNew}

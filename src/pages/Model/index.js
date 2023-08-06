@@ -153,6 +153,14 @@ const CarModels = props => {
 
   /*
   ==================================================
+  SORT
+  ==================================================
+  */
+
+  const sortedCarsModel = [...models].reverse()
+
+  /*
+  ==================================================
   HANDLE DELETE
   ==================================================
   */
@@ -223,7 +231,7 @@ const CarModels = props => {
                 </div>
               </div>
             </Col>
-            {models.map(
+            {sortedCarsModel.map(
               brand =>
                 brand.models.length > 0 && ( // Correctly place the curly braces here
                   <React.Fragment key={brand.id}>

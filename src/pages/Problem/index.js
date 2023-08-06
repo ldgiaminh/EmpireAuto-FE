@@ -205,6 +205,16 @@ const CarProblems = props => {
 
   /*
   ==================================================
+  SORT
+  ==================================================
+  */
+
+  const sortedProblem = [...carsProblem].reverse()
+
+
+
+  /*
+  ==================================================
   DELETE
   ==================================================
   */
@@ -266,7 +276,7 @@ const CarProblems = props => {
                 <CardBody>
                   <TableContainer
                     columns={columns}
-                    data={carsProblem}
+                    data={sortedProblem}
                     isGlobalFilter={true}
                     isAddNew={true}
                     isAddFileExcel={true}
