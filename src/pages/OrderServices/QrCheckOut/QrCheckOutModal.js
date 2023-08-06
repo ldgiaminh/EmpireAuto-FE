@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { Modal } from "reactstrap"
 import PropTypes from "prop-types"
 import QrReader from "react-qr-reader"
