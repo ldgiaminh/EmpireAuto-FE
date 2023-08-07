@@ -88,9 +88,12 @@ const Dashboard = props => {
         getConfigValue(configSystems, "BOOKING_SLOT_PER_WEEK"),
     },
     {
-      title: "Đặt lịch tối đa trong ngày",
+      title: "Đặt lịch trong ngày",
       iconClass: "bx bx-calendar-event",
-      description: getConfigValue(configSystems, "BOOKING_SLOT_PER_DAY"),
+      description:
+        getConfigValue(configSystems, "BOOKING_COUNT_IN_CURRENT_DAY") +
+        "/" +
+        getConfigValue(configSystems, "BOOKING_SLOT_PER_DAY"),
     },
     {
       title: "Xe tại garage",
