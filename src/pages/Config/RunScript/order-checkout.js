@@ -140,13 +140,29 @@ const OrderCheckOut = () => {
                       <td className="font-size-14 text-center">{index + 1}</td>
                       {o.statusCode === 200 ? (
                         <td className="font-size-14">
-                          Check-out thành công {o.result.car.carLisenceNo} |{" "}
-                          {o.result.car.carBrand}
+                          Check-out thành công{" "}
+                          {o.result &&
+                            o.result.information &&
+                            o.result.information.car &&
+                            o.result.information.car.carLisenceNo}{" "}
+                          |{" "}
+                          {o.result &&
+                            o.result.information &&
+                            o.result.information.car &&
+                            o.result.information.car.carBrand}
                         </td>
                       ) : (
                         <td className="font-size-14">
-                          Check-out thất bại {o.result.car.carLisenceNo} |{" "}
-                          {o.result.car.carBrand}
+                          Check-out thất bại{" "}
+                          {o.result &&
+                            o.result.information &&
+                            o.result.information.car &&
+                            o.result.information.car.carLisenceNo}{" "}
+                          |{" "}
+                          {o.result &&
+                            o.result.information &&
+                            o.result.information.car &&
+                            o.result.information.car.carBrand}
                         </td>
                       )}
                       <td className="text-end">

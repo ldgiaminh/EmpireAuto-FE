@@ -213,8 +213,9 @@ const BookingScript = () => {
                       <td className="font-size-14 text-center">{index + 1}</td>
                       {booking.statusCode === 201 ? (
                         <td className="font-size-14">
-                          Đặt lịch thành công |{booking.result.car.carLisenceNo}{" "}
-                          - {formattedDate(booking.result.date)}
+                          Đặt lịch thành công{" "}
+                          {" | " + booking.result.car.carLisenceNo} -{" "}
+                          {formattedDate(booking.result.date)}
                         </td>
                       ) : (
                         <td className="font-size-14">

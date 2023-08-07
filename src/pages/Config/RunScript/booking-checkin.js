@@ -222,7 +222,9 @@ const BookingCheckInScript = () => {
                         booking.result.isArrived &&
                         booking.result.isActived === true ? (
                           <td className="font-size-14">
-                            Check-in thành công với mã #{booking.result.code}
+                            Check-in thành công với mã #{booking.result.code}{" "}
+                            {booking.result.car &&
+                              " | " + booking.result.car.carLisenceNo}
                           </td>
                         ) : (
                           <td className="font-size-14">

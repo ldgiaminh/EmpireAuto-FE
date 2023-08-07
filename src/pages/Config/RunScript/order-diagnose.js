@@ -219,12 +219,14 @@ const OrderDiagnose = () => {
                       <td className="font-size-14 text-center">{index + 1}</td>
                       {o.statusCode === 200 && !o.result.carLog ? (
                         <td className="font-size-14">
-                          Chẩn đoán thành công | {o.result.car.carLisenceNo}
+                          Chẩn đoán thành công #{o.result.code}{" "}
+                          {" | " + o.result.car.carLisenceNo}
                         </td>
                       ) : o.statusCode === 200 ? (
                         <td className="font-size-14">
                           <u>
-                            Checkout thành công | {o.result.car.carLisenceNo}
+                            Checkout thành công #{o.result.code}{" "}
+                            {" | " + o.result.car.carLisenceNo}
                           </u>
                         </td>
                       ) : (

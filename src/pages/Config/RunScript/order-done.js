@@ -303,10 +303,10 @@ const OrderDone = () => {
                       <td className="font-size-14 text-center">{index + 1}</td>
                       {o.statusCode === 200 ? (
                         <td className="font-size-14">
-                          Hoàn tất thành công #{o.result.code} |{" "}
+                          Hoàn tất thành công #{o.result.code}{" "}
                           {o.result.maintenanceSchedule &&
                             o.result.maintenanceSchedule &&
-                            "có bảo trì -"}{" "}
+                            "| có bảo trì -"}{" "}
                           {o.result.maintenanceSchedule &&
                             formattedDate(
                               o.result.maintenanceSchedule.maintenanceDate
