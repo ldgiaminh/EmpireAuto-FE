@@ -194,6 +194,14 @@ export const getGroupService = () => get(url.GET_GROUP_SERVICE)
 
 /*
 ================================================
+CATEGORY SERVICE
+================================================
+*/
+
+export const getCategoryService = () => get(url.GET_CATEGORY_SERVICE)
+
+/*
+================================================
 USER
 ================================================
 */

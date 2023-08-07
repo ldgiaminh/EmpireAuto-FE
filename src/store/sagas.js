@@ -7,6 +7,7 @@ import ForgetSaga from "./auth/forgetpwd/saga"
 import bookingsSaga from "./bookings/saga"
 import orderServicesSaga from "./order-services/saga"
 import groupServicesSaga from "./group-services/saga"
+import categoryServicesSaga from "./categories/saga"
 import itemsSaga from "./items/saga"
 import symptomsSaga from "./symptoms/saga"
 import brandsSaga from "./brand/saga"
@@ -62,5 +63,6 @@ export default function* rootSaga() {
     fork(fcmTokenSaga),
     fork(scriptSaga),
     fork(systemSaga),
+    fork(categoryServicesSaga),
   ])
 }

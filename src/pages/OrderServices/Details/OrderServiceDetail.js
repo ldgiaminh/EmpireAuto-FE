@@ -53,7 +53,9 @@ const OrderServiceDetail = props => {
   //meta title
   useEffect(() => {
     if (orderServicesDetail) {
-      document.title = `#${orderServicesDetail.code} | Empire Garage`
+      document.title = `#${
+        orderServicesDetail && orderServicesDetail.code
+      } | Empire Garage`
     } else {
       document.title = `Empire Garage`
     }
@@ -793,7 +795,7 @@ const OrderServiceDetail = props => {
                                             verticalAlign: "middle",
                                           }}
                                         >
-                                          <mark>Chọn kỹ thuật viên</mark>
+                                          <mark>Trống</mark>
                                           <div>
                                             <div
                                               className="btn-group"

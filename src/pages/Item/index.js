@@ -15,7 +15,7 @@ import { isEmpty, map } from "lodash"
 import TableContainer from "components/Common/TableContainer"
 import { Link, withRouter, useLocation } from "react-router-dom"
 
-import { Name, Img, Warranty, Price, IsCell } from "./CarItemlistCol"
+import { Name, Img, Warranty, Price, IsCell, Category } from "./CarItemlistCol"
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
@@ -23,9 +23,9 @@ import Breadcrumbs from "../../components/Common/Breadcrumb"
 //redux
 import { useSelector, useDispatch } from "react-redux"
 
-import { getCarsItemByProblem as onGetCarsItemByProblem } from "store/actions"
+import { getCarsItem as onGetCarsItem } from "store/actions"
 
-const CarItemByProblem = props => {
+const CarItems = props => {
   const dispatch = useDispatch()
 
   /*
@@ -34,21 +34,12 @@ const CarItemByProblem = props => {
   ==================================================
   */
 
-  const {
-    match: { params },
-  } = props
-
   const location = useLocation()
   const problemName = location.state && location.state.problemName
 
   //meta title
-  useEffect(() => {
-    if (location.state) {
-      document.title = `Dịch vụ ${problemName} | Empire Garage`
-    } else {
-      document.title = "Empire Garage"
-    }
-  })
+
+  document.title = `Tất cả dịch vụ xe | Empire Garage`
 
   /*
   ==================================================
@@ -56,8 +47,8 @@ const CarItemByProblem = props => {
   ==================================================
   */
 
-  const { carsItemByProblem } = useSelector(state => ({
-    carsItemByProblem: state.items.carsItemByProblem,
+  const { carsItem } = useSelector(state => ({
+    carsItem: state.items.carsItem,
   }))
 
   /*
@@ -78,10 +69,8 @@ const CarItemByProblem = props => {
   */
 
   useEffect(() => {
-    if (params && params.pId) {
-      dispatch(onGetCarsItemByProblem(params.pId))
-    }
-  }, [params, dispatch])
+    dispatch(onGetCarsItem())
+  }, [dispatch])
 
   /*
   ==================================================
@@ -130,6 +119,14 @@ const CarItemByProblem = props => {
         },
       },
       {
+        Header: "Nhóm",
+        accessor: "category.name",
+        filterable: true,
+        Cell: cellProps => {
+          return <Category {...cellProps} />
+        },
+      },
+      {
         Header: "Giá tiền",
         accessor: "presentPrice",
         filterable: true,
@@ -143,6 +140,14 @@ const CarItemByProblem = props => {
         filterable: true,
         Cell: cellProps => {
           return <Warranty {...cellProps} />
+        },
+      },
+      {
+        Header: "Đang hoạt động",
+        accessor: "isActived",
+        filterable: true,
+        Cell: cellProps => {
+          return <IsCell {...cellProps} />
         },
       },
       {
@@ -204,17 +209,14 @@ const CarItemByProblem = props => {
     <React.Fragment>
       <div className="page-content">
         <Container fluid={true}>
-          <Breadcrumbs
-            title="Quản lý"
-            breadcrumbItem={`Dịch vụ vấn đề - ${problemName}`}
-          />
+          <Breadcrumbs title="Quản lý" breadcrumbItem="Tất cả dịch vụ xe" />
           <Row>
             <Col lg="12">
               <Card>
                 <CardBody>
                   <TableContainer
                     columns={columns}
-                    data={carsItemByProblem}
+                    data={carsItem}
                     isGlobalFilter={true}
                     isAddNew={true}
                     isAddFileExcel={true}
@@ -233,9 +235,9 @@ const CarItemByProblem = props => {
   )
 }
 
-CarItemByProblem.propTypes = {
+CarItems.propTypes = {
   isLoading: PropTypes.bool,
   match: PropTypes.any,
 }
 
-export default withRouter(CarItemByProblem)
+export default withRouter(CarItems)

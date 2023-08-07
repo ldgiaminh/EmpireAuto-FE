@@ -3,7 +3,7 @@ const Name = cell => {
 }
 
 const IntendedMinute = cell => {
-  return cell.value ? cell.value : ""
+  return cell.value ? cell.value + " phút" : ""
 }
 
 export { Name, IntendedMinute }

@@ -149,6 +149,8 @@ const CarProblems = props => {
             trim: false,
           })
 
+          const problemName = name
+
           return (
             <Button
               type="button"
@@ -156,7 +158,8 @@ const CarProblems = props => {
               className="btn-sm btn-rounded"
               onClick={() =>
                 history.push(
-                  `/brands/${bId}/${bName}/models/${mId}/${mName}/problems/${id}/${slugName}/items`
+                  `/brands/${bId}/${bName}/models/${mId}/${mName}/problems/${id}/${slugName}`,
+                  { problemName }
                 )
               }
             >
@@ -210,8 +213,6 @@ const CarProblems = props => {
   */
 
   const sortedProblem = [...carsProblem].reverse()
-
-
 
   /*
   ==================================================

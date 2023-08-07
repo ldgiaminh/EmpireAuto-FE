@@ -29,7 +29,7 @@ const INIT_STATE = {
 
 const items = (state = INIT_STATE, action) => {
   switch (action.type) {
-    /* GET PROBLEM */
+    /* GET ITEM */
 
     case GET_CARS_ITEM:
       return {
@@ -50,7 +50,7 @@ const items = (state = INIT_STATE, action) => {
         error: action.payload,
       }
 
-    /* GET PROBLEM */
+    /* GET ITEM BY PROBLEM */
 
     case GET_CARS_ITEM_BY_PROBLEM:
       return {
@@ -94,7 +94,7 @@ const items = (state = INIT_STATE, action) => {
         error: action.payload,
       }
 
-    /* GET PROBLEM DETAIL*/
+    /* GET ITEM DETAIL*/
 
     case GET_CAR_ITEM_DETAIL:
       return {
@@ -115,7 +115,7 @@ const items = (state = INIT_STATE, action) => {
         error: action.payload,
       }
 
-    /* UPDATE PROBLEM*/
+    /* UPDATE ITEM*/
     case UPDATE_CAR_ITEM:
       return {
         ...state,
@@ -138,7 +138,7 @@ const items = (state = INIT_STATE, action) => {
         error: action.payload,
       }
 
-    /* DELTE PROBLEM*/
+    /* DELETE ITEM*/
     case DELETE_CAR_ITEM:
       return {
         ...state,

@@ -38,14 +38,21 @@ import {
   addNewCarsItem as onAddNewCarItem,
   resetCarsModel as onResetCarsModel,
   resetCarsProblem as onResetCarsProblem,
+  getCarsItemDetail as onGetCarItemDetail,
 } from "store/actions"
 import Loader from "components/Loader/Loader"
 
-const AddNewCarItem = props => {
+const EditItem = props => {
   const dispatch = useDispatch()
 
   //meta title
-  document.title = "Tạo mới dịch vụ | Empire Garage"
+  useEffect(() => {
+    if (carsItemDetail) {
+      document.title = `${carsItemDetail.name} | Empire Garage`
+    } else {
+      document.title = `Empire Garage`
+    }
+  })
 
   /*
   ==================================================
@@ -59,12 +66,14 @@ const AddNewCarItem = props => {
     carsProblemByModel,
     categoryServices,
     isLoading,
+    carsItemDetail,
   } = useSelector(state => ({
     carsBrand: state.brands.carsBrand,
     carsModelByBrand: state.models.carsModelByBrand,
     carsProblemByModel: state.problems.carsProblemByModel,
     categoryServices: state.categoryServicess.categoryServices,
     isLoading: state.items.isLoading,
+    carsItemDetail: state.items.carsItemDetail,
   }))
 
   /*
@@ -84,13 +93,25 @@ const AddNewCarItem = props => {
   ==================================================
   */
 
+  const {
+    match: { params },
+  } = props
+
   useEffect(() => {
     dispatch(onGetCarBrand())
   }, [dispatch])
 
   useEffect(() => {
+    if (params && params.id) {
+      dispatch(onGetCarItemDetail(params.id))
+    }
+  }, [params, onGetCarItemDetail, dispatch])
+
+  useEffect(() => {
     dispatch(onGetCategoryService())
   }, [dispatch])
+
+  console.log(carsItemDetail)
 
   /*
   ==================================================
@@ -152,16 +173,18 @@ const AddNewCarItem = props => {
     enableReinitialize: true,
 
     initialValues: {
-      name: "",
+      name: (carsItemDetail && carsItemDetail.name) || "",
       price: "",
-      warranty: "",
-      description: "",
-      photo: null,
-      isPriceHidden: "",
-      isPopular: "",
-      isService: "",
-      isDefault: "",
-      categoryId: "",
+      warranty: (carsItemDetail && carsItemDetail.warranty) || "",
+      description: (carsItemDetail && carsItemDetail.description) || "",
+      photo: {
+        preview: (carsItemDetail && carsItemDetail.photo) || null,
+      },
+      isPriceHidden: (carsItemDetail && carsItemDetail.isPriceHidden) || "",
+      isPopular: (carsItemDetail && carsItemDetail.isPopular) || "",
+      isService: (carsItemDetail && carsItemDetail.isService) || "",
+      isDefault: (carsItemDetail && carsItemDetail.isDefault) || "",
+      categoryId: (carsItemDetail && carsItemDetail.categoryId) || "",
       problemId: "",
       brandId: "",
       modelId: "",
@@ -233,6 +256,9 @@ const AddNewCarItem = props => {
     },
   })
 
+  // Use the 'dirty' property to disable the "Cập nhật" button until there are changes
+  const isButtonDisabled = !validation.dirty || isSubmitting
+
   /*
   ==================================================
   FORMAT PRICE VND
@@ -279,13 +305,15 @@ const AddNewCarItem = props => {
 
     // Clear any validation errors
     validation.setErrors({})
+
+    props.history.goBack()
   }
 
   return (
     <div className="page-content">
       {(isLoading || isLoad) && <Loader />}
       <Container fluid={true}>
-        <Breadcrumbs title="Tạo mới" breadcrumbItem="Vấn đề phương tiện" />
+        <Breadcrumbs title="Cập nhật" breadcrumbItem={carsItemDetail.name} />
 
         <Row style={{ justifyContent: "center" }}>
           <Col xl={7} md={10}>
@@ -626,34 +654,37 @@ const AddNewCarItem = props => {
                           </FormFeedback>
                         ) : null}
                       </div>
-                      {validation.values.isService === "true" && (
-                        <div className="mb-3">
-                          <Label>Dịch vụ mặc định*</Label>
-                          <Input
-                            type="select"
-                            name="isDefault"
-                            className="form-control"
-                            value={validation.values.isDefault}
-                            onChange={e => {
-                              validation.handleChange(e)
-                            }}
-                            invalid={
-                              validation.touched.isDefault &&
-                              validation.errors.isDefault
-                            }
-                          >
-                            <option value="">Xác định dịch vụ mặc định</option>
-                            <option value="true">Có</option>
-                            <option value="false">Không</option>
-                          </Input>
-                          {validation.touched.isDefault &&
-                          validation.errors.isDefault ? (
-                            <FormFeedback type="invalid">
-                              {validation.errors.isDefault}
-                            </FormFeedback>
-                          ) : null}
-                        </div>
-                      )}
+                      {validation.values.isService === true ||
+                        (validation.values.isService === "true" && (
+                          <div className="mb-3">
+                            <Label>Dịch vụ mặc định*</Label>
+                            <Input
+                              type="select"
+                              name="isDefault"
+                              className="form-control"
+                              value={validation.values.isDefault}
+                              onChange={e => {
+                                validation.handleChange(e)
+                              }}
+                              invalid={
+                                validation.touched.isDefault &&
+                                validation.errors.isDefault
+                              }
+                            >
+                              <option value="">
+                                Xác định dịch vụ mặc định
+                              </option>
+                              <option value="true">Có</option>
+                              <option value="false">Không</option>
+                            </Input>
+                            {validation.touched.isDefault &&
+                            validation.errors.isDefault ? (
+                              <FormFeedback type="invalid">
+                                {validation.errors.isDefault}
+                              </FormFeedback>
+                            ) : null}
+                          </div>
+                        ))}
                     </Col>
                     <div>
                       <Label htmlFor="formrow-email-Input">
@@ -700,7 +731,11 @@ const AddNewCarItem = props => {
                                     height="80"
                                     className="avatar-sm rounded bg-light"
                                     alt={validation.values.photo.name}
-                                    src={validation.values.photo.preview}
+                                    src={
+                                      validation.values.photo.preview !== null
+                                        ? validation.values.photo.preview
+                                        : validation.values.photo
+                                    }
                                   />
                                 </Col>
                                 <Col>
@@ -708,11 +743,16 @@ const AddNewCarItem = props => {
                                     to="#"
                                     className="text-muted font-weight-bold"
                                   >
-                                    {validation.values.photo.name}
+                                    {validation.values.photo.preview !== null &&
+                                    validation.values.photo.name
+                                      ? validation.values.photo.name
+                                      : validation.values.name}
                                   </Link>
                                   <p className="mb-0">
                                     <strong>
-                                      {validation.values.photo.formattedSize}
+                                      {validation.values.photo.formattedSize
+                                        ? validation.values.photo.formattedSize
+                                        : "Ảnh hiện tại"}
                                     </strong>
                                   </p>
                                 </Col>
@@ -725,34 +765,22 @@ const AddNewCarItem = props => {
                   </Row>
 
                   <hr />
-                  <Row className="mt-3">
-                    <Col sm="6">
-                      <Button
-                        className="btn btn-secondary"
-                        onClick={() => props.history.goBack()}
-                      >
-                        <i className="mdi mdi-arrow-left me-1" /> Trở về{" "}
-                      </Button>
-                    </Col>
-                    <Col sm="6">
-                      <div className="text-sm-end mt-2 mt-sm-0">
-                        <button
-                          type="submit"
-                          disabled={isSubmitting}
-                          className="btn btn-primary me-2"
-                        >
-                          Tạo mới
-                        </button>
-                        <button
-                          type="button"
-                          className="btn btn-secondary"
-                          onClick={handleReset}
-                        >
-                          Hủy
-                        </button>
-                      </div>
-                    </Col>
-                  </Row>
+                  <div className="d-flex flex-grap gap-2 justify-content-end text-center">
+                    <button
+                      type="submit"
+                      disabled={isButtonDisabled}
+                      className="btn btn-success"
+                    >
+                      Cập nhật
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      onClick={handleReset}
+                    >
+                      Hủy
+                    </button>
+                  </div>
                 </Form>
               </CardBody>
             </Card>
@@ -763,4 +791,4 @@ const AddNewCarItem = props => {
   )
 }
 
-export default withRouter(AddNewCarItem)
+export default withRouter(EditItem)

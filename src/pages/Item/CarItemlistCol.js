@@ -10,15 +10,19 @@ const Name = cell => {
   return cell.value ? cell.value : ""
 }
 
+const Category = cell => {
+  return cell.value ? cell.value : ""
+}
+
 const Warranty = cell => {
   return cell.value ? cell.value + " tháng" : "Chưa có thời gian bảo hành"
 }
 
 const Price = cell => {
-  return cell.value ? formatPriceVND(cell.value) : "Chưa có gi"
+  return cell.value ? formatPriceVND(cell.value) : "Chưa có giá"
 }
 
-const IsDefaultProblem = cell => {
+const IsCell = cell => {
   const isChecked = cell.value === true
   const isDisabled = cell.value === false
 
@@ -30,6 +34,7 @@ const IsDefaultProblem = cell => {
         id="invalidCheck"
         checked={isChecked}
         disabled={isDisabled}
+        readOnly
       />
     </div>
   )
@@ -54,4 +59,4 @@ const Img = cell => {
   )
 }
 
-export { Name, Img, Price, Warranty, IsDefaultProblem }
+export { Name, Img, Price, Warranty, Category, IsCell }

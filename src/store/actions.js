@@ -15,6 +15,9 @@ export * from "./order-services/actions"
 //Group Services
 export * from "./group-services/actions"
 
+//Category Services
+export * from "./categories/actions"
+
 //Item
 export * from "./items/actions"
 

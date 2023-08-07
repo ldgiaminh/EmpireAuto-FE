@@ -18,6 +18,9 @@ import orderServices from "./order-services/reducer"
 //group services
 import groupServices from "./group-services/reducer"
 
+//category services
+import categoryServicess from "./categories/reducer"
+
 //item
 import items from "./items/reducer"
 
@@ -99,6 +102,7 @@ const rootReducer = combineReducers({
   symptomsLists,
   orderServices,
   groupServices,
+  categoryServicess,
   items,
   brands,
   models,

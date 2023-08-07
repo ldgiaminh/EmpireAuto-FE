@@ -97,7 +97,7 @@ const CarProblemByModel = props => {
         },
       },
       {
-        Header: "Name",
+        Header: "Tên vấn đề",
         accessor: "name",
         filterable: true,
         Cell: cellProps => {
@@ -127,13 +127,15 @@ const CarProblemByModel = props => {
         Cell: cellProps => {
           const { id, name } = cellProps.row.original
           const slugName = slugify(name, {
-            replacement: "-", // replace spaces with replacement character, defaults to `-`
-            remove: undefined, // remove characters that match regex, defaults to `undefined`
-            lower: true, // convert to lower case, defaults to `false`
-            strict: false, // strip special characters except replacement, defaults to `false`
-            locale: "vi", // language code of the locale to use
-            trim: false, // trim leading and trailing replacement chars, defaults to `true`
+            replacement: "-",
+            remove: undefined,
+            lower: true,
+            strict: false,
+            locale: "vi",
+            trim: false,
           })
+
+          const problemName = name
 
           return (
             <Button
@@ -142,7 +144,8 @@ const CarProblemByModel = props => {
               className="btn-sm btn-rounded"
               onClick={() =>
                 history.push(
-                  `/brands/${params.bId}/${params.bName}/models/${params.mId}/${params.mName}/problems/${id}/${slugName}/items`
+                  `/brands/${params.bId}/${params.bName}/models/${params.mId}/${params.mName}/problems/${id}/${slugName}`,
+                  { problemName } // Pass the object as a second parameter for query parameters
                 )
               }
             >
@@ -178,7 +181,7 @@ const CarProblemByModel = props => {
               >
                 <i className="mdi mdi-delete font-size-18" id="deletetooltip" />
                 <UncontrolledTooltip placement="top" target="deletetooltip">
-                  Delete
+                  Xóa
                 </UncontrolledTooltip>
               </Link>
             </div>

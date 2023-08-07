@@ -80,7 +80,7 @@ const SymptomLists = props => {
         },
       },
       {
-        Header: "Thời gian kết thúc dự kiến",
+        Header: "Thời gian kết thúc dự kiến (phút)",
         accessor: "intendedMinutes",
         filterable: true,
         Cell: cellProps => {
