@@ -143,7 +143,6 @@ const OrderServicesList = props => {
               color={
                 cellProps.row.original.expert !== null ? "primary" : "warning"
               }
-              className="btn-sm btn-rounded"
               onClick={() =>
                 history.push(`/order-services/${cellProps.row.original.id}`)
               }
