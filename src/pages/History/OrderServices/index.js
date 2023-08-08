@@ -15,6 +15,7 @@ import {
   NavLink,
   TabContent,
   TabPane,
+  UncontrolledTooltip,
 } from "reactstrap"
 
 import {
@@ -85,86 +86,11 @@ const OrderServicesHistory = props => {
         },
       },
       {
-        Header: "Tên khách hàng",
-        accessor: "order.user.fullname",
-        disableFilters: true,
-        Cell: cellProps => {
-          return <Name {...cellProps} />
-        },
-      },
-      {
-        Header: "Hãng xe",
-        accessor: "car.carBrand",
-        disableFilters: true,
-        Cell: cellProps => {
-          return <ModalCar {...cellProps} />
-        },
-      },
-      {
-        Header: "Dòng xe",
-        accessor: "car.carModel",
-        disableFilters: true,
-        Cell: cellProps => {
-          return <ModalCar {...cellProps} />
-        },
-      },
-      {
         Header: "Biển số xe",
         accessor: "car.carLisenceNo",
         disableFilters: true,
         Cell: cellProps => {
           return <Plate {...cellProps} />
-        },
-      },
-      {
-        Header: "Kỹ thuật viên",
-        accessor: "expert.fullname",
-        disableFilters: true,
-        Cell: cellProps => {
-          return <Expert {...cellProps} />
-        },
-      },
-      {
-        Header: "Chi tiết",
-        accessor: "action",
-        disableFilters: true,
-        Cell: cellProps => {
-          return (
-            <Button
-              type="button"
-              color={
-                cellProps.row.original.expert !== null ? "primary" : "warning"
-              }
-              className="btn-sm btn-rounded"
-              onClick={() =>
-                history.push(`/order-services/${cellProps.row.original.id}`)
-              }
-            >
-              {cellProps.row.original.expert !== null
-                ? "Xem chi tiết"
-                : "Phân công"}
-            </Button>
-          )
-        },
-      },
-    ],
-    []
-  )
-
-  const columnsMaintenance = useMemo(
-    () => [
-      {
-        Header: "Mã đơn hàng",
-        accessor: "code",
-        width: "150px",
-        style: {
-          textAlign: "center",
-          width: "10%",
-          background: "#0000",
-        },
-        filterable: true,
-        Cell: cellProps => {
-          return <OrderCode {...cellProps} />
         },
       },
       {
@@ -199,14 +125,7 @@ const OrderServicesHistory = props => {
           return <ModalCar {...cellProps} />
         },
       },
-      {
-        Header: "Biển số xe",
-        accessor: "car.carLisenceNo",
-        disableFilters: true,
-        Cell: cellProps => {
-          return <Plate {...cellProps} />
-        },
-      },
+
       {
         Header: "Kỹ thuật viên",
         accessor: "expert.fullname",
@@ -221,20 +140,21 @@ const OrderServicesHistory = props => {
         disableFilters: true,
         Cell: cellProps => {
           return (
-            <Button
-              type="button"
-              color={
-                cellProps.row.original.expert !== null ? "primary" : "warning"
-              }
-              className="btn-sm btn-rounded"
-              onClick={() =>
-                history.push(`/order-services/${cellProps.row.original.id}`)
+            <Link
+              to={`/order-services/${cellProps.row.original.id}`}
+              className={
+                cellProps.row.original.expert !== null
+                  ? "text-primary"
+                  : "text-warning"
               }
             >
-              {cellProps.row.original.expert !== null
-                ? "Xem chi tiết"
-                : "Phân công"}
-            </Button>
+              <i className="mdi mdi-eye-circle font-size-20" id="edittooltip" />
+              <UncontrolledTooltip placement="top" target="edittooltip">
+                {cellProps.row.original.expert !== null
+                  ? "Xem chi tiết"
+                  : "Phân công"}
+              </UncontrolledTooltip>
+            </Link>
           )
         },
       },
@@ -332,7 +252,7 @@ const OrderServicesHistory = props => {
                         </TabPane>
                         <TabPane tabId="6" id="maintenance">
                           <TableContainer
-                            columns={columnsMaintenance}
+                            columns={columns}
                             data={orderServicess}
                             isGlobalFilter={true}
                             customPageSize={10}

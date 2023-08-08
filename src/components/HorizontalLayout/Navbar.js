@@ -439,7 +439,7 @@ const Navbar = props => {
                               }}
                             >
                               <i className="bx bx-server me-2"></i>
-                              {props.t("Cấu hình")}
+                              {props.t("Cấu hình dữ liệu")}
                             </Link>
                           </li>
                         </React.Fragment>

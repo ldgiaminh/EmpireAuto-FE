@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from "react"
-import { withRouter } from "react-router-dom"
+import { Link, withRouter } from "react-router-dom"
 import PropTypes from "prop-types"
 import { isEmpty } from "lodash"
 import "toastr/build/toastr.min.css"
@@ -22,6 +22,7 @@ import {
   Nav,
   Label,
   FormGroup,
+  UncontrolledTooltip,
 } from "reactstrap"
 
 import { BookingCode, ModalCar, Name, Phone, Plate } from "./BookingUserListCol"
@@ -410,6 +411,14 @@ const BookingHistory = props => {
         },
       },
       {
+        Header: "Biển số xe",
+        accessor: "car.carLisenceNo",
+        filterable: true,
+        Cell: cellProps => {
+          return <Plate {...cellProps} />
+        },
+      },
+      {
         Header: "Tên khách hàng",
         accessor: "user.fullname",
         filterable: true,
@@ -441,29 +450,27 @@ const BookingHistory = props => {
           return <ModalCar {...cellProps} />
         },
       },
-      {
-        Header: "Biển số xe",
-        accessor: "car.carLisenceNo",
-        filterable: true,
-        Cell: cellProps => {
-          return <Plate {...cellProps} />
-        },
-      },
+
       {
         Header: "Chi tiết",
         accessor: "view",
         disableFilters: true,
         Cell: cellProps => {
           return (
-            <Button
-              type="button"
-              color="primary"
-              onClick={() =>
-                history.push(`/bookings/${cellProps.row.original.id}`)
-              }
-            >
-              Xem chi tiết
-            </Button>
+            <div>
+              <Link
+                to={`/bookings/${cellProps.row.original.id}`}
+                className="text-primary"
+              >
+                <i
+                  className="mdi mdi-eye-circle font-size-20"
+                  id="edittooltip"
+                />
+                <UncontrolledTooltip placement="top" target="edittooltip">
+                  Xem chi tiết
+                </UncontrolledTooltip>
+              </Link>
+            </div>
           )
         },
       },

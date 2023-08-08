@@ -95,11 +95,11 @@ const BookingCheckInScript = () => {
       <CardBody>
         <CardTitle className="mb-2">CHECK-IN ĐẶT LỊCH</CardTitle>
 
-        {/* {!isLoadScript && bookings.length === 0 && (
+        {!isLoadScript && bookings.length === 0 && (
           <em className="mt-3">
             Đang có {countBooking.length} đặt lịch chờ check-in{" "}
           </em>
-        )} */}
+        )}
 
         <Form
           className="row gy-2 gx-3 mt-3"

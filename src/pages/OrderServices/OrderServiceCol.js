@@ -14,7 +14,7 @@ const formatDate = (date, format) => {
 const OrderCode = cell => {
   return (
     <Link to="#" className="text-body fw-bold">
-      {cell.value ? cell.value : ""}
+      {cell.value ? "#" + cell.value : ""}
     </Link>
   )
 }

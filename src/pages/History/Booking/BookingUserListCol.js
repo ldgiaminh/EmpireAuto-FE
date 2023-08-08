@@ -12,7 +12,7 @@ import { Link } from "react-router-dom"
 const BookingCode = cell => {
   return (
     <Link to="#" className="text-body fw-bold">
-      {cell.value ? cell.value : ""}
+      {cell.value ? "#" + cell.value : ""}
     </Link>
   )
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useMemo } from "react"
-import { withRouter } from "react-router-dom"
+import { Link, withRouter } from "react-router-dom"
 import TableContainer from "../../components/Common/TableContainer"
 import classnames from "classnames"
 import img1 from "../../assets/images/small/no-data.png"
@@ -15,6 +15,7 @@ import {
   NavLink,
   TabContent,
   TabPane,
+  UncontrolledTooltip,
 } from "reactstrap"
 
 import {
@@ -85,6 +86,14 @@ const OrderServicesList = props => {
         },
       },
       {
+        Header: "Biển số xe",
+        accessor: "car.carLisenceNo",
+        disableFilters: true,
+        Cell: cellProps => {
+          return <Plate {...cellProps} />
+        },
+      },
+      {
         Header: "Tên khách hàng",
         accessor: "order.user.fullname",
         disableFilters: true,
@@ -117,14 +126,6 @@ const OrderServicesList = props => {
         },
       },
       {
-        Header: "Biển số xe",
-        accessor: "car.carLisenceNo",
-        disableFilters: true,
-        Cell: cellProps => {
-          return <Plate {...cellProps} />
-        },
-      },
-      {
         Header: "Kỹ thuật viên",
         accessor: "expert.fullname",
         disableFilters: true,
@@ -138,19 +139,21 @@ const OrderServicesList = props => {
         disableFilters: true,
         Cell: cellProps => {
           return (
-            <Button
-              type="button"
-              color={
-                cellProps.row.original.expert !== null ? "primary" : "warning"
-              }
-              onClick={() =>
-                history.push(`/order-services/${cellProps.row.original.id}`)
+            <Link
+              to={`/order-services/${cellProps.row.original.id}`}
+              className={
+                cellProps.row.original.expert !== null
+                  ? "text-primary"
+                  : "text-warning"
               }
             >
-              {cellProps.row.original.expert !== null
-                ? "Xem chi tiết"
-                : "Phân công"}
-            </Button>
+              <i className="mdi mdi-eye-circle font-size-20" id="edittooltip" />
+              <UncontrolledTooltip placement="top" target="edittooltip">
+                {cellProps.row.original.expert !== null
+                  ? "Xem chi tiết"
+                  : "Phân công"}
+              </UncontrolledTooltip>
+            </Link>
           )
         },
       },
