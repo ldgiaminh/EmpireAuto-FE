@@ -25,6 +25,7 @@ import {
   ModalCar,
   Plate,
   Expert,
+  DateTimeCell,
 } from "./OrderServiceCol"
 
 //Import Breadcrumb
@@ -110,22 +111,37 @@ const OrderServicesHistory = props => {
         },
       },
       {
-        Header: "Hãng xe",
-        accessor: "car.carBrand",
+        Header: "Thời gian nhận xe",
+        accessor: "status.logDateTime",
         disableFilters: true,
         Cell: cellProps => {
-          return <ModalCar {...cellProps} />
+          return <DateTimeCell {...cellProps} />
         },
       },
+      // {
+      //   Header: "Hãng xe",
+      //   accessor: "car.carBrand",
+      //   disableFilters: true,
+      //   Cell: cellProps => {
+      //     return <ModalCar {...cellProps} />
+      //   },
+      // },
+      // {
+      //   Header: "Dòng xe",
+      //   accessor: "car.carModel",
+      //   disableFilters: true,
+      //   Cell: cellProps => {
+      //     return <ModalCar {...cellProps} />
+      //   },
+      // },
       {
-        Header: "Dòng xe",
-        accessor: "car.carModel",
+        Header: "SDT",
+        accessor: "order.user.phone",
         disableFilters: true,
         Cell: cellProps => {
-          return <ModalCar {...cellProps} />
+          return <Name {...cellProps} />
         },
       },
-
       {
         Header: "Kỹ thuật viên",
         accessor: "expert.fullname",

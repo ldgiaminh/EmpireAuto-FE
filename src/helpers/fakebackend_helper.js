@@ -221,6 +221,10 @@ export const deleteUser = user => del(url.DELETE_USER, { headers: { user } })
 //get experts
 export const getExperts = () => get(url.GET_EXPERTS)
 
+//put experts
+export const onChangeStatusExpert = id =>
+  put(`${url.PUT_STATUS_EXPERTS}/${id}/status`)
+
 /*
 ================================================
 SYMPTOMS

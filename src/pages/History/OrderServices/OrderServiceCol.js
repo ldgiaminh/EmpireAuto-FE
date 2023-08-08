@@ -27,10 +27,26 @@ const DateCell = cell => {
   if (!cell.value) {
     return "Không tồn tại"
   }
-  //const formattedDateTime = formatDate(cell.value, "DD/MM/YYYY H:mm:ss")
   const formattedDateTime = formatDate(cell.value, "DD/MM/YYYY")
-  //const formattedTime = formattedDateTime.split(" - ")[1] // get the formatted time from the formatted date and time
   return `${formattedDateTime.split(" ")[0]}` // return the formatted date and time in the desired format
+}
+
+const DateTimeCell = cell => {
+  if (!cell.value) {
+    return "Không tồn tại"
+  }
+  const formattedDateTime = formatDate(cell.value, "DD/MM/YYYY H:mm:ss")
+  const formattedTime = formattedDateTime.split(" - ")[1] // get the formatted time from the formatted date and time
+  return ` ${formattedTime} - ${formattedDateTime.split(" ")[0]}` // return the formatted date and time in the desired format
+}
+
+const Phone = ({ value }) => {
+  if (!value) {
+    return ""
+  }
+
+  const formattedPhone = `(+${value.slice(1, 3)}) ${value.slice(3)}`
+  return formattedPhone
 }
 
 const ModalCar = cell => {
@@ -45,4 +61,13 @@ const Expert = cell => {
   return cell.value ? cell.value : "Chưa có kỹ thuật viên"
 }
 
-export { OrderCode, Name, DateCell, ModalCar, Plate, Expert }
+export {
+  OrderCode,
+  Name,
+  DateCell,
+  ModalCar,
+  Plate,
+  Expert,
+  DateTimeCell,
+  Phone,
+}

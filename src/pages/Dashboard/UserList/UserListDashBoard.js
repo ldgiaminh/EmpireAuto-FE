@@ -1,7 +1,14 @@
 import React, { useEffect, useState, useRef, useMemo } from "react"
-import { withRouter, Li } from "react-router-dom"
-import TableContainer from "../../components/Common/TableContainer"
-import { Card, CardBody, Col, Container, Row } from "reactstrap"
+import { withRouter, Link } from "react-router-dom"
+import TableContainer from "../../../components/Common/TableContainer"
+import {
+  Card,
+  CardBody,
+  Col,
+  Container,
+  Row,
+  UncontrolledTooltip,
+} from "reactstrap"
 
 import { Name, Email, Phone, Gender } from "./userlistCol"
 
@@ -14,6 +21,7 @@ import { isEmpty } from "lodash"
 //redux
 import { useSelector, useDispatch } from "react-redux"
 import Loading from "components/Loader/Loading"
+import { Label } from "recharts"
 
 const UserLists = props => {
   //meta title
@@ -74,6 +82,49 @@ const UserLists = props => {
           )
         },
       },
+      // {
+      //   Header: "Tiến trình",
+      //   filterable: true,
+      //   Cell: cellProps => {
+      //     const { id, activities } = cellProps.row.original
+
+      //     let content
+
+      //     switch (activities.length) {
+      //       case 0:
+      //         content = "Không tồn tại tiến trình"
+      //         break
+      //       case 1:
+      //         content = (
+      //           <Link
+      //             to={`/order-services/${activities[0].id}`}
+      //             className="text-primary"
+      //           >
+      //             <i
+      //               className="mdi mdi-eye-circle font-size-20"
+      //               id="edittooltip"
+      //             />
+      //             <UncontrolledTooltip placement="top" target="edittooltip">
+      //               Xem chi tiết
+      //             </UncontrolledTooltip>
+      //           </Link>
+      //         )
+      //         break
+      //       default:
+      //         content = (
+      //           <select>
+      //             {activities.map((activity, index) => (
+      //               <option key={index} value={activity.url}>
+      //                 {activity.name}
+      //               </option>
+      //             ))}
+      //           </select>
+      //         )
+      //     }
+
+      //     return <>{content}</>
+      //   },
+      // },
       // {
       //   Header: "Action",
       //   Cell: cellProps => {
@@ -137,15 +188,7 @@ const UserLists = props => {
 
   return (
     <React.Fragment>
-      <div className="page-content">
-        <Container fluid>
-          {/* Render Breadcrumbs */}
-          <Breadcrumbs
-            title="Khách hàng"
-            breadcrumbItem="Danh sách các khách hàng"
-          />
-
-          <div className="mb-3 mt-2 d-flex justify-content-between">
+      {/* <div className="mb-3 mt-2 d-flex justify-content-between">
             <div className="me-5 d-flex">
               <div>
                 <i className="fas fa-user-friends me-2" />
@@ -170,29 +213,36 @@ const UserLists = props => {
                 Hôm nay có thêm {customersCreatedToday.length} khách hàng mới
               </em>
             )}
-          </div>
+          </div> */}
 
-          <Row>
-            <Col lg="12">
-              <Card>
-                <CardBody>
-                  {isLoading && <Loading />}
-                  {!isLoading && (
-                    <TableContainer
-                      columns={columns}
-                      data={sortedCustomers}
-                      isGlobalFilter={true}
-                      isAddUserList={false}
-                      customPageSize={10}
-                      className="custom-header-css"
-                    />
-                  )}
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-      </div>
+      <Row>
+        <Col lg="12">
+          <Card>
+            <CardBody>
+              <div className="d-flex justify-content-between">
+                <h3 className="mb-4 card-title">DANH SÁCH KHÁCH HÀNG</h3>
+                {customersCreatedToday.length > 0 && !isLoading && (
+                  <em>
+                    Hôm nay có thêm {customersCreatedToday.length} khách hàng
+                    mới
+                  </em>
+                )}
+              </div>
+              {isLoading && <Loading />}
+              {!isLoading && (
+                <TableContainer
+                  columns={columns}
+                  data={sortedCustomers}
+                  isGlobalFilter={true}
+                  isAddUserList={false}
+                  customPageSize={10}
+                  className="custom-header-css"
+                />
+              )}
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
     </React.Fragment>
   )
 }

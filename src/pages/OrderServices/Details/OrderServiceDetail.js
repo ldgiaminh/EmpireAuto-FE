@@ -71,7 +71,7 @@ const OrderServiceDetail = props => {
 
   const {
     orderServicesDetail,
-    users,
+    experts,
     isLoading,
     orderServiceLogs,
     isShow,
@@ -79,7 +79,7 @@ const OrderServiceDetail = props => {
     exDetailsService,
   } = useSelector(state => ({
     orderServicesDetail: state.orderServices.orderServicesDetail,
-    users: state.userLists.users,
+    experts: state.userLists.experts,
     isLoading: state.orderServices.isLoading,
     orderServiceLogs: state.orderServices.orderServiceLogs,
     isShow: state.Layout.isShow,
@@ -204,6 +204,8 @@ const OrderServiceDetail = props => {
     setSelectedGroup(selected)
   }
 
+  const availableExpert = experts.filter(ex => ex.isAvailable)
+
   const optionGroup = [
     {
       label: "Còn trống",
@@ -213,11 +215,11 @@ const OrderServiceDetail = props => {
     {
       label: "Đã đầy",
       options: [],
-      isFirstGroup: false,
+      isFirstGroup: true,
     },
   ]
 
-  optionGroup[0].options = users
+  optionGroup[0].options = availableExpert
     .filter(ex => !ex.isMaxWorkloadPerDay)
     .sort((a, b) => a.workloadTotal - b.workloadTotal)
     .map(ex => ({
@@ -228,7 +230,7 @@ const OrderServiceDetail = props => {
       isMax: ex.isMaxWorkloadPerDay,
     }))
 
-  optionGroup[1].options = users
+  optionGroup[1].options = availableExpert
     .filter(ex => ex.isMaxWorkloadPerDay)
     .map(ex => ({
       label: ex.fullname,
@@ -251,7 +253,7 @@ const OrderServiceDetail = props => {
     },
   ]
 
-  optionGroup1[0].options = users
+  optionGroup1[0].options = experts
     .filter(ex => !ex.isMaxWorkloadPerDay)
     .sort((a, b) => a.workloadTotal - b.workloadTotal)
     .map(ex => ({
@@ -262,7 +264,7 @@ const OrderServiceDetail = props => {
       isMax: ex.isMaxWorkloadPerDay,
     }))
 
-  optionGroup1[1].options = users
+  optionGroup1[1].options = experts
     .filter(ex => ex.isMaxWorkloadPerDay)
     .map(ex => ({
       label: ex.fullname,
@@ -311,9 +313,9 @@ const OrderServiceDetail = props => {
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <span>{name}</span>{" "}
           {isMax == true ? (
-            <span style={{ color: "darkgray" }}>MAX</span>
+            <div className="font-size-12 text-muted">MAX</div>
           ) : (
-            <span style={{ color: "darkgray" }}>{workLoad}</span>
+            <span className="font-size-12 text-muted">{workLoad}</span>
           )}
         </div>
       </components.Option>
@@ -337,8 +339,8 @@ const OrderServiceDetail = props => {
     return (
       <components.GroupHeading {...props}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <span>{label}</span>
-          <span>{title}</span>
+          <div>{label}</div>
+          <div className="font-size-10">{title}</div>
         </div>
       </components.GroupHeading>
     )
@@ -908,8 +910,9 @@ const OrderServiceDetail = props => {
               <Row className="mt-2 mb-5">
                 <Col sm="6">
                   <Link
-                    to="/order-services"
+                    to="#"
                     className="btn text-muted d-none d-sm-inline-block btn-link"
+                    onClick={() => props.history.goBack()}
                   >
                     <i className="mdi mdi-arrow-left me-1" /> Trở về trang danh
                     sách{" "}

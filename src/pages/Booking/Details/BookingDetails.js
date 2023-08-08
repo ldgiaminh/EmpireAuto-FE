@@ -381,11 +381,12 @@ const BookingDetails = props => {
                   <Row className="mt-4 mb-5">
                     <Col sm="6">
                       <Link
-                        to="/bookings"
+                        to="#"
                         className="btn text-muted d-none d-sm-inline-block btn-link"
+                        onClick={() => props.history.goBack()}
                       >
                         <i className="mdi mdi-arrow-left me-1" /> Trở về trang
-                        danh sách đặt lịch{" "}
+                        danh sách{" "}
                       </Link>
                     </Col>
                     {!bookingDetail.isArrived &&

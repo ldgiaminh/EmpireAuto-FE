@@ -92,6 +92,7 @@ function* onUpdateProblems({ payload: carsProblem, id, history }) {
     toast.success("Xóa thành công " + carsProblem.name)
     history.goBack()
   } catch (error) {
+    toast.success("Đã có lỗi xảy ra")
     yield put(updateCarsProblemFail(error))
   }
 }

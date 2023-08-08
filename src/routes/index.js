@@ -28,6 +28,9 @@ import Transaction from "../pages/Transaction/index"
 //User
 import UserLists from "../pages/User/index"
 
+//Expert
+import ExpertLists from "../pages/Expert/index"
+
 //Car brand
 import CarBrand from "../pages/CarBrand/index"
 
@@ -104,6 +107,9 @@ const authProtectedRoutes = [
 
   //user
   { path: "/users", component: UserLists },
+
+  //expert
+  { path: "/experts", component: ExpertLists },
 
   //Vehicle
   { path: "/brands", component: CarBrand },

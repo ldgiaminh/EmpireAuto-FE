@@ -8,6 +8,7 @@ import {
   DELETE_USER,
   UPDATE_USER,
   GET_EXPERTS,
+  PUT_STATUS_EXPERTS,
 } from "./actionTypes"
 
 import {
@@ -23,6 +24,8 @@ import {
   deleteUserFail,
   getExpertsFail,
   getExpertsSuccess,
+  putChangeStatusExpertSuccess,
+  putChangeStatusExpertFail,
 } from "./actions"
 
 //Include Both Helper File with needed methods
@@ -33,7 +36,10 @@ import {
   updateUser,
   deleteUser,
   getExperts,
+  onChangeStatusExpert,
 } from "../../helpers/fakebackend_helper"
+
+import { toast } from "react-toastify"
 
 function* fetchUsers() {
   try {
@@ -53,50 +59,67 @@ function* fetchExperts() {
   }
 }
 
-function* fetchUserProfile() {
+function* onChangeStatusExperts({ payload: expert }) {
   try {
-    const response = yield call(getUserProfile)
-    yield put(getUserProfileSuccess(response))
+    const response = yield call(onChangeStatusExpert, expert.id)
+    yield put(putChangeStatusExpertSuccess(expert))
+
+    expert.isAvailable &&
+      toast.success("Đã bật trạng thái hoạt động của " + expert.fullname)
+    !expert.isAvailable &&
+      toast.success("Đã tắt trạng thái hoạt động của " + expert.fullname)
   } catch (error) {
-    yield put(getUserProfileFail(error))
+    toast.error("Đã có lỗi xảy ra")
+    yield put(putChangeStatusExpertFail(error))
   }
 }
 
-function* onUpdateUser({ payload: user }) {
-  try {
-    const response = yield call(updateUser, user)
-    yield put(updateUserSuccess(response))
-  } catch (error) {
-    yield put(updateUserFail(error))
-  }
-}
+// function* fetchUserProfile() {
+//   try {
+//     const response = yield call(getUserProfile)
+//     yield put(getUserProfileSuccess(response))
+//   } catch (error) {
+//     yield put(getUserProfileFail(error))
+//   }
+// }
 
-function* onDeleteUser({ payload: user }) {
-  try {
-    const response = yield call(deleteUser, user)
-    yield put(deleteUserSuccess(response))
-  } catch (error) {
-    yield put(deleteUserFail(error))
-  }
-}
+// function* onUpdateUser({ payload: user }) {
+//   try {
+//     const response = yield call(updateUser, user)
+//     yield put(updateUserSuccess(response))
+//   } catch (error) {
+//     yield put(updateUserFail(error))
+//   }
+// }
 
-function* onAddNewUser({ payload: user }) {
-  try {
-    const response = yield call(addNewUser, user)
+// function* onDeleteUser({ payload: user }) {
+//   try {
+//     const response = yield call(deleteUser, user)
+//     yield put(deleteUserSuccess(response))
+//   } catch (error) {
+//     yield put(deleteUserFail(error))
+//   }
+// }
 
-    yield put(addUserSuccess(response))
-  } catch (error) {
-    yield put(addUserFail(error))
-  }
-}
+// function* onAddNewUser({ payload: user }) {
+//   try {
+//     const response = yield call(addNewUser, user)
+
+//     yield put(addUserSuccess(response))
+//   } catch (error) {
+//     yield put(addUserFail(error))
+//   }
+//}
 
 function* usersSaga() {
   yield takeEvery(GET_USERS, fetchUsers)
   yield takeEvery(GET_EXPERTS, fetchExperts)
-  yield takeEvery(GET_USER_PROFILE, fetchUserProfile)
-  yield takeEvery(ADD_NEW_USER, onAddNewUser)
-  yield takeEvery(UPDATE_USER, onUpdateUser)
-  yield takeEvery(DELETE_USER, onDeleteUser)
+  yield takeEvery(PUT_STATUS_EXPERTS, onChangeStatusExperts)
+
+  // yield takeEvery(GET_USER_PROFILE, fetchUserProfile)
+  // yield takeEvery(ADD_NEW_USER, onAddNewUser)
+  // yield takeEvery(UPDATE_USER, onUpdateUser)
+  // yield takeEvery(DELETE_USER, onDeleteUser)
 }
 
 export default usersSaga

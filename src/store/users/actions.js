@@ -17,6 +17,9 @@ import {
   GET_EXPERTS_FAIL,
   GET_EXPERTS_SUCCESS,
   GET_EXPERTS,
+  PUT_STATUS_EXPERTS_FAIL,
+  PUT_STATUS_EXPERTS_SUCCESS,
+  PUT_STATUS_EXPERTS,
 } from "./actionTypes"
 
 export const getUsers = () => ({
@@ -31,25 +34,6 @@ export const getUsersSuccess = users => ({
 export const addNewUser = user => ({
   type: ADD_NEW_USER,
   payload: user,
-})
-
-/*
-================================================
-EXPERTS
-================================================
-*/
-export const getExperts = () => ({
-  type: GET_EXPERTS,
-})
-
-export const getExpertsSuccess = users => ({
-  type: GET_EXPERTS_SUCCESS,
-  payload: users,
-})
-
-export const getExpertsFail = error => ({
-  type: ADD_USER_FAIL,
-  payload: error,
 })
 
 export const addUserSuccess = user => ({
@@ -108,5 +92,44 @@ export const deleteUserSuccess = user => ({
 
 export const deleteUserFail = error => ({
   type: DELETE_USER_FAIL,
+  payload: error,
+})
+
+/*
+================================================
+EXPERTS
+================================================
+*/
+export const getExperts = () => ({
+  type: GET_EXPERTS,
+})
+
+export const getExpertsSuccess = users => ({
+  type: GET_EXPERTS_SUCCESS,
+  payload: users,
+})
+
+export const getExpertsFail = error => ({
+  type: GET_EXPERTS_FAIL,
+  payload: error,
+})
+
+/*
+================================================
+CHANGE STATUS EXPERT
+================================================
+*/
+export const putChangeStatusExpert = expert => ({
+  type: PUT_STATUS_EXPERTS,
+  payload: expert,
+})
+
+export const putChangeStatusExpertSuccess = expert => ({
+  type: PUT_STATUS_EXPERTS_SUCCESS,
+  payload: expert,
+})
+
+export const putChangeStatusExpertFail = error => ({
+  type: PUT_STATUS_EXPERTS_FAIL,
   payload: error,
 })

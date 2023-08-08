@@ -47,6 +47,8 @@ const ConfigSystem = props => {
 
   const [number, setNumber] = useState("")
 
+  const [view, setView] = useState("")
+
   const [isFormValid, setIsFormValid] = useState(false)
 
   /*
@@ -88,13 +90,23 @@ const ConfigSystem = props => {
 
   /*
   ==================================================
-  Get Config Value
+  GET CONFIG VALUE
   ==================================================
   */
 
   const getConfigValue = (configSystems, key) => {
     const config = configSystems.find(config => config.key === key)
     return config ? config.value : "N/A"
+  }
+
+  /*
+  ==================================================
+  FORMAT VND
+  ==================================================
+  */
+
+  const formatPriceWithDots = price => {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
   }
 
   /*
@@ -134,18 +146,25 @@ const ConfigSystem = props => {
       value: "BOOKING_SLOT_PER_DAY",
       current: getConfigValue(configSystems, "BOOKING_SLOT_PER_DAY"),
     },
+    {
+      label: "Giá tiền đặt lịch",
+      value: "BOOKING_PRICE",
+      current:
+        formatPriceWithDots(getConfigValue(configSystems, "BOOKING_PRICE")) +
+        " VND",
+    },
   ]
 
   const workLoadOptions = [
     {
       label: "Công việc tối đa mỗi ngày",
       value: "MAX_WORKLOAD_PER_DAY",
-      current: getConfigValue(configSystems, "MAX_WORKLOAD_PER_DAY"),
+      current: getConfigValue(configSystems, "MAX_WORKLOAD_PER_DAY") + " WLD",
     },
     {
-      label: "Thời gian cho mỗi công việc (Phút)",
+      label: "Thời gian cho mỗi công việc (phút)",
       value: "MINUTES_PER_WORKLOAD",
-      current: getConfigValue(configSystems, "MINUTES_PER_WORKLOAD"),
+      current: getConfigValue(configSystems, "MINUTES_PER_WORKLOAD") + " Phút",
     },
   ]
 
@@ -218,8 +237,26 @@ const ConfigSystem = props => {
 
   const handleChange = e => {
     const value = e.target.value
-    setNumber(value)
-    setIsFormValid(false)
+
+    // Check if the value is a valid positive integer
+    if (
+      value === "" ||
+      (Number.isInteger(Number(value)) && Number(value) > 0)
+    ) {
+      setNumber(value)
+      setIsFormValid(false)
+
+      if (selectedGroup.value === "BOOKING_PRICE") {
+        if (value === null || value === "") {
+          setView("")
+        } else {
+          setView(formatPriceWithDots(value) + " VND")
+        }
+      }
+    } else {
+      // Display an error or disable the form submit button
+      setIsFormValid(true)
+    }
   }
 
   /*
@@ -230,8 +267,13 @@ const ConfigSystem = props => {
 
   const saveConfig = e => {
     e.preventDefault()
-    // Check if number is empty
-    if (!number || !selectedGroup || !selectedGroup.value) {
+    // Check if number is empty or not a positive integer
+    if (
+      !number ||
+      !selectedGroup ||
+      !selectedGroup.value ||
+      !(Number.isInteger(Number(number)) && Number(number) > 0)
+    ) {
       setIsFormValid(true)
       return
     }
@@ -245,6 +287,7 @@ const ConfigSystem = props => {
       setIsFormValid(false)
       tog_standard()
       handleReset()
+      setView("")
     }
   }
 
@@ -263,6 +306,7 @@ const ConfigSystem = props => {
     resetForm()
     setIsFormValid(false)
     tog_standard()
+    setView("")
   }
 
   return (
@@ -290,6 +334,7 @@ const ConfigSystem = props => {
           isOpen={modal_standard}
           toggle={() => {
             tog_standard()
+            setView("")
           }}
           centered
         >
@@ -311,7 +356,12 @@ const ConfigSystem = props => {
           </div>
           <div className="modal-body">
             {isFormValid ? (
-              <Alert color="danger">Vui lòng điền đầy đủ dữ liệu</Alert>
+              <Alert color="danger">
+                Vui lòng điền đầy đủ dữ liệu và hợp lệ{" "}
+                {!Number.isInteger(Number(number)) || Number(number) <= 0
+                  ? "- Số phải là một số dương và không phải số thập thân"
+                  : ""}
+              </Alert>
             ) : null}
             <Form>
               <div className="mb-3">
@@ -332,9 +382,16 @@ const ConfigSystem = props => {
                 />
               </div>
               <div className="mb-3">
-                <Label htmlFor="formrow-firstname-Input">Thông số</Label>
+                <Label
+                  htmlFor="formrow-firstname-Input"
+                  className="d-flex justify-content-between"
+                >
+                  Thông số
+                  {view && <div className="text-muted">{view}</div>}
+                </Label>
+
                 <Input
-                  type="text"
+                  type="number"
                   className="form-control"
                   id="formrow-firstname-Input"
                   placeholder="Nhập số thay đổi"

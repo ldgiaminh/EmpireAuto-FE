@@ -104,6 +104,7 @@ export const DELETE_USER = "/delete/user"
 
 //Experts
 export const GET_EXPERTS = "/users/experts"
+export const PUT_STATUS_EXPERTS = "/users/experts"
 
 /*
 ================================================ 

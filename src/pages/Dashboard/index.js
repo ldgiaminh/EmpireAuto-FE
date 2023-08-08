@@ -3,7 +3,10 @@ import React, { useEffect } from "react"
 import { Container, Row, Col, Card, CardBody } from "reactstrap"
 
 //import action
-import { getConfigSystem as onGetConfigSystem } from "../../store/actions"
+import {
+  getConfigSystem as onGetConfigSystem,
+  getUsers as onGetUsers,
+} from "../../store/actions"
 
 // Pages Components
 import WelcomeComp from "./WelcomeComp"
@@ -16,6 +19,7 @@ import { withTranslation } from "react-i18next"
 
 //redux
 import { useSelector, useDispatch } from "react-redux"
+import UserListDashBoard from "./UserList/UserListDashBoard"
 
 const Dashboard = props => {
   //meta title
@@ -29,10 +33,11 @@ const Dashboard = props => {
   ==================================================
   */
 
-  const { isLoad, isShow, configSystems } = useSelector(state => ({
+  const { isLoad, isShow, configSystems, users } = useSelector(state => ({
     isLoad: state.systems.isLoad,
     isShow: state.Layout.isShow,
     configSystems: state.systems.configSystems,
+    users: state.userLists.users,
   }))
 
   /*
@@ -45,6 +50,10 @@ const Dashboard = props => {
     dispatch(onGetConfigSystem())
   }, [dispatch])
 
+  useEffect(() => {
+    dispatch(onGetUsers())
+  }, [dispatch])
+
   /* Call api when get Notifications & Update config */
 
   useEffect(() => {
@@ -55,15 +64,14 @@ const Dashboard = props => {
   }, [dispatch, isShow])
 
   useEffect(() => {
-    if (isLoad) {
-      dispatch(onGetConfigSystem())
-      return
+    if (isShow) {
+      dispatch(onGetUsers())
     }
-  }, [dispatch, isLoad])
+  }, [dispatch, isShow])
 
   /*
   ==================================================
-  Get Config Value
+  GET CONFIG VALUE
   ==================================================
   */
 
@@ -71,6 +79,14 @@ const Dashboard = props => {
     const config = configSystems.find(config => config.key === key)
     return config ? config.value : "N/A"
   }
+
+  /*
+  ==================================================
+  FILTER CUSTOMER
+  ==================================================
+  */
+
+  const customers = users.filter(c => c.roleId === "US").length
 
   /*
   ==================================================
@@ -104,6 +120,11 @@ const Dashboard = props => {
       title: "Bãi đậu xe",
       iconClass: "mdi mdi-car-brake-parking",
       description: getConfigValue(configSystems, "GARAGE_SLOT"),
+    },
+    {
+      title: "Khách hàng",
+      iconClass: "mdi mdi-account-box-outline",
+      description: customers,
     },
   ]
 
@@ -160,6 +181,8 @@ const Dashboard = props => {
               </Row>
             </Col>
           </Row>
+
+          <UserListDashBoard />
         </Container>
       </div>
     </React.Fragment>
