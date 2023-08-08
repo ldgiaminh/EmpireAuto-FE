@@ -218,7 +218,7 @@ const OrderConfirmPaid = () => {
               <div className="text-center my-3">
                 <h5 className="text-primary">
                   <i className="bx bx-loader bx-spin me-2" />
-                  Đang thanh toán tất cả {validationType.values.number1}, một
+                  Đang thanh toán tất cả {validationType.values.number1}, thanh toán một
                   phần {validationType.values.number2} và không thanh toán{" "}
                   {validationType.values.number3} hóa đơn
                 </h5>
@@ -253,7 +253,7 @@ const OrderConfirmPaid = () => {
                       {o.statusCode === 200 &&
                       o.result.orderServiceDetails.length ? (
                         <td className="font-size-14">
-                          Xác nhận & Thanh toán tất cả thành công #
+                          Xác nhận & Thanh toán {o.result.information.confirmAll ? "tất cả" : "một phần"} thành công #
                           {o.result.code}
                         </td>
                       ) : o.statusCode === 200 &&
