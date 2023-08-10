@@ -82,49 +82,43 @@ const UserLists = props => {
           )
         },
       },
-      // {
-      //   Header: "Tiến trình",
-      //   filterable: true,
-      //   Cell: cellProps => {
-      //     const { id, activities } = cellProps.row.original
+      {
+        Header: "Tiến trình",
+        filterable: true,
+        Cell: cellProps => {
+          const { id, activities } = cellProps.row.original
 
-      //     let content
+          let content
 
-      //     switch (activities.length) {
-      //       case 0:
-      //         content = "Không tồn tại tiến trình"
-      //         break
-      //       case 1:
-      //         content = (
-      //           <Link
-      //             to={`/order-services/${activities[0].id}`}
-      //             className="text-primary"
-      //           >
-      //             <i
-      //               className="mdi mdi-eye-circle font-size-20"
-      //               id="edittooltip"
-      //             />
-      //             <UncontrolledTooltip placement="top" target="edittooltip">
-      //               Xem chi tiết
-      //             </UncontrolledTooltip>
-      //           </Link>
-      //         )
-      //         break
-      //       default:
-      //         content = (
-      //           <select>
-      //             {activities.map((activity, index) => (
-      //               <option key={index} value={activity.url}>
-      //                 {activity.name}
-      //               </option>
-      //             ))}
-      //           </select>
-      //         )
-      //     }
+          switch (activities.length) {
+            case 0:
+              // content = "Không tồn tại tiến trình"
+              break
+            case 1:
+              content = (
+                <Link
+                  to={`/order-services/${activities[0].id}`}
+                  className="text-primary"
+                >
+                  {activities[0].car.carLisenceNo}
+                </Link>
+              )
+              break
+            default:
+              content = (
+                <select>
+                  {activities.map((activity, index) => (
+                    <option key={index} value={activity.car.carLisenceNo}>
+                      {activity.car.carLisenceNo}
+                    </option>
+                  ))}
+                </select>
+              )
+          }
 
-      //     return <>{content}</>
-      //   },
-      // },
+          return <>{content}</>
+        },
+      },
       // {
       //   Header: "Action",
       //   Cell: cellProps => {
