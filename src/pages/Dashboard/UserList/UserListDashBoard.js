@@ -83,7 +83,7 @@ const UserLists = props => {
         },
       },
       {
-        Header: "Tiến trình",
+        Header: "Tiến trình hiện tại",
         filterable: true,
         Cell: cellProps => {
           const { id, activities } = cellProps.row.original
