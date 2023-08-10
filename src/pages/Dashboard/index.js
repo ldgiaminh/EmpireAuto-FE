@@ -6,6 +6,7 @@ import { Container, Row, Col, Card, CardBody } from "reactstrap"
 import {
   getConfigSystem as onGetConfigSystem,
   getUsers as onGetUsers,
+  getExperts as onGetExperts,
 } from "../../store/actions"
 
 // Pages Components
@@ -20,6 +21,7 @@ import { withTranslation } from "react-i18next"
 //redux
 import { useSelector, useDispatch } from "react-redux"
 import UserListDashBoard from "./UserList/UserListDashBoard"
+import ExpertList from "../Expert/index"
 
 const Dashboard = props => {
   //meta title
@@ -33,11 +35,12 @@ const Dashboard = props => {
   ==================================================
   */
 
-  const { isLoad, isShow, configSystems, users } = useSelector(state => ({
+  const { isLoad, isShow, configSystems, users, experts } = useSelector(state => ({
     isLoad: state.systems.isLoad,
     isShow: state.Layout.isShow,
     configSystems: state.systems.configSystems,
     users: state.userLists.users,
+    experts: state.userLists.experts,
   }))
 
   /*
@@ -88,6 +91,15 @@ const Dashboard = props => {
 
   const customers = users.filter(c => c.roleId === "US").length
 
+    /*
+  ==================================================
+  FILTER EXPERTS
+  ==================================================
+  */
+
+  const totalExperts = experts.length
+  const activeExperts = experts.filter(e => e.isAvailable === true).length
+
   /*
   ==================================================
   Render
@@ -114,7 +126,7 @@ const Dashboard = props => {
     {
       title: "Xe tại garage",
       iconClass: "bx bx-car",
-      description: getConfigValue(configSystems, "CURRENT_CAR_COUNT_IN_GARAGE"),
+      description: getConfigValue(configSystems, "CURRENT_CAR_COUNT_IN_GARAGE") + "/" + getConfigValue(configSystems, "GARAGE_SLOT"),
     },
     {
       title: "Bãi đậu xe",
@@ -125,6 +137,11 @@ const Dashboard = props => {
       title: "Khách hàng",
       iconClass: "mdi mdi-account-box-outline",
       description: customers,
+    },
+    {
+      title: "Kỹ thuật viên",
+      iconClass: "mdi mdi-account-hard-hat",
+      description: activeExperts + "/" + totalExperts,
     },
   ]
 
@@ -183,6 +200,9 @@ const Dashboard = props => {
           </Row>
 
           <UserListDashBoard />
+          <div hidden>
+            <ExpertList />
+          </div>
         </Container>
       </div>
     </React.Fragment>
