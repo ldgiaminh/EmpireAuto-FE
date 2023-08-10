@@ -29,13 +29,47 @@ const UserLists = props => {
 
   const dispatch = useDispatch()
 
+  /*
+  ==================================================
+  STATE FROM REDUX
+  ==================================================
+  */
+
   const { users, isShow, isLoading } = useSelector(state => ({
     users: state.userLists.users,
     isLoading: state.userLists.isLoading,
     isShow: state.Layout.isShow,
   }))
 
+  /*
+  ==================================================
+  USE EFFECT
+  ==================================================
+  */
+
+  useEffect(() => {
+    dispatch(onGetUsers())
+  }, [dispatch])
+
+  useEffect(() => {
+    if (isShow) {
+      dispatch(onGetUsers())
+    }
+  }, [dispatch, isShow])
+
+  /*
+  ==================================================
+  FILTER CUSTOMER
+  ==================================================
+  */
+
   const customers = users.filter(c => c.roleId === "US")
+
+  /*
+  ==================================================
+  COLUMN
+  ==================================================
+  */
 
   const columns = useMemo(
     () => [
@@ -74,19 +108,14 @@ const UserLists = props => {
         accessor: "gender",
         filterable: true,
         Cell: cellProps => {
-          return (
-            <>
-              {" "}
-              <Gender {...cellProps} />{" "}
-            </>
-          )
+          return <Gender {...cellProps} />
         },
       },
       {
         Header: "Tiến trình hiện tại",
         filterable: true,
         Cell: cellProps => {
-          const { id, activities } = cellProps.row.original
+          const { activities } = cellProps.row.original
 
           let content
 
@@ -119,54 +148,15 @@ const UserLists = props => {
           return <>{content}</>
         },
       },
-      // {
-      //   Header: "Action",
-      //   Cell: cellProps => {
-      //     return (
-      //       <div className="d-flex gap-3">
-      //         <Link
-      //           to="#"
-      //           className="text-success"
-      //           // onClick={() => {
-      //           //   const userData = cellProps.row.original
-      //           //   handleUserClick(userData)
-      //           // }}
-      //         >
-      //           <i className="mdi mdi-pencil font-size-18" id="edittooltip" />
-      //           <UncontrolledTooltip placement="top" target="edittooltip">
-      //             Edit
-      //           </UncontrolledTooltip>
-      //         </Link>
-      //         <Link
-      //           to="#"
-      //           className="text-danger"
-      //           // onClick={() => {
-      //           //   const userData = cellProps.row.original
-      //           //   onClickDelete(userData)
-      //           // }}
-      //         >
-      //           <i className="mdi mdi-delete font-size-18" id="deletetooltip" />
-      //           <UncontrolledTooltip placement="top" target="deletetooltip">
-      //             Delete
-      //           </UncontrolledTooltip>
-      //         </Link>
-      //       </div>
-      //     )
-      //   },
-      // },
     ],
     []
   )
 
-  useEffect(() => {
-    dispatch(onGetUsers())
-  }, [dispatch])
-
-  useEffect(() => {
-    if (isShow) {
-      dispatch(onGetUsers())
-    }
-  }, [dispatch, isShow])
+  /*
+  ==================================================
+  COUNT CUSTOMER CREATED TODAY
+  ==================================================
+  */
 
   // Count customers created today
   const today = new Date().toISOString().split("T")[0]
@@ -175,52 +165,33 @@ const UserLists = props => {
   )
 
   // sortedCustomers will contain the filtered customers array with entries where c.id >= 100 moved to the top.
-  const sortedCustomers = [
-    ...customers.filter(c => c.id >= 100),
-    ...customers.filter(c => c.id < 100),
-  ]
+  const sortedCustomers = customers.reverse()
+
+  const renderCustomerCreatedToday = () => {
+    return (
+      <>
+        {customersCreatedToday.length > 0 && (
+          <em>Hôm nay có {customersCreatedToday.length} khách hàng mới</em>
+        )}
+        <h5>hahah</h5>
+      </>
+    )
+  }
 
   return (
     <React.Fragment>
-      {/* <div className="mb-3 mt-2 d-flex justify-content-between">
-            <div className="me-5 d-flex">
-              <div>
-                <i className="fas fa-user-friends me-2" />
-              </div>
-              {isLoading && (
-                <p className="placeholder-glow">
-                  <span
-                    className="placeholder"
-                    style={{ width: "15px" }}
-                  ></span>
-                </p>
-              )}
-              {!isLoading && <strong>{customers.length}</strong>}
-            </div>
-            {customersCreatedToday.length > 0 && isLoading && (
-              <p className="placeholder-glow">
-                <span className="placeholder" style={{ width: "250px" }}></span>
-              </p>
-            )}
-            {customersCreatedToday.length > 0 && !isLoading && (
-              <em>
-                Hôm nay có thêm {customersCreatedToday.length} khách hàng mới
-              </em>
-            )}
-          </div> */}
-
       <Row>
         <Col lg="12">
           <Card>
             <CardBody>
               <div className="d-flex justify-content-between">
                 <h3 className="mb-4 card-title">DANH SÁCH KHÁCH HÀNG</h3>
-                {customersCreatedToday.length > 0 && !isLoading && (
+                {/* {customersCreatedToday.length > 0 && !isLoading && (
                   <em>
                     Hôm nay có thêm {customersCreatedToday.length} khách hàng
                     mới
                   </em>
-                )}
+                )} */}
               </div>
               {isLoading && <Loading />}
               {!isLoading && (
@@ -228,7 +199,8 @@ const UserLists = props => {
                   columns={columns}
                   data={sortedCustomers}
                   isGlobalFilter={true}
-                  isAddUserList={false}
+                  isCountCusToday={true}
+                  countCusTody={customersCreatedToday.length}
                   customPageSize={10}
                   className="custom-header-css"
                 />

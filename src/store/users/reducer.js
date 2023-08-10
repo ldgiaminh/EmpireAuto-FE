@@ -78,7 +78,6 @@ const userLists = (state = INIT_STATE, action) => {
       }
 
     case PUT_STATUS_EXPERTS_SUCCESS:
-      console.log(action.payload)
       return {
         ...state,
         isLoading: false,
