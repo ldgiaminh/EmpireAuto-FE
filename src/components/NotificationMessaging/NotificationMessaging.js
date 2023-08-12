@@ -73,21 +73,24 @@ const NotificationMessaging = props => {
         if (notification) {
           dispatch(changeIsShow(false))
         }
-      }, 5000)
+      }, 1000)
     })
     .catch(err =>
       console.log("An error occured while retrieving foreground message. ", err)
     )
 
   return (
-    <div className="position-fixed top-0 end-0 p-3" style={{ zIndex: "1005" }}>
-      {/* <Toast isOpen={props.isShow}>
+    <div
+      className="d-none position-fixed top-0 end-0 p-3"
+      style={{ zIndex: "1005" }}
+    >
+      <Toast isOpen={props.isShow}>
         <ToastHeader toggle={toggleToast}>
-          <img src={logo} alt="" className="me-2" height="18" />
+          {/* <img src={logo} alt="" className="me-2" height="18" /> */}
           {noti.title}
         </ToastHeader>
         <ToastBody>{noti.body}</ToastBody>
-      </Toast> */}
+      </Toast>
     </div>
   )
 }

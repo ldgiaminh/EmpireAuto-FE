@@ -177,6 +177,13 @@ export const POST_FCM_TOKEN = "/notifications/fcmtoken/add"
 
 /*
 ================================================ 
+IMPORT EXCEL
+================================================
+*/
+export const IMPORT_DATA_EXCEL = "/data/import-excel"
+
+/*
+================================================ 
 SYSTEM
 ================================================
 */

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Container, Row, Nav, NavItem, NavLink, Col } from "reactstrap"
+import { Container, Row, Nav, NavItem, NavLink, Col, Card } from "reactstrap"
 import { withRouter } from "react-router-dom"
 
 import classnames from "classnames"
@@ -15,8 +15,6 @@ const CreateNew = props => {
   //meta title
   document.title = "Tạo mới | Empire Garage"
 
-  const [activeTab, setActiveTab] = useState("0")
-
   const createNew = [
     { link: "/create-new-symptom", icon: "bx bx-flag", title: "Triệu chứng" },
     { link: "/create-new-brand", icon: "bx bx-planet", title: "Thương Hiệu" },
@@ -30,6 +28,11 @@ const CreateNew = props => {
       link: "/create-new-item",
       icon: "bx bx-wrench",
       title: "Dịch vụ",
+    },
+    {
+      link: "/import-data-excel",
+      icon: "bx bx-file",
+      title: "Excel",
     },
   ]
 
@@ -50,95 +53,31 @@ const CreateNew = props => {
           {/* Render Breadcrumb */}
           <Breadcrumbs title="Tạo mới" breadcrumbItem="Thêm mới" />
 
-          {/* <div className="checkout-tabs">
-            <Row>
-              <Col xl="2" sm="3">
-                <Nav pills className="flex-column">
-                  {numTabs.map(tab => (
-                    <NavItem key={tab.id}>
-                      <NavLink
-                        style={{ cursor: "pointer" }}
-                        className={classnames({
-                          "mb-2": true,
-                          active: activeTab === tab.id,
-                        })}
-                        onClick={() => {
-                          setActiveTab(tab.id)
-                        }}
-                      >
-                        {tab.title}
-                      </NavLink>
-                    </NavItem>
-                  ))}
-                </Nav>
-              </Col>
-              <Col xl="10" sm="9">
+          <Row>
+            {createNew.map((item, index) => (
+              <Col xl="4" sm="6" key={"__create-new__" + index}>
                 <Card>
-                  <CardBody>
-                    <TabContent activeTab={activeTab}>
-                      <TabPane tabId="0">
-                        <AddNewCarItem />
-                      </TabPane>
-                      <TabPane tabId="1">
-                        <AddNewCarProblem />
-                      </TabPane>
-                      <TabPane tabId="2">
-                        <AddNewCarModel />
-                      </TabPane>
-                      <TabPane tabId="3">
-                        <AddNewCarBrand />
-                      </TabPane>
-                    </TabContent>
-                  </CardBody>
-                </Card>
-                <Row className="mt-4">
-                  <Col sm="6">
-                    <Link
-                      to="/ecommerce-cart"
-                      className="btn text-muted d-none d-sm-inline-block btn-link"
-                    >
-                      <i className="mdi mdi-arrow-left me-1" /> Back to Shopping
-                      Cart{" "}
-                    </Link>
-                  </Col>
-                  <Col sm="6">
-                    <div className="text-sm-end">
-                      <Link
-                        to="/ecommerce-checkout"
-                        className="btn btn-success"
+                  <Row>
+                    <Col xl="12">
+                      <div
+                        className="text-center p-4 border-end"
+                        onClick={() => handleItemClick(item.link)}
+                        style={{ cursor: "pointer" }}
                       >
-                        <i className="mdi mdi-truck-fast me-1" /> Proceed to
-                        Shipping{" "}
-                      </Link>
-                    </div>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-          </div> */}
-
-          <div className="checkout-tabs">
-            <Row>
-              <Col className="create-new">
-                <Nav className="flex-row" pills>
-                  {createNew.map((item, index) => (
-                    <Col xl="3" sm="2" className="link-body" key={index}>
-                      <NavItem>
-                        <NavLink onClick={() => handleItemClick(item.link)}>
+                        <div className="mx-auto mb-3 mt-1">
                           <i
-                            className={
-                              item.icon + " d-block check-nav-icon mt-4 mb-2"
-                            }
+                            className={item.icon + " d-block bg-soft mb-2"}
+                            style={{ fontSize: "36px" }}
                           />
-                          <p className="mb-4">{item.title}</p>
-                        </NavLink>
-                      </NavItem>
+                        </div>
+                        <strong className="font-size-16">{item.title}</strong>
+                      </div>
                     </Col>
-                  ))}
-                </Nav>
+                  </Row>
+                </Card>
               </Col>
-            </Row>
-          </div>
+            ))}
+          </Row>
         </Container>
       </div>
     </>

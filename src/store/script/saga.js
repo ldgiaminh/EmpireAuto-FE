@@ -102,7 +102,7 @@ function* onRunScriptBookings({ number1, number2, isNewCustomer }) {
     // }, 6 * 60 * 60 * 1000)
   } catch (error) {
     toast.error("Đã có lỗi xảy ra")
-    yield put(runScriptBookingFail(error))
+    yield put(runScriptBookingFail(error.response.data.message))
   }
 }
 

@@ -244,6 +244,16 @@ const CarProblemByModel = props => {
     props.history.push("/create-new-problem")
   }
 
+  /*
+  ==================================================
+  ADD NEW EXCEL
+  ==================================================
+  */
+
+  const handleAddNewExcel = () => {
+    props.history.push("/import-data-excel")
+  }
+
   return (
     <React.Fragment>
       <DeleteModal

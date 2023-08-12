@@ -102,49 +102,19 @@
 
 // checkout
 
-// .checkout-tabs{
-//     .nav-pills{
-//         .nav-link{
-//             margin-bottom: 24px;
-//             text-align: center;
-//             background-color: $card-bg;
-//             box-shadow: $box-shadow;
-
-//             &.active{
-//                 background-color: $primary;
-//             }
-//             .check-nav-icon{
-//                 font-size: 36px;
-//             }
-//         }
-//     }
-// }
-
 .checkout-tabs {
-  .create-new {
-    padding: 0 100px;
-    .nav-pills {
-      gap: 100px;
-      row-gap: 30px;
-      .link-body {
-        .nav-item {
-          .nav-link {
-            margin-bottom: 24px;
-            text-align: center;
-            background-color: $card-bg;
-            box-shadow: $box-shadow;
+  .nav-pills {
+    .nav-link {
+      margin-bottom: 24px;
+      text-align: center;
+      background-color: $card-bg;
+      box-shadow: $box-shadow;
 
-            color: var(--bs-gray-700);
-            font-weight: 600;
-
-            &.active {
-              background-color: $primary;
-            }
-            .check-nav-icon {
-              font-size: 36px;
-            }
-          }
-        }
+      &.active {
+        background-color: $primary;
+      }
+      .check-nav-icon {
+        font-size: 36px;
       }
     }
   }

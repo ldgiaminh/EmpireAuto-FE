@@ -79,6 +79,7 @@ import EditSymptom from "pages/Symptom/EditSymptom"
 import EditCarModel from "pages/Model/EditCarModel"
 import EditCarProblem from "pages/Problem/EditCarProblem"
 import EditItem from "pages/Item/EditItem"
+import ImportExcelCreate from "pages/Excel/ImportExcelCreate"
 
 //Config Garage
 
@@ -127,9 +128,6 @@ const authProtectedRoutes = [
     component: CarItemByProblem,
   },
 
-  //Items
-  { path: "/add-new-items", component: AddNewItems },
-
   // //profile
   { path: "/profile", component: UserProfile },
 
@@ -140,6 +138,7 @@ const authProtectedRoutes = [
   { path: "/create-new-problem", component: AddNewCarProblem },
   { path: "/create-new-item", component: AddNewCarItem },
   { path: "/create-new-symptom", component: AddNewSymptom },
+  { path: "/import-data-excel", component: ImportExcelCreate },
 
   //Edit
   { path: "/edit-brand/:id", component: EditCarBrand },

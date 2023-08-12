@@ -205,6 +205,16 @@ const CarItems = props => {
     props.history.push("/create-new-item")
   }
 
+  /*
+  ==================================================
+  ADD NEW EXCEL
+  ==================================================
+  */
+
+  const handleAddNewExcel = () => {
+    props.history.push("/import-data-excel")
+  }
+
   return (
     <React.Fragment>
       <div className="page-content">
@@ -221,7 +231,7 @@ const CarItems = props => {
                     isAddNew={true}
                     isAddFileExcel={true}
                     handleAddNewClick={handleAddNew}
-                    handleAddFileExcelClick={handleAddNew}
+                    handleAddFileExcelClick={handleAddNewExcel}
                     customPageSize={10}
                     className="custom-header-css"
                   />

@@ -199,9 +199,14 @@ const CarModelByBrand = props => {
                   </Button>
                 </div>
                 <div className="text-sm-end">
-                  <Button type="button" color="success" className="mb-2 me-2">
+                  <Button
+                    type="button"
+                    color="success"
+                    className="mb-2 me-2"
+                    onClick={() => props.history.push("/import-data-excel")}
+                  >
                     <i className="mdi mdi-file-plus-outline me-1" />
-                    Tạo mới với Excel
+                    Excel
                   </Button>
                 </div>
               </div>
