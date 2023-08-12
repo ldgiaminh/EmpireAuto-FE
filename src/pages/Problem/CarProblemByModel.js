@@ -278,7 +278,7 @@ const CarProblemByModel = props => {
                     isAddNew={true}
                     isAddFileExcel={true}
                     handleAddNewClick={handleAddNew}
-                    handleAddFileExcelClick={handleAddNew}
+                    handleAddFileExcelClick={handleAddNewExcel}
                     customPageSize={10}
                     className="custom-header-css"
                   />

@@ -1,17 +1,14 @@
 import React, { useEffect, useMemo, useState } from "react"
 import PropTypes from "prop-types"
-import slugify from "slugify"
 import {
   Card,
   CardBody,
   Col,
   Container,
   Row,
-  Table,
-  UncontrolledDropdown,
   UncontrolledTooltip,
 } from "reactstrap"
-import { isEmpty, map } from "lodash"
+
 import TableContainer from "components/Common/TableContainer"
 import { Link, withRouter, useLocation } from "react-router-dom"
 
@@ -192,6 +189,14 @@ const CarItemByProblem = props => {
 
   /*
   ==================================================
+  SORT ITEM
+  ==================================================
+  */
+
+  const sortedItems = [...carsItemByProblem].reverse()
+
+  /*
+  ==================================================
   ADD NEW
   ==================================================
   */
@@ -224,7 +229,7 @@ const CarItemByProblem = props => {
                 <CardBody>
                   <TableContainer
                     columns={columns}
-                    data={carsItemByProblem}
+                    data={sortedItems}
                     isGlobalFilter={true}
                     isAddNew={true}
                     isAddFileExcel={true}

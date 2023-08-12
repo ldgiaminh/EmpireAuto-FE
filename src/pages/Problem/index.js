@@ -195,7 +195,7 @@ const CarProblems = props => {
               >
                 <i className="mdi mdi-delete font-size-18" id="deletetooltip" />
                 <UncontrolledTooltip placement="top" target="deletetooltip">
-                  Delete
+                  Xóa
                 </UncontrolledTooltip>
               </Link>
             </div>
