@@ -186,9 +186,9 @@ const SystemConfig = () => {
     validationSchema: Yup.object({
       key: Yup.string().required("Please Enter  key"),
       value: Yup.number()
-        .typeError("Vui lòng nhập số hợp lệ") // Custom error message for non-numeric input
+        .typeError("Vui lòng chỉ nhập số") // Custom error message for non-numeric input
         .required("Vui lòng nhập thống số cần thay đổi")
-        .positive("Số cấu hình phải là số dương") // Optionally enforce positive numbers
+        .min(-1, "Số cấu hình phải là số dương") // Optionally enforce positive numbers
         .integer("Số cầu hình không phải số thập phân"),
     }),
     onSubmit: values => {
@@ -204,7 +204,6 @@ const SystemConfig = () => {
         },
         value: "",
       })
-      setIsEnableInput(true)
     },
   })
 
@@ -538,7 +537,7 @@ const SystemConfig = () => {
                           </Label>
                           <Input
                             disabled={isEnableInput}
-                            type="number"
+                            type="text"
                             name="value"
                             className="form-control"
                             placeholder="Bấm 'Cập Nhật' để số cấu hình"
