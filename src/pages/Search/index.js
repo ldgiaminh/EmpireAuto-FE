@@ -238,9 +238,22 @@ const Search = props => {
                                         </strong>
                                       </td>
                                       <td>
-                                        <p className="text-muted font-size-14 mb-0">
-                                          Còn 4 ngày
-                                        </p>
+                                        <strong
+                                          className={
+                                            result.dateLeft === 0
+                                              ? "text-success font-size-14 mb-0"
+                                              : result.dateLeft > 0
+                                              ? "text-primary font-size-14 mb-0"
+                                              : "text-muted font-size-14 mb-0"
+                                          }
+                                        >
+                                          {result.dateLeft === 0
+                                            ? "Hôm nay"
+                                            : result.dateLeft > 0
+                                            ? "Còn " + result.dateLeft + " ngày"
+                                            : Math.abs(result.dateLeft) +
+                                              " ngày trước"}
+                                        </strong>
                                       </td>
                                       <td style={{ width: "90px" }}>
                                         <div>

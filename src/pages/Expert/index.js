@@ -155,8 +155,6 @@ const ExpertLists = props => {
       toggle(false)
     }
 
-    console.log(isOpen)
-
     return (
       <div className="form-check form-switch">
         <input
