@@ -75,10 +75,9 @@ export const getCarInGarageFail = error => ({
 PUT Car In Garage
 ================================================
 */
-export const putConfigSystem = (config, history) => ({
+export const putConfigSystem = config => ({
   type: PUT_CONFIG_SYSTEM,
   payload: config,
-  history,
 })
 
 export const putConfigSystemSuccess = configSystem => ({

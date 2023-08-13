@@ -34,6 +34,7 @@ import {
 } from "store/actions"
 import DeleteModal from "components/Common/DeleteModal"
 import models from "store/model/reducer"
+import Loader from "components/Loader/Loader"
 
 const CarProblems = props => {
   //meta title
@@ -48,8 +49,9 @@ const CarProblems = props => {
   ==================================================
   */
 
-  const { carsProblem } = useSelector(state => ({
+  const { carsProblem, isLoading } = useSelector(state => ({
     carsProblem: state.problems.carsProblem,
+    isLoading: state.problems.isLoading,
   }))
 
   /*
@@ -275,33 +277,36 @@ const CarProblems = props => {
         onDeleteClick={handleDelete}
         onCloseClick={() => setDeleteModal(false)}
       />
-      <div className="page-content">
-        <Container fluid={true}>
-          <Breadcrumbs
-            title="Quản lý"
-            breadcrumbItem="Tất cả vấn đề của các xe"
-          />
-          <Row>
-            <Col lg="12">
-              <Card>
-                <CardBody>
-                  <TableContainer
-                    columns={columns}
-                    data={sortedProblem}
-                    isGlobalFilter={true}
-                    isAddNew={true}
-                    isAddFileExcel={true}
-                    handleAddNewClick={handleAddNew}
-                    handleAddFileExcelClick={handleAddNewExcel}
-                    customPageSize={10}
-                    className="custom-header-css"
-                  />
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-      </div>
+      {isLoading && <Loader />}
+      {!isLoading && (
+        <div className="page-content">
+          <Container fluid={true}>
+            <Breadcrumbs
+              title="Quản lý"
+              breadcrumbItem="Tất cả vấn đề của các xe"
+            />
+            <Row>
+              <Col lg="12">
+                <Card>
+                  <CardBody>
+                    <TableContainer
+                      columns={columns}
+                      data={sortedProblem}
+                      isGlobalFilter={true}
+                      isAddNew={true}
+                      isAddFileExcel={true}
+                      handleAddNewClick={handleAddNew}
+                      handleAddFileExcelClick={handleAddNewExcel}
+                      customPageSize={10}
+                      className="custom-header-css"
+                    />
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+      )}
     </React.Fragment>
   )
 }

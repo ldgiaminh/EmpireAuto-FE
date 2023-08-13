@@ -24,9 +24,6 @@ import Loading from "components/Loader/Loading"
 import { Label } from "recharts"
 
 const UserLists = props => {
-  //meta title
-  document.title = "Danh sách khách hàng | Empire Garage"
-
   const dispatch = useDispatch()
 
   /*

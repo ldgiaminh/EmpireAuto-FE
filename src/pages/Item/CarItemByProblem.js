@@ -21,6 +21,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb"
 import { useSelector, useDispatch } from "react-redux"
 
 import { getCarsItemByProblem as onGetCarsItemByProblem } from "store/actions"
+import Loader from "components/Loader/Loader"
 
 const CarItemByProblem = props => {
   const dispatch = useDispatch()
@@ -53,8 +54,9 @@ const CarItemByProblem = props => {
   ==================================================
   */
 
-  const { carsItemByProblem } = useSelector(state => ({
+  const { carsItemByProblem, isLoading } = useSelector(state => ({
     carsItemByProblem: state.items.carsItemByProblem,
+    isLoading: state.items.isLoading,
   }))
 
   /*
@@ -217,33 +219,36 @@ const CarItemByProblem = props => {
 
   return (
     <React.Fragment>
-      <div className="page-content">
-        <Container fluid={true}>
-          <Breadcrumbs
-            title="Quản lý"
-            breadcrumbItem={`Dịch vụ vấn đề - ${problemName}`}
-          />
-          <Row>
-            <Col lg="12">
-              <Card>
-                <CardBody>
-                  <TableContainer
-                    columns={columns}
-                    data={sortedItems}
-                    isGlobalFilter={true}
-                    isAddNew={true}
-                    isAddFileExcel={true}
-                    handleAddNewClick={handleAddNew}
-                    handleAddFileExcelClick={handleAddNewExcel}
-                    customPageSize={10}
-                    className="custom-header-css"
-                  />
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-      </div>
+      {isLoading && <Loader />}
+      {!isLoading && (
+        <div className="page-content">
+          <Container fluid={true}>
+            <Breadcrumbs
+              title="Quản lý"
+              breadcrumbItem={`Dịch vụ vấn đề - ${problemName}`}
+            />
+            <Row>
+              <Col lg="12">
+                <Card>
+                  <CardBody>
+                    <TableContainer
+                      columns={columns}
+                      data={sortedItems}
+                      isGlobalFilter={true}
+                      isAddNew={true}
+                      isAddFileExcel={true}
+                      handleAddNewClick={handleAddNew}
+                      handleAddFileExcelClick={handleAddNewExcel}
+                      customPageSize={10}
+                      className="custom-header-css"
+                    />
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+      )}
     </React.Fragment>
   )
 }

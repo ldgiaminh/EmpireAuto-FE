@@ -28,6 +28,7 @@ import {
   deleteCarsItem as onDeleteCarItem,
 } from "store/actions"
 import DeleteModal from "components/Common/DeleteModal"
+import Loader from "components/Loader/Loader"
 
 const CarItems = props => {
   const dispatch = useDispatch()
@@ -51,8 +52,9 @@ const CarItems = props => {
   ==================================================
   */
 
-  const { carsItem } = useSelector(state => ({
+  const { carsItem, isLoading } = useSelector(state => ({
     carsItem: state.items.carsItem,
+    isLoading: state.items.isLoading,
   }))
 
   /*
@@ -272,30 +274,33 @@ const CarItems = props => {
         onDeleteClick={handleDelete}
         onCloseClick={() => setDeleteModal(false)}
       />
-      <div className="page-content">
-        <Container fluid={true}>
-          <Breadcrumbs title="Quản lý" breadcrumbItem="Tất cả dịch vụ xe" />
-          <Row>
-            <Col lg="12">
-              <Card>
-                <CardBody>
-                  <TableContainer
-                    columns={columns}
-                    data={sortedItems}
-                    isGlobalFilter={true}
-                    isAddNew={true}
-                    isAddFileExcel={true}
-                    handleAddNewClick={handleAddNew}
-                    handleAddFileExcelClick={handleAddNewExcel}
-                    customPageSize={10}
-                    className="custom-header-css"
-                  />
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-      </div>
+      {isLoading && <Loader />}
+      {!isLoading && (
+        <div className="page-content">
+          <Container fluid={true}>
+            <Breadcrumbs title="Quản lý" breadcrumbItem="Tất cả dịch vụ xe" />
+            <Row>
+              <Col lg="12">
+                <Card>
+                  <CardBody>
+                    <TableContainer
+                      columns={columns}
+                      data={sortedItems}
+                      isGlobalFilter={true}
+                      isAddNew={true}
+                      isAddFileExcel={true}
+                      handleAddNewClick={handleAddNew}
+                      handleAddFileExcelClick={handleAddNewExcel}
+                      customPageSize={10}
+                      className="custom-header-css"
+                    />
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+      )}
     </React.Fragment>
   )
 }

@@ -273,34 +273,6 @@ const Navbar = props => {
                               </Link>
                             </div>
                           </li>
-
-                          {/* <li className="nav-item">
-                            <Link className="nav-link" to="/">
-                              <i className="bx bxs-car me-2"></i>
-                              {props.t("Dòng xe")}
-                            </Link>
-                          </li> */}
-
-                          {/* <li className="nav-item">
-                            <Link className="nav-link" to="/symptoms">
-                              <i className="bx bxs-spreadsheet me-2"></i>
-                              {props.t("Triệu chứng")}
-                            </Link>
-                          </li> */}
-
-                          <li className="nav-item">
-                            <Link
-                              className="nav-link"
-                              to="/users"
-                              onClick={() => {
-                                props.toggleLeftmenu(false)
-                              }}
-                            >
-                              <i className="bx bxs-user me-2"></i>
-                              {props.t("Khách hàng")}
-                            </Link>
-                          </li>
-
                           <li className="nav-item">
                             <Link
                               className="nav-link"
@@ -313,39 +285,42 @@ const Navbar = props => {
                               {props.t("Tạo mới")}
                             </Link>
                           </li>
-
-                          {/* <li className="nav-item dropdown">
+                          <li className="nav-item">
                             <Link
-                              to="/#"
-                              onClick={e => {
-                                e.preventDefault()
-                                setadd(!add)
+                              className="nav-link"
+                              to="/users"
+                              onClick={() => {
+                                props.toggleLeftmenu(false)
                               }}
-                              className="nav-link dropdown-togglez arrow-none"
                             >
-                              <i className="bx bx-customize me-2"></i>
-                              {props.t("Tạo mới")}{" "}
-                              <div className="arrow-down"></div>
+                              <i className="bx bxs-user me-2"></i>
+                              {props.t("Khách hàng")}
                             </Link>
-                            <div
-                              className={classname("dropdown-menu", {
-                                show: add,
-                              })}
+                          </li>
+                          <li className="nav-item">
+                            <Link
+                              className="nav-link"
+                              to="/experts"
+                              onClick={() => {
+                                props.toggleLeftmenu(false)
+                              }}
                             >
-                              <Link
-                                to="/add-new-car-brand"
-                                className="dropdown-item"
-                              >
-                                {props.t("Thêm hãng xe")}
-                              </Link>
-                              <Link
-                                to="/add-new-items"
-                                className="dropdown-item"
-                              >
-                                {props.t("Thêm dịch vụ")}
-                              </Link>
-                            </div>
-                          </li> */}
+                              <i className="bx bxs-user-rectangle me-2"></i>
+                              {props.t("Kỹ thuật viên")}
+                            </Link>
+                          </li>
+                          <li className="nav-item">
+                            <Link
+                              className="nav-link"
+                              to="/config-system"
+                              onClick={() => {
+                                props.toggleLeftmenu(false)
+                              }}
+                            >
+                              <i className="bx bx-cog bx-spin me-2"></i>
+                              {props.t("Cấu hình")}
+                            </Link>
+                          </li>
                         </React.Fragment>
                       )
                     case "AD":
@@ -354,7 +329,7 @@ const Navbar = props => {
                           <li className="nav-item">
                             <Link
                               className="nav-link"
-                              to="/config"
+                              to="/run-script"
                               onClick={() => {
                                 props.toggleLeftmenu(false)
                               }}

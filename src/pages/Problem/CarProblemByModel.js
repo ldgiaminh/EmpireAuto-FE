@@ -26,6 +26,7 @@ import {
   deleteCarsProblem as onDeleteProblem,
 } from "store/actions"
 import DeleteModal from "components/Common/DeleteModal"
+import Loader from "components/Loader/Loader"
 
 const CarProblemByModel = props => {
   //meta title
@@ -52,8 +53,9 @@ const CarProblemByModel = props => {
   ==================================================
   */
 
-  const { carsProblemByModel } = useSelector(state => ({
+  const { carsProblemByModel, isLoading } = useSelector(state => ({
     carsProblemByModel: state.problems.carsProblemByModel,
+    isLoading: state.problems.isLoading,
   }))
 
   /*
@@ -261,33 +263,36 @@ const CarProblemByModel = props => {
         onDeleteClick={handleDelete}
         onCloseClick={() => setDeleteModal(false)}
       />
-      <div className="page-content">
-        <Container fluid={true}>
-          <Breadcrumbs
-            title="Quản lý"
-            breadcrumbItem={`Vấn đề xe - ${params.mName}`}
-          />
-          <Row>
-            <Col lg="12">
-              <Card>
-                <CardBody>
-                  <TableContainer
-                    columns={columns}
-                    data={sortedProblem}
-                    isGlobalFilter={true}
-                    isAddNew={true}
-                    isAddFileExcel={true}
-                    handleAddNewClick={handleAddNew}
-                    handleAddFileExcelClick={handleAddNewExcel}
-                    customPageSize={10}
-                    className="custom-header-css"
-                  />
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-      </div>
+      {isLoading && <Loader />}
+      {!isLoading && (
+        <div className="page-content">
+          <Container fluid={true}>
+            <Breadcrumbs
+              title="Quản lý"
+              breadcrumbItem={`Vấn đề xe - ${params.mName}`}
+            />
+            <Row>
+              <Col lg="12">
+                <Card>
+                  <CardBody>
+                    <TableContainer
+                      columns={columns}
+                      data={sortedProblem}
+                      isGlobalFilter={true}
+                      isAddNew={true}
+                      isAddFileExcel={true}
+                      handleAddNewClick={handleAddNew}
+                      handleAddFileExcelClick={handleAddNewExcel}
+                      customPageSize={10}
+                      className="custom-header-css"
+                    />
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+      )}
     </React.Fragment>
   )
 }
