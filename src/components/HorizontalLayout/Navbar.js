@@ -11,6 +11,8 @@ import { connect } from "react-redux"
 
 import { toggleLeftmenu } from "../../store/actions"
 
+const ROOT_PATH = "https://empire-api.azurewebsites.net"
+
 const getUserName = () => {
   if (localStorage.getItem("authUser")) {
     const obj = JSON.parse(localStorage.getItem("authUser"))
@@ -454,6 +456,33 @@ const Navbar = props => {
                               {props.t("Cấu hình dữ liệu")}
                             </Link>
                           </li>
+
+                          <li className="nav-item">
+                            <Link
+                              className="nav-link"
+                              to={{ pathname: ROOT_PATH + "/hangfire" }} target="_blank"
+                              onClick={() => {
+                                props.toggleLeftmenu(false)
+                              }}
+                            >
+                              <i className="bx bx-task me-2"></i>
+                              {props.t("Công việc chạy nền")}
+                            </Link>
+                          </li>
+
+                          <li className="nav-item">
+                            <Link
+                              className="nav-link"
+                              to={{ pathname: ROOT_PATH + "/swagger" }} target="_blank"
+                              onClick={() => {
+                                props.toggleLeftmenu(false)
+                              }}
+                            >
+                              <i className="bx bx-globe me-2"></i>
+                              {props.t("Endpoints")}
+                            </Link>
+                          </li>
+
                         </React.Fragment>
                       )
                     default:
