@@ -256,6 +256,9 @@ const EditItem = props => {
     },
   })
 
+  console.log(validation.values)
+  console.log(carsItemDetail)
+
   // Use the 'dirty' property to disable the "Cập nhật" button until there are changes
   const isButtonDisabled = !validation.dirty || isSubmitting
 
@@ -654,37 +657,35 @@ const EditItem = props => {
                           </FormFeedback>
                         ) : null}
                       </div>
-                      {validation.values.isService === true ||
-                        (validation.values.isService === "true" && (
-                          <div className="mb-3">
-                            <Label>Dịch vụ mặc định*</Label>
-                            <Input
-                              type="select"
-                              name="isDefault"
-                              className="form-control"
-                              value={validation.values.isDefault}
-                              onChange={e => {
-                                validation.handleChange(e)
-                              }}
-                              invalid={
-                                validation.touched.isDefault &&
-                                validation.errors.isDefault
-                              }
-                            >
-                              <option value="">
-                                Xác định dịch vụ mặc định
-                              </option>
-                              <option value="true">Có</option>
-                              <option value="false">Không</option>
-                            </Input>
-                            {validation.touched.isDefault &&
-                            validation.errors.isDefault ? (
-                              <FormFeedback type="invalid">
-                                {validation.errors.isDefault}
-                              </FormFeedback>
-                            ) : null}
-                          </div>
-                        ))}
+                      {(validation.values.isService === true ||
+                        validation.values.isService === "true") && (
+                        <div className="mb-3">
+                          <Label>Dịch vụ mặc định*</Label>
+                          <Input
+                            type="select"
+                            name="isDefault"
+                            className="form-control"
+                            value={validation.values.isDefault}
+                            onChange={e => {
+                              validation.handleChange(e)
+                            }}
+                            invalid={
+                              validation.touched.isDefault &&
+                              validation.errors.isDefault
+                            }
+                          >
+                            <option value="">Xác định dịch vụ mặc định</option>
+                            <option value="true">Có</option>
+                            <option value="false">Không</option>
+                          </Input>
+                          {validation.touched.isDefault &&
+                          validation.errors.isDefault ? (
+                            <FormFeedback type="invalid">
+                              {validation.errors.isDefault}
+                            </FormFeedback>
+                          ) : null}
+                        </div>
+                      )}
                     </Col>
                     <div>
                       <Label htmlFor="formrow-email-Input">

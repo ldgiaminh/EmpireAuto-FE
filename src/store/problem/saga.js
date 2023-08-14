@@ -89,7 +89,7 @@ function* onUpdateProblems({ payload: carsProblem, id, history }) {
   try {
     const response = yield call(updateCarsProblem, id, carsProblem)
     yield put(updateCarsProblemSuccess(carsProblem))
-    toast.success("Xóa thành công " + carsProblem.name)
+    toast.success("Cập nhật thành công " + carsProblem.name)
     history.goBack()
   } catch (error) {
     toast.success("Đã có lỗi xảy ra")

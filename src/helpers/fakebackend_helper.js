@@ -1,5 +1,14 @@
 import axios from "axios"
-import { del, del2, get, post, post2, put } from "./api_helper"
+import {
+  del,
+  del2,
+  get,
+  post,
+  post2,
+  postFile,
+  postWithFile,
+  put,
+} from "./api_helper"
 import * as url from "./url_helper"
 
 /*
@@ -358,6 +367,14 @@ export const updateCarsItem = (id, carsItem) =>
 // delete car item
 export const deleteCarsItem = id =>
   del(`${url.DELETE_CAR_ITEM}/${id}`, { headers: { id } })
+
+/*
+================================================
+CAR ITEM
+================================================
+*/
+
+export const importDataExcel = data => postFile(url.IMPORT_DATA_EXCEL, data)
 
 /*
 ================================================

@@ -21,7 +21,6 @@ import { withTranslation } from "react-i18next"
 //redux
 import { useSelector, useDispatch } from "react-redux"
 import UserListDashBoard from "./UserList/UserListDashBoard"
-import ExpertList from "../Expert/index"
 
 const Dashboard = props => {
   //meta title
@@ -35,13 +34,15 @@ const Dashboard = props => {
   ==================================================
   */
 
-  const { isLoad, isShow, configSystems, users, experts } = useSelector(state => ({
-    isLoad: state.systems.isLoad,
-    isShow: state.Layout.isShow,
-    configSystems: state.systems.configSystems,
-    users: state.userLists.users,
-    experts: state.userLists.experts,
-  }))
+  const { isLoad, isShow, configSystems, users, experts, isLoading } =
+    useSelector(state => ({
+      isLoad: state.systems.isLoad,
+      isShow: state.Layout.isShow,
+      configSystems: state.systems.configSystems,
+      users: state.userLists.users,
+      experts: state.userLists.experts,
+      isLoading: state.userLists.isLoading,
+    }))
 
   /*
   ==================================================
@@ -55,6 +56,10 @@ const Dashboard = props => {
 
   useEffect(() => {
     dispatch(onGetUsers())
+  }, [dispatch])
+
+  useEffect(() => {
+    dispatch(onGetExperts())
   }, [dispatch])
 
   /* Call api when get Notifications & Update config */
@@ -72,9 +77,15 @@ const Dashboard = props => {
     }
   }, [dispatch, isShow])
 
+  useEffect(() => {
+    if (isShow) {
+      dispatch(onGetExperts())
+    }
+  }, [dispatch, isShow])
+
   /*
   ==================================================
-  GET CONFIG VALUE
+  GET VALUE OR "N/A"
   ==================================================
   */
 
@@ -91,23 +102,24 @@ const Dashboard = props => {
 
   const customers = users.filter(c => c.roleId === "US").length
 
-    /*
+  /*
   ==================================================
   FILTER EXPERTS
   ==================================================
   */
 
   const totalExperts = experts.length
-  const activeExperts = experts.filter(e => e.isAvailable === true).length
+  const activeExperts = experts.filter(e => e.isAvailable).length
 
   /*
   ==================================================
-  Render
+  RENDER
   ==================================================
   */
 
   const reports = [
     {
+      id: 1,
       title: "Đặt lịch trong tuần",
       iconClass: "bx bx-calendar",
       description:
@@ -116,6 +128,7 @@ const Dashboard = props => {
         getConfigValue(configSystems, "BOOKING_SLOT_PER_WEEK"),
     },
     {
+      id: 2,
       title: "Đặt lịch trong ngày",
       iconClass: "bx bx-calendar-event",
       description:
@@ -124,21 +137,28 @@ const Dashboard = props => {
         getConfigValue(configSystems, "BOOKING_SLOT_PER_DAY"),
     },
     {
+      id: 3,
       title: "Xe tại garage",
       iconClass: "bx bx-car",
-      description: getConfigValue(configSystems, "CURRENT_CAR_COUNT_IN_GARAGE") + "/" + getConfigValue(configSystems, "GARAGE_SLOT"),
+      description:
+        getConfigValue(configSystems, "CURRENT_CAR_COUNT_IN_GARAGE") +
+        "/" +
+        getConfigValue(configSystems, "GARAGE_SLOT"),
     },
     {
+      id: 4,
       title: "Bãi đậu xe",
       iconClass: "mdi mdi-car-brake-parking",
       description: getConfigValue(configSystems, "GARAGE_SLOT"),
     },
     {
+      id: 5,
       title: "Khách hàng",
       iconClass: "mdi mdi-account-box-outline",
       description: customers,
     },
     {
+      id: 6,
       title: "Kỹ thuật viên",
       iconClass: "mdi mdi-account-hard-hat",
       description: activeExperts + "/" + totalExperts,
@@ -162,8 +182,8 @@ const Dashboard = props => {
             <Col xl="8">
               <Row>
                 {reports &&
-                  reports.map((report, key) => (
-                    <Col md="4" key={"_col_" + key}>
+                  reports.map(report => (
+                    <Col md="4" key={"_col_" + report.id}>
                       <Card className="mini-stats-wid">
                         <CardBody>
                           <div className="d-flex">
@@ -171,15 +191,14 @@ const Dashboard = props => {
                               <p className="text-muted fw-medium">
                                 {report.title}
                               </p>
-                              {isLoad && (
+                              {isLoad || isLoading ? (
                                 <p className="placeholder-glow">
                                   <span
                                     className="placeholder"
                                     style={{ width: "40px" }}
                                   ></span>
                                 </p>
-                              )}
-                              {!isLoad && (
+                              ) : (
                                 <h4 className="mb-0">{report.description}</h4>
                               )}
                             </div>
@@ -200,9 +219,6 @@ const Dashboard = props => {
           </Row>
 
           <UserListDashBoard />
-          <div hidden>
-            <ExpertList />
-          </div>
         </Container>
       </div>
     </React.Fragment>

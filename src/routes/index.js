@@ -49,8 +49,6 @@ import CarItemByProblem from "../pages/Item/CarItemByProblem"
 //Symptom
 import SymptomLists from "../pages/Symptom/index"
 
-//Group Service
-import GroupService from "../pages/GroupService/index"
 import QrCheckOut from "pages/OrderServices/QrCheckOut"
 
 //Error Page
@@ -59,16 +57,17 @@ import Pages500 from "pages/Authentication/pages-500"
 import Pages403 from "pages/Authentication/pages-403"
 
 //Manager
-import AddNewItems from "pages/Item/AddNewItems"
 import CreateNew from "pages/Action/Create"
 
-//Config
-import ConfigScriptGarage from "pages/Config"
+//Script data
+import ConfigScriptGarage from "pages/Scripts"
 
 //History
 import OrderServiceHistory from "pages/History/OrderServices"
 import BookingHistory from "pages/History/Booking"
 import Search from "pages/Search"
+
+//CRUD
 import AddNewCarModel from "pages/Model/AddNewCarModel"
 import AddNewCarProblem from "pages/Problem/AddNewProblem"
 import AddNewCarItem from "pages/Item/AddNewItems"
@@ -80,7 +79,9 @@ import EditCarModel from "pages/Model/EditCarModel"
 import EditCarProblem from "pages/Problem/EditCarProblem"
 import EditItem from "pages/Item/EditItem"
 
-//Config Garage
+//Import
+import ImportExcelCreate from "pages/Excel/ImportExcelCreate"
+import SystemConfig from "pages/System"
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
@@ -127,9 +128,6 @@ const authProtectedRoutes = [
     component: CarItemByProblem,
   },
 
-  //Items
-  { path: "/add-new-items", component: AddNewItems },
-
   // //profile
   { path: "/profile", component: UserProfile },
 
@@ -140,6 +138,7 @@ const authProtectedRoutes = [
   { path: "/create-new-problem", component: AddNewCarProblem },
   { path: "/create-new-item", component: AddNewCarItem },
   { path: "/create-new-symptom", component: AddNewSymptom },
+  { path: "/import-data-excel", component: ImportExcelCreate },
 
   //Edit
   { path: "/edit-brand/:id", component: EditCarBrand },
@@ -152,8 +151,11 @@ const authProtectedRoutes = [
   { path: "/history/bookings", component: BookingHistory },
   { path: "/history/order-services", component: OrderServiceHistory },
 
-  //Config
-  { path: "/config", component: ConfigScriptGarage },
+  //Script
+  { path: "/run-script", component: ConfigScriptGarage },
+
+  //Config System
+  { path: "/config-system", component: SystemConfig },
 
   // this route should be at the end of all other routes
   // eslint-disable-next-line react/display-name
@@ -171,8 +173,6 @@ const publicRoutes = [
   { path: "/pages-404", component: Pages404 },
   { path: "/pages-403", component: Pages403 },
   { path: "/pages-500", component: Pages500 },
-  { path: "/scanner", component: QrScanner },
-  { path: "/scanner-checkout", component: QrCheckOut },
 ]
 
 export { publicRoutes, authProtectedRoutes }

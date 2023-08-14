@@ -60,6 +60,7 @@ const TableContainer = ({
   isAddBookingOptions,
   isCheckin,
   isAddNew,
+  isCountCusToday,
   isAddFileExcel,
   handleBookingClick,
   handleOrderClicks,
@@ -67,6 +68,7 @@ const TableContainer = ({
   handleAddNewClick,
   handleCheckInClick,
   handleAddFileExcelClick,
+  countCusTody,
   customPageSize,
   className,
   customPageSizeOptions,
@@ -213,7 +215,6 @@ const TableContainer = ({
             </div>
           </Col>
         )}
-
         {isCheckin && (
           <Col sm="7">
             <div className="text-sm-end">
@@ -240,6 +241,15 @@ const TableContainer = ({
                 <i className="mdi mdi-plus-circle-outline me-1" />
                 Thêm đặt lịch
               </Button>
+            </div>
+          </Col>
+        )}
+        {isCountCusToday && (
+          <Col sm="6">
+            <div className="text-sm-end mt-3">
+              {countCusTody > 0 && (
+                <em>Hôm nay có {countCusTody} khách hàng mới</em>
+              )}
             </div>
           </Col>
         )}

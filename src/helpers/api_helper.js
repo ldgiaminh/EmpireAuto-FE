@@ -51,3 +51,14 @@ export async function del2(url, data = [], config = {}) {
   const axiosConfig = { ...config, data: data }
   return await axiosApi.delete(url, axiosConfig).then(response => response.data)
 }
+
+export async function postFile(url, file, config = {}) {
+  // Create a FormData object to send the file
+  const formData = new FormData()
+  formData.append("file", file) // Assuming 'file' is the key for the file in the request
+
+  // Make the POST request with the FormData containing the file
+  return axiosApi
+    .post(url, formData, { ...config })
+    .then(response => response.data)
+}

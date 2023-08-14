@@ -73,75 +73,6 @@ const EditCarProblem = props => {
 
   const [selectedBrand, setSelectedBrand] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [selectedBrandName, setSelectedBrandName] = useState("")
-  const [selectedModelName, setSelectedModelName] = useState("")
-
-  /*
-  ==================================================
-  USE EFFECT
-  ==================================================
-  */
-
-  const {
-    match: { params },
-  } = props
-
-  useEffect(() => {
-    if (params && params.id) {
-      dispatch(onGetCarProblemDetail(params.id))
-    }
-  }, [params, onGetCarProblemDetail, dispatch])
-
-  // useEffect(() => {
-  //   dispatch(onGetCarBrand())
-  // }, [dispatch])
-
-  useEffect(() => {
-    dispatch(onGetCarSymptoms())
-  }, [dispatch])
-
-  // useEffect(() => {
-  //   if (selectedBrand) {
-  //     dispatch(onGetCarModelByBrand(selectedBrand))
-  //   }
-  // }, [dispatch, selectedBrand])
-
-  useEffect(() => {
-    // Dispatch action to fetch car brands
-    dispatch(onGetCarBrand())
-
-    // If carsProblemDetail contains a model, fetch the models for the selected brand
-    if (
-      carsProblemDetail &&
-      carsProblemDetail.model &&
-      carsProblemDetail.model.brand
-    ) {
-      setSelectedBrand(carsProblemDetail.model.brand.id)
-      dispatch(onGetCarModelByBrand(carsProblemDetail.model.brand.id))
-    }
-  }, [dispatch, carsProblemDetail])
-
-  /*
-  ==================================================
-  HANDLE VALUE
-  ==================================================
-  */
-
-  const handleChangeBrand = e => {
-    const brandId = e.target.value
-    setSelectedBrand(brandId === "" ? null : brandId)
-
-    validation.setFieldValue("brandId", brandId)
-    validation.setFieldValue("modelId", "")
-
-    const selectedOption = e.target.options[e.target.selectedIndex]
-    setSelectedBrandName(selectedOption.text)
-
-    // Fetch models for the selected brand
-    if (brandId) {
-      dispatch(onGetCarModelByBrand(brandId))
-    }
-  }
 
   /*
   ==================================================
@@ -194,6 +125,70 @@ const EditCarProblem = props => {
       setIsSubmitting(true)
     },
   })
+
+  /*
+  ==================================================
+  USE EFFECT
+  ==================================================
+  */
+
+  const {
+    match: { params },
+  } = props
+
+  useEffect(() => {
+    if (params && params.id) {
+      dispatch(onGetCarProblemDetail(params.id))
+    }
+  }, [params, onGetCarProblemDetail, dispatch])
+
+  useEffect(() => {
+    dispatch(onGetCarBrand())
+  }, [dispatch])
+
+  useEffect(() => {
+    dispatch(onGetCarSymptoms())
+  }, [dispatch])
+
+  useEffect(() => {
+    if (validation.values) {
+      dispatch(onGetCarModelByBrand(validation.values.brandId))
+    }
+  }, [dispatch, validation.values])
+
+  // useEffect(() => {
+  //   // Dispatch action to fetch car brands
+  //   dispatch(onGetCarBrand())
+
+  //   // If carsProblemDetail contains a model, fetch the models for the selected brand
+  //   if (
+  //     carsProblemDetail &&
+  //     carsProblemDetail.model &&
+  //     carsProblemDetail.model.brand
+  //   ) {
+  //     setSelectedBrand(carsProblemDetail.model.brand.id)
+  //     dispatch(onGetCarModelByBrand(carsProblemDetail.model.brand.id))
+  //   }
+  // }, [dispatch, carsProblemDetail])
+
+  /*
+  ==================================================
+  HANDLE VALUE
+  ==================================================
+  */
+
+  const handleChangeBrand = e => {
+    const brandId = e.target.value
+    setSelectedBrand(brandId === "" ? null : brandId)
+
+    validation.setFieldValue("brandId", brandId)
+    validation.setFieldValue("modelId", "")
+
+    // Fetch models for the selected brand
+    if (brandId) {
+      dispatch(onGetCarModelByBrand(brandId))
+    }
+  }
 
   // Use the 'dirty' property to disable the "Cập nhật" button until there are changes
   const isButtonDisabled = !validation.dirty || isSubmitting
@@ -279,18 +274,14 @@ const EditCarProblem = props => {
                       </FormGroup>
                       <FormGroup className="mb-4" row>
                         <Label md="4" className="col-form-label">
-                          Hãng xe*
+                          Hãng xe
                         </Label>
                         <Col md="8">
                           <Input
+                            disabled
                             type="select"
                             name="selectedBrand"
-                            value={selectedBrand || ""}
-                            onChange={handleChangeBrand}
-                            invalid={
-                              validation.touched.brandId &&
-                              validation.errors.brandId
-                            }
+                            value={validation.values.brandId || ""}
                           >
                             {carsBrand.map(option => (
                               <option key={option.id} value={option.id}>
@@ -298,12 +289,6 @@ const EditCarProblem = props => {
                               </option>
                             ))}
                           </Input>
-                          {validation.touched.brandId &&
-                            validation.errors.brandId && (
-                              <FormFeedback type="invalid">
-                                {validation.errors.brandId}
-                              </FormFeedback>
-                            )}
                         </Col>
                       </FormGroup>
 
@@ -318,9 +303,6 @@ const EditCarProblem = props => {
                             value={validation.values.modelId}
                             onChange={e => {
                               validation.handleChange(e)
-                              const selectedOption =
-                                e.target.options[e.target.selectedIndex]
-                              setSelectedModelName(selectedOption.text)
                             }}
                             invalid={
                               validation.touched.modelId &&
@@ -328,7 +310,7 @@ const EditCarProblem = props => {
                             }
                           >
                             <option value="">Chọn dòng xe</option>
-                            {selectedBrand &&
+                            {validation.values.brandId &&
                               (carsModelByBrand.length > 0 ? (
                                 carsModelByBrand.map(option => (
                                   <option key={option.id} value={option.id}>

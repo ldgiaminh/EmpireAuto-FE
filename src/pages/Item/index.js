@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import PropTypes from "prop-types"
 import slugify from "slugify"
 import {
@@ -23,7 +23,12 @@ import Breadcrumbs from "../../components/Common/Breadcrumb"
 //redux
 import { useSelector, useDispatch } from "react-redux"
 
-import { getCarsItem as onGetCarsItem } from "store/actions"
+import {
+  getCarsItem as onGetCarsItem,
+  deleteCarsItem as onDeleteCarItem,
+} from "store/actions"
+import DeleteModal from "components/Common/DeleteModal"
+import Loader from "components/Loader/Loader"
 
 const CarItems = props => {
   const dispatch = useDispatch()
@@ -47,8 +52,9 @@ const CarItems = props => {
   ==================================================
   */
 
-  const { carsItem } = useSelector(state => ({
+  const { carsItem, isLoading } = useSelector(state => ({
     carsItem: state.items.carsItem,
+    isLoading: state.items.isLoading,
   }))
 
   /*
@@ -61,6 +67,9 @@ const CarItems = props => {
     id: "",
     name: "",
   })
+
+  //delete
+  const [deleteModal, setDeleteModal] = useState(false)
 
   /*
   ==================================================
@@ -178,8 +187,9 @@ const CarItems = props => {
                 to="#"
                 className="text-danger"
                 onClick={() => {
-                  const userData = cellProps.row.original
-                  onClickDelete(userData)
+                  const id = cellProps.row.original.id
+                  const name = cellProps.row.original.name
+                  onClickDelete(id, name)
                 }}
               >
                 <i className="mdi mdi-delete font-size-18" id="deletetooltip" />
@@ -197,6 +207,14 @@ const CarItems = props => {
 
   /*
   ==================================================
+  SORT ITEM
+  ==================================================
+  */
+
+  const sortedItems = [...carsItem].reverse()
+
+  /*
+  ==================================================
   ADD NEW
   ==================================================
   */
@@ -205,32 +223,84 @@ const CarItems = props => {
     props.history.push("/create-new-item")
   }
 
+  /*
+  ==================================================
+  ADD NEW EXCEL
+  ==================================================
+  */
+
+  /*
+  ==================================================
+  DELETE
+  ==================================================
+  */
+
+  const onClickDelete = (id, name) => {
+    setItems({
+      ...items,
+      id: id,
+      name: name,
+    })
+    setDeleteModal(true)
+  }
+
+  const handleDelete = () => {
+    dispatch(onDeleteCarItem(items))
+    onPaginationPageChange(1)
+    setDeleteModal(false)
+  }
+
+  var node = useRef()
+  const onPaginationPageChange = page => {
+    if (
+      node &&
+      node.current &&
+      node.current.props &&
+      node.current.props.pagination &&
+      node.current.props.pagination.options
+    ) {
+      node.current.props.pagination.options.onPageChange(page)
+    }
+  }
+
+  const handleAddNewExcel = () => {
+    props.history.push("/import-data-excel")
+  }
+
   return (
     <React.Fragment>
-      <div className="page-content">
-        <Container fluid={true}>
-          <Breadcrumbs title="Quản lý" breadcrumbItem="Tất cả dịch vụ xe" />
-          <Row>
-            <Col lg="12">
-              <Card>
-                <CardBody>
-                  <TableContainer
-                    columns={columns}
-                    data={carsItem}
-                    isGlobalFilter={true}
-                    isAddNew={true}
-                    isAddFileExcel={true}
-                    handleAddNewClick={handleAddNew}
-                    handleAddFileExcelClick={handleAddNew}
-                    customPageSize={10}
-                    className="custom-header-css"
-                  />
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-      </div>
+      <DeleteModal
+        show={deleteModal}
+        onDeleteClick={handleDelete}
+        onCloseClick={() => setDeleteModal(false)}
+      />
+      {isLoading && <Loader />}
+      {!isLoading && (
+        <div className="page-content">
+          <Container fluid={true}>
+            <Breadcrumbs title="Quản lý" breadcrumbItem="Tất cả dịch vụ xe" />
+            <Row>
+              <Col lg="12">
+                <Card>
+                  <CardBody>
+                    <TableContainer
+                      columns={columns}
+                      data={sortedItems}
+                      isGlobalFilter={true}
+                      isAddNew={true}
+                      isAddFileExcel={true}
+                      handleAddNewClick={handleAddNew}
+                      handleAddFileExcelClick={handleAddNewExcel}
+                      customPageSize={10}
+                      className="custom-header-css"
+                    />
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+      )}
     </React.Fragment>
   )
 }

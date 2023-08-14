@@ -64,12 +64,11 @@ function* onCarInGarages() {
 
 /* CONFIG SYSTEM */
 
-function* onConfigSystems({ payload: config, history }) {
+function* onConfigSystems({ payload: config }) {
   try {
     const response = yield call(onConfigSystem, config)
     yield put(putConfigSystemSuccess(response))
     toast.success("Cấu hình hệ thống thành công")
-    history.push("/dashboard")
   } catch (error) {
     yield put(putConfigSystemFail(error))
     toast.error("Cấu hình hệ thống thất bại")

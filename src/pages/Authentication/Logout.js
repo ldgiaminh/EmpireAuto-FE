@@ -3,7 +3,7 @@ import React, { useEffect } from "react"
 import { connect } from "react-redux"
 import { withRouter } from "react-router-dom"
 
-import { logoutUser } from "../../store/actions"
+import { logoutUser, removeError } from "../../store/actions"
 
 //redux
 import { useSelector, useDispatch } from "react-redux"
@@ -13,11 +13,8 @@ const Logout = props => {
 
   useEffect(() => {
     dispatch(logoutUser(props.history))
+    dispatch(removeError())
   }, [dispatch])
-
-  setTimeout(() => {
-    dispatch(logoutUser(props.history))
-  }, 6 * 60 * 60 * 1000)
 
   return <></>
 }

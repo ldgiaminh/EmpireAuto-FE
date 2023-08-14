@@ -53,7 +53,6 @@ class ProfileMenu extends Component {
     if (prevProps.success !== this.props.success) {
       const userData = getUserName()
       if (userData) {
-        console.log(userData)
         this.setState({ name: userData.name, image: userData.image })
       }
     }
@@ -77,9 +76,7 @@ class ProfileMenu extends Component {
               src={this.state.image}
               alt="Header Avatar"
             />{" "}
-            <span className="d-none d-xl-inline-block ms-1">
-              {this.state.name}
-            </span>
+            <span className="d-xl-inline-block ms-1">{this.state.name}</span>
             <i className="mdi mdi-chevron-down d-none d-xl-inline-block" />
           </DropdownToggle>
           <DropdownMenu className="dropdown-menu-end">

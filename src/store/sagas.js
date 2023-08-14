@@ -16,6 +16,7 @@ import modelsSaga from "./model/saga"
 import fcmTokenSaga from "./fcm-token/saga"
 import systemSaga from "./system/saga"
 import scriptSaga from "./script/saga"
+import importsSaga from "./imports/saga"
 
 /*=========================================================================*/
 
@@ -64,5 +65,6 @@ export default function* rootSaga() {
     fork(scriptSaga),
     fork(systemSaga),
     fork(categoryServicesSaga),
+    fork(importsSaga),
   ])
 }

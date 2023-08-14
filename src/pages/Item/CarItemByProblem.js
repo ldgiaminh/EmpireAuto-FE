@@ -1,17 +1,14 @@
 import React, { useEffect, useMemo, useState } from "react"
 import PropTypes from "prop-types"
-import slugify from "slugify"
 import {
   Card,
   CardBody,
   Col,
   Container,
   Row,
-  Table,
-  UncontrolledDropdown,
   UncontrolledTooltip,
 } from "reactstrap"
-import { isEmpty, map } from "lodash"
+
 import TableContainer from "components/Common/TableContainer"
 import { Link, withRouter, useLocation } from "react-router-dom"
 
@@ -24,6 +21,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb"
 import { useSelector, useDispatch } from "react-redux"
 
 import { getCarsItemByProblem as onGetCarsItemByProblem } from "store/actions"
+import Loader from "components/Loader/Loader"
 
 const CarItemByProblem = props => {
   const dispatch = useDispatch()
@@ -56,8 +54,9 @@ const CarItemByProblem = props => {
   ==================================================
   */
 
-  const { carsItemByProblem } = useSelector(state => ({
+  const { carsItemByProblem, isLoading } = useSelector(state => ({
     carsItemByProblem: state.items.carsItemByProblem,
+    isLoading: state.items.isLoading,
   }))
 
   /*
@@ -192,6 +191,14 @@ const CarItemByProblem = props => {
 
   /*
   ==================================================
+  SORT ITEM
+  ==================================================
+  */
+
+  const sortedItems = [...carsItemByProblem].reverse()
+
+  /*
+  ==================================================
   ADD NEW
   ==================================================
   */
@@ -200,35 +207,48 @@ const CarItemByProblem = props => {
     props.history.push("/create-new-item")
   }
 
+  /*
+  ==================================================
+  ADD NEW EXCEL
+  ==================================================
+  */
+
+  const handleAddNewExcel = () => {
+    props.history.push("/import-data-excel")
+  }
+
   return (
     <React.Fragment>
-      <div className="page-content">
-        <Container fluid={true}>
-          <Breadcrumbs
-            title="Quản lý"
-            breadcrumbItem={`Dịch vụ vấn đề - ${problemName}`}
-          />
-          <Row>
-            <Col lg="12">
-              <Card>
-                <CardBody>
-                  <TableContainer
-                    columns={columns}
-                    data={carsItemByProblem}
-                    isGlobalFilter={true}
-                    isAddNew={true}
-                    isAddFileExcel={true}
-                    handleAddNewClick={handleAddNew}
-                    handleAddFileExcelClick={handleAddNew}
-                    customPageSize={10}
-                    className="custom-header-css"
-                  />
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-      </div>
+      {isLoading && <Loader />}
+      {!isLoading && (
+        <div className="page-content">
+          <Container fluid={true}>
+            <Breadcrumbs
+              title="Quản lý"
+              breadcrumbItem={`Dịch vụ vấn đề - ${problemName}`}
+            />
+            <Row>
+              <Col lg="12">
+                <Card>
+                  <CardBody>
+                    <TableContainer
+                      columns={columns}
+                      data={sortedItems}
+                      isGlobalFilter={true}
+                      isAddNew={true}
+                      isAddFileExcel={true}
+                      handleAddNewClick={handleAddNew}
+                      handleAddFileExcelClick={handleAddNewExcel}
+                      customPageSize={10}
+                      className="custom-header-css"
+                    />
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+      )}
     </React.Fragment>
   )
 }

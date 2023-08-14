@@ -4,6 +4,9 @@ const events = ["load", "mousemove", "mousedown", "click", "scroll", "keypress"]
 
 const AppLogout = ({ children }) => {
   let timer
+
+  // ... (existing code)
+
   // this function sets the timer that logs out the user after 10 secs
   const handleLogoutTimer = () => {
     timer = setTimeout(() => {
@@ -23,9 +26,9 @@ const AppLogout = ({ children }) => {
     if (timer) clearTimeout(timer)
   }
 
-  // when component mounts, it adds an event listeners to the window
-  // each time any of the event is triggered, i.e on mouse move, click, scroll, keypress etc, the timer to logout user after 10 secs of inactivity resets.
-  // However, if none of the event is triggered within 10 secs, that is app is inactive, the app automatically logs out.
+  // when component mounts, it adds event listeners to the window
+  // each time any of the events is triggered (mousemove, click, scroll, keypress, etc.), the timer to logout the user after 10 secs of inactivity resets.
+  // Additionally, the 'beforeunload' event is used to handle when the tab or browser is closed.
   useEffect(() => {
     Object.values(events).forEach(item => {
       window.addEventListener(item, () => {
@@ -33,9 +36,17 @@ const AppLogout = ({ children }) => {
         handleLogoutTimer()
       })
     })
+
+    // Add event listener for the 'beforeunload' event
+    window.addEventListener("beforeunload", resetTimer)
+
+    // Clean up the 'beforeunload' event listener when the component unmounts
+    return () => {
+      window.removeEventListener("beforeunload", resetTimer)
+    }
   }, [])
 
-  // logs out user by clearing out auth token in localStorage and redirecting url to /login page.
+  // logs out user by clearing out auth token in localStorage and redirecting the URL to the /login page.
   const logoutAction = () => {
     localStorage.clear()
     window.location.pathname = "/login"

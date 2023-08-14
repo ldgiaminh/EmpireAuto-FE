@@ -22,9 +22,10 @@ import { runScriptBooking as onRunScriptBooking } from "store/actions"
 const BookingScript = () => {
   const dispatch = useDispatch()
 
-  const { scriptBooking, isLoadScript } = useSelector(state => ({
+  const { scriptBooking, isLoadScript, errorBooking } = useSelector(state => ({
     scriptBooking: state.scripts.scriptBooking,
     isLoadScript: state.scripts.isLoadScript,
+    errorBooking: state.scripts.errorBooking,
   }))
 
   const [bookings, setBookings] = useState([])
@@ -59,7 +60,7 @@ const BookingScript = () => {
       dispatch(
         onRunScriptBooking(values.number1, values.number2, isNewCustomer)
       )
-      setIsSubmitting(false)
+      //setIsSubmitting(false)
       console.log(values.number1, values.number2, isNewCustomer)
     },
   })
@@ -203,6 +204,18 @@ const BookingScript = () => {
               <strong>
                 Có {countSuccess} thành công và {countFail} thất bại
               </strong>
+            )}
+
+            {errorBooking !== null && bookings.length === 0 ? (
+              <Row>
+                <div className="text-center mt-3">
+                  <strong className="mt-3 text-danger font-size-14">
+                    {errorBooking}
+                  </strong>
+                </div>
+              </Row>
+            ) : (
+              ""
             )}
 
             <div className="table-responsive mt-3">

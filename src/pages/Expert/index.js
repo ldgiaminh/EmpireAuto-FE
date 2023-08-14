@@ -12,7 +12,6 @@ import {
   getExperts as onGetExperts,
   putChangeStatusExpert as onChangeStatusExpert,
 } from "store/users/actions"
-import { isEmpty } from "lodash"
 
 //redux
 import { useSelector, useDispatch } from "react-redux"
@@ -81,9 +80,9 @@ const ExpertLists = props => {
       return 0
     }
     if (a.isAvailable) {
-      return -1 // 'a' comes before 'b'
+      return -1
     }
-    return 1 // 'b' comes before 'a'
+    return 1
   })
 
   /*
@@ -123,7 +122,7 @@ const ExpertLists = props => {
       isAvailable: values.isAvailable,
     })
 
-    toggle(true)
+    toggle()
   }
 
   const handleChangeStatusExpert = () => {
@@ -153,7 +152,7 @@ const ExpertLists = props => {
         isAvailable: !isChecked,
       }
       onClickConfirm(newValue)
-      toggle()
+      toggle(false)
     }
 
     return (
@@ -218,7 +217,6 @@ const ExpertLists = props => {
       },
       {
         Header: "Trạng thái",
-        accessor: "isAvailable",
         Cell: cellProps => {
           return createCheckboxColumn(cellProps.row.original)
         },
