@@ -162,7 +162,7 @@ const UserLists = props => {
   )
 
   // sortedCustomers will contain the filtered customers array with entries where c.id >= 100 moved to the top.
-  const sortedCustomers = [...customers].reverse()
+  //const sortedCustomers = [...customers].reverse()
 
   const renderCustomerCreatedToday = () => {
     return (
@@ -194,7 +194,7 @@ const UserLists = props => {
               {!isLoading && (
                 <TableContainer
                   columns={columns}
-                  data={sortedCustomers}
+                  data={customers}
                   isGlobalFilter={true}
                   isCountCusToday={true}
                   countCusTody={customersCreatedToday.length}
