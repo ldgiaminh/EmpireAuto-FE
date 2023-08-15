@@ -108,38 +108,26 @@ const EditItem = props => {
   }, [params, onGetCarItemDetail, dispatch])
 
   useEffect(() => {
+    if (validation.values) {
+      dispatch(onGetCarModelByBrand(validation.values.brandId))
+    }
+  }, [params, onGetCarModelByBrand, dispatch])
+
+  useEffect(() => {
+    if (validation.values) {
+      dispatch(onGetCarProblemByModel(validation.values.modelId))
+    }
+  }, [params, onGetCarProblemByModel, dispatch])
+
+  useEffect(() => {
     dispatch(onGetCategoryService())
   }, [dispatch])
-
-  console.log(carsItemDetail)
 
   /*
   ==================================================
   HANDLE VALUE
   ==================================================
   */
-
-  const handleChangeBrand = e => {
-    const brandId = e.target.value
-    setSelectedBrand(brandId === "" ? null : brandId)
-    validation.setFieldValue("brandId", brandId)
-
-    // Fetch models for the selected brand
-    if (brandId) {
-      dispatch(onGetCarModelByBrand(brandId))
-    }
-  }
-
-  const handleChangeModel = e => {
-    const modelId = e.target.value
-    setSelectedModel(modelId === "" ? null : modelId)
-    validation.setFieldValue("modelId", modelId)
-
-    // Fetch models for the selected brand
-    if (modelId) {
-      dispatch(onGetCarProblemByModel(modelId))
-    }
-  }
 
   const handleAcceptedFiles = files => {
     if (files.length > 0) {
@@ -168,13 +156,20 @@ const EditItem = props => {
   ==================================================
   */
 
+  const latestPrice = carsItemDetail?.prices?.reduce((latest, price) => {
+    if (!latest || price.priceFrom > latest.priceFrom) {
+      return price
+    }
+    return latest
+  }, null)
+
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
 
     initialValues: {
       name: (carsItemDetail && carsItemDetail.name) || "",
-      price: "",
+      price: latestPrice ? latestPrice.price : "",
       warranty: (carsItemDetail && carsItemDetail.warranty) || "",
       description: (carsItemDetail && carsItemDetail.description) || "",
       photo: {
@@ -185,9 +180,24 @@ const EditItem = props => {
       isService: (carsItemDetail && carsItemDetail.isService) || "",
       isDefault: (carsItemDetail && carsItemDetail.isDefault) || "",
       categoryId: (carsItemDetail && carsItemDetail.categoryId) || "",
-      problemId: "",
-      brandId: "",
-      modelId: "",
+      problemId:
+        (carsItemDetail &&
+          carsItemDetail.problem &&
+          carsItemDetail.problem.id) ||
+        "",
+      brandId:
+        (carsItemDetail &&
+          carsItemDetail.problem &&
+          carsItemDetail.problem.model &&
+          carsItemDetail.problem.model.brand &&
+          carsItemDetail.problem.model.brand.id) ||
+        "",
+      modelId:
+        (carsItemDetail &&
+          carsItemDetail.problem &&
+          carsItemDetail.problem.model &&
+          carsItemDetail.problem.model.id) ||
+        "",
     },
     validationSchema: Yup.object().shape({
       name: Yup.string().required("Vui lòng nhập tên vấn đề"),
@@ -256,7 +266,6 @@ const EditItem = props => {
     },
   })
 
-  console.log(validation.values)
   console.log(carsItemDetail)
 
   // Use the 'dirty' property to disable the "Cập nhật" button until there are changes
@@ -340,7 +349,7 @@ const EditItem = props => {
                         <Label htmlFor="name">Tên dịch vụ*</Label>
                         <Input
                           name="name"
-                          placeholder="Nhập tên dòng xe"
+                          placeholder="Nhập tên dịch vụ"
                           type="text"
                           className="form-control"
                           id="validationName"
@@ -390,69 +399,34 @@ const EditItem = props => {
                       <div className="mb-3">
                         <Label>Hãng xe*</Label>
                         <Input
+                          disabled
                           type="select"
-                          name="selectedBrand"
+                          name="brandId"
                           className="form-control"
-                          value={selectedBrand || ""}
-                          onChange={handleChangeBrand}
-                          invalid={
-                            validation.touched.brandId &&
-                            validation.errors.brandId
-                          }
+                          value={validation.values.brandId || ""}
                         >
-                          <option value="">Chọn hãng xe</option>
                           {carsBrand.map(option => (
                             <option key={option.id} value={option.id}>
                               {option.name}
                             </option>
                           ))}
                         </Input>
-                        {validation.touched.brandId &&
-                          validation.errors.brandId && (
-                            <FormFeedback type="invalid">
-                              {validation.errors.brandId}
-                            </FormFeedback>
-                          )}
                       </div>
                       <div className="mb-3">
                         <Label>Dòng xe*</Label>
                         <Input
+                          disabled
                           type="select"
-                          name="selectedModel"
+                          name="modelId"
                           className="form-control"
-                          value={selectedModel || ""}
-                          onChange={handleChangeModel}
-                          invalid={
-                            validation.touched.modelId &&
-                            validation.errors.modelId
-                          }
+                          value={validation.values.modelId || ""}
                         >
-                          <option value="">
-                            {selectedBrand
-                              ? "Chọn dòng xe"
-                              : "Vui lòng chọn hãng xe"}
-                          </option>
-                          {selectedBrand &&
-                            (carsModelByBrand.length > 0 ? (
-                              carsModelByBrand.map(option => (
-                                <option key={option.id} value={option.id}>
-                                  {option.name}
-                                </option>
-                              ))
-                            ) : (
-                              <option value="" disabled>
-                                Không có dòng xe
-                              </option>
-                            ))}
+                          {carsModelByBrand.map(option => (
+                            <option key={option.id} value={option.id}>
+                              {option.name}
+                            </option>
+                          ))}
                         </Input>
-                        {validation.touched.modelId &&
-                          validation.errors.modelId && (
-                            <FormFeedback type="invalid">
-                              {selectedBrand
-                                ? validation.errors.modelId
-                                : "Vui lòng chọn hãng xe trước"}
-                            </FormFeedback>
-                          )}
                       </div>
                       <div className="mb-3">
                         <Label>Vấn đề*</Label>
@@ -469,23 +443,11 @@ const EditItem = props => {
                             validation.errors.problemId
                           }
                         >
-                          <option value="">
-                            {selectedModel
-                              ? "Chọn vấn đề"
-                              : "Vui lòng chọn dòng xe"}
-                          </option>
-                          {selectedModel &&
-                            (carsProblemByModel.length > 0 ? (
-                              carsProblemByModel.map(option => (
-                                <option key={option.id} value={option.id}>
-                                  {option.name}
-                                </option>
-                              ))
-                            ) : (
-                              <option value="" disabled>
-                                Không có vấn đề
-                              </option>
-                            ))}
+                          {carsProblemByModel.map(option => (
+                            <option key={option.id} value={option.id}>
+                              {option.name}
+                            </option>
+                          ))}
                         </Input>
                         {validation.touched.problemId &&
                           validation.errors.problemId && (
@@ -596,7 +558,6 @@ const EditItem = props => {
                             validation.errors.isPriceHidden
                           }
                         >
-                          <option value="">Chọn hiện giá</option>
                           <option value="true">Có</option>
                           <option value="false">Không</option>
                         </Input>
@@ -622,7 +583,6 @@ const EditItem = props => {
                             validation.errors.isPopular
                           }
                         >
-                          <option value="">Chọn việc phổ biến</option>
                           <option value="true">Có</option>
                           <option value="false">Không</option>
                         </Input>
@@ -674,7 +634,6 @@ const EditItem = props => {
                               validation.errors.isDefault
                             }
                           >
-                            <option value="">Xác định dịch vụ mặc định</option>
                             <option value="true">Có</option>
                             <option value="false">Không</option>
                           </Input>

@@ -206,7 +206,7 @@ const AddNewCarProblem = props => {
                         <Col md="7">
                           <Input
                             name="name"
-                            placeholder="Nhập tên dòng xe"
+                            placeholder="Nhập tên vấn đề"
                             type="text"
                             className="form-control"
                             id="validationCustom01"

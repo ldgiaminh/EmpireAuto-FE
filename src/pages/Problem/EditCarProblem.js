@@ -253,7 +253,7 @@ const EditCarProblem = props => {
                         <Col md="8">
                           <Input
                             name="name"
-                            placeholder="Nhập tên dòng xe"
+                            placeholder="Nhập tên vấn đề"
                             type="text"
                             className="form-control"
                             id="validationCustom01"
@@ -280,7 +280,7 @@ const EditCarProblem = props => {
                           <Input
                             disabled
                             type="select"
-                            name="selectedBrand"
+                            name="brandId"
                             value={validation.values.brandId || ""}
                           >
                             {carsBrand.map(option => (

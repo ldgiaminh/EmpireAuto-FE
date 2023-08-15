@@ -173,12 +173,12 @@ const AddNewCarBrand = props => {
                 >
                   <FormGroup className="mb-4" row>
                     <Label md="3" className="col-form-label">
-                      Tên dòng xe*
+                      Tên thương hiệu*
                     </Label>
                     <Col md="9">
                       <Input
                         name="name"
-                        placeholder="Nhập tên dòng xe"
+                        placeholder="Nhập tên thương hiệu"
                         type="text"
                         className="form-control"
                         id="validationCustom01"

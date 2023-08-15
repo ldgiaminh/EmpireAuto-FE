@@ -137,12 +137,22 @@ const CarItems = props => {
       },
       {
         Header: "Giá tiền",
-        accessor: "presentPrice",
+        accessor: carsItem => {
+          const latestPrice = carsItem.prices.reduce((latest, price) => {
+            if (!latest || price.priceFrom > latest.priceFrom) {
+              return price
+            }
+            return latest
+          }, null)
+
+          return latestPrice ? latestPrice.price : "" // Return the latest price value
+        },
         filterable: true,
         Cell: cellProps => {
           return <Price {...cellProps} />
-        },
+        }, // Use the Price component for rendering
       },
+
       {
         Header: "Bảo hành",
         accessor: "warranty",

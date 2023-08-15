@@ -2,18 +2,19 @@ import React, { useEffect, useState, useRef, useMemo } from "react"
 import { withRouter, Link } from "react-router-dom"
 import TableContainer from "../../../components/Common/TableContainer"
 import {
+  ButtonDropdown,
   Card,
   CardBody,
   Col,
-  Container,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
   Row,
+  UncontrolledDropdown,
   UncontrolledTooltip,
 } from "reactstrap"
 
 import { Name, Email, Phone, Gender } from "./userlistCol"
-
-//Import Breadcrumb
-import Breadcrumbs from "components/Common/Breadcrumb"
 
 import { getUsers as onGetUsers } from "store/users/actions"
 import { isEmpty } from "lodash"
@@ -37,6 +38,14 @@ const UserLists = props => {
     isLoading: state.userLists.isLoading,
     isShow: state.Layout.isShow,
   }))
+
+  /*
+  ==================================================
+  USE STATE
+  ==================================================
+  */
+
+  const [toggle, setToggle] = useState(false)
 
   /*
   ==================================================
@@ -117,8 +126,67 @@ const UserLists = props => {
           let content
 
           switch (activities.length) {
-            case 0:
-              // content = "Không tồn tại tiến trình"
+            case 2:
+              content = (
+                // <ButtonDropdown
+                //   isOpen={toggle}
+                //   toggle={() => setToggle(!toggle)}
+                // >
+                //   <DropdownToggle
+                //     caret
+                //     color="primary"
+                //     className="btn btn-info btn-sm"
+                //   >
+                //     {activities[0].car.carLisenceNo}
+                //   </DropdownToggle>
+                //   <DropdownMenu>
+                //     <DropdownItem>
+                //       {activities[0].car.carLisenceNo}
+                //     </DropdownItem>
+                //     <DropdownItem divider />
+                //     {activities.slice(1).map(activity => (
+                //       <DropdownItem key={activity.id}>
+                //         {activity.car.carLisenceNo}
+                //       </DropdownItem>
+                //     ))}
+                //   </DropdownMenu>
+                // </ButtonDropdown>
+                <UncontrolledDropdown>
+                  <DropdownToggle
+                    className="text-primary dropend"
+                    color="white"
+                    // type="button"
+                    direction="right"
+                  >
+                    {activities[0].car.carLisenceNo}
+                  </DropdownToggle>
+                  <DropdownMenu className="dropdown-menu-end">
+                    <Link
+                      className="dropdown-item"
+                      to={`/order-services/${activities[0].id}`}
+                    >
+                      {activities[0].car.carLisenceNo}
+                    </Link>
+                    <div className="dropdown-divider"></div>
+                    {activities.slice(1).map(activity => (
+                      <Link
+                        key={activity.id}
+                        className="dropdown-item"
+                        to={`/order-services/${activity.id}`}
+                      >
+                        {activity.car.carLisenceNo}
+                      </Link>
+                    ))}
+
+                    {/* <Link className="dropdown-item" to="#">
+                      Something else
+                    </Link>
+                    <Link className="dropdown-item" to="#">
+                      Separated link
+                    </Link> */}
+                  </DropdownMenu>
+                </UncontrolledDropdown>
+              )
               break
             case 1:
               content = (
@@ -131,15 +199,7 @@ const UserLists = props => {
               )
               break
             default:
-              content = (
-                <select>
-                  {activities.map((activity, index) => (
-                    <option key={index} value={activity.car.carLisenceNo}>
-                      {activity.car.carLisenceNo}
-                    </option>
-                  ))}
-                </select>
-              )
+              content = ""
           }
 
           return <>{content}</>
@@ -162,7 +222,7 @@ const UserLists = props => {
   )
 
   // sortedCustomers will contain the filtered customers array with entries where c.id >= 100 moved to the top.
-  //const sortedCustomers = [...customers].reverse()
+  const sortedCustomers = [...customers].reverse()
 
   const renderCustomerCreatedToday = () => {
     return (
@@ -194,7 +254,7 @@ const UserLists = props => {
               {!isLoading && (
                 <TableContainer
                   columns={columns}
-                  data={customers}
+                  data={sortedCustomers}
                   isGlobalFilter={true}
                   isCountCusToday={true}
                   countCusTody={customersCreatedToday.length}

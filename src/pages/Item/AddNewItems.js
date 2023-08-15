@@ -309,7 +309,7 @@ const AddNewCarItem = props => {
                         <Label htmlFor="name">Tên dịch vụ*</Label>
                         <Input
                           name="name"
-                          placeholder="Nhập tên dòng xe"
+                          placeholder="Nhập tên dịch vụ"
                           type="text"
                           className="form-control"
                           id="validationName"
