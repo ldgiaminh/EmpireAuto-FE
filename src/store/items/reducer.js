@@ -127,7 +127,7 @@ const items = (state = INIT_STATE, action) => {
         ...state,
         isLoading: false,
         carsItem: state.carsItem.map(item =>
-          item.id === action.payload.id ? { item, ...action.payload } : user
+          item.id === action.payload.id ? { item, ...action.payload } : item
         ),
       }
 

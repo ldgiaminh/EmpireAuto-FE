@@ -106,12 +106,11 @@ PUT Item Update
 ================================================
 */
 
-export const updateCarsItem = (carsItem, id, history, itemName) => ({
+export const updateCarsItem = (carsItem, id, history) => ({
   type: UPDATE_CAR_ITEM,
   payload: carsItem,
   id,
   history,
-  itemName,
 })
 
 export const updateCarsItemSuccess = carsItem => ({

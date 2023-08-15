@@ -197,6 +197,7 @@ const SystemConfig = () => {
 
       // Dispatch the action with the string value
       dispatch(onConfigSystem({ ...values, value: stringValue }))
+      setIsEnableInput(true)
       setConfig({
         type: {
           label: "",

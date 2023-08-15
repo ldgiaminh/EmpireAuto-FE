@@ -193,7 +193,7 @@ const CarItems = props => {
                   Cập nhật
                 </UncontrolledTooltip>
               </Link>
-              <Link
+              {/* <Link
                 to="#"
                 className="text-danger"
                 onClick={() => {
@@ -206,7 +206,7 @@ const CarItems = props => {
                 <UncontrolledTooltip placement="top" target="deletetooltip">
                   Xóa
                 </UncontrolledTooltip>
-              </Link>
+              </Link> */}
             </div>
           )
         },

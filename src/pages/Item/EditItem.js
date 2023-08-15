@@ -35,7 +35,7 @@ import {
   getCarsBrand as onGetCarBrand,
   getCarsModelByBrand as onGetCarModelByBrand,
   getCarsProblemByModel as onGetCarProblemByModel,
-  addNewCarsItem as onAddNewCarItem,
+  updateCarsItem as onEditCarItem,
   resetCarsModel as onResetCarsModel,
   resetCarsProblem as onResetCarsProblem,
   getCarsItemDetail as onGetCarItemDetail,
@@ -82,8 +82,6 @@ const EditItem = props => {
   ==================================================
   */
 
-  const [selectedBrand, setSelectedBrand] = useState("")
-  const [selectedModel, setSelectedModel] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLoad, setIsLoad] = useState(false)
 
@@ -106,18 +104,6 @@ const EditItem = props => {
       dispatch(onGetCarItemDetail(params.id))
     }
   }, [params, onGetCarItemDetail, dispatch])
-
-  useEffect(() => {
-    if (validation.values) {
-      dispatch(onGetCarModelByBrand(validation.values.brandId))
-    }
-  }, [params, onGetCarModelByBrand, dispatch])
-
-  useEffect(() => {
-    if (validation.values) {
-      dispatch(onGetCarProblemByModel(validation.values.modelId))
-    }
-  }, [params, onGetCarProblemByModel, dispatch])
 
   useEffect(() => {
     dispatch(onGetCategoryService())
@@ -150,18 +136,22 @@ const EditItem = props => {
     }
   }
 
-  /*
-  ==================================================
-  FORMIK
-  ==================================================
-  */
-
+  //Get latest price
   const latestPrice = carsItemDetail?.prices?.reduce((latest, price) => {
     if (!latest || price.priceFrom > latest.priceFrom) {
       return price
     }
     return latest
   }, null)
+
+  // Store the initial value of "photo"
+  const initialPhotoValue = (carsItemDetail && carsItemDetail.photo) || null
+
+  /*
+  ==================================================
+  FORMIK
+  ==================================================
+  */
 
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
@@ -175,11 +165,12 @@ const EditItem = props => {
       photo: {
         preview: (carsItemDetail && carsItemDetail.photo) || null,
       },
-      isPriceHidden: (carsItemDetail && carsItemDetail.isPriceHidden) || "",
-      isPopular: (carsItemDetail && carsItemDetail.isPopular) || "",
-      isService: (carsItemDetail && carsItemDetail.isService) || "",
-      isDefault: (carsItemDetail && carsItemDetail.isDefault) || "",
-      categoryId: (carsItemDetail && carsItemDetail.categoryId) || "",
+      isPriceHidden: (carsItemDetail && carsItemDetail.isPriceHidden) || false,
+      isPopular: (carsItemDetail && carsItemDetail.isPopular) || false,
+      isService: (carsItemDetail && carsItemDetail.isService) || false,
+      isDefault: (carsItemDetail && carsItemDetail.isDefault) || false,
+      isActived: true,
+      categoryId: (carsItemDetail && carsItemDetail.categoryId) || false,
       problemId:
         (carsItemDetail &&
           carsItemDetail.problem &&
@@ -200,7 +191,7 @@ const EditItem = props => {
         "",
     },
     validationSchema: Yup.object().shape({
-      name: Yup.string().required("Vui lòng nhập tên vấn đề"),
+      name: Yup.string().required("Vui lòng nhập tên dịch vụ"),
       price: Yup.number()
         .typeError("Vui lòng nhập số tiền hợp lệ")
         .positive("Giá tiền phải là số dương")
@@ -241,35 +232,61 @@ const EditItem = props => {
       //Remove value not need
       delete newValue.brandId
       delete newValue.modelId
+      delete newValue.problemId
 
-      console.log(newValue)
+      const isPhotoDirty = newValue.photo !== initialPhotoValue
 
-      const imageRef = sRef(storage, `items/${values.photo.name}`)
-      setIsSubmitting(true)
-      uploadBytes(imageRef, values.photo)
-        .then(snapshot => getDownloadURL(snapshot.ref))
-        .then(url => {
-          const newValues = {
-            ...newValue,
-            photo: url,
-          }
-          dispatch(onAddNewCarItem(newValues, props.history))
+      console.log("check photo", isPhotoDirty)
 
-          setIsLoad(false)
-        })
-        .catch(error => {
-          // Handle error, if any
-          console.error(error)
-          setIsSubmitting(false) // Set isSubmitting to false to allow resubmission
-          setIsLoad(false)
-        })
+      if (isPhotoDirty) {
+        const imageRef = sRef(storage, `items/${values.photo.name}`)
+        setIsSubmitting(true)
+        uploadBytes(imageRef, values.photo)
+          .then(snapshot => getDownloadURL(snapshot.ref))
+          .then(url => {
+            const newValues = {
+              ...newValue,
+              photo: url,
+            }
+            dispatch(onEditCarItem(newValues, params.id, props.history))
+            console.log("photo", newValues)
+            setIsLoad(false)
+          })
+          .catch(error => {
+            // Handle error, if any
+            console.error(error)
+            setIsSubmitting(false) // Set isSubmitting to false to allow resubmission
+            setIsLoad(false)
+          })
+      } else {
+        console.log("no photo", values)
+
+        dispatch(onEditCarItem(newValue, params.id, props.history))
+        setIsLoad(false)
+      }
     },
   })
 
-  console.log(carsItemDetail)
-
   // Use the 'dirty' property to disable the "Cập nhật" button until there are changes
   const isButtonDisabled = !validation.dirty || isSubmitting
+
+  /*
+  ==================================================
+  USE EFFECT
+  ==================================================
+  */
+
+  useEffect(() => {
+    if (validation.values) {
+      dispatch(onGetCarModelByBrand(validation.values.brandId))
+    }
+  }, [validation.values, onGetCarModelByBrand, dispatch])
+
+  useEffect(() => {
+    if (validation.values) {
+      dispatch(onGetCarProblemByModel(validation.values.modelId))
+    }
+  }, [validation.values, onGetCarProblemByModel, dispatch])
 
   /*
   ==================================================
@@ -306,12 +323,8 @@ const EditItem = props => {
     // Reset the form values to their initial state
     validation.resetForm()
 
-    //Rest selected
     dispatch(onResetCarsModel())
     dispatch(onResetCarsProblem())
-
-    setSelectedBrand(null)
-    setSelectedModel(null)
 
     setIsSubmitting(false)
 
@@ -331,10 +344,10 @@ const EditItem = props => {
           <Col xl={7} md={10}>
             <Card>
               <CardBody>
-                <CardTitle>Vấn đề</CardTitle>
+                <CardTitle>Dịch vụ</CardTitle>
                 <CardSubtitle className="mb-4">
-                  Nhập vào chỗ trống bên dưới để tạo mới vấn đề cho các phương
-                  tiện
+                  Nhập vào chỗ trống bên dưới để cập nhật mới dịch vụ cho các
+                  phương tiện
                 </CardSubtitle>
                 <Form
                   onSubmit={e => {
@@ -431,17 +444,11 @@ const EditItem = props => {
                       <div className="mb-3">
                         <Label>Vấn đề*</Label>
                         <Input
+                          disabled
                           type="select"
                           name="problemId"
                           className="form-control"
                           value={validation.values.problemId || ""}
-                          onChange={e => {
-                            validation.handleChange(e)
-                          }}
-                          invalid={
-                            validation.touched.problemId &&
-                            validation.errors.problemId
-                          }
                         >
                           {carsProblemByModel.map(option => (
                             <option key={option.id} value={option.id}>
@@ -449,14 +456,6 @@ const EditItem = props => {
                             </option>
                           ))}
                         </Input>
-                        {validation.touched.problemId &&
-                          validation.errors.problemId && (
-                            <FormFeedback type="invalid">
-                              {selectedModel
-                                ? validation.errors.problemId
-                                : "Vui lòng chọn dòng xe trước"}
-                            </FormFeedback>
-                          )}
                       </div>
                       <div className="mb-3">
                         <Label htmlFor="name">Mô tả*</Label>
@@ -550,16 +549,15 @@ const EditItem = props => {
                           name="isPriceHidden"
                           className="form-control"
                           value={validation.values.isPriceHidden}
-                          onChange={e => {
-                            validation.handleChange(e)
-                          }}
+                          onChange={validation.handleChange}
                           invalid={
                             validation.touched.isPriceHidden &&
                             validation.errors.isPriceHidden
                           }
                         >
-                          <option value="true">Có</option>
-                          <option value="false">Không</option>
+                          <option value="">Hiện giá dịch vụ</option>
+                          <option value={true}>Có</option>
+                          <option value={false}>Không</option>
                         </Input>
                         {validation.touched.isPriceHidden &&
                         validation.errors.isPriceHidden ? (
@@ -575,16 +573,15 @@ const EditItem = props => {
                           name="isPopular"
                           className="form-control"
                           value={validation.values.isPopular}
-                          onChange={e => {
-                            validation.handleChange(e)
-                          }}
+                          onChange={validation.handleChange}
                           invalid={
                             validation.touched.isPopular &&
                             validation.errors.isPopular
                           }
                         >
-                          <option value="true">Có</option>
-                          <option value="false">Không</option>
+                          <option value="">Dịch vụ phổ biến</option>
+                          <option value={true}>Có</option>
+                          <option value={false}>Không</option>
                         </Input>
                         {validation.touched.isPopular &&
                         validation.errors.isPopular ? (
@@ -626,16 +623,17 @@ const EditItem = props => {
                             name="isDefault"
                             className="form-control"
                             value={validation.values.isDefault}
-                            onChange={e => {
-                              validation.handleChange(e)
-                            }}
+                            onChange={validation.handleChange}
                             invalid={
                               validation.touched.isDefault &&
                               validation.errors.isDefault
                             }
                           >
-                            <option value="true">Có</option>
-                            <option value="false">Không</option>
+                            <option value="">
+                              Xác định là dịch vụ mặc định
+                            </option>
+                            <option value={true}>Có</option>
+                            <option value={false}>Không</option>
                           </Input>
                           {validation.touched.isDefault &&
                           validation.errors.isDefault ? (

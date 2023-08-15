@@ -78,12 +78,12 @@ function* onAddItem({ payload: carsItem, payload: paramss, history }) {
   }
 }
 
-function* onUpdateItems({ payload: carsModel, id, history, itemName }) {
+function* onUpdateItems({ payload: carsItem, id, history }) {
   try {
-    const response = yield call(updateCarsItem, id, carsModel)
-    yield put(updateCarsItemSuccess(response))
+    const response = yield call(updateCarsItem, id, carsItem)
+    yield put(updateCarsItemSuccess(carsItem))
     history.goBack()
-    toast.success("Cập nhật thành công dịch vụ " + itemName)
+    toast.success("Cập nhật thành công dịch vụ " + carsItem.name)
   } catch (error) {
     toast.error("Đã có lỗi xảy ra")
     yield put(updateCarsItemFail(error))
