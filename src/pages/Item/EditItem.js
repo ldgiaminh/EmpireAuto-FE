@@ -221,6 +221,8 @@ const EditItem = props => {
       }),
     }),
     onSubmit: values => {
+      setIsLoad(true)
+
       const newValue = {
         ...values,
         isPriceHidden: JSON.parse(values.isPriceHidden),
@@ -234,11 +236,7 @@ const EditItem = props => {
       delete newValue.modelId
       delete newValue.problemId
 
-      const isPhotoDirty = newValue.photo !== initialPhotoValue
-
-      console.log("check photo", isPhotoDirty)
-
-      if (isPhotoDirty) {
+      if (newValue.photo.preview !== carsItemDetail.photo) {
         const imageRef = sRef(storage, `items/${values.photo.name}`)
         setIsSubmitting(true)
         uploadBytes(imageRef, values.photo)
@@ -249,19 +247,19 @@ const EditItem = props => {
               photo: url,
             }
             dispatch(onEditCarItem(newValues, params.id, props.history))
-            console.log("photo", newValues)
             setIsLoad(false)
           })
           .catch(error => {
-            // Handle error, if any
             console.error(error)
-            setIsSubmitting(false) // Set isSubmitting to false to allow resubmission
+            setIsSubmitting(false)
             setIsLoad(false)
           })
       } else {
-        console.log("no photo", values)
-
-        dispatch(onEditCarItem(newValue, params.id, props.history))
+        const newValues = {
+          ...newValue,
+          photo: newValue.photo.preview,
+        }
+        dispatch(onEditCarItem(newValues, params.id, props.history))
         setIsLoad(false)
       }
     },
@@ -269,7 +267,6 @@ const EditItem = props => {
 
   // Use the 'dirty' property to disable the "Cập nhật" button until there are changes
   const isButtonDisabled = !validation.dirty || isSubmitting
-
   /*
   ==================================================
   USE EFFECT
@@ -555,7 +552,6 @@ const EditItem = props => {
                             validation.errors.isPriceHidden
                           }
                         >
-                          <option value="">Hiện giá dịch vụ</option>
                           <option value={true}>Có</option>
                           <option value={false}>Không</option>
                         </Input>
@@ -579,7 +575,6 @@ const EditItem = props => {
                             validation.errors.isPopular
                           }
                         >
-                          <option value="">Dịch vụ phổ biến</option>
                           <option value={true}>Có</option>
                           <option value={false}>Không</option>
                         </Input>
@@ -629,9 +624,6 @@ const EditItem = props => {
                               validation.errors.isDefault
                             }
                           >
-                            <option value="">
-                              Xác định là dịch vụ mặc định
-                            </option>
                             <option value={true}>Có</option>
                             <option value={false}>Không</option>
                           </Input>
