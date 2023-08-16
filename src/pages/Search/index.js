@@ -1,18 +1,8 @@
 import React, { useEffect, useState } from "react"
 import { Link, withRouter } from "react-router-dom/cjs/react-router-dom.min"
-import {
-  Card,
-  CardBody,
-  Col,
-  Container,
-  Input,
-  Label,
-  Nav,
-  NavItem,
-  NavLink,
-  Row,
-  Table,
-} from "reactstrap"
+import { Card, CardBody, Col, Container, Table, Row } from "reactstrap"
+
+import img1 from "../../assets/images/not-found.png"
 
 //redux
 import { useSelector, useDispatch } from "react-redux"
@@ -109,7 +99,25 @@ const Search = props => {
         <Container fluid>
           {!isLoadSearch && (
             <>
-              <h3 className="mb-4">Kết quả cho tìm kiếm "{params.string}"</h3>
+              {searchResults.every(result => result.results.length === 0) ? (
+                <div className="mt-4">
+                  <h2 className="text-center mb-4">
+                    Không tìm thấy kết quả tìm kiếm "{params.string}"
+                  </h2>
+                  <img
+                    src={img1}
+                    alt=""
+                    className="mx-auto d-block"
+                    style={{
+                      maxWidth: "100%",
+                      height: 350,
+                    }}
+                  />
+                </div>
+              ) : (
+                <h3 className="mb-4">Kết quả cho tìm kiếm "{params.string}"</h3>
+              )}
+
               {/* Render the first type (type 0) */}
               {searchResults &&
                 searchResults.map(

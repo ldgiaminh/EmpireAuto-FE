@@ -221,20 +221,6 @@ const UserLists = props => {
     c => c.createdAt.split("T")[0] === today
   )
 
-  // sortedCustomers will contain the filtered customers array with entries where c.id >= 100 moved to the top.
-  const sortedCustomers = [...customers].reverse()
-
-  const renderCustomerCreatedToday = () => {
-    return (
-      <>
-        {customersCreatedToday.length > 0 && (
-          <em>Hôm nay có {customersCreatedToday.length} khách hàng mới</em>
-        )}
-        <h5>hahah</h5>
-      </>
-    )
-  }
-
   return (
     <React.Fragment>
       <Row>
@@ -254,7 +240,7 @@ const UserLists = props => {
               {!isLoading && (
                 <TableContainer
                   columns={columns}
-                  data={sortedCustomers}
+                  data={customers}
                   isGlobalFilter={true}
                   isCountCusToday={true}
                   countCusTody={customersCreatedToday.length}
