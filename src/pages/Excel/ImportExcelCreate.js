@@ -97,7 +97,6 @@ const ImportExcelCreate = props => {
       data: Yup.mixed().required("Vui lòng chọn file excel"),
     }),
     onSubmit: values => {
-      setIsLoad(true)
       dispatch(importDataExcel(values.data, props.history))
       setIsSubmitting(true)
     },

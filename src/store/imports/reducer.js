@@ -17,17 +17,20 @@ const imports = (state = INIT_STATE, action) => {
     case IMPORT_DATA_EXCEL:
       return {
         ...state,
+        isLoading: true,
       }
 
     case IMPORT_DATA_EXCEL_SUCCESS:
       return {
         ...state,
+        isLoading: false,
         data: action.payload,
       }
 
     case IMPORT_DATA_EXCEL_FAIL:
       return {
         ...state,
+        isLoading: false,
         error: action.payload,
       }
 
