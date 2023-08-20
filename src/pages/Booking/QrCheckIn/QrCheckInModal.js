@@ -7,7 +7,7 @@ import { toast } from "react-toastify"
 import { useDispatch } from "react-redux"
 import { useSelector } from "react-redux"
 
-import { checkinQRCode as checkInQRCodes } from "store/actions"
+import { checkinQRCode as checkInQrCode } from "store/actions"
 
 const QrCheckInModal = props => {
   const { isOpen, toggle, history } = props
@@ -32,7 +32,7 @@ const QrCheckInModal = props => {
         qrCode: qrCode,
         autoAssign: isAssign,
       }
-      dispatch(checkInQRCodes(data, history))
+      dispatch(checkInQrCode(data, history))
     }
   }
 

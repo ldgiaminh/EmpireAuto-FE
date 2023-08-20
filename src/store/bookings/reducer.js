@@ -94,7 +94,7 @@ const bookings = (state = INIT_STATE, action) => {
         ...state,
         isLoad: false,
         bookings: state.bookings.map(booking =>
-          booking.id.toString() === action.payload.id.toString()
+          booking.id === action.payload.id
             ? { booking, ...action.payload }
             : booking
         ),
