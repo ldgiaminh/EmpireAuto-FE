@@ -69,10 +69,6 @@ const CustomerRemoveScript = () => {
       <CardBody>
         <CardTitle className="mb-2">XÓA KHÁCH HÀNG</CardTitle>
 
-        {!isLoadScript && !scriptRemoveCustomer.length && (
-          <em className="mt-3">Đang có {idList.length} tài khoản vừa tạo </em>
-        )}
-
         <div className="row gy-2 gx-3 mt-3">
           <div className="col-sm-5">
             <button
@@ -93,7 +89,7 @@ const CustomerRemoveScript = () => {
               <div className="text-center my-3">
                 <h5 className="text-primary">
                   <i className="bx bx-loader bx-spin me-2" />
-                  Đang xóa {idList.length} tài khoản
+                  Đang xóa các tài khoản tạo từ script
                 </h5>
               </div>
             </Col>
