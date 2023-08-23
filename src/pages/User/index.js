@@ -21,13 +21,39 @@ const UserLists = props => {
 
   const dispatch = useDispatch()
 
+  /*
+  ==================================================
+  STATE FROM REDUX
+  ==================================================
+  */
+
   const { users, isShow, isLoading } = useSelector(state => ({
     users: state.userLists.users,
     isLoading: state.userLists.isLoading,
     isShow: state.Layout.isShow,
   }))
 
-  const customers = users.filter(c => c.roleId === "US")
+  /*
+  ==================================================
+  USE EFFECT
+  ==================================================
+  */
+
+  useEffect(() => {
+    dispatch(onGetUsers())
+  }, [dispatch])
+
+  useEffect(() => {
+    if (isShow) {
+      dispatch(onGetUsers())
+    }
+  }, [dispatch, isShow])
+
+  /*
+  ==================================================
+  COLUMN
+  ==================================================
+  */
 
   const columns = useMemo(
     () => [
@@ -113,15 +139,13 @@ const UserLists = props => {
     []
   )
 
-  useEffect(() => {
-    dispatch(onGetUsers())
-  }, [dispatch])
+  /*
+  ==================================================
+  FILTER CUSTOMER
+  ==================================================
+  */
 
-  useEffect(() => {
-    if (isShow) {
-      dispatch(onGetUsers())
-    }
-  }, [dispatch, isShow])
+  const customers = users.filter(c => c.roleId === "US")
 
   // Count customers created today
   const today = new Date().toISOString().split("T")[0]
@@ -134,6 +158,16 @@ const UserLists = props => {
     ...customers.filter(c => c.id >= 100),
     ...customers.filter(c => c.id < 100),
   ]
+
+  /*
+  ==================================================
+  ADD NEW
+  ==================================================
+  */
+
+  const handleAddNew = () => {
+    props.history.push("/create-new-guest")
+  }
 
   return (
     <React.Fragment>
@@ -182,7 +216,8 @@ const UserLists = props => {
                       columns={columns}
                       data={sortedCustomers}
                       isGlobalFilter={true}
-                      isAddUserList={false}
+                      isAddNew={true}
+                      handleAddNewClick={handleAddNew}
                       customPageSize={10}
                       className="custom-header-css"
                     />

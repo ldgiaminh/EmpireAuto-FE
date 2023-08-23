@@ -102,6 +102,9 @@ export const ADD_NEW_USER = "/add/user"
 export const UPDATE_USER = "/update/user"
 export const DELETE_USER = "/delete/user"
 
+//Guest
+export const ADD_NEW_GUEST = "/order-services"
+
 //Experts
 export const GET_EXPERTS = "/users/experts"
 export const PUT_STATUS_EXPERTS = "/users/experts"

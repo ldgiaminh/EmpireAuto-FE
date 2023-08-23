@@ -234,6 +234,9 @@ export const getExperts = () => get(url.GET_EXPERTS)
 export const onChangeStatusExpert = id =>
   put(`${url.PUT_STATUS_EXPERTS}/${id}/status`)
 
+//add guest
+export const addNewGuest = guest => post(url.ADD_NEW_GUEST, guest)
+
 /*
 ================================================
 SYMPTOMS

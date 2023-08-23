@@ -82,6 +82,7 @@ import EditItem from "pages/Item/EditItem"
 //Import
 import ImportExcelCreate from "pages/Excel/ImportExcelCreate"
 import SystemConfig from "pages/System"
+import AddNewGuest from "pages/User/AddNewGuest"
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
@@ -138,6 +139,7 @@ const authProtectedRoutes = [
   { path: "/create-new-problem", component: AddNewCarProblem },
   { path: "/create-new-item", component: AddNewCarItem },
   { path: "/create-new-symptom", component: AddNewSymptom },
+  { path: "/create-new-guest", component: AddNewGuest },
   { path: "/import-data-excel", component: ImportExcelCreate },
 
   //Edit

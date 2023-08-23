@@ -16,6 +16,9 @@ import {
   PUT_STATUS_EXPERTS,
   PUT_STATUS_EXPERTS_SUCCESS,
   PUT_STATUS_EXPERTS_FAIL,
+  ADD_NEW_GUEST_SUCCESS,
+  ADD_NEW_GUEST_FAIL,
+  ADD_NEW_GUEST,
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -97,17 +100,25 @@ const userLists = (state = INIT_STATE, action) => {
 
     /* ADD USER */
 
-    // case ADD_USER_SUCCESS:
-    //   return {
-    //     ...state,
-    //     users: [...state.users, action.payload],
-    //   }
+    case ADD_NEW_GUEST:
+      return {
+        ...state,
+        isLoading: true,
+      }
 
-    // case ADD_USER_FAIL:
-    //   return {
-    //     ...state,
-    //     error: action.payload,
-    //   }
+    case ADD_NEW_GUEST_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        users: [...state.users, action.payload],
+      }
+
+    case ADD_NEW_GUEST_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload,
+      }
 
     // case GET_USER_PROFILE_SUCCESS:
     //   return {

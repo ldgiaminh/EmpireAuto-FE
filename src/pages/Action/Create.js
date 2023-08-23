@@ -34,6 +34,11 @@ const CreateNew = props => {
       icon: "bx bx-file",
       title: "Excel",
     },
+    {
+      link: "/create-new-guest",
+      icon: "bx bxs-user-plus",
+      title: "Khách vãng lai",
+    },
   ]
 
   const handleItemClick = link => {

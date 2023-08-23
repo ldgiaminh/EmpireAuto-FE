@@ -20,7 +20,16 @@ import {
   PUT_STATUS_EXPERTS_FAIL,
   PUT_STATUS_EXPERTS_SUCCESS,
   PUT_STATUS_EXPERTS,
+  ADD_NEW_GUEST,
+  ADD_NEW_GUEST_SUCCESS,
+  ADD_NEW_GUEST_FAIL,
 } from "./actionTypes"
+
+/*
+================================================
+GET USERS
+================================================
+*/
 
 export const getUsers = () => ({
   type: GET_USERS,
@@ -29,21 +38,6 @@ export const getUsers = () => ({
 export const getUsersSuccess = users => ({
   type: GET_USERS_SUCCESS,
   payload: users,
-})
-
-export const addNewUser = user => ({
-  type: ADD_NEW_USER,
-  payload: user,
-})
-
-export const addUserSuccess = user => ({
-  type: ADD_USER_SUCCESS,
-  payload: user,
-})
-
-export const addUserFail = error => ({
-  type: ADD_USER_FAIL,
-  payload: error,
 })
 
 export const getUsersFail = error => ({
@@ -131,5 +125,27 @@ export const putChangeStatusExpertSuccess = expert => ({
 
 export const putChangeStatusExpertFail = error => ({
   type: PUT_STATUS_EXPERTS_FAIL,
+  payload: error,
+})
+
+/*
+================================================
+ADD NEW GUEST
+================================================
+*/
+
+export const addNewGuest = (guest, history) => ({
+  type: ADD_NEW_GUEST,
+  payload: guest,
+  history,
+})
+
+export const addNewGuestSuccess = guest => ({
+  type: ADD_NEW_GUEST_SUCCESS,
+  payload: guest,
+})
+
+export const addNewGuestFail = error => ({
+  type: ADD_NEW_GUEST_FAIL,
   payload: error,
 })

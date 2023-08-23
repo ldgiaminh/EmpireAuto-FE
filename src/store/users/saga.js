@@ -9,6 +9,7 @@ import {
   UPDATE_USER,
   GET_EXPERTS,
   PUT_STATUS_EXPERTS,
+  ADD_NEW_GUEST,
 } from "./actionTypes"
 
 import {
@@ -26,6 +27,8 @@ import {
   getExpertsSuccess,
   putChangeStatusExpertSuccess,
   putChangeStatusExpertFail,
+  addNewGuestFail,
+  addNewGuestSuccess,
 } from "./actions"
 
 //Include Both Helper File with needed methods
@@ -37,6 +40,7 @@ import {
   deleteUser,
   getExperts,
   onChangeStatusExpert,
+  addNewGuest,
 } from "../../helpers/fakebackend_helper"
 
 import { toast } from "react-toastify"
@@ -74,6 +78,18 @@ function* onChangeStatusExperts({ payload: expert }) {
   }
 }
 
+function* onAddNewGuest({ payload: guest, history }) {
+  try {
+    const response = yield call(addNewGuest, guest)
+    yield put(addNewGuestSuccess(response))
+    history.push("/users")
+    toast.success("Tạo mới thành công khách hàng " + guest.userName)
+  } catch (error) {
+    toast.error("Đã có lỗi xảy ra")
+    yield put(addNewGuestFail(error))
+  }
+}
+
 // function* fetchUserProfile() {
 //   try {
 //     const response = yield call(getUserProfile)
@@ -101,23 +117,13 @@ function* onChangeStatusExperts({ payload: expert }) {
 //   }
 // }
 
-// function* onAddNewUser({ payload: user }) {
-//   try {
-//     const response = yield call(addNewUser, user)
-
-//     yield put(addUserSuccess(response))
-//   } catch (error) {
-//     yield put(addUserFail(error))
-//   }
-//}
-
 function* usersSaga() {
   yield takeEvery(GET_USERS, fetchUsers)
   yield takeEvery(GET_EXPERTS, fetchExperts)
   yield takeEvery(PUT_STATUS_EXPERTS, onChangeStatusExperts)
 
   // yield takeEvery(GET_USER_PROFILE, fetchUserProfile)
-  // yield takeEvery(ADD_NEW_USER, onAddNewUser)
+  yield takeEvery(ADD_NEW_GUEST, onAddNewGuest)
   // yield takeEvery(UPDATE_USER, onUpdateUser)
   // yield takeEvery(DELETE_USER, onDeleteUser)
 }
