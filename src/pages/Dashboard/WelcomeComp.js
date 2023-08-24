@@ -25,8 +25,8 @@ const WelcomeComp = () => {
                 <p>Trang quản lý và theo dõi dành cho nhân viên</p>
               </div>
             </Col>
-            <Col xs="5" className="align-self-end text-end">
-              <img src={profileImg} alt="" style={{ width: "200px" }} />
+            <Col xs="5" className="align-self-end">
+              <img src={profileImg} alt="" className="img-fluid" />
             </Col>
           </Row>
         </div>
@@ -46,7 +46,7 @@ const WelcomeComp = () => {
               </p> */}
             </Col>
 
-            <Col sm="9">
+            <Col sm="10">
               <div className="pt-4">
                 <Row>
                   <Col xs="6">
