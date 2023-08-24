@@ -18,15 +18,20 @@ const Cart = ({ details, services }) => {
     services.reduce((acc, service) => acc + service.price, 0) +
     details.prepaidFromBooking
 
-  const formattedDate = date => {
-    const createDate = new Date(date)
-    const formattedDate = createDate.toLocaleDateString("vi-VN", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    })
-    const formatted = `${formattedDate}`
-    return formatted
+  // Function to calculate the warranty expiration date
+  const calculateWarrantyExpiration = warrantyMonths => {
+    const currentDate = new Date()
+    currentDate.setMonth(currentDate.getMonth() + warrantyMonths)
+
+    // Get the day, month, and year
+    const day = currentDate.getDate()
+    const month = currentDate.getMonth() + 1 // Months are zero-based
+    const year = currentDate.getFullYear()
+
+    // Format the date as "dd/mm/yyyy"
+    return `${day.toString().padStart(2, "0")}/${month
+      .toString()
+      .padStart(2, "0")}/${year}`
   }
 
   return (
@@ -153,6 +158,7 @@ const Cart = ({ details, services }) => {
                       <tr>
                         <th>Hình ảnh</th>
                         <th>Dịch vụ</th>
+                        <th>Hạn bảo hành</th>
                         <th>Ghi chú</th>
                       </tr>
                     </thead>
@@ -192,7 +198,13 @@ const Cart = ({ details, services }) => {
                               {service.item.problem.name}
                             </p>
                           </td>
-                          {/* <td>{service.price.toLocaleString()}đ</td> */}
+                          <td>
+                            {service.item.warranty !== null
+                              ? calculateWarrantyExpiration(
+                                  service.item.warranty
+                                )
+                              : "Chưa có bảo hành"}
+                          </td>
                           {service.note !== null ? (
                             <td
                               style={{
@@ -201,7 +213,9 @@ const Cart = ({ details, services }) => {
                             >
                               {service.note}
                             </td>
-                          ) : null}
+                          ) : (
+                            <td></td>
+                          )}
                         </tr>
                       ))}
                     </tbody>
