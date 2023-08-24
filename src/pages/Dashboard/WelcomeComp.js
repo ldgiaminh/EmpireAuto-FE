@@ -46,7 +46,7 @@ const WelcomeComp = () => {
               </p> */}
             </Col>
 
-            <Col sm="10">
+            <Col sm="9">
               <div className="pt-4">
                 <Row>
                   <Col xs="6">
