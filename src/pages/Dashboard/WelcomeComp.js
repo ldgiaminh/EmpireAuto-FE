@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react"
 
 import { Row, Col, Card, CardBody } from "reactstrap"
-import { Link } from "react-router-dom"
 
-import avatar1 from "../../assets/images/users/avatar-1.jpg"
 import profileImg from "../../assets/images/profile-img.png"
 
 const WelcomeComp = () => {
@@ -27,14 +25,14 @@ const WelcomeComp = () => {
                 <p>Trang quản lý và theo dõi dành cho nhân viên</p>
               </div>
             </Col>
-            <Col xs="5" className="align-self-end">
-              <img src={profileImg} alt="" className="img-fluid" />
+            <Col xs="5" className="align-self-end text-end">
+              <img src={profileImg} alt="" style={{ width: "200px" }} />
             </Col>
           </Row>
         </div>
         <CardBody className="pt-0">
           <Row>
-            <Col sm="4">
+            <Col sm="3">
               <div className="avatar-md profile-user-wid mb-4">
                 <img
                   src={info.image}
@@ -48,10 +46,10 @@ const WelcomeComp = () => {
               </p> */}
             </Col>
 
-            <Col sm="8">
+            <Col sm="9">
               <div className="pt-4">
                 <Row>
-                  <Col xs="12">
+                  <Col xs="6">
                     <h5 className="font-size-15 text-truncate">{info.name}</h5>
                     {info.role === "RE" ? (
                       <p className="text-muted mb-0 text-truncate">
@@ -69,10 +67,10 @@ const WelcomeComp = () => {
                       ""
                     )}
                   </Col>
-                  {/* <Col xs="6">
-                    <h5 className="font-size-15">$1245</h5>
-                    <p className="text-muted mb-0">Revenue</p>
-                  </Col> */}
+                  <Col xs="6">
+                    <h5 className="font-size-15">{info.phone}</h5>
+                    <p className="text-muted mb-0">{info.email}</p>
+                  </Col>
                 </Row>
               </div>
             </Col>
