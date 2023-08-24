@@ -158,7 +158,7 @@ const AddNewGuest = props => {
       phoneNumber: Yup.string()
         .required("Vui lòng nhập số điện thoại")
         .matches(/^[0-9]+$/, "Số điện thoại chỉ được chứa số")
-        .max(11, "Số điện thoại không được vượt quá 11 số"), // Add this line
+        .max(9, "Số điện thoại không được vượt quá 9 số"), // Add this line
 
       brandId: Yup.string().required("Vui lòng chọn hãng xe"),
       carModel: Yup.string().when("brandId", {
@@ -170,8 +170,7 @@ const AddNewGuest = props => {
     onSubmit: values => {
       const newValue = {
         ...values,
-        //phoneNumber: "+84" + values.phoneNumber,
-        phoneNumber: "0" + values.phoneNumber,
+        phoneNumber: "+84" + values.phoneNumber,
         gender: JSON.parse(values.gender),
         prepaid: JSON.parse(getConfigValue(configSystems, "BOOKING_PRICE")),
       }
@@ -179,7 +178,7 @@ const AddNewGuest = props => {
 
       if (newValue) {
         dispatch(onAddNewGuest(newValue, props.history))
-        //setIsSubmitting(true)
+        setIsSubmitting(true)
       } else {
         setIsSubmitting(false)
       }
@@ -370,7 +369,7 @@ const AddNewGuest = props => {
                             <Input
                               name="phoneNumber"
                               placeholder="Nhập số điện thoại"
-                              type="number"
+                              type="text"
                               className="form-control"
                               id="validationCustom01"
                               onChange={validation.handleChange}
