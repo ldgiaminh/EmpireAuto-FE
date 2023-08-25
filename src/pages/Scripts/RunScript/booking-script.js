@@ -94,7 +94,8 @@ const BookingScript = () => {
     <React.Fragment>
       <CardBody>
         <CardTitle className="mb-2">TẠO ĐẶT LỊCH</CardTitle>
-        *Đặt lịch quá khứ chỉ có thể đặt ngày hôm qua tính từ ngày hiện tại
+        *Đặt lịch quá khứ chỉ có thể đặt ngày hôm qua tính từ ngày hiện tại *Đặt
+        Đặt lịch quá khứ chỉ phục vụ cho việc demo
         <Form
           className="row gy-2 gx-3 mt-3"
           onSubmit={e => {
