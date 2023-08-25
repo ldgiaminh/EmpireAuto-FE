@@ -124,6 +124,30 @@ const SystemConfig = () => {
       value: getConfigValue(configSystems, "CURRENT_CAR_COUNT_IN_GARAGE"),
       render: getConfigValue(configSystems, "CURRENT_CAR_COUNT_IN_GARAGE"),
     },
+    {
+      label: "Giờ mở cửa sáng",
+      key: "MORNING_OPEN_TIME",
+      value: getConfigValue(configSystems, "MORNING_OPEN_TIME"),
+      render: getConfigValue(configSystems, "MORNING_OPEN_TIME"),
+    },
+    {
+      label: "Giờ đóng cửa sáng",
+      key: "MORNING_CLOSE_TIME",
+      value: getConfigValue(configSystems, "MORNING_CLOSE_TIME"),
+      render: getConfigValue(configSystems, "MORNING_CLOSE_TIME"),
+    },
+    {
+      label: "Giờ mở cửa chiều",
+      key: "AFTERNOON_OPEN_TIME",
+      value: getConfigValue(configSystems, "AFTERNOON_OPEN_TIME"),
+      render: getConfigValue(configSystems, "AFTERNOON_OPEN_TIME"),
+    },
+    {
+      label: "Giờ đóng cửa chiều",
+      key: "AFTERNOON_CLOSE_TIME",
+      value: getConfigValue(configSystems, "AFTERNOON_CLOSE_TIME"),
+      render: getConfigValue(configSystems, "AFTERNOON_CLOSE_TIME"),
+    },
   ]
 
   const bookingConfig = [
@@ -168,6 +192,33 @@ const SystemConfig = () => {
       value: getConfigValue(configSystems, "MINUTES_PER_WORKLOAD"),
       render: getConfigValue(configSystems, "MINUTES_PER_WORKLOAD"),
     },
+    {
+      label: "WorkLoad tối đa cho kỹ thuật viên",
+      key: "LIMIT_EXPERT_WORKLOAD",
+      value: getConfigValue(configSystems, "LIMIT_EXPERT_WORKLOAD"),
+      render: getConfigValue(configSystems, "LIMIT_EXPERT_WORKLOAD"),
+    },
+  ]
+
+  const informationConfig = [
+    {
+      label: "Tên CTY / Garage",
+      key: "COMPANY_NAME",
+      value: getConfigValue(configSystems, "COMPANY_NAME"),
+      render: getConfigValue(configSystems, "COMPANY_NAME"),
+    },
+    {
+      label: "Địa chỉ gara",
+      key: "ADDRESS",
+      value: getConfigValue(configSystems, "ADDRESS"),
+      render: getConfigValue(configSystems, "ADDRESS"),
+    },
+    {
+      label: "Số điện thoại",
+      key: "PHONE_NUMBER",
+      value: getConfigValue(configSystems, "PHONE_NUMBER"),
+      render: getConfigValue(configSystems, "PHONE_NUMBER"),
+    },
   ]
 
   /*
@@ -185,12 +236,20 @@ const SystemConfig = () => {
     },
     validationSchema: Yup.object({
       key: Yup.string().required("Please Enter  key"),
-      value: Yup.number()
-        .typeError("Vui lòng chỉ nhập số") // Custom error message for non-numeric input
-        .required("Vui lòng nhập thống số cần thay đổi")
-        .min(-1, "Số cấu hình phải là số dương") // Optionally enforce positive numbers
-        .integer("Số cầu hình không phải số thập phân"),
+      value: Yup.mixed() // Allow mixed types (string or number)
+        .required("Vui lòng nhập dữ liệu cần thay đổi")
+        .test("is-valid", "Dữ liệu phải là số dương", function (value) {
+          // Custom validation logic
+          if (typeof value === "number") {
+            return value > 0 // Return true if it's a positive number
+          } else if (typeof value === "string") {
+            // You can add custom string validation logic here if needed
+            return true // For example, allow any non-empty string
+          }
+          return false // Not a valid type
+        }),
     }),
+
     onSubmit: values => {
       // Convert the value to a string
       const stringValue = values.value.toString()
@@ -227,7 +286,7 @@ const SystemConfig = () => {
       value: item.value,
     })
 
-    // Scroll to the "Số cấu hình" input field
+    // Scroll to the "Dữ liệu" input field
     const inputElement = document.querySelector('[name="value"]')
     if (inputElement) {
       inputElement.scrollIntoView({
@@ -358,132 +417,202 @@ const SystemConfig = () => {
             <Col xl="8">
               <Card>
                 <CardBody>
-                  <h4 className="card-title mb-3">Garage</h4>
-                  <div className="table-responsive">
-                    <Table className="table table-nowrap align-middle mb-0">
-                      <thead>
-                        <tr>
-                          <th scope="col">STT</th>
-                          <th scope="col">Loại cấu hình</th>
-                          <th scope="col" className="text-end">
-                            Số cấu hình
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {garageConfig.map((item, index) => (
-                          <tr key={index}>
-                            <td style={{ width: "90px" }}>
-                              <span>{index + 1}</span>
-                            </td>
-                            <td style={{ width: "300px" }}>
-                              <p className="font-size-14 mb-1">{item.label}</p>
-                            </td>
-                            <td style={{ width: "100px" }}>
-                              <p className="font-size-14 mb-1 text-end">
-                                {item.render}
-                              </p>
-                            </td>
-                            <td style={{ width: "200px" }} className="text-end">
-                              <Button
-                                type="submit"
-                                color="primary"
-                                className="btn-sm w-xs"
-                                onClick={() => handleUpdateClick(item)}
-                              >
-                                Cập nhật
-                              </Button>
-                            </td>
+                  <div id="garage">
+                    <h4 className="card-title mb-3">Garage</h4>
+                    <div className="table-responsive">
+                      <Table className="table table-nowrap align-middle mb-0">
+                        <thead>
+                          <tr>
+                            <th scope="col">STT</th>
+                            <th scope="col">Loại cấu hình</th>
+                            <th scope="col" className="text-end">
+                              Dữ liệu
+                            </th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </Table>
+                        </thead>
+                        <tbody>
+                          {garageConfig.map((item, index) => (
+                            <tr key={index}>
+                              <td style={{ width: "90px" }}>
+                                <span>{index + 1}</span>
+                              </td>
+                              <td style={{ width: "300px" }}>
+                                <p className="font-size-14 mb-1">
+                                  {item.label}
+                                </p>
+                              </td>
+                              <td style={{ width: "100px" }}>
+                                <p className="font-size-14 mb-1 text-end">
+                                  {item.render}
+                                </p>
+                              </td>
+                              <td
+                                style={{ width: "200px" }}
+                                className="text-end"
+                              >
+                                <Button
+                                  type="submit"
+                                  color="primary"
+                                  className="btn-sm w-xs"
+                                  onClick={() => handleUpdateClick(item)}
+                                >
+                                  Cập nhật
+                                </Button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </Table>
+                    </div>
                   </div>
 
-                  <h4 className="card-title mt-4 mb-3">Đặt lịch</h4>
-                  <div className="table-responsive">
-                    <Table className="table table-nowrap align-middle mb-0">
-                      <thead>
-                        <tr>
-                          <th scope="col">STT</th>
-                          <th scope="col">Loại cấu hình</th>
-                          <th scope="col" className="text-end">
-                            Số cấu hình
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {bookingConfig.map((item, index) => (
-                          <tr key={index}>
-                            <td style={{ width: "90px" }}>
-                              <span>{index + 1}</span>
-                            </td>
-                            <td style={{ width: "300px" }}>
-                              <p className="font-size-14 mb-1">{item.label}</p>
-                            </td>
-                            <td style={{ width: "100px" }}>
-                              <p className="font-size-14 mb-1 text-end">
-                                {item.render}
-                              </p>
-                            </td>
-                            <td style={{ width: "200px" }} className="text-end">
-                              <Button
-                                type="submit"
-                                color="primary"
-                                className="btn-sm w-xs"
-                                onClick={() => handleUpdateClick(item)}
-                              >
-                                Cập nhật
-                              </Button>
-                            </td>
+                  <div id="booking">
+                    <h4 className="card-title mt-4 mb-3">Đặt lịch</h4>
+                    <div className="table-responsive">
+                      <Table className="table table-nowrap align-middle mb-0">
+                        <thead>
+                          <tr>
+                            <th scope="col">STT</th>
+                            <th scope="col">Loại cấu hình</th>
+                            <th scope="col" className="text-end">
+                              Dữ liệu
+                            </th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </Table>
+                        </thead>
+                        <tbody>
+                          {bookingConfig.map((item, index) => (
+                            <tr key={index}>
+                              <td style={{ width: "90px" }}>
+                                <span>{index + 1}</span>
+                              </td>
+                              <td style={{ width: "300px" }}>
+                                <p className="font-size-14 mb-1">
+                                  {item.label}
+                                </p>
+                              </td>
+                              <td style={{ width: "100px" }}>
+                                <p className="font-size-14 mb-1 text-end">
+                                  {item.render}
+                                </p>
+                              </td>
+                              <td
+                                style={{ width: "200px" }}
+                                className="text-end"
+                              >
+                                <Button
+                                  type="submit"
+                                  color="primary"
+                                  className="btn-sm w-xs"
+                                  onClick={() => handleUpdateClick(item)}
+                                >
+                                  Cập nhật
+                                </Button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </Table>
+                    </div>
                   </div>
 
-                  <h4 className="card-title mt-4 mb-3">
-                    Thời gian làm việc (WorkLoad)
-                  </h4>
-                  <div className="table-responsive">
-                    <Table className="table table-nowrap align-middle mb-0">
-                      <thead>
-                        <tr>
-                          <th scope="col">STT</th>
-                          <th scope="col">Loại cấu hình</th>
-                          <th scope="col" className="text-end">
-                            Số cấu hình
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {workLoadConfig.map((item, index) => (
-                          <tr key={index}>
-                            <td style={{ width: "90px" }}>
-                              <span>{index + 1}</span>
-                            </td>
-                            <td style={{ width: "300px" }}>
-                              <p className="font-size-14 mb-1">{item.label}</p>
-                            </td>
-                            <td style={{ width: "100px" }}>
-                              <p className="font-size-14 mb-1 text-end">
-                                {item.render}
-                              </p>
-                            </td>
-                            <td style={{ width: "200px" }} className="text-end">
-                              <Button
-                                type="submit"
-                                color="primary"
-                                className="btn-sm w-xs"
-                                onClick={() => handleUpdateClick(item)}
-                              >
-                                Cập nhật
-                              </Button>
-                            </td>
+                  <div id="workload">
+                    <h4 className="card-title mt-4 mb-3">
+                      Thời gian làm việc của kỹ thuật viên (WorkLoad)
+                    </h4>
+                    <div className="table-responsive">
+                      <Table className="table table-nowrap align-middle mb-0">
+                        <thead>
+                          <tr>
+                            <th scope="col">STT</th>
+                            <th scope="col">Loại cấu hình</th>
+                            <th scope="col" className="text-end">
+                              Dữ liệu
+                            </th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </Table>
+                        </thead>
+                        <tbody>
+                          {workLoadConfig.map((item, index) => (
+                            <tr key={index}>
+                              <td style={{ width: "90px" }}>
+                                <span>{index + 1}</span>
+                              </td>
+                              <td style={{ width: "300px" }}>
+                                <p className="font-size-14 mb-1">
+                                  {item.label}
+                                </p>
+                              </td>
+                              <td style={{ width: "100px" }}>
+                                <p className="font-size-14 mb-1 text-end">
+                                  {item.render}
+                                </p>
+                              </td>
+                              <td
+                                style={{ width: "200px" }}
+                                className="text-end"
+                              >
+                                <Button
+                                  type="submit"
+                                  color="primary"
+                                  className="btn-sm w-xs"
+                                  onClick={() => handleUpdateClick(item)}
+                                >
+                                  Cập nhật
+                                </Button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </Table>
+                    </div>
+                  </div>
+
+                  <div id="information">
+                    <h4 className="card-title mt-4 mb-3">Thông tin Garage</h4>
+                    <div className="table-responsive">
+                      <Table className="table table-nowrap align-middle mb-0">
+                        <thead>
+                          <tr>
+                            <th scope="col">STT</th>
+                            <th scope="col">Loại cấu hình</th>
+                            <th scope="col" className="text-end">
+                              Dữ liệu
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {informationConfig.map((item, index) => (
+                            <tr key={index}>
+                              <td style={{ width: "90px" }}>
+                                <span>{index + 1}</span>
+                              </td>
+                              <td style={{ width: "300px" }}>
+                                <p className="font-size-14 mb-1">
+                                  {item.label}
+                                </p>
+                              </td>
+                              <td style={{ width: "100px" }}>
+                                <p className="font-size-14 mb-1 text-end">
+                                  {item.render}
+                                </p>
+                              </td>
+                              <td
+                                style={{ width: "200px" }}
+                                className="text-end"
+                              >
+                                <Button
+                                  type="submit"
+                                  color="primary"
+                                  className="btn-sm w-xs"
+                                  onClick={() => handleUpdateClick(item)}
+                                >
+                                  Cập nhật
+                                </Button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </Table>
+                    </div>
                   </div>
                 </CardBody>
               </Card>
@@ -533,15 +662,13 @@ const SystemConfig = () => {
                         </InputGroup>
 
                         <InputGroup className="mb-3">
-                          <Label className="input-group-text">
-                            Số cấu hình
-                          </Label>
+                          <Label className="input-group-text">Dữ liệu</Label>
                           <Input
                             disabled={isEnableInput}
                             type="text"
                             name="value"
                             className="form-control"
-                            placeholder="Bấm 'Cập Nhật' để số cấu hình"
+                            placeholder="Bấm 'Cập Nhật' để Dữ liệu"
                             onChange={validation.handleChange}
                             value={validation.values.value || ""}
                             invalid={
