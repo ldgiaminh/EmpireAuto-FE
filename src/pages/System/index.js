@@ -668,7 +668,7 @@ const SystemConfig = () => {
                             type="text"
                             name="value"
                             className="form-control"
-                            placeholder="Bấm 'Cập Nhật' để Dữ liệu"
+                            placeholder="Bấm 'Cập Nhật' để cập nhật dữ liệu"
                             onChange={validation.handleChange}
                             value={validation.values.value || ""}
                             invalid={

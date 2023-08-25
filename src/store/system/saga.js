@@ -71,7 +71,7 @@ function* onConfigSystems({ payload: config }) {
     toast.success("Cấu hình hệ thống thành công")
   } catch (error) {
     yield put(putConfigSystemFail(error))
-    toast.error("Cấu hình hệ thống thất bại")
+    toast.error(`${error.response.data.message}`)
   }
 }
 
