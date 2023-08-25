@@ -30,8 +30,6 @@ const BookingScript = () => {
 
   const [bookings, setBookings] = useState([])
   const [isNewCustomer, setIsNewCustomer] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [idList, setIdList] = useState([])
 
   const [countSuccess, setCountSuccess] = useState(0)
   const [countFail, setCountFail] = useState(0)
@@ -50,18 +48,22 @@ const BookingScript = () => {
     initialValues: {
       number1: 0,
       number2: 0,
+      number3: 0,
     },
     validationSchema: Yup.object().shape({
       number1: Yup.number().required("Chỉ nhập số"),
       number2: Yup.number().required("Chỉ nhập số"),
+      number3: Yup.number().required("Chỉ nhập số"),
     }),
     onSubmit: values => {
-      const data = idList.map(il => il.result.id)
       dispatch(
-        onRunScriptBooking(values.number1, values.number2, isNewCustomer)
+        onRunScriptBooking(
+          values.number1,
+          values.number2,
+          values.number3,
+          isNewCustomer
+        )
       )
-      //setIsSubmitting(false)
-      console.log(values.number1, values.number2, isNewCustomer)
     },
   })
 
@@ -92,7 +94,7 @@ const BookingScript = () => {
     <React.Fragment>
       <CardBody>
         <CardTitle className="mb-2">TẠO ĐẶT LỊCH</CardTitle>
-
+        *Đặt lịch quá khứ chỉ có thể đặt ngày hôm qua tính từ ngày hiện tại
         <Form
           className="row gy-2 gx-3 mt-3"
           onSubmit={e => {
@@ -101,7 +103,7 @@ const BookingScript = () => {
             return false
           }}
         >
-          <div className="col-sm-4">
+          <div className="col-sm-5">
             <Label
               className="visually-hidden"
               htmlFor="autoSizingInputGroup"
@@ -131,7 +133,7 @@ const BookingScript = () => {
               ) : null}
             </InputGroup>
           </div>
-          <div className="col-sm-4">
+          <div className="col-sm-5">
             <Label
               className="visually-hidden"
               htmlFor="autoSizingInputGroup"
@@ -161,7 +163,37 @@ const BookingScript = () => {
               ) : null}
             </InputGroup>
           </div>
-          <div className="form-check col-sm-4 mt-3">
+          <div className="col-sm-5">
+            <Label
+              className="visually-hidden"
+              htmlFor="autoSizingInputGroup"
+            ></Label>
+            <InputGroup>
+              <div className="input-group-text">Đặt lịch quá khứ</div>
+              <Input
+                type="text"
+                className="form-control"
+                id="autoSizingInputGroup"
+                name="number3"
+                onChange={validationType.handleChange}
+                onBlur={validationType.handleBlur}
+                value={validationType.values.number3 || ""}
+                invalid={
+                  validationType.touched.number3 &&
+                  validationType.errors.number3
+                    ? true
+                    : false
+                }
+              />
+              {validationType.touched.number3 &&
+              validationType.errors.number3 ? (
+                <FormFeedback type="invalid">
+                  {validationType.errors.number3}
+                </FormFeedback>
+              ) : null}
+            </InputGroup>
+          </div>
+          <div className="form-check col-sm-5 mt-3 ms-2">
             <input
               className="form-check-input"
               type="checkbox"
@@ -173,17 +205,12 @@ const BookingScript = () => {
               Áp dụng cho khách hàng mới tạo
             </label>
           </div>
-          <div className="col-sm-4">
-            <button
-              disabled={isSubmitting}
-              type="submit"
-              className="btn btn-primary btn-label"
-            >
+          <div className="col-sm-5">
+            <button type="submit" className="btn btn-primary btn-label">
               <i className="mdi mdi-calendar-plus label-icon"></i> Khởi tạo
             </button>
           </div>
         </Form>
-
         <hr className="my-4" />
         {isLoadScript && (
           <Row>

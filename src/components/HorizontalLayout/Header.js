@@ -140,65 +140,69 @@ const Header = props => {
               <i className="fa fa-fw fa-bars" />
             </button>
 
-            <form
-              className="app-search d-none d-lg-block"
-              onSubmit={handleSearch}
-            >
-              <div className="position-relative">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Tìm kiếm..."
-                  ref={searchInput}
-                />
-                <span className="bx bx-search-alt" />
-              </div>
-            </form>
+            {role !== "AD" && (
+              <form
+                className="app-search d-none d-lg-block"
+                onSubmit={handleSearch}
+              >
+                <div className="position-relative">
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Tìm kiếm..."
+                    ref={searchInput}
+                  />
+                  <span className="bx bx-search-alt" />
+                </div>
+              </form>
+            )}
 
             {/* <SearchAll /> */}
           </div>
 
           <div className="d-flex">
-            {role !== "AD" && <LiveClock />}
+            <LiveClock />
 
             {/* {role === "MA" && <ConfigSystem />} */}
 
-            <div className="dropdown d-inline-block d-lg-none">
-              <button
-                type="button"
-                className="btn header-item noti-icon font-size-10"
-                id="page-header-search-dropdown"
-                onClick={() => setSearch(!isSearch)}
-              >
-                <i className="bx bx-search-alt" />
-              </button>
-              <div
-                className={
-                  isSearch
-                    ? "dropdown-menu dropdown-menu-lg dropdown-menu-end p-0 show"
-                    : "dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
-                }
-                aria-labelledby="page-header-search-dropdown"
-              >
-                <form className="p-3" onSubmit={handleSearchMobile}>
-                  <div className="form-group m-0">
-                    <div className="input-group">
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder={props.t("Tìm kiếm") + "..."}
-                        ref={searchInputMobile}
-                      />
-                      <div className="input-group-append">
-                        <button className="btn btn-primary" type="submit">
-                          <i className="mdi mdi-magnify" />
-                        </button>
+            {role !== "AD" && (
+              <div className="dropdown d-inline-block d-lg-none">
+                <button
+                  type="button"
+                  className="btn header-item noti-icon font-size-10"
+                  id="page-header-search-dropdown"
+                  onClick={() => setSearch(!isSearch)}
+                >
+                  <i className="bx bx-search-alt" />
+                </button>
+                <div
+                  className={
+                    isSearch
+                      ? "dropdown-menu dropdown-menu-lg dropdown-menu-end p-0 show"
+                      : "dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
+                  }
+                  aria-labelledby="page-header-search-dropdown"
+                >
+                  <form className="p-3" onSubmit={handleSearchMobile}>
+                    <div className="form-group m-0">
+                      <div className="input-group">
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder={props.t("Tìm kiếm") + "..."}
+                          ref={searchInputMobile}
+                        />
+                        <div className="input-group-append">
+                          <button className="btn btn-primary" type="submit">
+                            <i className="mdi mdi-magnify" />
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </form>
+                  </form>
+                </div>
               </div>
-            </div>
+            )}
 
             {role === "RE" && <QrCode />}
 

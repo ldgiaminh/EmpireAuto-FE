@@ -418,9 +418,9 @@ export const runRemoveScriptCustomers = data =>
   del2(url.RUN_REMOVE_SCRIPT_CUSTOMER, data)
 
 //Booking
-export const runScriptBookings = (number1, number2, isNewCustomer) =>
+export const runScriptBookings = (number1, number2, number3, isNewCustomer) =>
   post(
-    `${url.RUN_SCRIPT_BOOKING}?numberOfBooking=${number1}&numberOfBookingToday=${number2}&onlyNewCustomer=${isNewCustomer}`
+    `${url.RUN_SCRIPT_BOOKING}?numberOfBooking=${number1}&numberOfBookingToday=${number2}&numberOfBookingYesterday=${number3}&onlyNewCustomer=${isNewCustomer}`
   )
 
 //Remove booking

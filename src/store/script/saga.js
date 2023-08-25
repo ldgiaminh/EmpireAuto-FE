@@ -78,12 +78,13 @@ function* onRunScriptRemoveCustomers({ data }) {
 
 /* BOOKING */
 
-function* onRunScriptBookings({ number1, number2, isNewCustomer }) {
+function* onRunScriptBookings({ number1, number2, number3, isNewCustomer }) {
   try {
     const response = yield call(
       runScriptBookings,
       number1,
       number2,
+      number3,
       isNewCustomer
     )
     yield put(runScriptBookingSuccess(response))

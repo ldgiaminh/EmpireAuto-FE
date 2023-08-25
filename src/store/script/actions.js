@@ -73,10 +73,11 @@ export const runScriptRemoveCustomerFail = error => ({
 POST Script Booking 
 ================================================
 */
-export const runScriptBooking = (number1, number2, isNewCustomer) => ({
+export const runScriptBooking = (number1, number2, number3, isNewCustomer) => ({
   type: RUN_SCRIPT_BOOKING,
   number1,
   number2,
+  number3,
   isNewCustomer,
 })
 

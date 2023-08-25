@@ -130,14 +130,14 @@ const scripts = (state = INIT_STATE, action) => {
     case RUN_REMOVE_SCRIPT_BOOKING_SUCCESS:
       return {
         ...state,
-        isLoadScriptBooking: true,
+        isLoadScriptBooking: false,
         scriptRemoveBooking: action.payload,
       }
 
     case RUN_REMOVE_SCRIPT_BOOKING_FAIL:
       return {
         ...state,
-        isLoadScriptBooking: true,
+        isLoadScriptBooking: false,
         error: action.payload,
       }
 
