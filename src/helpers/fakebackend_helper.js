@@ -418,9 +418,9 @@ export const runRemoveScriptCustomers = data =>
   del2(url.RUN_REMOVE_SCRIPT_CUSTOMER, data)
 
 //Booking
-export const runScriptBookings = (number1, number2, number3, isNewCustomer) =>
+export const runScriptBookings = (number1, number2, isNewCustomer) =>
   post(
-    `${url.RUN_SCRIPT_BOOKING}?numberOfBooking=${number1}&numberOfBookingToday=${number2}&numberOfBookingYesterday=${number3}&onlyNewCustomer=${isNewCustomer}`
+    `${url.RUN_SCRIPT_BOOKING}?numberOfBooking=${number1}&numberOfBookingToday=${number2}&onlyNewCustomer=${isNewCustomer}`
   )
 
 //Remove booking
@@ -452,8 +452,8 @@ export const runScriptDone = (number1, number2, number3, number4) =>
   )
 
 //Check-out
-export const runScriptCheckOut = data =>
-  post2(url.RUN_SCRIPT_CHECKOUT_SCRIPT_ORDER, data)
+export const runScriptCheckOut = number =>
+  post(`${url.RUN_SCRIPT_CHECKOUT_SCRIPT_ORDER}?number=${number}`)
 
 /*
 ================================================

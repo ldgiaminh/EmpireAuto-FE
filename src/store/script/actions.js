@@ -73,11 +73,10 @@ export const runScriptRemoveCustomerFail = error => ({
 POST Script Booking 
 ================================================
 */
-export const runScriptBooking = (number1, number2, number3, isNewCustomer) => ({
+export const runScriptBooking = (number1, number2, isNewCustomer) => ({
   type: RUN_SCRIPT_BOOKING,
   number1,
   number2,
-  number3,
   isNewCustomer,
 })
 
@@ -203,9 +202,9 @@ export const runScriptDoneFail = error => ({
 POST Script CheckOut 
 ================================================
 */
-export const runScriptCheckOut = data => ({
+export const runScriptCheckOut = number => ({
   type: RUN_SCRIPT_CHECKOUT_ORDER,
-  payload: data,
+  number,
 })
 
 export const runScriptCheckOutSuccess = scriptDone => ({

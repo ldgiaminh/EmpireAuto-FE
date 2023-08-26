@@ -22,41 +22,33 @@ import { runScriptDone as onRunScriptDone } from "store/actions"
 const OrderDone = () => {
   const dispatch = useDispatch()
 
+  /*
+  ==================================================
+  STATE FROM REDUX
+  ==================================================
+  */
+
   const { scriptDone, isLoadScript, errorDone } = useSelector(state => ({
     scriptDone: state.scripts.scriptDone,
     isLoadScript: state.scripts.isLoadScript,
     errorDone: state.scripts.errorDone,
   }))
 
+  /*
+  ==================================================
+  USE STATE
+  ==================================================
+  */
+
   const [orders, setOrders] = useState([])
-
-  const [isSubmitting, setIsSubmitting] = useState(false)
-
-  const [idList, setIdList] = useState([])
-  const [count, setCount] = useState([])
-
   const [countSuccess, setCountSuccess] = useState(0)
   const [countFail, setCountFail] = useState(0)
 
-  useEffect(() => {
-    if (localStorage.getItem("scriptCustomer")) {
-      const obj = JSON.parse(localStorage.getItem("scriptCustomer"))
-      setIdList(obj)
-    }
-  }, [localStorage.getItem("scriptCustomer")])
-
-  useEffect(() => {
-    if (localStorage.getItem("scriptConfirmPaid")) {
-      const obj = JSON.parse(localStorage.getItem("scriptConfirmPaid"))
-      setCount(obj)
-    }
-  }, [localStorage.getItem("scriptConfirmPaid")])
-
-  const countDone = count.filter(
-    c =>
-      Array.isArray(c.result.orderServiceDetails) &&
-      c.result.orderServiceDetails.length !== 0
-  )
+  /*
+  ==================================================
+  FORM
+  ==================================================
+  */
 
   const validationType = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
@@ -75,7 +67,6 @@ const OrderDone = () => {
       number4: Yup.number().required("Chỉ nhập số"),
     }),
     onSubmit: values => {
-      const data = idList.map(il => il.result.id)
       dispatch(
         onRunScriptDone(
           values.number1,
@@ -84,9 +75,14 @@ const OrderDone = () => {
           values.number4
         )
       )
-      // setIsSubmitting(false)
     },
   })
+
+  /*
+  ==================================================
+  COUNT SUCCESS & FAILURE
+  ==================================================
+  */
 
   useEffect(() => {
     setOrders(scriptDone)
@@ -98,6 +94,12 @@ const OrderDone = () => {
     setCountSuccess(successCount)
     setCountFail(failCount)
   }, [scriptDone])
+
+  /*
+  ==================================================
+  FORMAT DATE
+  ==================================================
+  */
 
   const formattedDate = date => {
     const createDate = new Date(date)
@@ -114,12 +116,6 @@ const OrderDone = () => {
     <React.Fragment>
       <CardBody>
         <CardTitle className="mb-2">HOÀN TẤT DỊCH VỤ</CardTitle>
-
-        {/* {!isLoadScript && orders.length === 0 && (
-          <em className="mt-3">
-            Đang có {countDone.length} hóa đơn đang sửa chữa{" "}
-          </em>
-        )} */}
 
         <Form
           className="row gy-2 gx-3 mt-3"
@@ -250,11 +246,7 @@ const OrderDone = () => {
             </InputGroup>
           </div>
           <div className="col-sm-5">
-            <button
-              // disabled={isSubmitting}
-              type="submit"
-              className="btn btn-primary btn-label"
-            >
+            <button type="submit" className="btn btn-primary btn-label">
               <i className="bx bx-badge-check font-size-18 label-icon"></i> Hoàn
               tất
             </button>

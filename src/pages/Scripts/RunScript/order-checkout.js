@@ -4,14 +4,14 @@ import * as Yup from "yup"
 import {
   Row,
   Col,
-  Form,
-  InputGroup,
   CardTitle,
   CardBody,
   FormFeedback,
   Label,
   Input,
   Table,
+  Form,
+  InputGroup,
 } from "reactstrap"
 
 //redux
@@ -22,50 +22,32 @@ import { runScriptCheckOut as onRunScriptCheckOut } from "store/actions"
 const OrderCheckOut = () => {
   const dispatch = useDispatch()
 
+  /*
+  ==================================================
+  STATE FROM REDUX
+  ==================================================
+  */
+
   const { scriptCheckOut, isLoadScript } = useSelector(state => ({
     scriptCheckOut: state.scripts.scriptCheckOut,
     isLoadScript: state.scripts.isLoadScript,
   }))
 
+  /*
+  ==================================================
+  USE STATE
+  ==================================================
+  */
+
   const [orders, setOrders] = useState([])
-
-  const [isSubmitting, setIsSubmitting] = useState(false)
-
-  const [idList, setIdList] = useState([])
-  const [carList, setCarList] = useState([])
-  const [count, setCount] = useState([])
-
   const [countSuccess, setCountSuccess] = useState(0)
   const [countFail, setCountFail] = useState(0)
 
-  useEffect(() => {
-    if (localStorage.getItem("scriptCustomer")) {
-      const obj = JSON.parse(localStorage.getItem("scriptCustomer"))
-      setIdList(obj)
-    }
-  }, [localStorage.getItem("scriptCustomer")])
-
-  useEffect(() => {
-    if (localStorage.getItem("scriptConfirmPaid")) {
-      const obj = JSON.parse(localStorage.getItem("scriptConfirmPaid"))
-      setCount(obj)
-    }
-  }, [localStorage.getItem("scriptConfirmPaid")])
-
-  useEffect(() => {
-    if (localStorage.getItem("scriptDone")) {
-      const obj = JSON.parse(localStorage.getItem("scriptDone"))
-      setCarList(obj)
-    }
-  }, [localStorage.getItem("scriptDone")])
-
-  const countConfirmPaid = count.filter(
-    c =>
-      Array.isArray(c.result.orderServiceDetails) &&
-      c.result.orderServiceDetails.length === 0
-  )
-
-  const countDone = carList.filter(c => c.statusCode === 200)
+  /*
+  ==================================================
+  COUNT SUCCESS & FAILURE
+  ==================================================
+  */
 
   useEffect(() => {
     setOrders(scriptCheckOut)
@@ -78,37 +60,76 @@ const OrderCheckOut = () => {
     setCountFail(failCount)
   }, [scriptCheckOut])
 
-  const handleDone = () => {
-    const data = idList.map(il => il.result.id)
-    dispatch(onRunScriptCheckOut(data))
-    // setIsSubmitting(true)
-  }
+  /*
+  ==================================================
+  FORM
+  ==================================================
+  */
+
+  const validationType = useFormik({
+    // enableReinitialize : use this flag when initial values needs to be changed
+    enableReinitialize: true,
+
+    initialValues: {
+      number: 0,
+    },
+    validationSchema: Yup.object().shape({
+      number: Yup.number().required("Chỉ nhập số"),
+    }),
+    onSubmit: values => {
+      dispatch(onRunScriptCheckOut(values.number))
+    },
+  })
 
   return (
     <React.Fragment>
       <CardBody>
         <CardTitle className="mb-2">CHECK-OUT PHƯƠNG TIỆN</CardTitle>
 
-        {/* {!isLoadScript && orders.length === 0 && (
-          <em className="mt-3">
-            Đang có {countDone.length + countConfirmPaid.length} phương tiện
-            nhận xe{" "}
-          </em>
-        )} */}
-
-        <div className="row gy-2 gx-3 mt-3">
+        <Form
+          className="row gy-2 gx-3 mt-3"
+          onSubmit={e => {
+            e.preventDefault()
+            validationType.handleSubmit()
+            return false
+          }}
+        >
           <div className="col-sm-5">
-            <button
-              disabled={isSubmitting}
-              type="button"
-              className="btn btn-primary btn-label"
-              onClick={handleDone}
-            >
-              <i className="bx bx-log-out-circle font-size-18 label-icon"></i>
-              Check-Out
+            <Label
+              className="visually-hidden"
+              htmlFor="autoSizingInputGroup"
+            ></Label>
+            <InputGroup>
+              <div className="input-group-text">Check-Out</div>
+              <Input
+                type="text"
+                className="form-control"
+                id="autoSizingInputGroup"
+                name="number"
+                onChange={validationType.handleChange}
+                onBlur={validationType.handleBlur}
+                value={validationType.values.number || ""}
+                invalid={
+                  validationType.touched.number && validationType.errors.number
+                    ? true
+                    : false
+                }
+              />
+              {validationType.touched.number && validationType.errors.number ? (
+                <FormFeedback type="invalid">
+                  {validationType.errors.number}
+                </FormFeedback>
+              ) : null}
+            </InputGroup>
+          </div>
+
+          <div className="col-sm-5">
+            <button type="submit" className="btn btn-primary btn-label">
+              <i className="bx  bx-log-out-circle font-size-18 label-icon"></i>{" "}
+              Check Out
             </button>
           </div>
-        </div>
+        </Form>
 
         <hr className="my-4" />
 
