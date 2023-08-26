@@ -177,7 +177,7 @@ const BookingScript = () => {
               ) : null}
             </InputGroup>
           </div>
-          <div className="form-check col-sm-4 mt-3 ms-2">
+          <div className="form-check col-sm-4 mt-3">
             <input
               className="form-check-input"
               type="checkbox"
