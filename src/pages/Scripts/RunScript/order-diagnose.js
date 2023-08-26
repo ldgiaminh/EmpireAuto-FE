@@ -66,9 +66,7 @@ const OrderDiagnose = () => {
       number2: Yup.number().required("Chỉ nhập số"),
     }),
     onSubmit: values => {
-      const data = idList.map(il => il.result.id)
       dispatch(onRunScriptDiagnose(values.number1, values.number2))
-      // setIsSubmitting(false)
     },
   })
 

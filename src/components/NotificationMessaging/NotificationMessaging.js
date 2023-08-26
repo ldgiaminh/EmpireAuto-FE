@@ -22,7 +22,7 @@ const NotificationMessaging = props => {
   const [uuid, setUuid] = useState("")
 
   const toggleToast = () => {
-    dispatch(changeIsShow(!isShow))
+    dispatch(changeIsShow(!props.isShow))
   }
 
   useEffect(() => {
