@@ -22,37 +22,33 @@ import { runScriptCheckIn as onRunScriptCheckIn } from "store/actions"
 const BookingCheckInScript = () => {
   const dispatch = useDispatch()
 
+  /*
+  ==================================================
+  STATE FROM REDUX
+  ==================================================
+  */
+
   const { scriptCheckIn, isLoadScript, errorCheckIn } = useSelector(state => ({
     scriptCheckIn: state.scripts.scriptCheckIn,
     isLoadScript: state.scripts.isLoadScript,
     errorCheckIn: state.scripts.errorCheckIn,
   }))
 
+  /*
+  ==================================================
+  USE STATE
+  ==================================================
+  */
+
   const [bookings, setBookings] = useState([])
-  const [count, setCount] = useState([])
-
-  const [isSubmitting, setIsSubmitting] = useState(false)
-
-  const [idList, setIdList] = useState([])
-
   const [countSuccess, setCountSuccess] = useState(0)
   const [countFail, setCountFail] = useState(0)
 
-  useEffect(() => {
-    if (localStorage.getItem("scriptCustomer")) {
-      const obj = JSON.parse(localStorage.getItem("scriptCustomer"))
-      setIdList(obj)
-    }
-  }, [localStorage.getItem("scriptCustomer")])
-
-  useEffect(() => {
-    if (localStorage.getItem("scriptBooking")) {
-      const obj = JSON.parse(localStorage.getItem("scriptBooking"))
-      setCount(obj)
-    }
-  }, [localStorage.getItem("scriptBooking")])
-
-  const countBooking = count.filter(c => c.statusCode === 201)
+  /*
+  ==================================================
+  FORM
+  ==================================================
+  */
 
   const validationType = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
@@ -67,21 +63,18 @@ const BookingCheckInScript = () => {
       number2: Yup.number().required("Chỉ nhập số"),
     }),
     onSubmit: values => {
-      const data = idList.map(il => il.result.id)
       dispatch(onRunScriptCheckIn(values.number1, values.number2))
-      setIsSubmitting(false)
     },
   })
 
+  /*
+  ==================================================
+  COUNT SUCCESS & FAILURE
+  ==================================================
+  */
+
   useEffect(() => {
     setBookings(scriptCheckIn)
-
-    // const successCount = scriptCheckIn.filter(
-    //   o => o.result.isArrived && o.result.isActived
-    // ).length
-    // const failCount = scriptCheckIn.filter(
-    //   o => !o.result.isArrived && !o.result.isActived
-    // ).length
 
     const successCount = scriptCheckIn.filter(o => o.statusCode === 200).length
     const failCount = scriptCheckIn.filter(o => o.statusCode === 500).length
@@ -94,12 +87,6 @@ const BookingCheckInScript = () => {
     <React.Fragment>
       <CardBody>
         <CardTitle className="mb-2">CHECK-IN ĐẶT LỊCH</CardTitle>
-
-        {/* {!isLoadScript && bookings.length === 0 && (
-          <em className="mt-3">
-            Đang có {countBooking.length} đặt lịch chờ check-in{" "}
-          </em>
-        )} */}
 
         <Form
           className="row gy-2 gx-3 mt-3"
@@ -170,11 +157,7 @@ const BookingCheckInScript = () => {
             </InputGroup>
           </div>
           <div className="col-sm-4">
-            <button
-              disabled={isSubmitting}
-              type="submit"
-              className="btn btn-primary btn-label"
-            >
+            <button type="submit" className="btn btn-primary btn-label">
               <i className="bx bx-log-in-circle label-icon"></i> Check-In
             </button>
           </div>

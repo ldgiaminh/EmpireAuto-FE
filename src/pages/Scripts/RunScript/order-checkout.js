@@ -139,7 +139,7 @@ const OrderCheckOut = () => {
               <div className="text-center my-3">
                 <h5 className="text-primary">
                   <i className="bx bx-loader bx-spin me-2" />
-                  Đang check-out phương tiện
+                  Đang check-out {validationType.values.number} phương tiện
                 </h5>
               </div>
             </Col>

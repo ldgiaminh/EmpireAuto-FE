@@ -22,6 +22,12 @@ import { runScriptDiagnose as onRunScriptDiagnose } from "store/actions"
 const OrderDiagnose = () => {
   const dispatch = useDispatch()
 
+  /*
+  ==================================================
+  STATE FROM REDUX
+  ==================================================
+  */
+
   const { scriptDiagnose, isLoadScript, errorDiagnose } = useSelector(
     state => ({
       scriptDiagnose: state.scripts.scriptDiagnose,
@@ -30,33 +36,22 @@ const OrderDiagnose = () => {
     })
   )
 
+  /*
+  ==================================================
+  USE STATE
+  ==================================================
+  */
+
   const [orders, setOrders] = useState([])
-
-  // const [isSubmitting, setIsSubmitting] = useState(false)
-
-  const [idList, setIdList] = useState([])
-  const [carList, setCarList] = useState([])
 
   const [countSuccess, setCountSuccess] = useState(0)
   const [countFail, setCountFail] = useState(0)
 
-  useEffect(() => {
-    if (localStorage.getItem("scriptCustomer")) {
-      const obj = JSON.parse(localStorage.getItem("scriptCustomer"))
-      setIdList(obj)
-    }
-  }, [localStorage.getItem("scriptCustomer")])
-
-  useEffect(() => {
-    if (localStorage.getItem("scriptCheckIn")) {
-      const obj = JSON.parse(localStorage.getItem("scriptCheckIn"))
-      setCarList(obj)
-    }
-  }, [localStorage.getItem("scriptCheckIn")])
-
-  const countCheckIn = carList.filter(
-    c => c.result.isArrived && c.result.isActived
-  )
+  /*
+  ==================================================
+  FORM
+  ==================================================
+  */
 
   const validationType = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
@@ -76,6 +71,12 @@ const OrderDiagnose = () => {
       // setIsSubmitting(false)
     },
   })
+
+  /*
+  ==================================================
+  COUNT SUCCESS & FAILURE
+  ==================================================
+  */
 
   useEffect(() => {
     setOrders(scriptDiagnose)

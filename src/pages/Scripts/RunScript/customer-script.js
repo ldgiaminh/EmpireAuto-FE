@@ -22,10 +22,22 @@ import { runScriptCustomer as onRunScriptCustomer } from "store/actions"
 const CustomerScript = () => {
   const dispatch = useDispatch()
 
+  /*
+  ==================================================
+  STATE FROM REDUX
+  ==================================================
+  */
+
   const { scriptCustomer, isLoadScript } = useSelector(state => ({
     scriptCustomer: state.scripts.scriptCustomer,
     isLoadScript: state.scripts.isLoadScript,
   }))
+
+  /*
+  ==================================================
+  USE STATE
+  ==================================================
+  */
 
   const [customers, setCustomers] = useState([])
 
@@ -47,9 +59,21 @@ const CustomerScript = () => {
     },
   })
 
+  /*
+  ==================================================
+  COUNT SUCCESS & FAILURE
+  ==================================================
+  */
+
   useEffect(() => {
     setCustomers(scriptCustomer)
   }, [scriptCustomer])
+
+  /*
+  ==================================================
+  FORMAT PHONE NUMBER
+  ==================================================
+  */
 
   function formatPhoneNumber(phone) {
     return `(+${phone.slice(1, 3)}) ${phone.slice(3)}`

@@ -22,6 +22,12 @@ import { runScriptConfirmPaid as onRunScriptConfirmPaid } from "store/actions"
 const OrderConfirmPaid = () => {
   const dispatch = useDispatch()
 
+  /*
+  ==================================================
+  STATE FROM REDUX
+  ==================================================
+  */
+
   const { scriptConfirmPaid, isLoadScript, errorConfirmPaid } = useSelector(
     state => ({
       scriptConfirmPaid: state.scripts.scriptConfirmPaid,
@@ -30,29 +36,22 @@ const OrderConfirmPaid = () => {
     })
   )
 
+  /*
+  ==================================================
+  USE STATE
+  ==================================================
+  */
+
   const [orders, setOrders] = useState([])
-
-  const [isSubmitting, setIsSubmitting] = useState(false)
-
-  const [idList, setIdList] = useState([])
-  const [count, setCount] = useState([])
 
   const [countSuccess, setCountSuccess] = useState(0)
   const [countFail, setCountFail] = useState(0)
 
-  useEffect(() => {
-    if (localStorage.getItem("scriptCustomer")) {
-      const obj = JSON.parse(localStorage.getItem("scriptCustomer"))
-      setIdList(obj)
-    }
-  }, [localStorage.getItem("scriptCustomer")])
-
-  useEffect(() => {
-    if (localStorage.getItem("scriptDiagnose")) {
-      const obj = JSON.parse(localStorage.getItem("scriptDiagnose"))
-      setCount(obj)
-    }
-  }, [localStorage.getItem("scriptDiagnose")])
+  /*
+  ==================================================
+  FORM
+  ==================================================
+  */
 
   const validationType = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
@@ -69,13 +68,17 @@ const OrderConfirmPaid = () => {
       number3: Yup.number().required("Chỉ nhập số"),
     }),
     onSubmit: values => {
-      const data = idList.map(il => il.result.id)
       dispatch(
         onRunScriptConfirmPaid(values.number1, values.number2, values.number3)
       )
-      setIsSubmitting(false)
     },
   })
+
+  /*
+  ==================================================
+  COUNT SUCCESS & FAILURE
+  ==================================================
+  */
 
   useEffect(() => {
     setOrders(scriptConfirmPaid)
@@ -94,12 +97,6 @@ const OrderConfirmPaid = () => {
     <React.Fragment>
       <CardBody>
         <CardTitle className="mb-2">XÁC NHẬN & THANH TOÁN</CardTitle>
-
-        {/* {!isLoadScript && orders.length === 0 && (
-          <em className="mt-3">
-            Đang có {count.length} hóa đơn chờ thanh toán{" "}
-          </em>
-        )} */}
 
         <Form
           className="row gy-2 gx-3 mt-3"
@@ -200,11 +197,7 @@ const OrderConfirmPaid = () => {
             </InputGroup>
           </div>
           <div className="col-sm-4">
-            <button
-              disabled={isSubmitting}
-              type="submit"
-              className="btn btn-primary btn-label"
-            >
+            <button type="submit" className="btn btn-primary btn-label">
               <i className="fa fa-money-bill-wave font-size-12 label-icon"></i>{" "}
               Xác nhận - Thanh Toán
             </button>
@@ -218,9 +211,9 @@ const OrderConfirmPaid = () => {
               <div className="text-center my-3">
                 <h5 className="text-primary">
                   <i className="bx bx-loader bx-spin me-2" />
-                  Đang thanh toán tất cả {validationType.values.number1}, thanh toán một
-                  phần {validationType.values.number2} và không thanh toán{" "}
-                  {validationType.values.number3} hóa đơn
+                  Đang thanh toán tất cả {validationType.values.number1}, thanh
+                  toán một phần {validationType.values.number2} và không thanh
+                  toán {validationType.values.number3} hóa đơn
                 </h5>
               </div>
             </Col>
@@ -253,8 +246,11 @@ const OrderConfirmPaid = () => {
                       {o.statusCode === 200 &&
                       o.result.orderServiceDetails.length ? (
                         <td className="font-size-14">
-                          Xác nhận & Thanh toán {o.result.information.confirmAll ? "tất cả" : "một phần"} thành công #
-                          {o.result.code}
+                          Xác nhận & Thanh toán{" "}
+                          {o.result.information.confirmAll
+                            ? "tất cả"
+                            : "một phần"}{" "}
+                          thành công #{o.result.code}
                         </td>
                       ) : o.statusCode === 200 &&
                         !o.result.orderServiceDetails.length ? (

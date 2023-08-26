@@ -22,11 +22,23 @@ import { runScriptBooking as onRunScriptBooking } from "store/actions"
 const BookingScript = () => {
   const dispatch = useDispatch()
 
+  /*
+  ==================================================
+  STATE FROM REDUX
+  ==================================================
+  */
+
   const { scriptBooking, isLoadScript, errorBooking } = useSelector(state => ({
     scriptBooking: state.scripts.scriptBooking,
     isLoadScript: state.scripts.isLoadScript,
     errorBooking: state.scripts.errorBooking,
   }))
+
+  /*
+  ==================================================
+  USE STATE
+  ==================================================
+  */
 
   const [bookings, setBookings] = useState([])
   const [isNewCustomer, setIsNewCustomer] = useState(false)
@@ -34,12 +46,11 @@ const BookingScript = () => {
   const [countSuccess, setCountSuccess] = useState(0)
   const [countFail, setCountFail] = useState(0)
 
-  useEffect(() => {
-    if (localStorage.getItem("scriptCustomer")) {
-      const obj = JSON.parse(localStorage.getItem("scriptCustomer"))
-      setIdList(obj)
-    }
-  }, [localStorage.getItem("scriptCustomer")])
+  /*
+  ==================================================
+  FORM
+  ==================================================
+  */
 
   const validationType = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
@@ -60,6 +71,12 @@ const BookingScript = () => {
     },
   })
 
+  /*
+  ==================================================
+  COUNT SUCCESS & FAILURE
+  ==================================================
+  */
+
   useEffect(() => {
     setBookings(scriptBooking)
 
@@ -71,7 +88,12 @@ const BookingScript = () => {
     setCountFail(failCount)
   }, [scriptBooking])
 
-  //Format Date
+  /*
+  ==================================================
+  FORMAT DATE
+  ==================================================
+  */
+
   const formattedDate = date => {
     const createDate = new Date(date)
     const formattedDate = createDate.toLocaleDateString("vi-VN", {
