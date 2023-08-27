@@ -191,7 +191,9 @@ const OrderDone = () => {
               htmlFor="autoSizingInputGroup"
             ></Label>
             <InputGroup>
-              <div className="input-group-text">Hoàn tất 1 phần có bảo trì</div>
+              <div className="input-group-text">
+                Hoàn tất 1 phần và check-out có bảo trì
+              </div>
               <Input
                 type="text"
                 className="form-control"
@@ -221,7 +223,9 @@ const OrderDone = () => {
               htmlFor="autoSizingInputGroup"
             ></Label>
             <InputGroup>
-              <div className="input-group-text">Không hoàn tất có bảo trì</div>
+              <div className="input-group-text">
+                Không hoàn tất và check-out có bảo trì
+              </div>
               <Input
                 type="text"
                 className="form-control"
@@ -295,7 +299,11 @@ const OrderDone = () => {
                       <td className="font-size-14 text-center">{index + 1}</td>
                       {o.statusCode === 200 ? (
                         <td className="font-size-14">
-                          Hoàn tất thành công #{o.result.code}{" "}
+                          {o.result &&
+                          (o.result.status == 5 || o.result.status == 6)
+                            ? "Check-out"
+                            : "Hoàn tất"}{" "}
+                          thành công #{o.result.code}{" "}
                           {o.result.maintenanceSchedule &&
                             o.result.maintenanceSchedule &&
                             "| có bảo trì -"}{" "}
