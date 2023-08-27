@@ -1,4 +1,5 @@
 import {
+  CLEAR_ERROR_INVALID,
   GET_BOOKING_SLOT,
   GET_BOOKING_SLOT_FAIL,
   GET_BOOKING_SLOT_SUCCESS,
@@ -88,4 +89,13 @@ export const putConfigSystemSuccess = configSystem => ({
 export const putConfigSystemFail = error => ({
   type: PUT_CONFIG_SYSTEM_FAIL,
   payload: error,
+})
+
+/*
+================================================ 
+PUT Car In Garage
+================================================
+*/
+export const clearErrorInvalid = () => ({
+  type: CLEAR_ERROR_INVALID,
 })

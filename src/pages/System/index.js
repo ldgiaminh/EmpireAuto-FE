@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
 import {
+  Alert,
   Button,
   Card,
   CardBody,
@@ -17,13 +18,12 @@ import {
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 
-import { Link, withRouter } from "react-router-dom"
-
 import { useDispatch, useSelector } from "react-redux"
 
 import {
   putConfigSystem as onConfigSystem,
   getConfigSystem as onGetConfigSystem,
+  clearErrorInvalid as onClearError,
 } from "store/actions"
 import Loader from "components/Loader/Loader"
 
@@ -40,10 +40,11 @@ const SystemConfig = () => {
   ==================================================
   */
 
-  const { isLoad, configSystems, isShow } = useSelector(state => ({
+  const { isLoad, configSystems, isShow, error } = useSelector(state => ({
     isLoad: state.systems.isLoad,
     isShow: state.Layout.isShow,
     configSystems: state.systems.configSystems,
+    error: state.systems.error,
   }))
 
   /*
@@ -72,6 +73,7 @@ const SystemConfig = () => {
     dispatch(onGetConfigSystem())
   }, [dispatch])
 
+  //Reload when data update
   useEffect(() => {
     if (isShow) {
       dispatch(onGetConfigSystem())
@@ -278,6 +280,7 @@ const SystemConfig = () => {
 
   const handleUpdateClick = item => {
     setIsEnableInput(false)
+
     setConfig({
       type: {
         label: item.label,
@@ -294,6 +297,9 @@ const SystemConfig = () => {
         block: "center",
       })
     }
+
+    //Clear error when get invalid config
+    dispatch(onClearError())
   }
 
   /*
@@ -319,6 +325,9 @@ const SystemConfig = () => {
 
     // Clear any validation errors
     validation.setErrors({})
+
+    //Clear error when get invalid config
+    dispatch(onClearError())
   }
 
   /*
@@ -621,6 +630,7 @@ const SystemConfig = () => {
               <Card>
                 <CardBody>
                   <h4 className="card-title mb-4">Cập nhật hệ thống</h4>
+                  {error && <Alert color="danger">{error}</Alert>}
                   {config.type.key && validation.values.value ? (
                     <div>
                       {viewValue(

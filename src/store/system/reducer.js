@@ -1,4 +1,5 @@
 import {
+  CLEAR_ERROR_INVALID,
   GET_BOOKING_SLOT,
   GET_BOOKING_SLOT_FAIL,
   GET_BOOKING_SLOT_SUCCESS,
@@ -18,6 +19,7 @@ const INIT_STATE = {
   bookingSlot: {},
   carInGarage: {},
   isLoad: false,
+  error: "",
 }
 
 const systems = (state = INIT_STATE, action) => {
@@ -103,6 +105,12 @@ const systems = (state = INIT_STATE, action) => {
         ...state,
         isLoad: false,
         error: action.payload,
+      }
+
+    case CLEAR_ERROR_INVALID:
+      return {
+        ...state,
+        error: "",
       }
 
     default:
