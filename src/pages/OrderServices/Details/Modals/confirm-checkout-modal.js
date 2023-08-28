@@ -29,8 +29,10 @@ const ConfirmCheckOut = props => {
     const licence = order.car.carLisenceNo
     if ((carId, order && id && car && licence)) {
       const data = {}
-      if (date || reason) {
+      if (date) {
         data.maintenanceDate = date
+      }
+      if (reason) {
         data.cancelReason = reason
       }
       dispatch(checkOutService(carId, data, id, licence, history))

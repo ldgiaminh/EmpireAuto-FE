@@ -34,6 +34,8 @@ import { useFormik } from "formik"
 const SystemConfig = () => {
   const dispatch = useDispatch()
 
+  document.title = `Cấu hình hệ thống | Empire Garage`
+
   /*
   ==================================================
   STATE REDUX
@@ -417,6 +419,7 @@ const SystemConfig = () => {
 
   return (
     <React.Fragment>
+      {isLoad && <Loader />}
       <div className="page-content">
         <Container fluid>
           {/* Render Breadcrumb */}

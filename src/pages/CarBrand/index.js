@@ -37,7 +37,7 @@ const CarBrand = props => {
   const dispatch = useDispatch()
 
   //meta title
-  document.title = "Thương hiệu xe | Empire Garage"
+  document.title = "Danh sách thương hiệu xe | Empire Garage"
 
   /*
   ==================================================
@@ -171,7 +171,10 @@ const CarBrand = props => {
       <div className="page-content">
         <Container fluid>
           {/* Render Breadcrumbs */}
-          <Breadcrumbs title="Quản lý" breadcrumbItem="Thương hiệu xe" />
+          <Breadcrumbs
+            title="Quản lý"
+            breadcrumbItem="Danh sách thương hiệu xe"
+          />
 
           {isLoading && <Loader />}
           <Row>

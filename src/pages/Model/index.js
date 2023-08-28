@@ -59,7 +59,7 @@ const CarModels = props => {
   const dispatch = useDispatch()
 
   //meta title
-  document.title = "Các dòng xe | Empire Garage"
+  document.title = "Danh sách dòng xe | Empire Garage"
   /*
   ==================================================
   STATE FROM REDUX
@@ -190,7 +190,7 @@ const CarModels = props => {
       />
       <div className="page-content">
         <Container fluid={true}>
-          <Breadcrumbs title="Quản lý" breadcrumbItem="Tất cả dòng xe" />
+          <Breadcrumbs title="Quản lý" breadcrumbItem="Danh sách dòng xe" />
           <Row>
             <Col sm={4}>
               <div className="search-box me-2 mb-2 d-inline-block search-table">

@@ -37,7 +37,7 @@ import CustomerRemoveScript from "./RunScript/customer-remove-script"
 
 const ConfigScriptGarage = props => {
   //meta title
-  document.title = "Cấu hình | Empire Garage"
+  document.title = "Cấu hình dữ liệu | Empire Garage"
 
   const [activeTab, setactiveTab] = useState("1")
 

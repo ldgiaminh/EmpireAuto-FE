@@ -43,6 +43,7 @@ const systems = (state = INIT_STATE, action) => {
         isLoad: false,
         error: action.payload,
       }
+
     /* BOOKING SLOT */
     case GET_BOOKING_SLOT:
       return {

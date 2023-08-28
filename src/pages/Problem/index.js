@@ -38,7 +38,7 @@ import Loader from "components/Loader/Loader"
 
 const CarProblems = props => {
   //meta title
-  document.title = "Empire Garage"
+  document.title = "Danh sách vấn dề | Empire Garage"
 
   const { history } = props
   const dispatch = useDispatch()
@@ -283,7 +283,7 @@ const CarProblems = props => {
           <Container fluid={true}>
             <Breadcrumbs
               title="Quản lý"
-              breadcrumbItem="Tất cả vấn đề của các xe"
+              breadcrumbItem="Danh sách vấn đề của các xe"
             />
             <Row>
               <Col lg="12">

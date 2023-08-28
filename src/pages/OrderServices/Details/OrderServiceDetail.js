@@ -153,21 +153,18 @@ const OrderServiceDetail = props => {
 
   const formattedDateTime = date => {
     const createDate = new Date(date)
-    console.log("createDate:", createDate)
 
     const formattedDate = createDate.toLocaleDateString("vi-VN", {
       day: "2-digit",
       month: "2-digit",
       year: "numeric",
     })
-    console.log("formattedDate:", formattedDate)
 
     const formattedTime = createDate.toLocaleTimeString("vi-VN", {
       hour: "2-digit",
       minute: "2-digit",
       hour12: false,
     })
-    console.log("formattedTime:", formattedTime)
 
     const formatted = `${formattedTime} - ${formattedDate}`
     return formatted

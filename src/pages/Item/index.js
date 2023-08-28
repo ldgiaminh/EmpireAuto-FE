@@ -44,7 +44,7 @@ const CarItems = props => {
 
   //meta title
 
-  document.title = `Tất cả dịch vụ xe | Empire Garage`
+  document.title = `Danh sách dịch vụ xe | Empire Garage`
 
   /*
   ==================================================
@@ -193,20 +193,6 @@ const CarItems = props => {
                   Cập nhật
                 </UncontrolledTooltip>
               </Link>
-              {/* <Link
-                to="#"
-                className="text-danger"
-                onClick={() => {
-                  const id = cellProps.row.original.id
-                  const name = cellProps.row.original.name
-                  onClickDelete(id, name)
-                }}
-              >
-                <i className="mdi mdi-delete font-size-18" id="deletetooltip" />
-                <UncontrolledTooltip placement="top" target="deletetooltip">
-                  Xóa
-                </UncontrolledTooltip>
-              </Link> */}
             </div>
           )
         },
@@ -288,7 +274,10 @@ const CarItems = props => {
       {!isLoading && (
         <div className="page-content">
           <Container fluid={true}>
-            <Breadcrumbs title="Quản lý" breadcrumbItem="Tất cả dịch vụ xe" />
+            <Breadcrumbs
+              title="Quản lý"
+              breadcrumbItem="Danh sách dịch vụ xe"
+            />
             <Row>
               <Col lg="12">
                 <Card>
