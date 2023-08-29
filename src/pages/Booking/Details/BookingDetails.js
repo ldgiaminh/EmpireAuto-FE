@@ -31,12 +31,12 @@ import PreloadDetail from "../../../components/Loader/PreloadDetail"
 const BookingDetails = props => {
   //meta title
   useEffect(() => {
-    if (bookingDetail) {
-      document.title = `#${bookingDetail.code} | Empire Garage`
+    if (bookingDetail && bookingDetail.code) {
+      document.title = `#${bookingDetail.code}  | Empire Garage`
     } else {
       document.title = "Empire Garage"
     }
-  })
+  }, [bookingDetail])
 
   const dispatch = useDispatch()
 

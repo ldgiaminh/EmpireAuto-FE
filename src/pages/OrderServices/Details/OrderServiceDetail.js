@@ -52,14 +52,12 @@ import ConfirmPriority from "./Modals/confirm-priority-modal"
 const OrderServiceDetail = props => {
   //meta title
   useEffect(() => {
-    if (orderServicesDetail) {
-      document.title = `#${
-        orderServicesDetail && orderServicesDetail.code
-      } | Empire Garage`
+    if (orderServicesDetail && orderServicesDetail.code) {
+      document.title = `#${orderServicesDetail.code}  | Empire Garage`
     } else {
-      document.title = `Empire Garage`
+      document.title = "Empire Garage"
     }
-  })
+  }, [orderServicesDetail])
 
   const dispatch = useDispatch()
 

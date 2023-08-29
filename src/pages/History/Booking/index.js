@@ -484,7 +484,7 @@ const BookingHistory = props => {
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <Breadcrumbs title="Lịch sử" breadcrumbItem="Danh sách đặt lịch" />
+          <Breadcrumbs title="Lịch sử" breadcrumbItem="Lịch sử đặt lịch" />
           <Row>
             <Col lg="12">
               <Card>

@@ -227,7 +227,7 @@ const OrderServicesHistory = props => {
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <Breadcrumbs title="Lịch sử" breadcrumbItem="Danh sách hóa đơn" />
+          <Breadcrumbs title="Lịch sử" breadcrumbItem="Lịch sử hóa đơn" />
           <Row>
             <Col lg="12">
               <Card>
