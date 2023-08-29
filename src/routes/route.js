@@ -1,6 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { Route, Redirect } from "react-router-dom"
+import AppLogout from "AppLogout"
 
 const Authmiddleware = ({
   component: Component,
@@ -20,9 +21,11 @@ const Authmiddleware = ({
       }
 
       return (
-        <Layout>
-          <Component {...props} />
-        </Layout>
+        <AppLogout>
+          <Layout>
+            <Component {...props} />
+          </Layout>
+        </AppLogout>
       )
     }}
   />
@@ -32,7 +35,7 @@ Authmiddleware.propTypes = {
   isAuthProtected: PropTypes.bool,
   component: PropTypes.any,
   location: PropTypes.object,
-  layout: PropTypes.any, 
+  layout: PropTypes.any,
 }
 
-export default Authmiddleware;
+export default Authmiddleware

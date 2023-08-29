@@ -76,31 +76,29 @@ const App = props => {
         theme="light"
       />
       <Router>
-        <AppLogout>
-          <Switch>
-            {publicRoutes.map((route, idx) => (
-              <Authmiddleware
-                path={route.path}
-                layout={NonAuthLayout}
-                component={route.component}
-                key={idx}
-                isAuthProtected={false}
-                exact
-              />
-            ))}
+        <Switch>
+          {publicRoutes.map((route, idx) => (
+            <Authmiddleware
+              path={route.path}
+              layout={NonAuthLayout}
+              component={route.component}
+              key={idx}
+              isAuthProtected={false}
+              exact
+            />
+          ))}
 
-            {authProtectedRoutes.map((route, idx) => (
-              <Authmiddleware
-                path={route.path}
-                layout={Layout}
-                component={route.component}
-                key={idx}
-                isAuthProtected={true}
-                exact
-              />
-            ))}
-          </Switch>
-        </AppLogout>
+          {authProtectedRoutes.map((route, idx) => (
+            <Authmiddleware
+              path={route.path}
+              layout={Layout}
+              component={route.component}
+              key={idx}
+              isAuthProtected={true}
+              exact
+            />
+          ))}
+        </Switch>
       </Router>
     </React.Fragment>
   )
